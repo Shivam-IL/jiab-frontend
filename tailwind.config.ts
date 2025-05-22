@@ -9,6 +9,11 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+      fontFamily: {
+        sans: ["var(--font-geist-sans)"],
+        mono: ["var(--font-geist-mono)"],
+        aktiv: ["var(--font-aktiv-grotesk)"],
+      },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -49,7 +54,15 @@ const config: Config = {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+  			green: '#11A64B',
+  			lightGray: '#F3F3F3',
+  			red: '#FF0000',
+  			mediumGray: '#606060',
+  			yellow: '#FFE200',
+  			black: '#000000',
+  			white: '#FFFFFF',
+  			offWhite: '#F2F2F2'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
