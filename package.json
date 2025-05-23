@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-sprite": "svg-sprite -s --symbol-dest ./public/static/sprite --symbol-sprite sprite.svg ./public/static/sprite/icons/*.svg"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.3",
     "@reduxjs/toolkit": "^2.8.2",
     "@tanstack/react-query": "^5.76.1",
@@ -21,6 +23,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-redux": "^9.2.0",
+    "svg-sprite": "^2.0.4",
     "tailwind-merge": "^3.3.0",
     "tailwindcss-animate": "^1.0.7"
   },
