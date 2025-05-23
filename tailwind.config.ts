@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from 'tailwindcss/plugin';
 
 const config: Config = {
     darkMode: ["class"],
@@ -14,7 +15,7 @@ const config: Config = {
         mono: ["var(--font-geist-mono)"],
         aktiv: ["var(--font-aktiv-grotesk)"],
       },
-  		colors: {
+			colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -62,7 +63,8 @@ const config: Config = {
   			yellow: '#FFE200',
   			black: '#000000',
   			white: '#FFFFFF',
-  			offWhite: '#F2F2F2'
+  			offWhite: '#F2F2F2',
+				descriptionText: '#808080'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
@@ -71,6 +73,21 @@ const config: Config = {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(({ addUtilities }) => {
+      const newUtilities = {
+        '.scrollbar-hide': {
+          /* Firefox */
+          'scrollbar-width': 'none',
+          /* Safari and Chrome */
+          '&::-webkit-scrollbar': {
+            display: 'none'
+          }
+        }
+      }
+      addUtilities(newUtilities);
+    })
+  ],
 };
 export default config;

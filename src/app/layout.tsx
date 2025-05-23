@@ -39,9 +39,9 @@ export const aktivGrotesk = localFont({
       style: 'normal'
     },
     {
-      path: './fonts/AktivGrotesk-XBold.otf',
-      weight: '800',
-      style: 'normal'
+      path: "./fonts/AktivGrotesk-XBold.otf",
+      weight: "800",
+      style: "normal"
     },
     {
       path: './fonts/AktivGrotesk-Black.otf',
@@ -77,7 +77,7 @@ export const aktivGrotesk = localFont({
 export default function RootLayout ({
   children
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang='en'>
@@ -86,5 +86,5 @@ export default function RootLayout ({
         <QueryClientAndReduxWrapper>{children}</QueryClientAndReduxWrapper>
       </body>
     </html>
-  )
+  );
 }
