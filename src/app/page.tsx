@@ -5,7 +5,6 @@ import OtpModal from "@/components/common/OtpModal";
 import Signup from "@/components/common/Signup";
 import SurpriseMeLockModal from "@/components/common/SurpriseMeLockModal";
 import SurpriseMeModal from "@/components/common/SurpriseMeModal";
-import LoginSignupWrapper from "@/components/LoginSignupWrapper";
 import useAppSelector from "@/hooks/useSelector";
 
 import Banner from "@/components/common/Banner/Banner";
@@ -35,7 +34,6 @@ import {
   self,
   wedding,
 } from "@/components/video-carousel/imageImport";
-import Footer from "@/components/common/Footer/Footer";
 
 export default function Home() {
   const { otpSent, otpFilled, loginModal, signupDone } = useAppSelector(
@@ -375,7 +373,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

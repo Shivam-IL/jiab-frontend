@@ -4,7 +4,7 @@ import { ILogoAndProfileImageProps } from "@/interfaces";
 import Image from "next/image";
 import { Bell, ChevronDown } from "lucide-react";
 import hamburgerMenu from "../../../../../public/other-svgs/hamburger-menu.svg";
-import Sidebar from "../../Sidebar";
+import Sidebar from "./Sidebar";
 
 const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,

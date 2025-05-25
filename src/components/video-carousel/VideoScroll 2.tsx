@@ -18,7 +18,7 @@ const VideoScroll = ({ videos }: VideoScrollProps) => {
         {videos.map((video) => (
           <div
             key={video.id}
-            className="md:w-full md:h-[627.87px] w-[136px] h-[241px] flex-shrink-0 md:flex-shrink md:mb-0 mb-2 mr-3 md:mr-0"
+            className="md:w-full md:h-[756.87px] w-[136px] h-[241px] flex-shrink-0 md:flex-shrink md:mb-0 mb-2 mr-3 md:mr-0"
           >
             <VideoCard src={video.src} />
           </div>

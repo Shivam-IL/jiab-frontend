@@ -1,66 +1,67 @@
-'use client'
+"use client";
 
-import type { Metadata } from 'next'
-import localFont from 'next/font/local'
-import './globals.css'
-import QueryClientAndReduxWrapper from '@/components/QueryClientAndReduxWrapper'
-import Navbar from '@/components/common/Navbar/Navbar'
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import "./globals.css";
+import QueryClientAndReduxWrapper from "@/components/QueryClientAndReduxWrapper";
+import Navbar from "@/components/common/Navbar/Navbar";
+import Footer from "@/components/common/Footer/Footer";
 
 export const aktivGrotesk = localFont({
   src: [
     {
-      path: './fonts/AktivGrotesk-Hairline.otf',
-      weight: '100',
-      style: 'normal'
+      path: "./fonts/AktivGrotesk-Hairline.otf",
+      weight: "100",
+      style: "normal",
     },
     {
-      path: './fonts/AktivGrotesk-Thin.otf',
-      weight: '200',
-      style: 'normal'
+      path: "./fonts/AktivGrotesk-Thin.otf",
+      weight: "200",
+      style: "normal",
     },
     {
-      path: './fonts/AktivGrotesk-Light.otf',
-      weight: '300',
-      style: 'normal'
+      path: "./fonts/AktivGrotesk-Light.otf",
+      weight: "300",
+      style: "normal",
     },
     {
-      path: './fonts/AktivGrotesk-Regular.otf',
-      weight: '400',
-      style: 'normal'
+      path: "./fonts/AktivGrotesk-Regular.otf",
+      weight: "400",
+      style: "normal",
     },
     {
-      path: './fonts/AktivGrotesk-Medium.otf',
-      weight: '500',
-      style: 'normal'
+      path: "./fonts/AktivGrotesk-Medium.otf",
+      weight: "500",
+      style: "normal",
     },
     {
-      path: './fonts/AktivGrotesk-Bold.otf',
-      weight: '700',
-      style: 'normal'
+      path: "./fonts/AktivGrotesk-Bold.otf",
+      weight: "700",
+      style: "normal",
     },
     {
       path: "./fonts/AktivGrotesk-XBold.otf",
       weight: "800",
-      style: "normal"
+      style: "normal",
     },
     {
-      path: './fonts/AktivGrotesk-Black.otf',
-      weight: '900',
-      style: 'normal'
+      path: "./fonts/AktivGrotesk-Black.otf",
+      weight: "900",
+      style: "normal",
     },
     {
-      path: './fonts/AktivGrotesk-Italic.otf',
-      weight: '400',
-      style: 'italic'
+      path: "./fonts/AktivGrotesk-Italic.otf",
+      weight: "400",
+      style: "italic",
     },
     {
-      path: './fonts/AktivGrotesk-BoldItalic.otf',
-      weight: '700',
-      style: 'italic'
-    }
+      path: "./fonts/AktivGrotesk-BoldItalic.otf",
+      weight: "700",
+      style: "italic",
+    },
   ],
-  variable: '--font-aktiv-grotesk'
-})
+  variable: "--font-aktiv-grotesk",
+});
 
 // Metadata configuration for the application
 // Title: Main title for the website that appears in browser tabs and search results
@@ -74,16 +75,19 @@ export const aktivGrotesk = localFont({
   }
 }*/
 
-export default function RootLayout ({
-  children
+export default function RootLayout({
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang="en">
       <body className={`${aktivGrotesk.variable} antialiased`}>
-        <Navbar />
-        <QueryClientAndReduxWrapper>{children}</QueryClientAndReduxWrapper>
+        <QueryClientAndReduxWrapper>
+          <Navbar />
+          {children}
+          <Footer />
+        </QueryClientAndReduxWrapper>
       </body>
     </html>
   );
