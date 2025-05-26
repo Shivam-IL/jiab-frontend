@@ -8,6 +8,7 @@ export interface AuthState {
   otpSent: boolean;
   otpFilled: boolean;
   signupDone: boolean;
+  addressData: any[];
 }
 
 const initialState: AuthState = {
@@ -18,6 +19,7 @@ const initialState: AuthState = {
   otpFilled: false,
   loginModal: false,
   signupDone: false,
+  addressData:[]
 };
 
 const authSlice = createSlice({
@@ -36,6 +38,9 @@ const authSlice = createSlice({
     updateSignupDone: (state, action) => {
       state.signupDone = action.payload.signupDone;
     },
+    updateAddressData: (state, action) => {
+      state.addressData = [...state.addressData, action.payload.addressData];
+    },
   },
 });
 
@@ -44,5 +49,6 @@ export const {
   updateOtpFilled,
   updateLoginModal,
   updateSignupDone,
+  updateAddressData,
 } = authSlice.actions;
 export default authSlice.reducer;

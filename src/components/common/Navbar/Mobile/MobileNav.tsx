@@ -20,12 +20,12 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollPos = window.scrollY;
-      const isScrollingDown = currentScrollPos > prevScrollPos;
+      const currentScrollPos = window.scrollY
+      const isScrollingDown = currentScrollPos > prevScrollPos
 
-      setIsVisible(!isScrollingDown || currentScrollPos < 10);
-      setPrevScrollPos(currentScrollPos);
-    };
+      setIsVisible(!isScrollingDown || currentScrollPos < 10)
+      setPrevScrollPos(currentScrollPos)
+    }
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -39,7 +39,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
       ) {
         setIsLangDropdownOpen(false);
       }
-    };
+    }
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
