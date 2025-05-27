@@ -10,7 +10,7 @@ const AktivGroteskText: React.FC<IAktivGroteskText> = ({
 }) => {
   return (
     <h1
-      className={`${aktivGrotesk.className} ${className} ${fontSize} ${fontWeight} `}
+      className={`${aktivGrotesk.className} ${className} ${fontSize} ${fontWeight}`}
     >
       {text}
     </h1>

@@ -67,6 +67,8 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
               placeholder='Address Line 1'
               value={data.address_line_1}
               onChange={handleChange}
+              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              
             />
             <Input
               name='address_line_2'
@@ -74,6 +76,8 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
               placeholder='Address Line 2'
               value={data.address_line_2}
               onChange={handleChange}
+              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+
             />
             <Input
               name='nearest_landmark'
@@ -81,6 +85,8 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
               placeholder='Nearest Landmark'
               value={data.nearest_landmark}
               onChange={handleChange}
+              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+
             />
             <Input
               name='alternate_phone_number'
@@ -88,6 +94,8 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
               placeholder='Alternate Phone Number'
               value={data.alternate_phone_number}
               onChange={handleChange}
+              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+
             />
             <Input
               name='pan_card_number'
@@ -95,6 +103,8 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
               placeholder='PAN Card Number'
               value={data.pan_card_number}
               onChange={handleChange}
+              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+
             />
             <Input
               name='pincode'
@@ -102,12 +112,16 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
               placeholder='Pincode'
               value={data.pincode}
               onChange={handleChange}
+              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+
             />
             <Input
               name='state'
               type='text'
               placeholder='State'
               value={data.state}
+              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+
               onChange={handleChange}
             />
           </div>

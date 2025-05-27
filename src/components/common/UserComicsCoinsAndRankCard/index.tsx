@@ -4,8 +4,10 @@ import ImageIconCard from '../ImageIconCard'
 import { ICONS_NAMES, LOCAL_IMAGES } from '@/constants'
 import { Separator } from '@/components/ui/separator'
 import GreenCTA from '@/components/GreenCTA'
+import { useRouter } from 'next/navigation'
 
 const UserComicsCoinsAndRankCard = () => {
+  const router = useRouter()
   return (
     <div className='flex gap-2 md:justify-between py-3 md:pt-[24px]'>
       <div className='relative flex md:gap-[50px] md:w-auto w-[60%]'>
@@ -46,7 +48,7 @@ const UserComicsCoinsAndRankCard = () => {
             />
           </div>
         </div>
-      <Separator className='w-[1px] md:w-[2px]  bg-[#EBEBEB] h-full mx-0 px-0' />
+        <Separator className='w-[1px] md:w-[2px]  bg-[#EBEBEB] h-full mx-0 px-0' />
       </div>
       <div className='relative w-[40%] flex justify-end items-center'>
         <GreenCTA
@@ -55,7 +57,7 @@ const UserComicsCoinsAndRankCard = () => {
           fontWeight='font-[700] md:font-[600]'
           paddingClass='py-[5px] md:py-[20px] px-[16px] md:px-[60px]'
           text='Leaderboard'
-          onClick={() => {}}
+          onClick={() => {router.push('/leaderboard')}}
         />
       </div>
     </div>

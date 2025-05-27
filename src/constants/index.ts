@@ -112,6 +112,7 @@ export const ICONS_NAMES = {
   USER: "user",
   RIGHT_ARROW: "right-arrow",
   LONG_ARROW: "long-arrow",
+  CALENDAR2: "calendar2",
 };
 
 export const MOBILE_TEMP_NAVBAR_DATA = {
@@ -120,10 +121,19 @@ export const MOBILE_TEMP_NAVBAR_DATA = {
     SUB_TITLE: "Edit your personal information",
     SUB_TITLE_2: "Please check and confirm your personal details",
   },
+  SEND_REMINDER: {
+    TITLE: "SEND REMINDER",
+  },
+  LEADERBOARD: {
+    TITLE: "LEADERBOARD",
+    SUB_TITLE: "Look who’s on top of their game",
+  },
 };
 
 export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE = [
   "/my-profile/",
+  "/send-reminder",
+  "/leaderboard"
 ];
 
 export const USER_INFO_CARD_DATA = [
@@ -302,6 +312,10 @@ export const NEXT = "Next";
 export const SUBMIT = "Submit";
 export const SAVE = "Save";
 export const PREV = "Prev";
+export const EXPLORE_MORE = "Explore More";
+export const TAP_TO_SEE_THE_FUNNIEST_LINE_UPS =
+  "Tap to see the funniest line-ups";
+export const DAILY_WINNERS = 'Daily Winners'  
 
 export const ARTIST_DATA = [
   {

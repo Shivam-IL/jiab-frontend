@@ -9,6 +9,7 @@ const ArtistComponent = () => {
       {ARTIST_DATA.map((item: any, index) => (
         <ArtistCard
           key={item.id}
+          artistId={item.id}
           image={item?.profile?.backgroundImage}
           name={item?.profile.fullName}
           followers={formatNumberToK(item.followers)}

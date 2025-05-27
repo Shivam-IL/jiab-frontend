@@ -18,9 +18,13 @@ const MobileTempNavBar: React.FC<IMobileTempNavBar> = ({ title, subtitle }) => {
           fontSize='text-[16px]'
           fontWeight='font-[700]'
         />
-        <AktivGroteskText
-          text={subtitle}
-          fontSize='text-[12px]' fontWeight='font-[400]' />
+        {subtitle && (
+          <AktivGroteskText
+            text={subtitle}
+            fontSize='text-[12px]'
+            fontWeight='font-[400]'
+          />
+        )}
       </div>
     </div>
   )

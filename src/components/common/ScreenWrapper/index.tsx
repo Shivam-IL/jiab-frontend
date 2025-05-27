@@ -4,13 +4,13 @@ import React from 'react'
 const ScreenWrapper: React.FC<IScreenWrapper> = ({
   children,
   className = 'mt-20',
-  desktopWidth = 'md:w-[80%]'
+  desktopWidth = ''
 }) => {
   return (
     <div
-      className={`w-full min-h-[100vh] relative flex justify-center p-[16px] bg-[#F2F2F2] ${className}`}
+      className={`w-full  mx-auto min-h-[100vh] relative flex justify-center p-[16px] bg-[#F2F2F2] ${className}`}
     >
-      <div className={`relative ${desktopWidth} w-full`}>{children}</div>
+      <div className={`relative container ${desktopWidth} w-full`}>{children}</div>
     </div>
   )
 }

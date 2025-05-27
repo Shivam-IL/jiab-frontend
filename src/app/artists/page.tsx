@@ -22,9 +22,7 @@ const ArtistsPage = () => {
             fontWeight='font-[400]'
           />
         </div>
-        <div>
-          <ArtistComponent />
-        </div>
+        <ArtistComponent />
       </div>
     </ScreenWrapper>
   )

@@ -64,15 +64,15 @@ export interface ISurpriseMeCTA {
   text: string;
 }
 
-export interface IAktivGroteskText{
-  text:string;
-  className?:string;
-  fontSize?:string;
-  fontWeight?:string;
+export interface IAktivGroteskText {
+  text: string;
+  className?: string;
+  fontSize?: string;
+  fontWeight?: string;
 }
 
-export interface ITimerBox{
-  text:string;
+export interface ITimerBox {
+  text: string;
 }
 
 export interface IImageIconCard {
@@ -88,53 +88,54 @@ export interface IImageIconCard {
   fontWeight?: string;
   boxWidth?: string;
   imageUrl?: string;
-  imageClassName?:string;
-  textColor?:string;
+  imageClassName?: string;
+  textColor?: string;
 }
 
-export interface IUserInfoCard{
-  iconWidth?:number;
-  iconHeight?:number;
-  iconClassName?:string;
-  iconName:string;
-  text:string;
-  className?:string;
-  textFontSize?:string;
-  textFontWeight?:string;
+export interface IUserInfoCard {
+  iconWidth?: number;
+  iconHeight?: number;
+  iconClassName?: string;
+  iconName: string;
+  text: string;
+  className?: string;
+  textFontSize?: string;
+  textFontWeight?: string;
 }
 
-export interface IAddressModal{
+export interface IAddressModal {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface IUserGeneratedJokeCard{
-  image:string;
-  title:string;
-  date:string;
-  status:string;
+export interface IUserGeneratedJokeCard {
+  image: string;
+  title: string;
+  date: string;
+  status: string;
 }
 
-export interface IScreenWrapper{
-  children:React.ReactNode;
-  className?:string;
-  desktopWidth?:string;
+export interface IScreenWrapper {
+  children: React.ReactNode;
+  className?: string;
+  desktopWidth?: string;
 }
 
-export interface IReferNowModal{
-  open:boolean;
-  setOpen:React.Dispatch<React.SetStateAction<boolean>>;
+export interface IReferNowModal {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface IMobileTempNavBar{
-  title:string;
-  subtitle:string;
+export interface IMobileTempNavBar {
+  title: string;
+  subtitle?: string;
 }
 
-export interface IArtistCard{
-  image:string;
-  name:string;
-  followers:string;
+export interface IArtistCard {
+  artistId: string;
+  image: string;
+  name: string;
+  followers: string;
 }
 export interface ILoginSignupWrapper {
   children: React.ReactNode;
@@ -183,7 +184,7 @@ export interface ISurpriseMeCTA {
 
 // Home Page
 export interface IBannerProps {
-  type: 'video' | 'image';
+  type: "video" | "image";
   src: string;
   alt?: string;
   className?: string;
@@ -191,4 +192,11 @@ export interface IBannerProps {
   overlayOpacity?: number;
   height?: string;
   width?: string;
+}
+
+export interface IExploreMoreArtistCard {
+  image: string;
+  name: string;
+  followers: number;
+  id:string;
 }

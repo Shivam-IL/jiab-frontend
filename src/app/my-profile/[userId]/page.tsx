@@ -53,10 +53,10 @@ const EditProfilePage = () => {
       />
       <div onClick={handleContainerClick}>
         <ScreenWrapper
-          desktopWidth='md:w-[30%]'
+          desktopWidth='md:w-[429px]'
           className={`${width > 750 ? 'mt-20 flex justify-center' : 'mt-0'}`}
         >
-          <div className='hidden text-center md:flex md:flex-col justify-center items-center pt-[30px] pb-[10px]'>
+          <div className='hidden text-center md:flex md:flex-col justify-center items-center pt-[30px] pb-[24px]'>
             <AktivGroteskText
               text={MOBILE_TEMP_NAVBAR_DATA.EDIT_PROFILE.TITLE}
               fontSize='text-[30px]'
@@ -67,8 +67,8 @@ const EditProfilePage = () => {
               fontSize='text-[20px]'
             />
           </div>
-          <div className='flex flex-col pt-[23px] gap-[24px] md:gap-[35px]'>
-            <div onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+          <div className='flex flex-col pt-[23px] gap-[24px] md:gap-[16px]'>
+            <div className='md:mb-[8px]' onClick={(e: React.MouseEvent) => e.stopPropagation()}>
               <EditProfileImage
                 name={'image'}
                 editProfileImage={editProfileImage}
@@ -134,6 +134,7 @@ const EditProfilePage = () => {
             />
             <GreenCTA
               onClick={() => {}}
+               className='md:mt-[24px]'
               paddingClass='py-[17px]'
               text='Save Details'
               fontSize='text-[16px]'

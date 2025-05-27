@@ -13,10 +13,13 @@ import {
 import GreenCTA from '@/components/GreenCTA'
 import SvgIcons from '../SvgIcons'
 import ReferNowModal from '../ReferNowModal'
+import { useRouter } from 'next/navigation'
 
 const ReferAFriend = () => {
   const data: any[] = [1]
   const [open, setOpen] = useState<boolean>(false)
+
+  const router = useRouter()
   return (
     <>
       {data?.length === 0 && (
@@ -75,7 +78,7 @@ const ReferAFriend = () => {
             </div>
           </div>
           <div className='w-full flex justify-center gap-[12px] md:gap-[28px] md:pt-[40px]'>
-            <button className='px-[24px] box-border py-[8px] md:py-[20px] md:px-[60px] relative border-[1px] md:border-[3px] border-[#00953B] rounded-[100px]'>
+            <button onClick={()=>{router.push('/send-reminder')}} className='px-[24px] box-border py-[8px] md:py-[20px] md:px-[60px] relative border-[1px] md:border-[3px] border-[#00953B] rounded-[100px]'>
               <AktivGroteskText
                 text={SEND_REMINDER}
                 fontSize='text-[14px] md:text-[24px]'
