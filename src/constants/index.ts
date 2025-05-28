@@ -278,15 +278,15 @@ export const MOBILE_TEMP_NAVBAR_DATA = {
   },
 };
 
-export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE = [
+export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE : string[] = [
   "/my-profile/",
   "/send-reminder",
   "/leaderboard",
   "/hall-of-lame-leaderboard",
   "/submit-your-joke",
-  "/claim-form",,
+  "/claim-form",
   "/notifications",
-  "/terms-and-conditions"
+  "/terms-and-conditions",
 ];
 
 export const USER_INFO_CARD_DATA = [
