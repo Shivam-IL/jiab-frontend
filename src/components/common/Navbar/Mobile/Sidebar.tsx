@@ -27,7 +27,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
   const [isAnimating, setIsAnimating] = useState(false);
-  const [isExploreOpen, setIsExploreOpen] = useState(false);
+  const [isExploreOpen, setIsExploreOpen] = useState(true);
   const dispatch = useAppDispatch();
 
   const isLoggedIn = true;

@@ -44,7 +44,7 @@ const MobileFooter = () => {
   }, []);
 
   return (
-    <div className="bg-white w-full h-[71px] fixed bottom-0 left-0 right-0 flex flex-col">
+    <div className="bg-white w-full h-[71px] fixed bottom-0 left-0 right-0 flex flex-col z-10">
       <div className="h-[54px] w-full bg-white text-black border-t border-gray-200">
         <div className="flex justify-evenly items-center h-full">
           {/* Home */}

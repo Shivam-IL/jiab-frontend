@@ -128,12 +128,17 @@ export const MOBILE_TEMP_NAVBAR_DATA = {
     TITLE: "LEADERBOARD",
     SUB_TITLE: "Look who’s on top of their game",
   },
+  NOTIFICATIONS: {
+    TITLE: "NOTIFICATIONS",
+    SUB_TITLE: "Keep up with the build-up.",
+  },
 };
 
 export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE = [
   "/my-profile/",
   "/send-reminder",
-  "/leaderboard"
+  "/leaderboard",
+  "/notifications"
 ];
 
 export const USER_INFO_CARD_DATA = [
