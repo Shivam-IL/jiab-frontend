@@ -12,7 +12,7 @@ const MobileTempNavBar: React.FC<IMobileTempNavBar> = ({ title, subtitle }) => {
       <button onClick={() => router.back()}>
         <SvgIcons name={ICONS_NAMES.LONG_ARROW} width={18} height={15} />
       </button>
-      <div className='flex flex-col gap-[6px]'>
+      <div className='flex flex-col gap-[1px]'>
         <AktivGroteskText
           text={title}
           fontSize='text-[16px]'
