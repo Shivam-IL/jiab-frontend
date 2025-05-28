@@ -1,15 +1,16 @@
 import React from "react";
 import MobileFooter from "./Mobile/MobileFooter";
 import DesktopFooter from "./Desktop/DesktopFooter";
-import "./Footer.css";
 
 const Footer: React.FC = () => {
   return (
     <>
-      <div className="mobile-footer">
+      {/* Mobile Footer - visible on screens under 900px (lg breakpoint) */}
+      <div className="block lg:hidden">
         <MobileFooter />
       </div>
-      <div className="desktop-footer">
+      {/* Desktop Footer - visible on screens 900px and above (lg breakpoint) */}
+      <div className="hidden lg:block">
         <DesktopFooter />
       </div>
     </>

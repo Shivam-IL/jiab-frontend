@@ -56,6 +56,7 @@ export default function Home() {
       id: "video3",
       src: thumbnailPath,
     },
+    
   ];
 
   const categories = [

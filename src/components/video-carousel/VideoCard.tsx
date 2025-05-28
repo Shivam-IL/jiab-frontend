@@ -9,7 +9,7 @@ const VideoCard = ({ src }: { src: string }) => {
         <Image
           src={src}
           alt="video"
-          className="object-cover w-full h-full"
+          className="object-cover w-[141.5px] h-[251.56px] md:w-full md:h-full"
           width={354}
           height={628}
           onError={(e) => {
