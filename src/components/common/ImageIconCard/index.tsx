@@ -26,8 +26,8 @@ const ImageIconCard: React.FC<IImageIconCard> = ({
     >
       {icon && (
         <SvgIcons
-          width={iconWidth ? Number(iconWidth) : undefined}
-          height={iconHeight ? Number(iconHeight) : undefined}
+          {...(iconWidth && { width: Number(iconWidth) })}
+          {...(iconHeight && { height: Number(iconHeight) })}
           className={iconClassName}
           name={icon}
         />

@@ -2,13 +2,22 @@ import React from 'react'
 import AktivGroteskText from '../common/AktivGroteskText'
 import { HALL_OF_LAME, MY_JOKES, PENDING } from '@/constants'
 import UserGeneratedJokeCard from '../common/UserGeneratedJokeCard'
+import { useRouter } from 'next/navigation'
 
 const UserGeneratedJokecComponent = () => {
+  const router = useRouter()
   return (
     <div className='flex flex-col gap-[16px] md:gap-[32px]'>
       <div className='relative flex md:px-[37px] justify-between items-center'>
-        <AktivGroteskText text={MY_JOKES} fontSize='text-[16px] md:text-[28px]' fontWeight='font-[700]' />
-        <button className='bg-transparent border-none outline-none'>
+        <AktivGroteskText
+          text={MY_JOKES}
+          fontSize='text-[16px] md:text-[28px]'
+          fontWeight='font-[700]'
+        />
+        <button
+          className='bg-transparent border-none outline-none'
+          onClick={() => router.push('/hall-of-lame-leaderboard')}
+        >
           <AktivGroteskText
             className='text-[#11A64B]'
             fontSize='text-[12px] md:text-[24px]'

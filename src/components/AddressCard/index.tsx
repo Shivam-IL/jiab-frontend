@@ -5,22 +5,22 @@ import { ICONS_NAMES } from '@/constants'
 import { Checkbox } from '../ui/checkbox'
 
 const AddressCard = () => {
-  const [defaultAddress, setDefaultAddress] = useState<boolean>(false)
+  const [defaultAddress, setDefaultAddress] = useState<boolean>(true)
   return (
-    <div className='flex flex-col gap-[10px] md:gap-[28px] border-b-[1px] border-[#CDCDCD] pt-4 pb-4 md:pt-0 md:pb-[23px]'>
-      <div className='flex flex-col gap-[5px] md:gap-[16px]'>
+    <div className='flex flex-col gap-[10px] md:gap-[20px] justify-between  w-full border-[#CDCDCD] pt-4 pb-4 md:pt-0 md:pb-[23px]'>
+      <div className='flex flex-col gap-[5px] md:gap-[12px]'>
         <div className='flex justify-between items-start gap-2 md:gap-4'>
           <AktivGroteskText
-            fontSize='text-[14px] md:text-[24px]'
+            fontSize='text-[14px] md:text-[20px]'
             fontWeight='font-[400]'
             text='H.No. 2343, Rohini sector -3 , New Delhi -110085'
           />
           <button>
-            <SvgIcons name={ICONS_NAMES.PENCIL} className='w-[13px] h-[15px] md:w-[20px] md:h-[23px]' />
+            <SvgIcons name={ICONS_NAMES.PENCIL} className='w-[13px] h-[15px] md:w-[16px] md:h-[18px]' />
           </button>
         </div>
         <AktivGroteskText
-          fontSize='text-[14px] md:text-[24px]'
+          fontSize='text-[14px] md:text-[20px]'
           fontWeight='font-[400]'
           text='+91 - 9867362878'
         />
@@ -30,16 +30,15 @@ const AddressCard = () => {
           <Checkbox
             checked={defaultAddress}
             className='w-[16px] h-[16px] md:w-[19px] md:h-[19px]'
-            onCheckedChange={() => setDefaultAddress(!defaultAddress)}
           />
           <AktivGroteskText
-            fontSize='text-[12px] md:text-[20px]'
+            fontSize='text-[12px] md:text-[18px]'
             fontWeight='font-[400]'
             text='Set as Default'
           />
         </div>
         <button>
-          <SvgIcons name={ICONS_NAMES.TRASH} className='w-[15px] h-[15px] md:w-[24px] md:h-[24px]' />
+          <SvgIcons name={ICONS_NAMES.TRASH} className='w-[15px] h-[15px] md:w-[18px] md:h-[18px]' />
         </button>
       </div>
     </div>
