@@ -96,7 +96,7 @@ const HelpUsToKnowYourBetter = () => {
                       )
                     }
                   }}
-                  className='text-[rgba(0,0,0,0.5)] rounded-[100px] md:border-none border-[1px] md:p-0 border-[rgba(0,0,0,0.5)] text-[10px] font-[700] py-[6px] px-[36px]'
+                  className='text-[rgba(0,0,0,0.5)] hover:bg-[#E0E0E0] transition-all duration-300 rounded-[100px] md:border-none border-[1px] md:p-0 border-[rgba(0,0,0,0.5)] text-[10px] font-[700] py-[6px] px-[36px]'
                 >
                   <AktivGroteskText
                     className='text-[rgba(0,0,0,0.5)] md:hidden'
@@ -118,7 +118,7 @@ const HelpUsToKnowYourBetter = () => {
                       )
                     }
                   }}
-                  className='text-[rgba(0,0,0,0.5)] rounded-[100px] border-[1px] md:border-none md:p-0 border-[#000000] text-[10px] font-[700] py-[6px] px-[36px]'
+                  className='text-[rgba(0,0,0,0.5)] hover:bg-[#E0E0E0] transition-all duration-300 rounded-[100px] border-[1px] md:border-none md:p-0 border-[#000000] text-[10px] font-[700] py-[6px] px-[36px]'
                 >
                   <AktivGroteskText
                     className='text-[#000000] md:hidden'

@@ -7,7 +7,7 @@ import Image from 'next/image'
 import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES } from '@/constants'
 import useAppDispatch from '@/hooks/useDispatch'
-import { updateLoginModal } from '@/store/auth/auth.slice'
+import { updateCrossModal, updateLoginModal } from '@/store/auth/auth.slice'
 
 const SurpriseMeLockModal: React.FC<{}> = () => {
   const [open, setOpen] = useState<boolean>(true)
@@ -27,6 +27,7 @@ const SurpriseMeLockModal: React.FC<{}> = () => {
             className='flex justify-center items-center'
             onClick={() => {
               setOpen(false)
+              dispatch(updateCrossModal({ crossModal: true }))
             }}
           >
             <SvgIcons name={ICONS_NAMES.CROSS} className='w-[16px] h-[16px]' />

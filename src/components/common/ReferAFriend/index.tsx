@@ -45,34 +45,34 @@ const ReferAFriend = () => {
             fontSize='text-[16px] md:text-[28px]'
             fontWeight='font-[700]'
           />
-          <div className='flex justify-between px-[12px] py-[12px] md:px-[41px] md:py-[28px] bg-[#FFE200] rounded-[5px] md:rounded-[20px]'>
+          <div className='flex justify-between px-[12px] py-[12px] md:px-[35px] md:py-[24px] bg-[#FFE200] rounded-[5px] md:rounded-[20px]'>
             <AktivGroteskText
               text={USER}
-              fontSize='text-[12px] md:text-[28px]'
+              fontSize='text-[12px] md:text-[20px]'
               fontWeight='font-[700]'
             />
             <AktivGroteskText
               text={STATUS}
-              fontSize='text-[12px] md:text-[28px]'
+              fontSize='text-[12px] md:text-[20px]'
               fontWeight='font-[700]'
             />
           </div>
           <div className='flex flex-col gap-[8px] md:gap-[20px]'>
-            <div className='bg-white flex justify-between items-center px-[8px] py-[8px] md:py-[23px] md:px-[45px] rounded-[5px] md:rounded-[20px]'>
+            <div className='bg-white flex justify-between items-center px-[8px] py-[8px] md:py-[18px] md:px-[45px] rounded-[5px] md:rounded-[20px]'>
               <div className='flex items-center gap-[16px] md:gap-[24px]'>
                 <SvgIcons
                   name={ICONS_NAMES.USER}
-                  className='w-[21px] h-[21px] md:w-[34px] md:h-[41px]'
+                  className='w-[21px] h-[21px] md:w-[24px] md:h-[28px]'
                 />
                 <AktivGroteskText
                   text='+91-XXXXXX8888'
-                  fontSize='text-[12px] md:text-[28px]'
+                  fontSize='text-[12px] md:text-[20px]'
                   fontWeight='font-[400]'
                 />
               </div>
               <AktivGroteskText
                 text='Pending'
-                fontSize='text-[12px] md:text-[28px]'
+                fontSize='text-[12px] md:text-[20px]'
                 fontWeight='font-[400]'
               />
             </div>

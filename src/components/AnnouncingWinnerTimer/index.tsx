@@ -72,7 +72,7 @@ const AnnouncingWinnerTimer = () => {
   )}:${formatNumber(timeLeft.seconds)}`
 
   return (
-    <div className='w-full flex md:justify-end md:gap-[48px] justify-between items-start py-[10px]'>
+    <div className='w-full flex md:gap-[48px] justify-between items-start py-[10px]'>
       <AktivGroteskText
         text={`${ANNOUNCING_WINNER_TIMER_TEXT}`}
         fontSize='text-[12px] md:text-[28px]'

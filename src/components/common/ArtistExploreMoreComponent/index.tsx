@@ -3,7 +3,12 @@ import useEmblaCarousel from 'embla-carousel-react'
 import AktivGroteskText from '../AktivGroteskText'
 import ExploreMoreArtistCard from '@/components/ExploreMoreArtistCard'
 import { useRouter } from 'next/navigation'
-import { ARTIST_DATA, EXPLORE_MORE, TAP_TO_SEE_THE_FUNNIEST_LINE_UPS } from '@/constants'
+import {
+  ARTIST_DATA,
+  EXPLORE_MORE,
+  TAP_TO_SEE_THE_FUNNIEST_LINE_UPS
+} from '@/constants'
+import CustomCarousel from '../CustomCarousel'
 
 const ArtistExploreMoreComponent = () => {
   const router = useRouter()
@@ -41,10 +46,10 @@ const ArtistExploreMoreComponent = () => {
       </div>
 
       {/* Mobile View (below md breakpoint) */}
-      <div className='w-full flex gap-[15px] overflow-scroll scrollbar-hide'>
+      <div className='w-full md:hidden flex gap-[15px] overflow-scroll scrollbar-hide'>
         {ARTIST_DATA.map((item: any) => (
           <ExploreMoreArtistCard
-            key={item.id}
+            key={item.id} 
             name={item.profile.fullName}
             image={item.profile.profileImageUrl}
             followers={item.followers}
@@ -52,8 +57,23 @@ const ArtistExploreMoreComponent = () => {
           />
         ))}
       </div>
-
-     
+      <div className='hidden w-full md:block gap-[15px] overflow-scroll scrollbar-hide'>
+        <CustomCarousel >
+          {ARTIST_DATA.map(item => {
+            return (
+              <div key={item.id}>
+                <ExploreMoreArtistCard
+                  key={item.id}
+                  name={item.profile.fullName}
+                  image={item.profile.profileImageUrl}
+                  followers={item.followers}
+                  id={item.id}
+                />
+              </div>
+            )
+          })}
+        </CustomCarousel>
+      </div>
     </div>
   )
 }
