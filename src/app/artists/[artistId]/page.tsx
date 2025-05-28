@@ -1,11 +1,13 @@
 'use client'
 
+import { aktivGrotesk } from '@/app/layout'
 import AktivGroteskText from '@/components/common/AktivGroteskText'
 import ArtistExploreMoreComponent from '@/components/common/ArtistExploreMoreComponent'
 import ClampedAktivGroteskText from '@/components/common/ClampedAktivGroteskText'
 import ScreenWrapper from '@/components/common/ScreenWrapper'
 import SvgIcons from '@/components/common/SvgIcons'
 import GreenCTA from '@/components/GreenCTA'
+import ClampedText from '@/components/ui/clamped-text'
 import { Separator } from '@/components/ui/separator'
 import { ARTIST_DATA, ICONS_NAMES } from '@/constants'
 import { formatNumberToK } from '@/utils'
@@ -42,10 +44,14 @@ const ArtistDetailsPage = () => {
               fontSize='text-[16px] md:text-[24px]'
               fontWeight='font-[700]'
             />
-            <AktivGroteskText
-              text={userData?.description}
-              fontSize='text-[12px] md:text-[20px]'
-              fontWeight='font-[400]'
+            <ClampedText
+              text={userData?.profile?.description}
+              maxLines={3}
+              className={ `${aktivGrotesk.className} font-[400] text-[12px] md:text-[20px] text-center`}
+              readMoreText='Read more'
+              readLessText='Read less'
+              readMoreClassName='text-blue-600 hover:text-blue-800 text-[12px] md:text-[20px] font-medium cursor-pointer ml-1'
+              readLessClassName='text-blue-600 hover:text-blue-800 text-[12px] md:text-[20px] font-medium cursor-pointer ml-1'
             />
           </div>
           <div className='flex flex-col justify-center items-center gap-[8px] md:gap-[24px]'>

@@ -11,8 +11,8 @@ import { cn } from '@/lib/utils'
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+  PopoverTrigger
+} from '@/components/ui/popover'
 
 const Input: React.FC<IInput> = ({
   type,
@@ -27,6 +27,9 @@ const Input: React.FC<IInput> = ({
   options = [],
   isSearchable = false,
   paddingClass = 'pl-[16px] pr-[16px] py-[16px] md:py-[19px] md:pl-[25px]',
+  className = '',
+  borderRadius = 'rounded-[100px]',
+  rows
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -34,7 +37,10 @@ const Input: React.FC<IInput> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false)
       }
     }
@@ -43,8 +49,9 @@ const Input: React.FC<IInput> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const filteredOptions = options.filter((option: { value: string; label: string }) =>
-    option.label.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredOptions = options.filter(
+    (option: { value: string; label: string }) =>
+      option.label.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   if (type === 'date') {
@@ -67,27 +74,28 @@ const Input: React.FC<IInput> = ({
               <span className={!value ? 'text-[rgba(0,0,0,0.3)]' : ''}>
                 {value || placeholder}
               </span>
-              <CalendarIcon className="h-5 w-5" />
+              <CalendarIcon className='h-5 w-5' />
             </div>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent className='w-auto p-0' align='start'>
             <Calendar
-              mode="single"
+              mode='single'
               selected={value ? parseDate(value) : undefined}
-              onSelect={(date) => {
+              onSelect={date => {
                 if (date) {
                   const formattedDate = format(date, 'yyyy/MM/dd')
                   onChange(name, formattedDate)
                 }
               }}
               initialFocus
-              className="rounded-md border"
+              className='rounded-md border'
               classNames={{
-                day_selected: "bg-[#11A64B] text-white hover:bg-[#11A64B] hover:text-white focus:bg-[#11A64B] focus:text-white",
-                day_today: "bg-accent text-accent-foreground",
-                day_range_middle: "bg-[#11A64B] text-white",
-                day_range_end: "bg-[#11A64B] text-white",
-                day_range_start: "bg-[#11A64B] text-white",
+                day_selected:
+                  'bg-[#11A64B] text-white hover:bg-[#11A64B] hover:text-white focus:bg-[#11A64B] focus:text-white',
+                day_today: 'bg-accent text-accent-foreground',
+                day_range_middle: 'bg-[#11A64B] text-white',
+                day_range_end: 'bg-[#11A64B] text-white',
+                day_range_start: 'bg-[#11A64B] text-white'
               }}
             />
           </PopoverContent>
@@ -101,26 +109,39 @@ const Input: React.FC<IInput> = ({
 
   if (type === 'select') {
     return (
-      <div className='flex flex-col gap-[6px] w-full relative' ref={dropdownRef}>
+      <div
+        className='flex flex-col gap-[6px] w-full relative'
+        ref={dropdownRef}
+      >
         <div
           className={`w-full cursor-pointer flex items-center justify-between ${
             error !== '' ? 'border-[#FD0202] border-[1px]' : ''
           } outline-none ${fontSize} font-[400] ${
             aktivGrotesk.className
-          } ${paddingClass} ${bgColor} rounded-[100px] border border-transparent transition-all duration-200 hover:border-gray-200 focus-visible:border-[#11A64B] ${isOpen ? 'border-[#11A64B]' : ''}`}
+          } ${paddingClass} ${bgColor} rounded-[100px] border border-transparent transition-all duration-200 hover:border-gray-200 focus-visible:border-[#11A64B] ${
+            isOpen ? 'border-[#11A64B]' : ''
+          }`}
           onClick={() => !readonly && setIsOpen(!isOpen)}
           tabIndex={0}
-          onKeyDown={(e) => {
+          onKeyDown={e => {
             if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              !readonly && setIsOpen(!isOpen);
+              e.preventDefault()
+              !readonly && setIsOpen(!isOpen)
             }
           }}
         >
           <span className={!value ? 'text-[rgba(0,0,0,0.3)]' : ''}>
-            {value ? options.find((opt: { value: string; label: string }) => opt.value === value)?.label : placeholder}
+            {value
+              ? options.find(
+                  (opt: { value: string; label: string }) => opt.value === value
+                )?.label
+              : placeholder}
           </span>
-          <ChevronDown className={`h-5 w-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown
+            className={`h-5 w-5 transition-transform ${
+              isOpen ? 'rotate-180' : ''
+            }`}
+          />
         </div>
 
         {isOpen && (
@@ -132,17 +153,17 @@ const Input: React.FC<IInput> = ({
                   className={`w-full outline-none ${fontSize} font-[400] ${aktivGrotesk.className} px-3 py-2 rounded-[100px] border border-transparent transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B]`}
                   placeholder='Search...'
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onClick={(e) => e.stopPropagation()}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  onClick={e => e.stopPropagation()}
                 />
               </div>
             )}
-            <div className="py-1">
-              {filteredOptions.map((option) => (
+            <div className='py-1'>
+              {filteredOptions.map(option => (
                 <div
                   key={option.value}
                   className={`px-[16px] py-[12px] cursor-pointer transition-colors duration-200 ${
-                    option.value === value 
+                    option.value === value
                       ? 'bg-[#11A64B] text-white hover:bg-[#11A64B] hover:text-white'
                       : 'hover:bg-[#11A64B]/10'
                   }`}
@@ -172,19 +193,35 @@ const Input: React.FC<IInput> = ({
 
   return (
     <div className='flex flex-col gap-[6px] w-full'>
-      <input
-        className={`w-full ${
-          error !== '' ? 'border-[#FD0202] border-[1px]' : ''
-        } outline-none ${fontSize} font-[400] placeholder:text-[rgba(0,0,0,0.3)] ${
-          aktivGrotesk.className
-        } ${paddingClass} ${bgColor} rounded-[100px] border border-transparent transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B]`}
-        onChange={event => onChange(event.target.name, event.target.value)}
-        type={type}
-        readOnly={readonly}
-        value={value}
-        placeholder={placeholder}
-        name={name}
-      />
+      {type !== 'textarea' && (
+        <input
+          {...(rows && { rows })}
+          className={`w-full ${className} ${
+            error !== '' ? 'border-[#FD0202] border-[1px]' : ''
+          } outline-none ${fontSize} font-[400] placeholder:text-[rgba(0,0,0,0.3)] ${
+            aktivGrotesk.className
+          } ${paddingClass} ${bgColor} ${borderRadius} border border-transparent transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B]`}
+          onChange={event => onChange(event.target.name, event.target.value)}
+          type={type}
+          readOnly={readonly}
+          value={value}
+          placeholder={placeholder}
+          name={name}
+        />
+      )}
+      {type === 'textarea' && (
+        <textarea
+          className={`w-full ${className} ${
+            error !== '' ? 'border-[#FD0202] border-[1px]' : ''
+          } outline-none ${fontSize} font-[400] placeholder:text-[rgba(0,0,0,0.3)] ${
+            aktivGrotesk.className
+          } ${paddingClass} ${bgColor} ${borderRadius} border border-transparent transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B]`}
+          onChange={event => onChange(event.target.name, event.target.value)}
+          value={value}
+          placeholder={placeholder}
+          name={name}
+        />
+      )}
       {error !== '' && (
         <span className='text-[#FD0202] font-[400] text-[12px]'>{error}</span>
       )}

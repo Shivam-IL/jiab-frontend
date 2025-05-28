@@ -8,6 +8,7 @@ export interface AuthState {
   otpSent: boolean;
   otpFilled: boolean;
   signupDone: boolean;
+  crossModal: boolean;
   addressData: any[];
 }
 
@@ -19,6 +20,7 @@ const initialState: AuthState = {
   otpFilled: false,
   loginModal: false,
   signupDone: false,
+  crossModal: false,
   addressData:[]
 };
 
@@ -41,6 +43,9 @@ const authSlice = createSlice({
     updateAddressData: (state, action) => {
       state.addressData = [...state.addressData, action.payload.addressData];
     },
+    updateCrossModal: (state, action) => {
+      state.crossModal = action.payload.crossModal;
+    },
   },
 });
 
@@ -50,5 +55,6 @@ export const {
   updateLoginModal,
   updateSignupDone,
   updateAddressData,
+  updateCrossModal,
 } = authSlice.actions;
 export default authSlice.reducer;

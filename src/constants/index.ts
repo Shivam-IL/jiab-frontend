@@ -86,6 +86,33 @@ if (typeof window !== "undefined") {
   CLIENT_URL = process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3001";
 }
 
+export const LANGUAGE_OPTIONS = [
+  {
+    value: "en",
+    label: "English",
+  },
+  {
+    value: "hi",
+    label: "Hindi",
+  },
+  {
+    value: "ta",
+    label: "Tamil",
+  },
+  {
+    value: "te",
+    label: "Telugu",
+  },
+  {
+    value: "ba",
+    label: "Bengali",
+  },
+  {
+    value: "mr",
+    label: "Marathi",
+  },
+];
+
 export const ICONS_NAMES = {
   SPRITE_BOTTLE: "sprite-bottle",
   SPRITE_SMILE: "sprite-smile",
@@ -113,7 +140,113 @@ export const ICONS_NAMES = {
   RIGHT_ARROW: "right-arrow",
   LONG_ARROW: "long-arrow",
   CALENDAR2: "calendar2",
+  MAKE_MY_TRIP: "make-my-trip",
+  VIDEO: "video",
+  HEADPHONE: "headphone",
+  IMAGE: "image",
+  TEXT: "text",
+  UPLOAD_FILE: "upload-file",
+  INFO: "info",
 };
+
+export const FORMAT_OPTIONS = [
+  {
+    id: "1",
+    icon: ICONS_NAMES.IMAGE,
+    label: "Image",
+    iconClassName: "w-[31px] h-[39px]",
+    acceptedFormats: ".jpg,.jpeg,.png",
+  },
+  {
+    id: "2",
+    icon: ICONS_NAMES.TEXT,
+    iconClassName: "w-[39px] h-[40px]",
+    label: "Text",
+    acceptedFormats: ".txt",
+  },
+  {
+    id: "3",
+    icon: ICONS_NAMES.HEADPHONE,
+    iconClassName: "w-[41px] h-[40px]",
+    label: "Audio",
+    acceptedFormats: ".mp3,.wav",
+  },
+  {
+    id: "4",
+    icon: ICONS_NAMES.VIDEO,
+    iconClassName: "w-[49px] h-[39px]",
+    label: "Video",
+    acceptedFormats: ".mp4",
+  },
+];
+
+export const CATEGORIES_CAROUSEL_DATA = [
+  {
+    id: 1,
+    name: "Category 1",
+    icon: ICONS_NAMES.IMAGE,
+  },
+  {
+    id: 2,
+    name: "Category 2",
+    icon: ICONS_NAMES.TEXT,
+  },
+  {
+    id: 3,
+    name: "Category 3",
+    icon: ICONS_NAMES.HEADPHONE,
+  },
+  {
+    id: 4,
+    name: "Category 4",
+    icon: ICONS_NAMES.VIDEO,
+  },
+  {
+    id: 5,
+    name: "Category 5",
+    icon: ICONS_NAMES.TEXT,
+  },
+  {
+    id: 6,
+    name: "Category 6",
+    icon: ICONS_NAMES.HEADPHONE,
+  },
+  {
+    id: 7,
+    name: "Category 7",
+    icon: ICONS_NAMES.VIDEO,
+  },
+  {
+    id: 8,
+    name: "Category 8",
+    icon: ICONS_NAMES.IMAGE,
+  },
+  {
+    id: 9,
+    name: "Category 9",
+    icon: ICONS_NAMES.IMAGE,
+  },
+  {
+    id: 10,
+    name: "Category 10",
+    icon: ICONS_NAMES.TEXT,
+  },
+  {
+    id: 11,
+    name: "Category 11",
+    icon: ICONS_NAMES.HEADPHONE,
+  },
+  {
+    id: 12,
+    name: "Category 12",
+    icon: ICONS_NAMES.VIDEO,
+  },
+  {
+    id: 13,
+    name: "Category 13",
+    icon: ICONS_NAMES.VIDEO,
+  },
+];
 
 export const MOBILE_TEMP_NAVBAR_DATA = {
   EDIT_PROFILE: {
@@ -128,6 +261,17 @@ export const MOBILE_TEMP_NAVBAR_DATA = {
     TITLE: "LEADERBOARD",
     SUB_TITLE: "Look who’s on top of their game",
   },
+  HALL_OF_LAME_LEADERBOARD: {
+    TITLE: "HALL-OF-LAME🤪",
+    SUB_TITLE: "Jokes that got the most laughs",
+  },
+  SUBMIT_JOKES: {
+    TITLE: "SUBMIT YOUR JOKE",
+    SUB_TITLE: "Hit us with your funniest joke!",
+  },
+  CLAIM_FORM: {
+    TITLE: "Claim Form",
+  },
   NOTIFICATIONS: {
     TITLE: "NOTIFICATIONS",
     SUB_TITLE: "Keep up with the build-up.",
@@ -138,6 +282,9 @@ export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE = [
   "/my-profile/",
   "/send-reminder",
   "/leaderboard",
+  "/hall-of-lame-leaderboard",
+  "/submit-your-joke",
+  "/claim-form",,
   "/notifications",
   "/terms-and-conditions"
 ];
@@ -312,6 +459,7 @@ export const ARTISTS_PAGE_HEADERS_DATA = {
   SUB_TITLE: "Discover jokes from renowned comics",
 };
 
+export const ALL_FIElDS_ARE_MANDATORY = "All fields are mandatory*-";
 export const PENDING = "Pending";
 export const APPROVED = "Approved";
 export const NEXT = "Next";
@@ -321,7 +469,13 @@ export const PREV = "Prev";
 export const EXPLORE_MORE = "Explore More";
 export const TAP_TO_SEE_THE_FUNNIEST_LINE_UPS =
   "Tap to see the funniest line-ups";
-export const DAILY_WINNERS = 'Daily Winners'  
+export const DAILY_WINNERS = "Daily Winners";
+
+export const PLEASE_ENTER_YOUR_DETAILS_TO_CLAIM_YOUR_REWARD =
+  "Please enter your details to claim your reward.";
+
+export const SUBMIT_JOKES_TERMS_AND_CONDITIONS =
+  "By submitting content to The Coca-Cola Company's Sprite® Joke In A Bottle Platform, you grant TCCC a non-exclusive, worldwide license to use, display, and distribute your content on the Sprite® Joke In A Bottle platform. You acknowledge that TCCC will be the sole owner of the submitted content upon upload. The company reserves the right to moderate and may use the content if it passes moderation checks. This grants TCCC the right to feature, modify, or distribute the content as deemed fit. By submitting, you release TCCC from any claims and agree to indemnify against liabilities arising from the use of your content.";
 
 export const ARTIST_DATA = [
   {

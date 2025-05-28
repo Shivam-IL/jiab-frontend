@@ -31,6 +31,9 @@ export interface IInput {
   }>;
   isSearchable?: boolean;
   paddingClass?: string;
+  className?: string;
+  rows?: number;
+  borderRadius?: string;
 }
 
 export interface IGreenCTA {
@@ -129,6 +132,17 @@ export interface IReferNowModal {
 export interface IMobileTempNavBar {
   title: string;
   subtitle?: string;
+}
+
+export interface ILabeledInput {
+  children: React.ReactNode;
+  label: string;
+  width?: string;
+  labelFontSize?: string;
+  labelFontWeight?: string;
+  labelClassName?: string;
+  tooltip?: boolean;
+  tooltipText?: string;
 }
 
 export interface IArtistCard {

@@ -16,6 +16,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState("en");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [hideNavbar, setHideNavbar] = useState<boolean>(false)
   const langDropdownRef = useRef<HTMLDivElement>(null);
   const isLoggedIn = true; // This should come from your auth state management
 
@@ -79,21 +80,33 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
 
   const handleHideNavbarForMobile = () => {
     for (const route of ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE) {
-      if (window.location.pathname === route) {
-        return true;
+      console.log(pathName, route)
+      if (pathName === route) {
+        setHideNavbar(true)
+        break
       } else if (pathName.startsWith(route)) {
-        return true;
+        setHideNavbar(true)
+        break
+      } else {
+        setHideNavbar(false)
       }
     }
-    return false;
-  };
+  }
+
+  useEffect(() => {
+    handleHideNavbarForMobile()
+  }, [pathName])
+
+  console.log(hideNavbar, 'hideNavbar', pathName)
 
   return (
     <>
       <div
         className={`w-full ${
-          handleHideNavbarForMobile() ? "hidden" : "block"
-        } bg-white fixed top-0 left-0 right-0 z-50`}
+          hideNavbar ? 'hidden' : 'block'
+        } bg-white fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${
+          isVisible ? 'translate-y-0' : '-translate-y-full'
+        }`}
       >
         <div className="container mx-auto px-[17px] pb-[20px] pt-[17.45px] flex items-center relative">
           {/* Menu */}
