@@ -50,8 +50,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
   const bottomMenuItems = [
     { icon: Phone, label: "Contact Us", href: "/contact" },
     { icon: HelpCircle, label: "FAQs", href: "/faqs" },
-    { icon: FileText, label: "Terms & Conditions", href: "/terms" },
-    { icon: Shield, label: "Privacy Policy", href: "/privacy" },
+    {
+      icon: FileText,
+      label: "Terms & Conditions",
+      href: "/terms-and-conditions",
+    },
+    { icon: Shield, label: "Privacy Policy", href: "/privacy-policy" },
   ];
 
   useEffect(() => {
