@@ -267,9 +267,13 @@ const MobileFooter = () => {
       </div>
       <div className="h-[17px] w-full bg-[#E0E0E0] flex flex-row items-center">
         <div className="px-5 flex flex-row gap-[2px]">
-          <p className="text-center text-[7px] text-black">T&C*</p>
+          <Link href="/terms-and-conditions">
+            <p className="text-center text-[7px] text-black">T&C*</p>
+          </Link>
           <p className="text-center text-[7px] text-black">|</p>
-          <p className="text-center text-[7px] text-black">Privacy Policy</p>
+          <Link href="/privacy-policy">
+            <p className="text-center text-[7px] text-black">Privacy Policy</p>
+          </Link>
         </div>
         <div className="flex flex-row gap-[2px]">
           <p className="text-[7px] text-black flex flex-row gap-[2px] items-center">

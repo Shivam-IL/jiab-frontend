@@ -15,8 +15,6 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
     useState(false);
   const [selectedLang, setSelectedLang] = useState("en");
-  const [isVisible, setIsVisible] = useState(true);
-  const [prevScrollPos, setPrevScrollPos] = useState(0);
   const langDropdownRef = useRef<HTMLDivElement>(null);
   const exploreDropdownRef = useRef<HTMLDivElement>(null);
   const notificationDropdownRef = useRef<HTMLDivElement>(null);
@@ -141,19 +139,6 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
     };
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollPos = window.scrollY;
-      const isScrollingDown = currentScrollPos > prevScrollPos;
-
-      setIsVisible(!isScrollingDown || currentScrollPos < 10);
-      setPrevScrollPos(currentScrollPos);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [prevScrollPos]);
-
   const getSelectedLanguageLabel = () => {
     const selected = languages.find((lang) => lang.value === selectedLang);
     return selected ? selected.label : "ENGLISH";
@@ -162,11 +147,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const isLoggedIn: boolean = true;
 
   return (
-    <div
-      className={`w-full bg-white fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${
-        isVisible ? "translate-y-0" : "-translate-y-full"
-      }`}
-    >
+    <div className="w-full bg-white fixed top-0 left-0 right-0 z-50">
       <div className="flex justify-between items-center container mx-auto py-4">
         <div className="flex items-center space-x-12">
           <Link href="/">
@@ -240,7 +221,6 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                     {notifications.map((notification) => (
                       <div key={notification.id} className="pl-4 pr-8">
                         <NotificationItem
-
                           title={notification.title}
                           description={notification.description}
                           timestamp={notification.timestamp}

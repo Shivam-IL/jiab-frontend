@@ -138,7 +138,8 @@ export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE = [
   "/my-profile/",
   "/send-reminder",
   "/leaderboard",
-  "/notifications"
+  "/notifications",
+  "/terms-and-conditions"
 ];
 
 export const USER_INFO_CARD_DATA = [

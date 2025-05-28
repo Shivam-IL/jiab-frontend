@@ -21,10 +21,10 @@ const DesktopFooter = () => {
               Need Help?
             </span>
             <div className="grid grid-cols-2 grid-rows-2 gap-x-[100px] gap-y-[24px] mt-[18px]">
-              <Link href="/faq">FAQs</Link>
-              <Link href="/terms_conditions">Terms & Conditions</Link>
+              <Link href="/faqs">FAQs</Link>
+              <Link href="/terms-and-conditions">Terms & Conditions</Link>
               <Link href="/sitemap">Sitemap</Link>
-              <Link href="/privacy_policy">Privacy Policy</Link>
+              <Link href="/privacy-policy">Privacy Policy</Link>
             </div>
           </div>
           <div className="my-[43px]">
