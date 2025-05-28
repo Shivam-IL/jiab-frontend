@@ -63,17 +63,17 @@ export const aktivGrotesk = localFont({
   variable: "--font-aktiv-grotesk",
 });
 
-// Metadata configuration for the application
-// Title: Main title for the website that appears in browser tabs and search results
-// Description: SEO description explaining the website's purpose and features
-// Icons: Favicon configuration for browser tabs and bookmarks
-/*export const metadata: Metadata = {
-  title: 'Sprite Joke-In-A-Bottle | Scan Karo, Joke Suno, Thand Rakho',
-  description: "Listen to your favorite comedians as per your mood with Sprite's refreshing humor hub! Submit your own joke and stand a chance to win fabulous prizes. Enjoy a laughter bonanza.",
-  icons: {
-    icon: '/favicon.ico'
-  }
-}*/
+// // Metadata configuration for the application
+// // Title: Main title for the website that appears in browser tabs and search results
+// // Description: SEO description explaining the website's purpose and features
+// // Icons: Favicon configuration for browser tabs and bookmarks
+// /*export const metadata: Metadata = {
+//   title: 'Sprite Joke-In-A-Bottle | Scan Karo, Joke Suno, Thand Rakho',
+//   description: "Listen to your favorite comedians as per your mood with Sprite's refreshing humor hub! Submit your own joke and stand a chance to win fabulous prizes. Enjoy a laughter bonanza.",
+//   icons: {
+//     icon: '/favicon.ico'
+//   }
+// }*/
 
 export default function RootLayout({
   children,
