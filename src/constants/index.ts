@@ -147,6 +147,10 @@ export const ICONS_NAMES = {
   TEXT: "text",
   UPLOAD_FILE: "upload-file",
   INFO: "info",
+  STEP_1: "step-1",
+  STEP_2: "step-2",
+  STEP_3: "step-3",
+  STEP_4: "step-4",
 };
 
 export const FORMAT_OPTIONS = [

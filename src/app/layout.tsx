@@ -82,7 +82,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${aktivGrotesk.variable} antialiased`}>
+      <body className={`${aktivGrotesk.variable} antialiased bg-[#F2F2F2]`}>
         <QueryClientAndReduxWrapper>
           <Navbar />
           {children}

@@ -214,3 +214,9 @@ export interface IExploreMoreArtistCard {
   followers: number;
   id:string;
 }
+
+export interface IContentButton {
+  text: string;
+  onClick?: () => void;
+  icon?: string;
+}
