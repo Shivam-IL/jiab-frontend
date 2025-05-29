@@ -152,7 +152,9 @@ const ContestPage: React.FC = () => {
               <button
                 key={index}
                 className={`h-1 rounded-full transition-all duration-300 ${
-                  index === current ? "w-8 bg-black" : "w-4 bg-gray-300"
+                  index === current
+                    ? "md:w-8 w-[17.73px] bg-black"
+                    : "md:w-4 w-[8.86px] bg-gray-300"
                 }`}
                 onClick={() => goToPage(index)}
                 aria-label={`Go to reward ${index + 1}`}
