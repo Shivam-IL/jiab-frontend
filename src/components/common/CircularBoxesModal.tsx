@@ -60,18 +60,22 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
     windowHeight: 0
   })
 
-  // Check local storage on component mount
+  // Check local storage on component mount with browser check
   useEffect(() => {
-    const hasViewed = localStorage.getItem('hasViewedCircularBoxModal')
-    if (hasViewed === 'true') {
-      setHasViewedTutorial(true)
-      onClose()
+    if (typeof window !== 'undefined') {
+      const hasViewed = localStorage.getItem('hasViewedCircularBoxModal')
+      if (hasViewed === 'true') {
+        setHasViewedTutorial(true)
+        onClose()
+      }
     }
   }, [])
 
-  // Save to local storage when modal is closed
+  // Save to local storage when modal is closed with browser check
   const handleClose = () => {
-    localStorage.setItem('hasViewedCircularBoxModal', 'true')
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('hasViewedCircularBoxModal', 'true')
+    }
     setHasViewedTutorial(true)
     onClose()
   }

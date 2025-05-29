@@ -19,11 +19,11 @@ const SurpriseMeModal: React.FC<{}> = ({}) => {
   const [makeLaughExitPopup, setMakeLaughExitPopup] = useState<boolean>(false)
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className='border-none md:max-w-[401px] max-w-[277px] shadow-none p-0 rounded-[10px]'>
-        <div className='absolute top-[-105px] md:top-[-150px] left-0 flex justify-center items-center w-full'>
+      <DialogContent className='border-none md:max-w-[239px] max-w-[277px] shadow-none p-0 rounded-[10px]'>
+        <div className='absolute top-[-105px] md:top-[-125px] left-0 flex justify-center items-center w-full'>
           <SvgIcons
             name={ICONS_NAMES.SURPRISE_ME}
-            className='w-[145px] h-[102px] md:w-[209px] md:h-[148px]'
+            className='w-[145px] h-[102px] md:w-[182px] md:h-[114px]'
           />
         </div>
         <div className='flex justify-between items-start px-[10px] pt-[10px]'>
@@ -34,12 +34,12 @@ const SurpriseMeModal: React.FC<{}> = ({}) => {
             />
             <div className='flex flex-col gap-[2px]'>
               <p
-                className={`${aktivGrotesk.className} font-[400] md:text-[16px] text-[12px] text-[#000000]`}
+                className={`${aktivGrotesk.className} font-[400] md:text-[9px] text-[12px] text-[#000000]`}
               >
                 Observation_English_cool boy & cool girl
               </p>
               <p
-                className={`${aktivGrotesk.className} font-[400] md:text-[12px] text-[8px] text-[#000000]`}
+                className={`${aktivGrotesk.className} font-[400] md:text-[7px] text-[8px] text-[#000000]`}
               >
                 Chill guy and Chill girl,
               </p>
@@ -53,11 +53,11 @@ const SurpriseMeModal: React.FC<{}> = ({}) => {
           >
             <SvgIcons
               name={ICONS_NAMES.CROSS}
-              className='w-[16px] h-[16px] md:w-[24px] md:h-[24px]'
+              className='w-[16px] h-[16px] md:w-[13px] md:h-[13px]'
             />
           </button>
         </div>
-        <div className='relative max-w-[255px] md:max-w-[369px] h-[429px] md:h-[621px] ml-[11px]'>
+        <div className='relative max-w-[255px] md:max-w-[220px] h-[429px] md:h-[371px] ml-[11px]'>
           <video
             className='w-full h-full relative bg-[#11A64B] '
             controls
@@ -102,7 +102,7 @@ const SurpriseMeModal: React.FC<{}> = ({}) => {
           open={makeLaughExitPopup}
           onClose={() => {
             setMakeLaughExitPopup(false)
-            setOpen(true)
+            setOpen(false)
           }}
         />
       )}
