@@ -8,7 +8,7 @@ import SurpriseMeModal from '@/components/common/SurpriseMeModal'
 import useAppSelector from '@/hooks/useSelector'
 
 import Banner from '@/components/common/Banner/Banner'
-import bannerImage from '../../public/home-page/banner-top.png'
+import bannerImage from '../../public/assets/images/banner-top-2.png'
 import pjChallengeImage from '../../public/home-page/banner-bottom.png'
 import Header from '@/components/common/Header/Header'
 import VideoScroll from '@/components/video-carousel/VideoScroll'
