@@ -113,6 +113,26 @@ export const LANGUAGE_OPTIONS = [
   },
 ];
 
+export const REFER_NOW_MODAL_DATA = {
+  DEFAULT: {
+    title: "Bro-code we follow!",
+    subtitle: "Get one friend laughing, get 5 Comic Coins stacking!",
+    ctaText: "Refer Now",
+  },
+  PRANK_US: {
+    title: "Trying to prank us?",
+    subtitle:
+      "This number is not valid. 🙅‍♂️ Retry or refer another friend to collect Comic Coins",
+    ctaText: "Refer Now",
+  },
+  SELF_LOVE: {
+    title: "Ahem Ahem!",
+    subtitle:
+      "Self-love is great, but you can't refer yourself.Refer a friend please!",
+    ctaText: "Refer Now",
+  },
+};
+
 export const ICONS_NAMES = {
   SPRITE_BOTTLE: "sprite-bottle",
   SPRITE_SMILE: "sprite-smile",
@@ -165,6 +185,20 @@ export const ICONS_NAMES = {
   USER_CHECK: "user-check",
   COUPON: "coupon",
   VOTE: "vote",
+  GLASS: "glass",
+  FILTER: "filter",
+  REPORT: "report",
+  TRAFFIC_LIGHT: "traffic-light",
+  SPRITE_WITH_BUBBLE: "sprite-with-bubbles",
+  HEADPHONE2: "headphone2",
+  UGC_MARK: "ugc-mark",
+  PARTY: "party",
+  SAD: "sad",
+  THANK_YOU: "thank-you",
+  APPLAUSE: "applause",
+  CHECK: "check",
+  CALENDAR_NOTIFICATION: "calendar-notification",
+  HAPPY_PERSON: "happy-person",
 };
 
 export const FORMAT_OPTIONS = [
@@ -297,6 +331,13 @@ export const MOBILE_TEMP_NAVBAR_DATA = {
 };
 
 export const EXIT_POPUP_DATA = {
+  DONT_STEAL_THUNDER: {
+    ICON: ICONS_NAMES.CLOCK,
+    TITLE: "Don’t let someone else steal your thunder",
+    SUB_TITLE: "Claim your prize before it expires, only xx hours to go!",
+    SINGLE_BUTTON: true,
+    SINGLE_BUTTON_TEXT: "Claim Now",
+  },
   MAKE_LAUGH: {
     ICON: ICONS_NAMES.SMILE,
     TITLE: "Did that make you 😂,😑 or 😡?",
@@ -324,6 +365,101 @@ export const EXIT_POPUP_DATA = {
     TITLE: "Made you L🤪L?",
     SUB_TITLE: "Collect 1 Comic Coin by voting for your fav joke!",
   },
+};
+
+export const CLAIM_POPUP_DATA = {
+  CLAIMED: {
+    ICON: ICONS_NAMES.PARTY,
+    TITLE: "All boxes ✔️",
+    SUB_TITLE:
+      "You've successfully claimed your reward. It will be delivered to you in 14 business days!",
+    SINGLE_BUTTON: true,
+    SINGLE_BUTTON_TEXT: "Explore more jokes",
+  },
+  CLAIM_EXPIRED: {
+    ICON: ICONS_NAMES.SAD,
+    TITLE: "Claim expired! 🥲",
+    SUB_TITLE:
+      "You've successfully claimed your reward. It will be delivered to you in 14 business days!",
+    THIRD_TEXT:
+      "But hey, you can always win next time! Keep collecting coins to try again",
+    SINGLE_BUTTON: true,
+    SINGLE_BUTTON_TEXT: "Explore more jokes",
+  },
+  CLAIM_ALERT: {
+    ICON: ICONS_NAMES.CLOCK,
+    TITLE: "Don’t let someone else steal your thunder",
+    SUB_TITLE: "Claim your prize before it expires, only 72 hours to go!",
+    SINGLE_BUTTON: true,
+    SINGLE_BUTTON_TEXT: "Claim Now",
+  },
+};
+
+export const JOKES_POPUP_DATA = {
+  JOKE_SUBMITTED: {
+    ICON: ICONS_NAMES.THANK_YOU,
+    TITLE: "Your joke is in!",
+    SUB_TITLE: "You did good, we'll take it from here. Ping you in 14 days!",
+    SINGLE_BUTTON: true,
+    SINGLE_BUTTON_TEXT: "Explore More",
+  },
+  JOKE_FEATURED: {
+    ICON: ICONS_NAMES.APPLAUSE,
+    TITLE: "The crowd's going crazy!",
+    SUB_TITLE: "Your joke just got featured in the Sprite® Joke Box 🙌",
+    SINGLE_BUTTON: true,
+    SINGLE_BUTTON_TEXT: "Check it out",
+  },
+  JOKE_NOT_SUITABLE: {
+    ICON: ICONS_NAMES.CROSS,
+    TITLE: "Uh-oh!",
+    SUB_TITLE:
+      "The joke's good,but doesn't work for the crowd. Try something else? 👀",
+    SINGLE_BUTTON: true,
+    SINGLE_BUTTON_TEXT: "Try Again",
+  },
+  JOKE_NOT_GOOD_ENOUGH: {
+    ICON: ICONS_NAMES.CROSS,
+    TITLE: "Not for this crowd!",
+    SUB_TITLE:
+      "Your joke did not meet our moderation standards, maybe tell us another?",
+    SINGLE_BUTTON: true,
+    SINGLE_BUTTON_TEXT: "Try Again",
+  },
+  JOKE_OFFENSIVE: {
+    ICON: ICONS_NAMES.CROSS,
+    TITLE: "Uh-oh!",
+    SUB_TITLE:
+      "Your joke was rejected for offensive language. Submit another joke.",
+    SINGLE_BUTTON: true,
+    SINGLE_BUTTON_TEXT: "Try Again",
+  },
+};
+
+export const REFFERAL_STATUS_POPUP_DATA = {
+  JOKE_SUBMITTED: {
+    ICON: ICONS_NAMES.THANK_YOU,
+    TITLE: "Your joke is in!",
+    SUB_TITLE: "You did good, we'll take it from here. Ping you in 14 days!",
+    SINGLE_BUTTON: true,
+    SINGLE_BUTTON_TEXT: "Explore More",
+  },
+  JOKE_FEATURED: {
+    ICON: ICONS_NAMES.APPLAUSE,
+    TITLE: "The crowd's going crazy!",
+    SUB_TITLE: "Your joke just got featured in the Sprite® Joke Box 🙌",
+    SINGLE_BUTTON: true,
+    SINGLE_BUTTON_TEXT: "Check it out",
+  },
+  JOKE_NOT_SUITABLE: {
+    ICON: ICONS_NAMES.CROSS,
+    TITLE: "Uh-oh!",
+    SUB_TITLE:
+      "The joke's good,but doesn't work for the crowd. Try something else? 👀",
+    SINGLE_BUTTON: true,
+    SINGLE_BUTTON_TEXT: "Try Again",
+  },
+
 };
 
 export const ARE_YOU_SURE_YOU_WANT_TO_EXIT = "Are you sure you want to exit?";

@@ -18,9 +18,14 @@ import { aktivGrotesk } from '../layout'
 import UserAddressCard from '@/components/common/UserAddressCard'
 import AddressCard from '@/components/AddressCard'
 import AddressModal from '@/components/common/AddressModal'
+import { ClaimSuccessPopup, ClaimExpiredPopup, ClaimAlertPopup } from '@/components/ClaimPopups'
 
 const SubmitYourJoke = () => {
   const width = useWindowWidth()
+
+  const [openClaimSuccessPopup, setOpenClaimSuccessPopup] = useState<boolean>(true)
+  const [openClaimExpiredPopup, setOpenClaimExpiredPopup] = useState<boolean>(true)
+  const [openClaimAlertPopup, setOpenClaimAlertPopup] = useState<boolean>(true)
 
   const [claimFormData, setClaimFormData] = useState<IClaimFormData>({
     fullName: '',
@@ -163,6 +168,18 @@ const SubmitYourJoke = () => {
         {openAddressModal && (
           <AddressModal open={openAddressModal} setOpen={setOpenAddressModal} />
         )}
+        <ClaimSuccessPopup
+          open={openClaimSuccessPopup}
+          onClose={() => setOpenClaimSuccessPopup(false)}
+        />
+        <ClaimExpiredPopup
+          open={openClaimExpiredPopup}
+          onClose={() => setOpenClaimExpiredPopup(false)}
+        />
+        <ClaimAlertPopup
+          open={openClaimAlertPopup}
+          onClose={() => setOpenClaimAlertPopup(false)}
+        />
       </ScreenWrapper>
     </div>
   )

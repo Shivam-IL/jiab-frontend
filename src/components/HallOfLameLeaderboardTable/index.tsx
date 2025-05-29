@@ -134,13 +134,13 @@ const HallOfLameLeaderboardTable = () => {
       </div>
       <div className='w-full flex flex-col gap-[28px] md:gap-[40px]'>
         <DisplayTable />
-        <div>
+        {/*  <div>
           <AktivGroteskText
             text='YOUR RANK'
             fontSize='text-[16px] md:text-[20px]'
             fontWeight='font-[700]'
           />
-        </div>
+        </div>*/}
       </div>
     </div>
   )

@@ -17,11 +17,6 @@ const ProfileCard = () => {
   return (
     <div className='relative w-full rounded-[10px]  bg-white md:rounded-[20px]'>
       <div className='w-full h-[135px] md:h-[210px] flex flex-col items-center justify-center'>
-        <img
-          src={IMAGES_LINK.PROFILE_BADGE}
-          alt='profile-badge'
-          className='absolute top-[5px] md:top-[20px] right-[8px] md:right-[33px] w-[32px] h-[32px] md:w-[47px] md:h-[47px]'
-        />
         <div className='md:hidden'>
           <CircularProgress value={30}>
             <div className='text-sm w-[90%] h-[90%] rounded-full font-medium bg-[#11A64B] text-gray-700'>

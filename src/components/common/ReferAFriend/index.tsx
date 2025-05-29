@@ -6,6 +6,7 @@ import {
   REFER_A_FRIEND_TEXT,
   REFER_ANOTHER,
   REFER_NOW,
+  REFER_NOW_MODAL_DATA,
   SEND_REMINDER,
   STATUS,
   USER
@@ -18,6 +19,14 @@ import { useRouter } from 'next/navigation'
 const ReferAFriend = () => {
   const data: any[] = [1]
   const [open, setOpen] = useState<boolean>(false)
+  const [open2, setOpen2] = useState<boolean>(false)
+  const [open3, setOpen3] = useState<boolean>(false)
+  const [phoneNumber, setPhoneNumber] = useState<string>('')
+
+
+  const handleChange = (key: string, value: string) => {
+    setPhoneNumber(value)
+  }
 
   const router = useRouter()
   return (
@@ -78,7 +87,12 @@ const ReferAFriend = () => {
             </div>
           </div>
           <div className='w-full flex justify-center gap-[12px] md:gap-[28px] md:pt-[40px]'>
-            <button onClick={()=>{router.push('/send-reminder')}} className='px-[24px] box-border py-[8px] md:py-[20px] md:px-[60px] relative border-[1px] md:border-[3px] border-[#00953B] rounded-[100px]'>
+            <button
+              onClick={() => {
+                router.push('/send-reminder')
+              }}
+              className='px-[24px] box-border py-[8px] md:py-[20px] md:px-[60px] relative border-[1px] md:border-[3px] border-[#00953B] rounded-[100px]'
+            >
               <AktivGroteskText
                 text={SEND_REMINDER}
                 fontSize='text-[14px] md:text-[24px]'
@@ -98,7 +112,47 @@ const ReferAFriend = () => {
           </div>
         </div>
       )}
-      {open && <ReferNowModal  open={open} setOpen={setOpen} />}
+      {open && (
+        <ReferNowModal
+          title={REFER_NOW_MODAL_DATA.DEFAULT.title}
+          subtitle={REFER_NOW_MODAL_DATA.DEFAULT.subtitle}
+          ctaText={REFER_NOW_MODAL_DATA.DEFAULT.ctaText}
+          phoneNumber={phoneNumber}
+          onChange={handleChange}
+          open={open}
+          onClose={() => {
+            setOpen(false)
+            setOpen2(true)
+          }}
+        />
+      )}
+       {open2 && (
+        <ReferNowModal
+          title={REFER_NOW_MODAL_DATA.PRANK_US.title}
+          subtitle={REFER_NOW_MODAL_DATA.PRANK_US.subtitle}
+          ctaText={REFER_NOW_MODAL_DATA.PRANK_US.ctaText}
+          phoneNumber={phoneNumber}
+          onChange={handleChange}
+          open={open2}
+          onClose={() => {
+            setOpen2(false)
+            setOpen3(true)
+          }}
+        />
+      )}  
+      {open3 && (
+        <ReferNowModal
+          title={REFER_NOW_MODAL_DATA.SELF_LOVE.title}
+          subtitle={REFER_NOW_MODAL_DATA.SELF_LOVE.subtitle}
+          ctaText={REFER_NOW_MODAL_DATA.SELF_LOVE.ctaText}
+          phoneNumber={phoneNumber}
+          onChange={handleChange}
+          open={open3}
+          onClose={() => {
+            setOpen3(false)
+          }}
+        />
+      )}  
     </>
   )
 }
