@@ -76,6 +76,7 @@ const Login = () => {
           />
 
           <GreenCTA
+            className=""
             onClick={() => {
               dispatch(updateOtpStatus({ otpSent: true }));
               handleClose();

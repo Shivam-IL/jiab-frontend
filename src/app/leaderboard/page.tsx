@@ -1,6 +1,5 @@
 'use client'
 
-import AnnouncingWinnerTimer from '@/components/AnnouncingWinnerTimer'
 import AktivGroteskText from '@/components/common/AktivGroteskText'
 import MobileTempNavBar from '@/components/common/MobileTempNavBar'
 import ScreenWrapper from '@/components/common/ScreenWrapper'
@@ -13,7 +12,6 @@ import ReactJoyride, { Step } from 'react-joyride'
 
 const Leaderboard = () => {
   const width = useWindowWidth()
-
   const [run, setRun] = useState(true)
 
   const steps: Step[] = [
@@ -45,7 +43,6 @@ const Leaderboard = () => {
         className={`${width > 750 ? 'mt-[71px] flex justify-center' : 'mt-0'}`}
       >
         <div className='flex flex-col gap-[16.1px]'>
-          <AnnouncingWinnerTimer />
           <div className='md:flex md:flex-col justify-center items-center md:mt-[37px] md:mb-[8px] gap-[12px] hidden'>
             <AktivGroteskText
               text={MOBILE_TEMP_NAVBAR_DATA.LEADERBOARD.TITLE}

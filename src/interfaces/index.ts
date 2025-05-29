@@ -126,7 +126,12 @@ export interface IScreenWrapper {
 
 export interface IReferNowModal {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: () => void;
+  title: string;
+  subtitle: string;
+  ctaText: string;
+  phoneNumber: string;
+  onChange: (key: string, value: string) => void;
 }
 
 export interface IMobileTempNavBar {
@@ -233,4 +238,10 @@ export interface IExitPopupWrapper{
   icon:string;
   title:string;
   subtitle:string;
+  children?:React.ReactNode;
+  singleButton?:boolean;
+  singleButtonText?:string;
+  singleButtonOnClick?:()=>void;
+  doubleButton?:boolean;
+  childrenPosition?:string;
 }

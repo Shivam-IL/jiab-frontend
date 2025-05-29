@@ -14,7 +14,7 @@ import {
 } from '@/constants'
 import useWindowWidth from '@/hooks/useWindowWidth'
 import { FileType, IJokeData } from '@/types'
-import React, { forwardRef, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import Input from '@/components/Input'
 import LabeledInput from '@/components/LabeledInput'
 import ImageIconCard from '@/components/common/ImageIconCard'
@@ -23,6 +23,13 @@ import AktivGroteskText from '@/components/common/AktivGroteskText'
 import CustomCarousel from '@/components/common/CustomCarousel'
 import { Checkbox } from '@/components/ui/checkbox'
 import GreenCTA from '@/components/GreenCTA'
+import {
+  ApproveJokePopup,
+  JokeFeaturedPopup,
+  JokeNotSuitablePopup,
+  JokeNotGoodEnoughPopup,
+  JokeOffensivePopup
+} from '@/components/JokeSubmissionPopup'
 
 interface FileContainerProps {
   title: string
@@ -69,6 +76,21 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
 const SubmitYourJoke = () => {
   const width = useWindowWidth()
 
+  const [openApproveJokePopup, setOpenApproveJokePopup] =
+    useState<boolean>(false)
+  const [openJokeFeaturedPopup, setOpenJokeFeaturedPopup] =
+    useState<boolean>(false)
+  const [openJokeNotSuitablePopup, setOpenJokeNotSuitablePopup] =
+    useState<boolean>(false)
+  const [openJokeNotGoodEnoughPopup, setOpenJokeNotGoodEnoughPopup] =
+    useState<boolean>(false)
+  const [openJokeOffensivePopup, setOpenJokeOffensivePopup] =
+    useState<boolean>(false)
+
+  useEffect(() => {
+    setOpenApproveJokePopup(true)
+  }, [])
+
   const [jokeData, setJokeData] = useState<IJokeData>({
     language: '',
     format: '',
@@ -113,7 +135,7 @@ const SubmitYourJoke = () => {
           />
         </div>
         <div className='mt-[36px] md:mt-0 flex flex-col md:justify-center md:items-center gap-[24px] md:gap-[32px]'>
-          <LabeledInput  label='Select Language'>
+          <LabeledInput label='Select Language'>
             <Input
               bgColor='bg-white'
               name='language'
@@ -203,7 +225,10 @@ const SubmitYourJoke = () => {
               placeholder='Joke Title'
             />
           </LabeledInput>
-          <LabeledInput width='md:max-w-[720px] lg:max-w-[920px]' label='Select Category'>
+          <LabeledInput
+            width='md:max-w-[720px] lg:max-w-[920px]'
+            label='Select Category'
+          >
             <CustomCarousel>
               {CATEGORIES_CAROUSEL_DATA.map(item => {
                 return (
@@ -266,6 +291,51 @@ const SubmitYourJoke = () => {
           </div>
         </div>
       </ScreenWrapper>
+      {openApproveJokePopup && (
+        <ApproveJokePopup
+          open={openApproveJokePopup}
+          onClose={() => {
+            setOpenApproveJokePopup(false)
+            setOpenJokeFeaturedPopup(true)
+          }}
+        />
+      )}
+      {openJokeFeaturedPopup && (
+        <JokeFeaturedPopup
+          open={openJokeFeaturedPopup}
+          onClose={() => {
+            setOpenJokeFeaturedPopup(false)
+            setOpenJokeNotSuitablePopup(true)
+          }}
+        />
+      )}
+      {openJokeNotSuitablePopup && (
+        <JokeNotSuitablePopup
+          open={openJokeNotSuitablePopup}
+          onClose={() => {
+            setOpenJokeNotSuitablePopup(false)
+            setOpenJokeNotGoodEnoughPopup(true)
+          }}
+        />
+      )}
+      {openJokeNotGoodEnoughPopup && (
+        <JokeNotGoodEnoughPopup
+          open={openJokeNotGoodEnoughPopup}
+          onClose={() => {
+            setOpenJokeNotGoodEnoughPopup(false)
+            setOpenJokeOffensivePopup(true)
+          }}
+        />
+      )}
+      {openJokeOffensivePopup && (
+        <JokeOffensivePopup
+          open={openJokeOffensivePopup}
+          onClose={() => {
+            setOpenJokeOffensivePopup(false)
+            setOpenApproveJokePopup(false)
+          }}
+        />
+      )}
     </div>
   )
 }

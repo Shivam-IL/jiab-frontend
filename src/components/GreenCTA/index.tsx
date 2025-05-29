@@ -17,11 +17,7 @@ const GreenCTA: React.FC<IGreenCTA> = ({
       onClick={onClick}
       className={`${className}  text-white transition-all duration-300  hover:bg-[#73C392]  bg-[#11A64B] ${paddingClass} rounded-[100px] ${aktivGrotesk.className}`}
     >
-      <AktivGroteskText
-        text={text}
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-      />
+      {text}
     </button>
   )
 }
