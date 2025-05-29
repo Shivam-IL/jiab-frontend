@@ -6,8 +6,8 @@ import { aktivGrotesk } from '@/app/layout'
 const SurpriseMeCTA:React.FC<ISurpriseMeCTA> = ({name,onClick,text}) => {
   return (
     <div className='flex flex-col gap-[2px]'>
-      <SvgIcons name={name} className='w-[20px] h-[20px] md:w-[28px] md:h-[28px]' />
-      <span className={`${aktivGrotesk.className} font-[500] md:text-[14px] text-[9px]`}>{text}</span>
+      <SvgIcons name={name} className='w-[20px] h-[20px] md:w-[17px] md:h-[17px]' />
+      <span className={`${aktivGrotesk.className} font-[500] md:text-[9px] text-[9px]`}>{text}</span>
     </div>
   )
 }

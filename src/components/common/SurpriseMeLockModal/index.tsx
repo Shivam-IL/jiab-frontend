@@ -15,11 +15,11 @@ const SurpriseMeLockModal: React.FC<{}> = () => {
   const dispatch = useAppDispatch()
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className='rounded-[5px] md:max-w-[401px] p-0 max-w-[277px]'>
-        <div className='absolute top-[-105px] md:top-[-150px] left-0 flex justify-center items-center w-full'>
+      <DialogContent className='rounded-[5px] md:max-w-[239px] p-0 max-w-[277px]'>
+        <div className='absolute top-[-105px] md:top-[-125px] left-0 flex justify-center items-center w-full'>
           <SvgIcons
             name={ICONS_NAMES.SURPRISE_ME}
-            className='w-[145px] h-[102px] md:w-[209px] md:h-[148px]'
+            className='w-[145px] h-[102px] md:w-[182px] md:h-[114px]'
           />
         </div>
         <div className='w-full flex justify-end box-border pt-[10px] pr-[10px]'>
@@ -35,12 +35,12 @@ const SurpriseMeLockModal: React.FC<{}> = () => {
         </div>
         <div className='relative w-full h-full mb-5 px-3'>
           <Image
-            className='relative w-full md:h-[721px] h-[506px]'
+            className='relative w-full md:h-[431px] h-[506px]'
             src={GreenBG}
             alt='GREEN BG'
           />
           <div className='absolute flex flex-col justify-center items-center top-0'>
-            <div className='self-center z-10 absolute top-[204px] md:top-[305px] left-[99px] md:left-[130px]'>
+            <div className='self-center z-10 absolute top-[204px] md:top-[182px] left-[99px] md:left-[78px]'>
               <button
                 onClick={() => {
                   dispatch(updateLoginModal({ loginModal: true }))
@@ -48,26 +48,26 @@ const SurpriseMeLockModal: React.FC<{}> = () => {
                 }}
                 className='relative'
               >
-                <div className='w-[76px] h-[76px] md:w-[114px] md:h-[114px] rounded-full flex justify-center items-center bg-[#FFFFFF] relative'>
+                <div className='w-[76px] h-[76px] md:w-[68px] md:h-[68px] rounded-full flex justify-center items-center bg-[#FFFFFF] relative'>
                   <SvgIcons
                     name={ICONS_NAMES.LOCK}
-                    className='w-[31px] h-[42px] md:w-[46px] md:h-[63px]'
+                    className='w-[31px] h-[42px] md:w-[27px] md:h-[37px]'
                   />
                 </div>
               </button>
             </div>
             <SvgIcons
-              className='absolute top-[27px] left-[23px] md:left-[35px] md:top-[39px] w-[90px] h-[119px] md:w-[135px] md:h-[180px]'
+              className='absolute top-[27px] left-[23px] md:left-[18px] md:top-[23px] w-[90px] h-[119px] md:w-[81px] md:h-[107px]'
               name={ICONS_NAMES.MULTIPLE_SMILE_MOBILE}
             />
             <SvgIcons
-              className='absolute top-[163px] md:top-[244px] left-[17px] md:left-[21px] w-[115px] h-[300px] md:w-[174px] md:h-[452px]'
+              className='absolute top-[163px] md:top-[145px] left-[12px] md:left-[21px] w-[115px] h-[300px] md:w-[104px] md:h-[269px]'
               name={ICONS_NAMES.SPRITE_BOTTLE}
               width={115}
               height={300}
             />
             <SvgIcons
-              className='absolute top-[18px] left-[198px] md:top-[25px] md:left-[294px] w-[41px] h-[38px] md:w-[62px] md:h-[57px]'
+              className='absolute top-[18px] left-[198px] md:top-[14px] md:left-[168px] w-[41px] h-[38px] md:w-[37px] md:h-[34px]'
               name={ICONS_NAMES.SPRITE_PLAY}
               width={41}
               height={38}
