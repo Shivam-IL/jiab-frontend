@@ -220,3 +220,17 @@ export interface IContentButton {
   onClick?: () => void;
   icon?: string;
 }
+
+export interface ICustomDialogWrapper{
+  open:boolean;
+ onClose:()=>void;
+  children:React.ReactNode;
+}
+
+export interface IExitPopupWrapper{
+  open:boolean;
+  onClose:()=>void;
+  icon:string;
+  title:string;
+  subtitle:string;
+}

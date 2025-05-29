@@ -11,9 +11,12 @@ import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES } from '@/constants'
 import { aktivGrotesk } from '@/app/layout'
 import SurpriseMeCTA from '@/components/SurpriseMeCTA'
+import { MakeLaughExitPopup } from '@/components/ExitPopUps'
 
 const SurpriseMeModal: React.FC<{}> = ({}) => {
   const [open, setOpen] = useState<boolean>(true)
+
+  const [makeLaughExitPopup, setMakeLaughExitPopup] = useState<boolean>(false)
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className='border-none md:max-w-[401px] max-w-[277px] shadow-none p-0 rounded-[10px]'>
@@ -45,7 +48,7 @@ const SurpriseMeModal: React.FC<{}> = ({}) => {
           <button
             className='flex justify-center items-center'
             onClick={() => {
-              setOpen(false)
+              setMakeLaughExitPopup(true)
             }}
           >
             <SvgIcons
@@ -94,6 +97,15 @@ const SurpriseMeModal: React.FC<{}> = ({}) => {
           </div>
         </div>
       </DialogContent>
+      {makeLaughExitPopup && (
+        <MakeLaughExitPopup
+          open={makeLaughExitPopup}
+          onClose={() => {
+            setMakeLaughExitPopup(false)
+            setOpen(true)
+          }}
+        />
+      )}
     </Dialog>
   )
 }
