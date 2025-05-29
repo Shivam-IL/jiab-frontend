@@ -151,6 +151,20 @@ export const ICONS_NAMES = {
   STEP_2: "step-2",
   STEP_3: "step-3",
   STEP_4: "step-4",
+  BELL: "bell",
+  LANG: "lang",
+  HOME: "home",
+  CUP: "cup",
+  UNIQUE_CODE: "unique-code",
+  COMIC_COINS: "comic-coin",
+  NEW_USER: "new-user",
+  HAMBURGER: "hamburger",
+  CLOCK: "clock",
+  SMILE: "smile",
+  FOMO: "fomo",
+  USER_CHECK: "user-check",
+  COUPON: "coupon",
+  VOTE: "vote",
 };
 
 export const FORMAT_OPTIONS = [
@@ -282,7 +296,39 @@ export const MOBILE_TEMP_NAVBAR_DATA = {
   },
 };
 
-export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE : string[] = [
+export const EXIT_POPUP_DATA = {
+  MAKE_LAUGH: {
+    ICON: ICONS_NAMES.SMILE,
+    TITLE: "Did that make you 😂,😑 or 😡?",
+    SUB_TITLE: "Don't forget to react to the joke and collect Comic Coins!",
+  },
+  FOMO: {
+    ICON: ICONS_NAMES.FOMO,
+    TITLE: "Warning: FOMO incoming!",
+    SUB_TITLE:
+      "You'll miss out on jokes from top comedians & other hidden surprises!",
+  },
+  BREAK_THE_ICE: {
+    ICON: ICONS_NAMES.USER_CHECK,
+    TITLE: "Break the ice, maybe?",
+    SUB_TITLE: "Earn 5 Comic Coins by completing your profile",
+  },
+  DONT_MISS_OUT: {
+    ICON: ICONS_NAMES.COUPON,
+    TITLE: "Don't miss out!",
+    SUB_TITLE:
+      "Submit a joke, get a chance to win vouchers worth Rs.5000 & some 🔥 fame!",
+  },
+  MADE_YOU_LAUGH: {
+    ICON: ICONS_NAMES.VOTE,
+    TITLE: "Made you L🤪L?",
+    SUB_TITLE: "Collect 1 Comic Coin by voting for your fav joke!",
+  },
+};
+
+export const ARE_YOU_SURE_YOU_WANT_TO_EXIT = "Are you sure you want to exit?";
+
+export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE: string[] = [
   "/my-profile/",
   "/send-reminder",
   "/leaderboard",

@@ -8,6 +8,7 @@ import Sidebar from './Sidebar'
 import { ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE } from '../../../../constants/index'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import { BoxIds } from '../../CircularBoxesModal'
 
 const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
@@ -109,7 +110,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
       >
         <div className='container mx-auto px-[17px] pb-[20px] pt-[17.45px] flex items-center relative'>
           {/* Menu */}
-          <div className='absolute left-[17px]'>
+          <div id={BoxIds.MENU_BAR} className='absolute left-[17px]'>
             <button
               onClick={handleSidebarToggle}
               className={`p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 transform hover:scale-110 ${
@@ -135,7 +136,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
           <div className='flex items-center gap-4 absolute right-[17px]'>
             {/* Bell Icon Conditional Rendering */}
             {isLoggedIn ? (
-              <Link className='relative' href='/notifications'>
+              <Link id={BoxIds.NOTIFICATIONS} className='relative' href='/notifications'>
                 <Bell className='h-6 w-6' />
                 <div className='absolute -top-0.5 right-0 bg-yellow text-black rounded-full w-[12px] h-[12px] flex items-center justify-center text-[6.86px] font-semibold'>
                   10
@@ -146,7 +147,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
             )}
 
             {/* Language Selector */}
-            <div className='relative' ref={langDropdownRef}>
+            <div id={BoxIds.LANG} className='relative' ref={langDropdownRef}>
               <div
                 className='w-[66px] border border-black px-1 py-0.5 flex justify-between items-center cursor-pointer rounded'
                 onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
