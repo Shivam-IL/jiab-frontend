@@ -14,13 +14,14 @@ const UserComicsCoinsAndRankCard = () => {
         <div className='relative w-[50%] md:w-auto flex flex-col items-center justify-between gap-[6px] md:gap-[8px]'>
           <AktivGroteskText
             text='2800'
+            className='text-black'
             fontSize='text-[12px] md:text-[24px]'
             fontWeight='font-[700]'
           />
           <div className='flex justify-center'>
             <ImageIconCard
               itemsGapClass='gap-[5px] md:gap-[8px]'
-              imageClassName='w-[9px] h-[9px] object-cover md:w-[20px] md:h-[20px]'
+              imageClassName='w-[12px] h-[12px] object-cover md:w-[28px] md:h-[28px]'
               image={LOCAL_IMAGES.SPRITE_GOLD}
               text='Comic Coins'
               fontSize='text-[10px] md:text-[20px]'
@@ -33,6 +34,7 @@ const UserComicsCoinsAndRankCard = () => {
         <div className='relative w-[50%] md:w-auto flex flex-col items-center justify-between gap-[6px] md:gap-[8px]'>
           <AktivGroteskText
             text='100'
+            className='text-black'
             fontSize='text-[12px] md:text-[24px]'
             fontWeight='font-[700]'
           />
@@ -40,7 +42,7 @@ const UserComicsCoinsAndRankCard = () => {
             <ImageIconCard
               itemsGapClass='gap-[5px] md:gap-[8px]'
               icon={ICONS_NAMES.RANK}
-              iconClassName='w-[7px] h-[9px] md:w-[18px] md:h-[24px]'
+              iconClassName='w-[9px] h-[12px] md:w-[18px] md:h-[24px]'
               text='Rank'
               fontSize='text-[10px] md:text-[20px]'
               fontWeight='font-[400]'
@@ -57,7 +59,9 @@ const UserComicsCoinsAndRankCard = () => {
           fontWeight='font-[700] md:font-[600]'
           paddingClass='py-[5px] md:py-[20px] px-[16px] md:px-[60px]'
           text='Leaderboard'
-          onClick={() => {router.push('/leaderboard')}}
+          onClick={() => {
+            router.push('/leaderboard')
+          }}
         />
       </div>
     </div>

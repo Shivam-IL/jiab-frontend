@@ -3,12 +3,20 @@
 import AktivGroteskText from '@/components/common/AktivGroteskText'
 import ScreenWrapper from '@/components/common/ScreenWrapper'
 import UgcComponent from '@/components/UgcComponent'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-
+import { MadeYouLaughExitPopup } from '@/components/ExitPopUps'
 
 const UserGeneratedJokes = () => {
   const router = useRouter()
+  const [isUnmounting, setIsUnmounting] = useState(false)
+
+  useEffect(() => {
+    return () => {
+      setIsUnmounting(true)
+    }
+  }, [])
+
   return (
     <ScreenWrapper>
       <div>
@@ -36,6 +44,14 @@ const UserGeneratedJokes = () => {
         </div>
         <UgcComponent />
       </div>
+      {isUnmounting && (
+        <MadeYouLaughExitPopup
+          open={isUnmounting}
+          onClose={() => {
+            setIsUnmounting(false)
+          }}
+        />
+      )}
     </ScreenWrapper>
   )
 }

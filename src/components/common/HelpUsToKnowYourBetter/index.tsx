@@ -55,7 +55,7 @@ const HelpUsToKnowYourBetter = () => {
             </div>
             <div className='pt-[24px] md:pt-[20px] pb-[34px] md:pb-[32px]'>
               <RadioGroup className='flex flex-col gap-[16px] md:gap-[20px]'>
-                {selectedQuestion?.options?.map((item: any) => (
+                {selectedQuestion?.options?.map((item: any, index: number) => (
                   <div
                     key={item.optionId}
                     className='flex items-center space-x-2'
@@ -80,7 +80,11 @@ const HelpUsToKnowYourBetter = () => {
               <GreenCTA
                 className=''
                 paddingClass='py-[10px] px-[93px] md:px-[60px] md:py-[20px]'
-                text={SAVE}
+                text={
+                  currentQuestionNumber === PROFILE_QUESTIONS?.length
+                    ? 'Save & Submit'
+                    : SAVE
+                }
                 fontSize='text-[16px] md:text-[20px]'
                 fontWeight='font-[700] md:font-[600]'
                 onClick={() => {}}

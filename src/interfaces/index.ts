@@ -124,6 +124,12 @@ export interface IScreenWrapper {
   desktopWidth?: string;
 }
 
+export interface IUgcFilterModal {
+  open: boolean;
+  onClose: () => void;
+  onApply?: (filters: { language: string; category: string }) => void;
+}
+
 export interface IReferNowModal {
   open: boolean;
   onClose: () => void;
@@ -166,6 +172,7 @@ export interface IArtistCard {
   name: string;
   followers: string;
 }
+
 export interface ILoginSignupWrapper {
   children: React.ReactNode;
   logo?: Boolean;
@@ -254,4 +261,12 @@ export interface IExitPopupWrapper {
   singleButtonOnClick?: () => void;
   doubleButton?: boolean;
   childrenPosition?: string;
+}
+
+export interface IUgcComponent {
+  filters?: {
+    language: string;
+    category: string;
+  };
+  isUnmounting?: boolean;
 }
