@@ -193,7 +193,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                 <div className='absolute top-full left-0 mt-4 w-[300px] bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 pb-4 pt-2'>
                   <div className='flex flex-col space-y-1'>
                     {exploreMenuItems.map(item => {
-                      if (item.type === 'refer') {
+                      if (item.label === 'Refer A Friend') {
                         return (
                           <button
                             onClick={() => {
@@ -206,7 +206,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                           </button>
                         )
                       }
-                      if (item.type === 'invite-code') {
+                      if (item.label === 'Have an Invite Code?') {
                         return (
                           <button
                             onClick={() => {
