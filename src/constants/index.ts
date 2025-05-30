@@ -93,25 +93,47 @@ export const LANGUAGE_OPTIONS = [
   },
   {
     value: "hi",
-    label: "Hindi",
+    label: "हिंदी",
   },
   {
     value: "ta",
-    label: "Tamil",
+    label: "தமிழ்", // Tamil
   },
   {
     value: "te",
-    label: "Telugu",
+    label: "తెలుగు", // Telugu
   },
   {
-    value: "ba",
-    label: "Bengali",
+    value: "bn",
+    label: "বাংলা", // Bengali
   },
   {
     value: "mr",
-    label: "Marathi",
+    label: "मराठी", // Marathi
+  },
+  {
+    value: "gu",
+    label: "ગુજરાતી", // Gujarati
+  },
+  {
+    value: "kn",
+    label: "ಕನ್ನಡ", // Kannada
+  },
+  {
+    value: "ml",
+    label: "മലയാളം", // Malayalam
+  },
+  {
+    value: "or",
+    label: "ଓଡ଼ିଆ", // Odia
+  },
+  {
+    value: "pa",
+    label: "ਪੰਜਾਬੀ", // Punjabi
   },
 ];
+
+
 
 export const REFER_NOW_MODAL_DATA = {
   DEFAULT: {

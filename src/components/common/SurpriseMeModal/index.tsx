@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -13,10 +13,12 @@ import { aktivGrotesk } from '@/app/layout'
 import SurpriseMeCTA from '@/components/SurpriseMeCTA'
 import { MakeLaughExitPopup } from '@/components/ExitPopUps'
 
-const SurpriseMeModal: React.FC<{}> = ({}) => {
+const SurpriseMeModal = () => {
   const [open, setOpen] = useState<boolean>(true)
 
+  
   const [makeLaughExitPopup, setMakeLaughExitPopup] = useState<boolean>(false)
+  console.log('open', open,makeLaughExitPopup)
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className='border-none md:max-w-[239px] max-w-[277px] shadow-none p-0 rounded-[10px]'>
