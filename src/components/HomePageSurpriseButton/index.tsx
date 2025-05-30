@@ -7,11 +7,12 @@ import SurpriseMeModal from '../common/SurpriseMeModal'
 const HomePageSurpriseButton = () => {
   const [surpriseMeModal, setSurpriseMeModal] = useState<boolean>(false)
 
+
   return (
-    <div
+    <button
       onClick={() => setSurpriseMeModal(true)}
       className='fixed cursor-pointer top-[50%] right-[10px] border-[1px] border-[#11A64B] rounded-[100px] max-w-[78px] md:max-w-[185px]
-    p-[8px] md:px-[24px] md:py-[15px] flex items-center gap-[5px] bg-yellow'
+    py-[8px] pl-[5px] pr-[8px] md:px-[24px] md:py-[15px] flex items-center gap-[5px] bg-yellow'
     >
       <div className='relative w-[25px] h-[25px] md:w-[42px]  md:h-[42px] rounded-full bg-white flex items-center justify-center'>
         <SvgIcons
@@ -21,10 +22,13 @@ const HomePageSurpriseButton = () => {
       </div>
       <AktivGroteskText
         text='Surprise Me'
-        className='text-[#11A64B] leading-tight text-center text-[8px] md:text-[16px] font-bold'
+        className='text-[#11A64B] uppercase leading-tight text-center text-[8px] md:text-[16px] font-bold'
       />
-      {surpriseMeModal && <SurpriseMeModal />}
-    </div>
+      {surpriseMeModal && (
+        <SurpriseMeModal
+        />
+      )}
+    </button>
   )
 }
 

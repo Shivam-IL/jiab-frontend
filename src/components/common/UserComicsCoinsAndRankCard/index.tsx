@@ -15,7 +15,7 @@ const UserComicsCoinsAndRankCard = () => {
           <AktivGroteskText
             text='2800'
             className='text-black'
-            fontSize='text-[12px] md:text-[24px]'
+            fontSize='text-[16px] md:text-[32px]'
             fontWeight='font-[700]'
           />
           <div className='flex justify-center'>
@@ -35,7 +35,7 @@ const UserComicsCoinsAndRankCard = () => {
           <AktivGroteskText
             text='100'
             className='text-black'
-            fontSize='text-[12px] md:text-[24px]'
+            fontSize='text-[16px] md:text-[32px]'
             fontWeight='font-[700]'
           />
           <div className='flex justify-center'>

@@ -31,8 +31,8 @@ const UserGeneratedJokes = () => {
               <AktivGroteskText
                 fontSize='text-[12px] md:text-[20px]'
                 fontWeight='font-[400]'
-                className='text-[#11A64B]'
-                text='Hall of Lame >'
+                className='text-[#11A64B] md:block hidden'
+                text='HALL-OF-LAME 🤪>'
               />
             </button>
           </div>

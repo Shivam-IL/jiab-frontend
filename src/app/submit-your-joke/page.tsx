@@ -222,6 +222,12 @@ const SubmitYourJoke = () => {
                   value={jokeData.jokeText}
                   placeholder='Type your joke here...'
                 />
+                <AktivGroteskText
+                  text='Max. limit 200 words'
+                  className='text-[rgba(0,0,0,0.5)] mt-[10px]'
+                  fontSize='text-[8px] md:text-[12px]'
+                  fontWeight='font-[400]'
+                />
               </div>
             )}
           </LabeledInput>
