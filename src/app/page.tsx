@@ -38,6 +38,7 @@ import CircularBoxesModal, {
   BoxIds
 } from '@/components/common/CircularBoxesModal'
 import useWindowWidth from '@/hooks/useWindowWidth'
+import HomePageSurpriseButton from '@/components/HomePageSurpriseButton'
 
 export default function Home () {
   const { otpSent, otpFilled, loginModal, signupDone, crossModal } =
@@ -459,6 +460,7 @@ export default function Home () {
           }}
         />
       )}
+      <HomePageSurpriseButton />
     </div>
   )
 }

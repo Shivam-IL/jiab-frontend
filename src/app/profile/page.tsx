@@ -13,9 +13,11 @@ import ProfileCard from '@/components/ProfileCard'
 import { Separator } from '@/components/ui/separator'
 import UserGeneratedJokecComponent from '@/components/UserGeneratedJokecComponent'
 import { ICONS_NAMES, LOCAL_IMAGES } from '@/constants'
-import React from 'react'
+import React, { useState } from 'react'
+import { BreakTheIceExitPopup } from '@/components/ExitPopUps'
 
 const ProfilePage = () => {
+  const [breakTheIce, setBreakTheIce] = useState<boolean>(true)
   return (
     <ScreenWrapper>
       <div className='flex flex-col gap-2'>
@@ -29,6 +31,12 @@ const ProfilePage = () => {
           <UserGeneratedJokecComponent />
         </div>
       </div>
+      {breakTheIce && (
+        <BreakTheIceExitPopup
+          open={breakTheIce}
+          onClose={() => setBreakTheIce(false)}
+        />
+      )}
     </ScreenWrapper>
   )
 }

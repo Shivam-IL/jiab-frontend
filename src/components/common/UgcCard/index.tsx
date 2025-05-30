@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES } from '@/constants'
 import AktivGroteskText from '../AktivGroteskText'
 import SurpriseMeCTA from '@/components/SurpriseMeCTA'
 import GreenCTA from '@/components/GreenCTA'
+import { MadeYouLaughExitPopup } from '@/components/ExitPopUps'
 
 const UgcCard = () => {
+  const [openMadYouLOL, setOpenMadYouLOL] = useState<boolean>(false)
   return (
     <div className='relative w-full p-[16px] md:px-[12px] flex flex-col gap-[16px] rounded-[5px] bg-[#FFFFFF]'>
       <div className='flex justify-between items-center'>
@@ -83,7 +85,15 @@ const UgcCard = () => {
             />
           </div>
           <div className='flex gap-[12px]'>
-            <GreenCTA text='Vote' paddingClass='px-[26px] py-[8px] md:px-[21px] md:py-[7px]' fontSize='text-[12px] md:text-[20px]' fontWeight='font-[700]' onClick={() => {}} />
+            <GreenCTA
+              onClick={() => {
+                setOpenMadYouLOL(true)
+              }}
+              text='Vote'
+              paddingClass='px-[26px] py-[8px] md:px-[21px] md:py-[7px]'
+              fontSize='text-[12px] md:text-[20px]'
+              fontWeight='font-[700]'
+            />
             <SurpriseMeCTA
               name={ICONS_NAMES.VIEWS}
               text='2.3k'
@@ -92,6 +102,12 @@ const UgcCard = () => {
           </div>
         </div>
       </div>
+      {openMadYouLOL && (
+        <MadeYouLaughExitPopup
+          open={openMadYouLOL}
+          onClose={() => setOpenMadYouLOL(false)}
+        />
+      )}
     </div>
   )
 }

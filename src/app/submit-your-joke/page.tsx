@@ -146,7 +146,7 @@ const SubmitYourJoke = () => {
               placeholder='Select Language'
             />
           </LabeledInput>
-          <LabeledInput label='Select Format' width='w-full'>
+          <LabeledInput label='Select Format'>
             <div className='flex w-full  md:flex-row md:justify-center'>
               <div className='flex w-full gap-[8px] md:w-[600px] justify-between'>
                 {FORMAT_OPTIONS.map(item => {
@@ -200,19 +200,26 @@ const SubmitYourJoke = () => {
               </>
             )}
             {jokeData.format.toLowerCase() === FileType.TEXT.toLowerCase() && (
-              <Input
-                name='jokeText'
-                type='textarea'
-                bgColor='bg-[#9BD4B1]'
-                paddingClass='p-[12px] mt-[24px]'
-                borderRadius='rounded-[10px]'
-                fontSize='text-[12px] md:text-[20px] font-[400]'
-                className=''
-                rows={6}
-                onChange={handleChange}
-                value={jokeData.jokeText}
-                placeholder='Enter your text'
-              />
+              <div>
+                <AktivGroteskText
+                  text='Add your Joke*  👇'
+                  fontSize='text-[16px]'
+                  fontWeight='font-[700]'
+                />
+                <Input
+                  name='jokeText'
+                  type='textarea'
+                  bgColor='bg-[#9BD4B1]'
+                  paddingClass='p-[12px] mt-[24px]'
+                  borderRadius='rounded-[10px]'
+                  fontSize='text-[12px] md:text-[20px] font-[400]'
+                  className=''
+                  rows={6}
+                  onChange={handleChange}
+                  value={jokeData.jokeText}
+                  placeholder='Enter your text'
+                />
+              </div>
             )}
           </LabeledInput>
           <LabeledInput label='Title'>
@@ -224,6 +231,7 @@ const SubmitYourJoke = () => {
               value={jokeData.title}
               placeholder='Joke Title'
             />
+            <AktivGroteskText text='Max 30 character limit' className='' fontSize='text-[8px] md:text-[12px]' fontWeight='font-[400]' />
           </LabeledInput>
           <LabeledInput
             width='md:max-w-[720px] lg:max-w-[920px]'
