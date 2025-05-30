@@ -257,7 +257,6 @@ export default function Home () {
   // Function to handle category click - will trigger modal
   const handleCategoryClick = (category: typeof categories[0]) => {
     console.log(`Category clicked: ${category.name}`)
-    // Modal trigger logic would go here
   }
 
   return (
