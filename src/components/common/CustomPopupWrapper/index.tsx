@@ -60,7 +60,7 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
           </div>
         )}
         {childrenPosition==='top' && (
-          <div >{children}</div>
+          <div className='w-[80%] self-center flex flex-col'>{children}</div>
         )}
         {singleButton && (
           <div className='flex pb-[16px] gap-[14px]'>
@@ -72,7 +72,7 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
           </div>
         )}
         {children && childrenPosition !== 'top' && (
-          <div className='pb-[16px]'>{children}</div>
+          <div className='pb-[16px] w-[80%] self-center'>{children}</div>
         )}
       </div>
     </CustomDialogWrapper>

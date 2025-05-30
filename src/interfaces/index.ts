@@ -134,6 +134,16 @@ export interface IReferNowModal {
   onChange: (key: string, value: string) => void;
 }
 
+export interface IInviteCodePopup {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  subtitle: string;
+  ctaText: string;
+  code: string;
+  onChange: (key: string, value: string) => void;
+}
+
 export interface IMobileTempNavBar {
   title: string;
   subtitle?: string;
@@ -217,7 +227,7 @@ export interface IExploreMoreArtistCard {
   image: string;
   name: string;
   followers: number;
-  id:string;
+  id: string;
 }
 
 export interface IContentButton {
@@ -226,22 +236,22 @@ export interface IContentButton {
   icon?: string;
 }
 
-export interface ICustomDialogWrapper{
-  open:boolean;
- onClose:()=>void;
-  children:React.ReactNode;
+export interface ICustomDialogWrapper {
+  open: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
 }
 
-export interface IExitPopupWrapper{
-  open:boolean;
-  onClose:()=>void;
-  icon:string;
-  title:string;
-  subtitle:string;
-  children?:React.ReactNode;
-  singleButton?:boolean;
-  singleButtonText?:string;
-  singleButtonOnClick?:()=>void;
-  doubleButton?:boolean;
-  childrenPosition?:string;
+export interface IExitPopupWrapper {
+  open: boolean;
+  onClose: () => void;
+  icon: string;
+  title: string;
+  subtitle: string;
+  children?: React.ReactNode;
+  singleButton?: boolean;
+  singleButtonText?: string;
+  singleButtonOnClick?: () => void;
+  doubleButton?: boolean;
+  childrenPosition?: string;
 }

@@ -199,6 +199,7 @@ export const ICONS_NAMES = {
   CHECK: "check",
   CALENDAR_NOTIFICATION: "calendar-notification",
   HAPPY_PERSON: "happy-person",
+  SURPRISE:"surprise",
 };
 
 export const FORMAT_OPTIONS = [
@@ -300,6 +301,19 @@ export const CATEGORIES_CAROUSEL_DATA = [
   },
 ];
 
+export const INVITE_CODE_POPUP_DATA = {
+  INVITE_CODE: {
+  TITLE: "Have an Invite Code?",
+    SUB_TITLE: "Enter & collect Comic Coins",
+    CTA_TEXT: "Submit",
+  },
+  CHEAT_CODE_NOT_ALLOWED: {
+    TITLE: "Cheat codes not allowed! 🚫",
+    SUB_TITLE: "You've entered a used referral code.  Please enter a valid code to proceed!",
+    CTA_TEXT: "Submit",
+  },
+};
+
 export const MOBILE_TEMP_NAVBAR_DATA = {
   EDIT_PROFILE: {
     TITLE: "Personal Information",
@@ -340,7 +354,7 @@ export const EXIT_POPUP_DATA = {
   },
   MAKE_LAUGH: {
     ICON: ICONS_NAMES.SMILE,
-    TITLE: "Did that make you 😂,😑 or 😡?",
+    TITLE: "Did that make you laugh 😂,😑 or not 😡?",
     SUB_TITLE: "Don't forget to react to the joke and collect Comic Coins!",
   },
   FOMO: {
@@ -437,30 +451,30 @@ export const JOKES_POPUP_DATA = {
 };
 
 export const REFFERAL_STATUS_POPUP_DATA = {
-  JOKE_SUBMITTED: {
-    ICON: ICONS_NAMES.THANK_YOU,
-    TITLE: "Your joke is in!",
-    SUB_TITLE: "You did good, we'll take it from here. Ping you in 14 days!",
-    SINGLE_BUTTON: true,
-    SINGLE_BUTTON_TEXT: "Explore More",
+  EASY: {
+    ICON: ICONS_NAMES.CHECK,
+    TITLE: "Easy , Peasy , Lemon Squeezy!",
+    SUB_TITLE: "You've successfully referred a friend. Your points will be credited when they sign up using your unique invite code.",
+    SECOND_TEXT: "“S6876”",
+    THIRD_TEXT: "Your points will be credited on successful sign up using the invite code",
   },
-  JOKE_FEATURED: {
-    ICON: ICONS_NAMES.APPLAUSE,
-    TITLE: "The crowd's going crazy!",
-    SUB_TITLE: "Your joke just got featured in the Sprite® Joke Box 🙌",
+  PAST_ON_US: {
+    ICON: ICONS_NAMES.CALENDAR_NOTIFICATION,
+    TITLE: "Trying to get one past us?",
+    SUB_TITLE: "You've already referred this person. 👐  Try sending them a reminder, instead!",
     SINGLE_BUTTON: true,
-    SINGLE_BUTTON_TEXT: "Check it out",
+    SINGLE_BUTTON_TEXT: "Refer Another",      
   },
-  JOKE_NOT_SUITABLE: {
-    ICON: ICONS_NAMES.CROSS,
-    TITLE: "Uh-oh!",
-    SUB_TITLE:
-      "The joke's good,but doesn't work for the crowd. Try something else? 👀",
+  TRUE_COLORS: {
+    ICON: ICONS_NAMES.SMILE,
+    TITLE: "Your friend has shown their true colors...",
+    SUB_TITLE: "By joining us! Your gang is growing, and we've added 5 points. Keep'em coming, refer another!",
     SINGLE_BUTTON: true,
-    SINGLE_BUTTON_TEXT: "Try Again",
+    SINGLE_BUTTON_TEXT: "Got it",
   },
-
 };
+
+
 
 export const ARE_YOU_SURE_YOU_WANT_TO_EXIT = "Are you sure you want to exit?";
 
