@@ -220,6 +220,7 @@ const Input: React.FC<IInput> = ({
           value={value}
           placeholder={placeholder}
           name={name}
+          {...(rows && { rows })}
         />
       )}
       {error !== '' && (

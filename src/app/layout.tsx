@@ -6,6 +6,7 @@ import "./globals.css";
 import QueryClientAndReduxWrapper from "@/components/QueryClientAndReduxWrapper";
 import Navbar from "@/components/common/Navbar/Navbar";
 import Footer from "@/components/common/Footer/Footer";
+import HomePageSurpriseButton from "@/components/HomePageSurpriseButton";
 
 export const aktivGrotesk = localFont({
   src: [
@@ -86,6 +87,7 @@ export default function RootLayout({
         <QueryClientAndReduxWrapper>
           <Navbar />
           {children}
+          <HomePageSurpriseButton />
           <Footer />
         </QueryClientAndReduxWrapper>
       </body>

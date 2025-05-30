@@ -7,7 +7,6 @@ import GreenCTA from '@/components/GreenCTA'
 import { MadeYouLaughExitPopup } from '@/components/ExitPopUps'
 
 const UgcCard = () => {
-  const [openMadYouLOL, setOpenMadYouLOL] = useState<boolean>(false)
   return (
     <div className='relative w-full p-[16px] md:px-[12px] flex flex-col gap-[16px] rounded-[5px] bg-[#FFFFFF]'>
       <div className='flex justify-between items-center'>
@@ -67,7 +66,7 @@ const UgcCard = () => {
           <div></div>
         </div>
         <div className='bg-white border-x-[1px] border-b-[1px] border-[#D9D9D9] rounded-b-[5px] p-[8px] flex justify-between'>
-          <div className='flex gap-[10px] md:gap-[34px] pl-[10px]'>
+          <div className='flex gap-[10px] md:gap-[20px] pl-[10px]'>
             <SurpriseMeCTA
               name={ICONS_NAMES.FUNNY}
               text='2.3k'
@@ -87,7 +86,6 @@ const UgcCard = () => {
           <div className='flex gap-[12px]'>
             <GreenCTA
               onClick={() => {
-                setOpenMadYouLOL(true)
               }}
               text='Vote'
               paddingClass='px-[26px] py-[8px] md:px-[21px] md:py-[7px]'
@@ -102,12 +100,6 @@ const UgcCard = () => {
           </div>
         </div>
       </div>
-      {openMadYouLOL && (
-        <MadeYouLaughExitPopup
-          open={openMadYouLOL}
-          onClose={() => setOpenMadYouLOL(false)}
-        />
-      )}
     </div>
   )
 }

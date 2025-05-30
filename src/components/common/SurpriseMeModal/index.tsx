@@ -20,7 +20,7 @@ const SurpriseMeModal: React.FC<{}> = ({}) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className='border-none md:max-w-[239px] max-w-[277px] shadow-none p-0 rounded-[10px]'>
-        <div className='absolute top-[-105px] md:top-[-125px] left-0 flex justify-center items-center w-full'>
+        <div className='absolute border-none outline-none top-[-105px] md:top-[-125px] left-0 flex justify-center items-center w-full'>
           <SvgIcons
             name={ICONS_NAMES.SURPRISE_ME}
             className='w-[145px] h-[102px] md:w-[182px] md:h-[114px]'

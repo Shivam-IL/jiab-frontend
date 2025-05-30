@@ -52,7 +52,7 @@ const InviteCodePopupWrapper: React.FC<IInviteCodePopup> = ({
               value={code}
               fontSize='text-[14px] md:text-[16px]'
               onChange={onChange}
-              placeholder='Enter Phone Number'
+              placeholder='Enter Invite Code'
             />
             <GreenCTA
               text={ctaText}

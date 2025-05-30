@@ -87,9 +87,7 @@ const SubmitYourJoke = () => {
   const [openJokeOffensivePopup, setOpenJokeOffensivePopup] =
     useState<boolean>(false)
 
-  useEffect(() => {
-    setOpenApproveJokePopup(true)
-  }, [])
+
 
   const [jokeData, setJokeData] = useState<IJokeData>({
     language: '',
@@ -135,7 +133,7 @@ const SubmitYourJoke = () => {
           />
         </div>
         <div className='mt-[36px] md:mt-0 flex flex-col md:justify-center md:items-center gap-[24px] md:gap-[32px]'>
-          <LabeledInput label='Select Language'>
+          <LabeledInput labelClassName='md:text-center' label='Select Language*'>
             <Input
               bgColor='bg-white'
               name='language'
@@ -146,9 +144,9 @@ const SubmitYourJoke = () => {
               placeholder='Select Language'
             />
           </LabeledInput>
-          <LabeledInput label='Select Format'>
+          <LabeledInput labelClassName='md:text-center' width='w-full' label='Select Format*'>
             <div className='flex w-full  md:flex-row md:justify-center'>
-              <div className='flex w-full gap-[8px] md:w-[600px] justify-between'>
+              <div className='flex w-full md:w-[600px] gap-[8px]  justify-between'>
                 {FORMAT_OPTIONS.map(item => {
                   return (
                     <button
@@ -217,12 +215,12 @@ const SubmitYourJoke = () => {
                   rows={6}
                   onChange={handleChange}
                   value={jokeData.jokeText}
-                  placeholder='Enter your text'
+                  placeholder='Type your joke here...'
                 />
               </div>
             )}
           </LabeledInput>
-          <LabeledInput label='Title'>
+          <LabeledInput labelClassName='md:text-center' label='Title*'>
             <Input
               bgColor='bg-white'
               name='title'
@@ -231,11 +229,17 @@ const SubmitYourJoke = () => {
               value={jokeData.title}
               placeholder='Joke Title'
             />
-            <AktivGroteskText text='Max 30 character limit' className='' fontSize='text-[8px] md:text-[12px]' fontWeight='font-[400]' />
+            <AktivGroteskText
+              text='Max 30 character limit'
+              className=''
+              fontSize='text-[8px] md:text-[12px]'
+              fontWeight='font-[400]'
+            />
           </LabeledInput>
-          <LabeledInput
+          <LabeledInput 
+            labelClassName='md:text-center'
             width='md:max-w-[720px] lg:max-w-[920px]'
-            label='Select Category'
+            label='Select Category* '
           >
             <CustomCarousel>
               {CATEGORIES_CAROUSEL_DATA.map(item => {
@@ -284,7 +288,9 @@ const SubmitYourJoke = () => {
           </div>
           <div className='flex flex-col justify-center items-center gap-[4px]'>
             <GreenCTA
-              onClick={() => {}}
+              onClick={() => {
+                setOpenApproveJokePopup(true)
+              }}
               className='w-full md:w-[480px]'
               fontSize='text-[16px] md:text-[32px]'
               fontWeight='font-[400]'
