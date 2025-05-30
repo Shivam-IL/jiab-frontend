@@ -5,10 +5,13 @@ import comicCoin from "../../../../../public/other-svgs/comic-coin-footer.svg";
 import { BoxIds } from "../../../common/CircularBoxesModal";
 
 const MobileFooter = () => {
-  const [currentPath, setCurrentPath] = useState("");
-  const [coordinates, setCoordinates] = useState({ x: 0, y: 0, width: 0, height: 0 });
-
-
+  const [currentPath, setCurrentPath] = useState("/");
+  const [coordinates, setCoordinates] = useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
     // Set initial path
@@ -49,7 +52,6 @@ const MobileFooter = () => {
 
   return (
     <>
-
       <div className="bg-white w-full h-[71px] fixed bottom-0 left-0 right-0 flex flex-col z-10">
         <div className="h-[54px] w-full bg-white text-black border-t border-gray-200">
           <div className="flex justify-evenly items-center h-full">
@@ -87,7 +89,7 @@ const MobileFooter = () => {
                     <path
                       d="M10.5 1.1123C10.7852 1.1123 11.0535 1.20816 11.2705 1.38672L11.3604 1.46875L19.5195 9.62695V9.62793H19.5205C19.9639 10.0723 19.9908 10.7781 19.6025 11.2549L19.5195 11.3477C19.2887 11.5781 18.9856 11.704 18.6602 11.7041H17.7334V18.333C17.7332 19.1755 17.0463 19.8622 16.2031 19.8623H13.0498V15.1943C13.0498 14.307 12.3287 13.5859 11.4414 13.5859H9.55859C8.67133 13.586 7.9502 14.307 7.9502 15.1943V19.8623H4.79688C3.9538 19.8621 3.26779 19.1754 3.26758 18.333V11.7041H2.32129L2.30371 11.7021L2.28711 11.7012L2.17285 11.6914C1.948 11.6608 1.73886 11.5688 1.56445 11.4238L1.48047 11.3477V11.3467L1.39746 11.2549C1.00988 10.7795 1.03575 10.0754 1.47656 9.63086C1.47987 9.62756 1.48248 9.62401 1.48438 9.62207L1.48535 9.62305L9.63965 1.46875C9.87036 1.23806 10.174 1.11234 10.5 1.1123Z"
                       stroke="black"
-                      stroke-width="1.25"
+                      strokeWidth="1.25"
                     />
                   </svg>
                 )}
@@ -105,7 +107,6 @@ const MobileFooter = () => {
             {/* Contest */}
             <Link
               id={BoxIds.CONTEST_ELEMENT}
-
               href="/contest"
               className="flex flex-col items-center justify-center flex-1"
             >
@@ -138,7 +139,7 @@ const MobileFooter = () => {
             {/* Comic Coins */}
             <Link
               id={BoxIds.COMIC_COINS}
-              href="/comic-coins"
+              href="/my-wallet"
               className="flex flex-col items-center justify-center flex-1"
             >
               <div className="relative">
@@ -149,7 +150,7 @@ const MobileFooter = () => {
                   height={24}
                   style={{
                     filter:
-                      currentPath === "/comic-coins"
+                      currentPath === "/my-wallet"
                         ? "brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(120deg) brightness(95%) contrast(105%)"
                         : "none",
                   }}
@@ -157,7 +158,7 @@ const MobileFooter = () => {
                 <div
                   className={`absolute -top-1 -right-1 bg-yellow-400 text-white
                  text-[7px] px-1 py-0.5 rounded-full font-bold ${
-                   currentPath === "/comic-coins" ? "bg-green" : "bg-black"
+                   currentPath === "/my-wallet" ? "bg-green" : "bg-black"
                  }`}
                 >
                   0
@@ -165,7 +166,9 @@ const MobileFooter = () => {
               </div>
               <span
                 className={`text-[9px] mt-1 font-medium ${
-                  currentPath === "/comic-coins" ? "text-[#00953B]" : "text-black"
+                  currentPath === "/my-wallet"
+                    ? "text-[#00953B]"
+                    : "text-black"
                 }`}
               >
                 COMIC COINS
@@ -185,32 +188,32 @@ const MobileFooter = () => {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g clip-path="url(#clip0_28913_15130)">
+                <g clipPath="url(#clip0_28913_15130)">
                   <path
                     d="M1 14.602C1 15.4517 1.68764 16.1405 2.53589 16.1405H19.4642C20.3123 16.1405 21 15.4517 21 14.602V11.4727C19.6703 11.1117 18.6922 9.89437 18.6922 8.44817C18.6922 7.00197 19.6703 5.7846 21 5.4236V2.29432C21 1.44466 20.3123 0.755859 19.4642 0.755859H2.53589C1.68765 0.755859 1 1.44464 1 2.29432V5.41683C2.34262 5.76918 3.33317 6.9928 3.33317 8.44817C3.33317 9.90354 2.34262 11.1272 1 11.4795V14.602Z"
                     stroke={
                       currentPath === "/refresh-rings" ? "#00953B" : "#909090"
                     }
-                    stroke-width="1.1"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="1.1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                   <path
                     d="M8 11.3834V8.61418C8 8.23184 8.30996 7.92188 8.69231 7.92188H13.5385C13.9208 7.92188 14.2308 8.23184 14.2308 8.61418V11.3834C14.2308 11.7658 13.9208 12.0757 13.5385 12.0757H8.69231C8.30996 12.0757 8 11.7658 8 11.3834Z"
                     stroke={
                       currentPath === "/refresh-rings" ? "#00953B" : "#909090"
                     }
-                    stroke-width="1.1"
-                    stroke-linejoin="round"
+                    strokeWidth="1.1"
+                    strokeLinejoin="round"
                   />
                   <path
                     d="M9 7.9215V6.53688C9 5.38983 9.92987 4.45996 11.0769 4.45996C12.224 4.45996 13.1538 5.38983 13.1538 6.53688V7.9215"
                     stroke={
                       currentPath === "/refresh-rings" ? "#00953B" : "#909090"
                     }
-                    stroke-width="1.1"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="1.1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </g>
                 <defs>
@@ -285,7 +288,9 @@ const MobileFooter = () => {
             </Link>
             <p className="text-center text-[7px] text-black">|</p>
             <Link href="/privacy-policy">
-              <p className="text-center text-[7px] text-black">Privacy Policy</p>
+              <p className="text-center text-[7px] text-black">
+                Privacy Policy
+              </p>
             </Link>
           </div>
           <div className="flex flex-row gap-[2px]">
@@ -305,7 +310,7 @@ const MobileFooter = () => {
                   height="5.10805"
                   fill="#00953B"
                   stroke="#00953B"
-                  stroke-width="0.356376"
+                  strokeWidth="0.356376"
                 />
                 <circle cx="3.62296" cy="3.37686" r="1.58389" fill="#E0E0E0" />
               </svg>

@@ -11,7 +11,7 @@ const Banner: React.FC<IBannerProps> = ({
 }) => {
   return (
     <div
-      className={`relative overflow-hidden md:mx-0 mx-5 h-full ${className}`}
+      className={`relative overflow-hidden md:mx-0 md:mx-5 h-full ${className}`}
     >
       {type === 'video' ? (
         <video

@@ -13,8 +13,8 @@ interface VideoScrollProps {
 
 const VideoScroll = ({ videos }: VideoScrollProps) => {
   return (
-    <div className="relative w-full overflow-hidden max-w-full px-4">
-      <div className="flex md:gap-16 gap-[12px] mb-10 md:flex-wrap overflow-x-auto md:overflow-x-visible scrollbar-hide">
+    <div className="relative w-full overflow-hidden max-w-full md:px-0 px-4">
+      <div className="flex md:gap-[60px] gap-[12px] md:mb-10 mb-0 md:flex-wrap overflow-x-auto md:overflow-x-visible scrollbar-hide">
         {videos.map((video) => (
           <div
             key={video.id}

@@ -16,7 +16,7 @@ const UserGeneratedJokecComponent = () => {
         />
         <button
           className='bg-transparent border-none outline-none'
-          onClick={() => router.push('/hall-of-lame-leaderboard')}
+          onClick={() => router.push('/hall-of-lame')}
         >
           <AktivGroteskText
             className='text-[#11A64B]'

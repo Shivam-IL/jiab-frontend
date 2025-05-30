@@ -1,53 +1,43 @@
-'use client'
+"use client";
 
-import Login from '@/components/common/Login'
-import OtpModal from '@/components/common/OtpModal'
-import Signup from '@/components/common/Signup'
-import SurpriseMeLockModal from '@/components/common/SurpriseMeLockModal'
-import SurpriseMeModal from '@/components/common/SurpriseMeModal'
-import useAppSelector from '@/hooks/useSelector'
+import Login from "@/components/common/Login";
+import OtpModal from "@/components/common/OtpModal";
+import Signup from "@/components/common/Signup";
+import SurpriseMeLockModal from "@/components/common/SurpriseMeLockModal";
+import SurpriseMeModal from "@/components/common/SurpriseMeModal";
+import useAppSelector from "@/hooks/useSelector";
 
-import Banner from '@/components/common/Banner/Banner'
-import bannerImage from '../../public/assets/images/banner-top-2.png'
-import pjChallengeImage from '../../public/home-page/banner-bottom.png'
-import Header from '@/components/common/Header/Header'
-import VideoScroll from '@/components/video-carousel/VideoScroll'
+import Banner from "@/components/common/Banner/Banner";
+import bannerImage from "../../public/assets/images/banner-top.svg";
+import pjChallengeImage from "../../public/assets/images/pj-challenge.svg";
+import Header from "@/components/common/Header/Header";
+import VideoScroll from "@/components/video-carousel/VideoScroll";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  type CarouselApi
-} from '@/components/ui/carousel'
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import {
-  adulting,
-  animals,
-  college,
-  cricket,
-  family,
-  food,
-  friends,
-  observation,
-  office,
-  relationships,
-  self,
-  wedding
-} from '@/components/video-carousel/imageImport'
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import CircularBoxesModal, {
-  BoxIds
-} from '@/components/common/CircularBoxesModal'
-import useWindowWidth from '@/hooks/useWindowWidth'
-import HomePageSurpriseButton from '@/components/HomePageSurpriseButton'
+  BoxIds,
+} from "@/components/common/CircularBoxesModal";
+import HomePageSurpriseButton from "@/components/HomePageSurpriseButton";
+import useWindowWidth from "@/hooks/useWindowWidth";
+import SvgIcons from "@/components/common/SvgIcons";
+import { ICONS_NAMES } from "@/constants";
+import UgcCard from "@/components/common/UgcCard";
+import Link from "next/link";
 
-export default function Home () {
+export default function Home() {
   const { otpSent, otpFilled, loginModal, signupDone, crossModal } =
-    useAppSelector(state => state.auth)
-  const width = useWindowWidth()
+    useAppSelector((state) => state.auth);
+  const width = useWindowWidth();
 
   // Tour Guide State
-  const [runCenteredTour, setRunCenteredTour] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
+  const [runCenteredTour, setRunCenteredTour] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   // Mount check for client-side rendering
   /*useEffect(() => {
@@ -60,208 +50,239 @@ export default function Home () {
   // Tour steps with targets
   const centeredTourSteps = [
     {
-      target: '.banner-section',
+      target: ".banner-section",
       content:
-        'Welcome to Joke In A Bottle! This is your starting point for endless entertainment.',
-      title: 'Welcome Guide',
-      placement: 'bottom' as const,
-      disableBeacon: true
+        "Welcome to Joke In A Bottle! This is your starting point for endless entertainment.",
+      title: "Welcome Guide",
+      placement: "bottom" as const,
+      disableBeacon: true,
     },
     {
-      target: '.video-section',
+      target: ".video-section",
       content:
-        'Scroll through hilarious videos and discover amazing content creators!',
-      title: 'Video Content',
-      placement: 'bottom' as const,
-      disableBeacon: true
+        "Scroll through hilarious videos and discover amazing content creators!",
+      title: "Video Content",
+      placement: "bottom" as const,
+      disableBeacon: true,
     },
     {
-      target: '.categories-section',
+      target: ".categories-section",
       content:
-        'Pick your mood and explore different comedy categories that match your vibe!',
-      title: 'Pick Your Mood',
-      placement: 'bottom' as const,
-      disableBeacon: true
+        "Pick your mood and explore different comedy categories that match your vibe!",
+      title: "Pick Your Mood",
+      placement: "bottom" as const,
+      disableBeacon: true,
     },
     {
-      target: '.challenge-section',
+      target: ".challenge-section",
       content:
-        'Join special challenges and events for extra fun and amazing prizes!',
-      title: 'Special Events',
-      placement: 'bottom' as const,
-      disableBeacon: true
-    }
-  ]
+        "Join special challenges and events for extra fun and amazing prizes!",
+      title: "Special Events",
+      placement: "bottom" as const,
+      disableBeacon: true,
+    },
+  ];
 
   // Path to the thumbnail image - you'll need to ensure this exists in your project
-  const thumbnailPath = '/videos/thumbnail.jpg'
+  const thumbnailPath = "/videos/thumbnail.jpg";
 
   // Video data for the carousel
   const videoData = [
     {
-      id: 'video1',
-      src: thumbnailPath
+      id: "video1",
+      src: thumbnailPath,
     },
     {
-      id: 'video2',
-      src: thumbnailPath
+      id: "video2",
+      src: thumbnailPath,
     },
     {
       id: "video3",
       src: thumbnailPath,
     },
-  ]
+  ];
 
   const categories = [
     {
-      id: 'category1',
-      name: 'Cricket',
-      icon: cricket
+      id: "category1",
+      name: "Cricket",
+      icon: ICONS_NAMES.CRICKET,
     },
     {
-      id: 'category2',
-      name: 'Animals',
-      icon: animals
+      id: "category2",
+      name: "Animals",
+      icon: ICONS_NAMES.ANIMAL,
     },
     {
-      id: 'category3',
-      name: 'Food',
-      icon: food
+      id: "category3",
+      name: "Food",
+      icon: ICONS_NAMES.FOOD,
     },
     {
-      id: 'category4',
-      name: 'Wedding',
-      icon: wedding
+      id: "category4",
+      name: "Wedding",
+      icon: ICONS_NAMES.RELATIONSHIP,
     },
     {
-      id: 'category5',
-      name: 'College',
-      icon: college
+      id: "category5",
+      name: "College",
+      icon: ICONS_NAMES.COLLEGE,
     },
     {
-      id: 'category6',
-      name: 'Office',
-      icon: office
+      id: "category6",
+      name: "Office",
+      icon: ICONS_NAMES.OFFICE,
     },
     {
-      id: 'category7',
-      name: 'Family',
-      icon: family
+      id: "category7",
+      name: "Family",
+      icon: ICONS_NAMES.FAMILY,
     },
     {
-      id: 'category8',
-      name: 'Friends',
-      icon: friends
+      id: "category8",
+      name: "Friends",
+      icon: ICONS_NAMES.FRIENDS,
     },
     {
-      id: 'category9',
-      name: 'Finance',
-      icon: food
+      id: "category9",
+      name: "Finance",
+      icon: ICONS_NAMES.FINANCE,
     },
     {
-      id: 'category10',
-      name: 'Childhood',
-      icon: wedding
+      id: "category10",
+      name: "Childhood",
+      icon: ICONS_NAMES.DAILY_HUMOR,
     },
     {
-      id: 'category11',
-      name: 'Relationships',
-      icon: relationships
+      id: "category11",
+      name: "Self",
+      icon: ICONS_NAMES.SELF,
     },
     {
-      id: 'category12',
-      name: 'Self',
-      icon: self
+      id: "category12",
+      name: "Adulting",
+      icon: ICONS_NAMES.ADULTING,
     },
     {
-      id: 'category13',
-      name: 'Adulting',
-      icon: adulting
+      id: "category13",
+      name: "Observation",
+      icon: ICONS_NAMES.OBSERVING,
     },
     {
-      id: 'category14',
-      name: 'Observation',
-      icon: observation
-    }
-  ]
+      id: "category14",
+      name: "Internet",
+      icon: ICONS_NAMES.INTERNET,
+    },
+    {
+      id: "category15",
+      name: "Pollution",
+      icon: ICONS_NAMES.POLLUTION,
+    },
+    {
+      id: "category16",
+      name: "Travel",
+      icon: ICONS_NAMES.TRAVEL,
+    },
+    {
+      id: "category17",
+      name: "Dating",
+      icon: ICONS_NAMES.DATING,
+    },
+    {
+      id: "category18",
+      name: "Traffic",
+      icon: ICONS_NAMES.TRAFFIC,
+    },
+    {
+      id: "category19",
+      name: "OTT",
+      icon: ICONS_NAMES.OTT,
+    },
+    {
+      id: "category20",
+      name: "Non-Genre",
+      icon: ICONS_NAMES.NON_GENRE,
+    },
+  ];
 
   // Calculate how many pages we need based on screen size
-  const [api, setApi] = useState<CarouselApi>()
-  const [current, setCurrent] = useState(0)
-  const [pageCount, setPageCount] = useState(0)
-  const [itemsPerPage, setItemsPerPage] = useState(6) // Default to desktop
-
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(6); // Default to desktop
+  const [activeTab, setActiveTab] = useState<"Latest" | "Trending">("Trending");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // Use window check for client-side only
     const handleResize = () => {
       // Set items per page based on screen width
       if (window.innerWidth < 768) {
-        setItemsPerPage(4) // Mobile: 4 items
+        setItemsPerPage(5); // Mobile: 5 items
       } else {
-        setItemsPerPage(6) // Desktop: 6 items
+        setItemsPerPage(6); // Desktop: 6 items
       }
-    }
+    };
 
     // Initial check
-    handleResize()
+    handleResize();
 
     // Add resize listener
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     if (width < 768) {
       if (crossModal) {
-        setIsModalOpen(true)
+        setIsModalOpen(true);
       } else {
-        setIsModalOpen(false)
+        setIsModalOpen(false);
       }
     } else {
-      setIsModalOpen(false)
+      setIsModalOpen(false);
     }
-  }, [width, crossModal])
+  }, [width, crossModal]);
 
   // Calculate page count
   useEffect(() => {
-    setPageCount(Math.ceil(categories.length / itemsPerPage))
-  }, [itemsPerPage, categories.length])
+    setPageCount(Math.ceil(categories.length / itemsPerPage));
+  }, [itemsPerPage, categories.length]);
 
   useEffect(() => {
     if (!api) {
-      return
+      return;
     }
 
-    api.on('select', () => {
-      const selectedIndex = api.selectedScrollSnap()
-      const totalItems = categories.length
-      const lastPage = Math.ceil(totalItems / itemsPerPage) - 1
+    api.on("select", () => {
+      const selectedIndex = api.selectedScrollSnap();
+      const totalItems = categories.length;
+      const lastPage = Math.ceil(totalItems / itemsPerPage) - 1;
 
       // Check if we're at or near the end of the carousel
       if (selectedIndex >= totalItems - itemsPerPage) {
-        setCurrent(lastPage)
+        setCurrent(lastPage);
       } else {
-        setCurrent(Math.floor(selectedIndex / itemsPerPage))
+        setCurrent(Math.floor(selectedIndex / itemsPerPage));
       }
-    })
-  }, [api, itemsPerPage, categories.length])
+    });
+  }, [api, itemsPerPage, categories.length]);
 
   // Function to navigate to a specific page
   const goToPage = (pageIndex: number) => {
-    if (!api) return
-    api.scrollTo(pageIndex * itemsPerPage)
-  }
+    if (!api) return;
+    api.scrollTo(pageIndex * itemsPerPage);
+  };
 
   // Function to handle category click - will trigger modal
-  const handleCategoryClick = (category: typeof categories[0]) => {
-    console.log(`Category clicked: ${category.name}`)
-  }
+  const handleCategoryClick = (category: (typeof categories)[0]) => {
+    console.log(`Category clicked: ${category.name}`);
+    // Modal trigger logic would go here
+  };
 
   return (
-    <div className='bg-lightGray min-h-screen'>
-      <div className='container mx-auto md:pt-24 pt-20'>
+    <div className="bg-lightGray min-h-screen">
+      <div className="container mx-auto md:pt-24 pt-20">
         {/* Modals */}
         <SurpriseMeLockModal />
         {loginModal && <Login />}
@@ -270,61 +291,53 @@ export default function Home () {
         {signupDone && <SurpriseMeModal />}
 
         <Banner
-          type='image'
+          type="image"
           src={bannerImage.src}
-          className='rounded-lg banner-section'
+          className="rounded-lg banner-section mx-5"
         />
         {/* Video Scroll */}
         <Header
-          title='SCROLL & LOL'
-          className='md:my-[40px] my-[20px]'
-          viewAllUrl='/scroll-and-lol'
+          title="SCROLL & LOL"
+          className="md:my-[40px] mt-[20px] mb-[16px]"
+          viewAllUrl="/scroll-and-lol"
         />
-        <div className='video-section'>
+        <div className="video-section">
           <VideoScroll videos={videoData} />
         </div>
         {/* Pick your mood */}
         <Header
-          title='Pick your mood'
-          className='md:mb-[40px] mb-[20px]'
-          viewAllUrl='/scroll-and-lol'
-          description='Pick your Delulu, Get your Solulu'
+          title="Pick your mood"
+          className="md:mb-[40px] mb-[16px] md:mt-0 mt-[20px]"
+          viewAllUrl="/scroll-and-lol"
+          description="Pick your Delulu, Get your Solulu"
         />
-        <div
-          id={BoxIds.PICK_YOUR_MOOD}
-          className='space-y-3 categories-section'
-        >
+        <div id={BoxIds.PICK_YOUR_MOOD} className="categories-section">
           <Carousel
-            className='mx-4'
+            className="mx-4"
             setApi={setApi}
             opts={{
-              align: 'start',
+              align: "start",
               loop: false,
-              skipSnaps: true
+              skipSnaps: true,
             }}
           >
             <CarouselContent>
-              {categories.map(category => (
+              {categories.map((category) => (
                 <CarouselItem
                   key={category.id}
-                  className='basis-1/4 md:basis-1/6'
+                  className="basis-1/5 md:basis-1/6"
                 >
                   <div
-                    className='flex flex-col items-center cursor-pointer'
+                    className="flex flex-col items-center cursor-pointer"
                     onClick={() => handleCategoryClick(category)}
                   >
-                    <div className='rounded-full bg-white w-16 h-16 md:w-[120px] md:h-[120px] flex items-center justify-center shadow-lg'>
-                      <div className='text-green-600 w-16 h-16 flex items-center justify-center'>
-                        <Image
-                          src={category.icon}
-                          alt={category.name}
-                          width={100}
-                          height={100}
-                          className='w-10 h-10 md:w-20 md:h-20 object-contain'
-                        />
-                      </div>
+                    <div className="rounded-full bg-white w-[60px] h-[60px] md:w-[120px] md:h-[120px] flex items-center justify-center md:hover:border-2 hover:border hover:border-green transition-all duration-900 md:hover:shadow-lg">
+                      <SvgIcons
+                        name={category.icon}
+                        className="w-10 h-10 md:w-20 md:h-20"
+                      />
                     </div>
-                    <p className='text-center font-medium mt-3 text-xs md:text-lg'>
+                    <p className="text-center font-medium mt-3 text-xs md:text-lg">
                       {category.name}
                     </p>
                   </div>
@@ -334,12 +347,14 @@ export default function Home () {
           </Carousel>
 
           {/* Navigation dots - page based */}
-          <div className='flex justify-center gap-2 pb-10'>
+          <div className="flex justify-center md:gap-2 gap-[1.77px] md:mb-10 mb-0 md:mt-[40px]">
             {Array.from({ length: pageCount }).map((_, index) => (
               <button
                 key={index}
                 className={`h-1 rounded-full transition-all duration-300 ${
-                  index === current ? 'w-8 bg-black' : 'w-4 bg-gray-300'
+                  index === current
+                    ? "md:w-8 w-[17.73px] bg-black"
+                    : "md:w-4 w-[8.86px] bg-gray-300"
                 }`}
                 onClick={() => goToPage(index)}
                 aria-label={`Go to page ${index + 1}`}
@@ -349,100 +364,104 @@ export default function Home () {
         </div>
 
         {/* PJ Challenge */}
-        <div className='challenge-section'>
-          <Banner
-            type='image'
-            src={pjChallengeImage.src}
-            className='rounded-lg mb-4'
-          />
+        <div className="challenge-section md:mt-0 mt-[20px]">
+          <Link href="/submit-your-joke">
+            <Banner
+              type="image"
+              src={pjChallengeImage.src}
+              className="rounded-lg mb-4 mx-5 cursor-pointer"
+            />
+          </Link>
+        </div>
+
+        {/* Joke Box */}
+        <Header
+          title="Joke Box"
+          className="md:mb-[40px] mb-[16px] md:mt-0 mt-[20px]"
+          viewAllUrl="/user-generated-jokes"
+          description="Jokes For you, Created By You"
+        />
+        <div className="mx-4 mt-[20px] mb-[20px]">
+          <div className="flex justify-center w-full">
+            <div className="flex items-center bg-white rounded-full w-max mb-4 p-2 justify-center gap-2 relative">
+              <div
+                className={`absolute transition-all duration-300 ease-in-out h-[calc(100%-8px)] rounded-full bg-green ${
+                  activeTab === "Latest"
+                    ? "left-[4px] w-[84px]"
+                    : "left-[92px] w-[87px]"
+                }`}
+              />
+              <button
+                onClick={() => setActiveTab("Latest")}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
+                  activeTab === "Latest"
+                    ? "text-white"
+                    : "text-gray-600 hover:text-black"
+                }`}
+              >
+                Latest
+              </button>
+              <button
+                onClick={() => setActiveTab("Trending")}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
+                  activeTab === "Trending"
+                    ? "text-white"
+                    : "text-gray-600 hover:text-black"
+                }`}
+              >
+                Trending
+              </button>
+            </div>
+          </div>
+
+          <div className="flex gap-4 overflow-x-scroll scrollbar-hide">
+            <UgcCard />
+            <UgcCard />
+          </div>
         </div>
 
         {/* Follow Sprite */}
-        <div className='bg-[#121212] text-white pt-[13.19px] mx-4 rounded-lg mb-[90px] block md:hidden'>
-          <h2 className='text-center text-md font-semibold mb-[13px]'>
+        <div className="bg-[#121212] text-white pt-[13.19px] mx-4 rounded-lg mb-[90px] block md:hidden">
+          <h2 className="text-center text-md font-semibold mb-[13px]">
             Follow Sprite<sup>®</sup>
           </h2>
-          <div className='flex justify-center gap-6 pb-[16.18px]'>
+          <div className="flex justify-center gap-6 pb-[16.18px]">
             {[
               {
-                href: 'https://www.facebook.com/sprite',
+                href: "https://www.facebook.com/sprite",
                 icon: (
-                  <svg
-                    width='20'
-                    height='20'
-                    viewBox='0 0 20 20'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M10 2C8.39303 2 6.82214 2.47651 5.486 3.36929C4.14985 4.26207 3.10844 5.53102 2.49348 7.01567C1.87852 8.50032 1.71762 10.134 2.03112 11.7101C2.34463 13.2862 3.11846 14.7339 4.25476 15.8702C5.39106 17.0065 6.8388 17.7804 8.4149 18.0939C9.99099 18.4074 11.6247 18.2465 13.1093 17.6315C14.594 17.0165 15.8629 15.9751 16.7557 14.639C17.6485 13.3028 18.125 11.732 18.125 10.125C18.1227 7.97078 17.266 5.90549 15.7427 4.38225C14.2195 2.85901 12.1542 2.00225 10 2ZM10.625 16.9711V12H12.5C12.6658 12 12.8247 11.9341 12.9419 11.8169C13.0592 11.6997 13.125 11.5407 13.125 11.375C13.125 11.2092 13.0592 11.0502 12.9419 10.933C12.8247 10.8158 12.6658 10.75 12.5 10.75H10.625V8.875C10.625 8.54348 10.7567 8.22553 10.9911 7.99111C11.2255 7.75669 11.5435 7.625 11.875 7.625H13.125C13.2908 7.625 13.4497 7.55915 13.5669 7.44194C13.6842 7.32473 13.75 7.16576 13.75 7C13.75 6.83424 13.6842 6.67527 13.5669 6.55806C13.4497 6.44085 13.2908 6.375 13.125 6.375H11.875C11.212 6.375 10.5761 6.63839 10.1072 7.10723C9.6384 7.57607 9.375 8.21196 9.375 8.875V10.75H7.5C7.33424 10.75 7.17527 10.8158 7.05806 10.933C6.94085 11.0502 6.875 11.2092 6.875 11.375C6.875 11.5407 6.94085 11.6997 7.05806 11.8169C7.17527 11.9341 7.33424 12 7.5 12H9.375V16.9711C7.61312 16.8102 5.98107 15.9764 4.81831 14.6429C3.65556 13.3095 3.05162 11.5791 3.13212 9.81167C3.21263 8.04426 3.97137 6.37595 5.25053 5.15373C6.52969 3.93151 8.2308 3.24946 10 3.24946C11.7692 3.24946 13.4703 3.93151 14.7495 5.15373C16.0286 6.37595 16.7874 8.04426 16.8679 9.81167C16.9484 11.5791 16.3444 13.3095 15.1817 14.6429C14.0189 15.9764 12.3869 16.8102 10.625 16.9711Z'
-                      fill='black'
-                    />
-                  </svg>
+                  <SvgIcons name={ICONS_NAMES.FACEBOOK} className="w-5 h-5" />
                 ),
-                label: 'Facebook'
+                label: "Facebook",
               },
               {
-                href: 'https://www.instagram.com/sprite',
+                href: "https://www.instagram.com/sprite",
                 icon: (
-                  <svg
-                    width='20'
-                    height='20'
-                    viewBox='0 0 20 20'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M10 6.375C9.25832 6.375 8.5333 6.59493 7.91661 7.00699C7.29993 7.41904 6.81928 8.00471 6.53545 8.68993C6.25162 9.37516 6.17736 10.129 6.32206 10.8565C6.46675 11.5839 6.8239 12.2521 7.34835 12.7766C7.8728 13.301 8.54098 13.6581 9.26841 13.8028C9.99584 13.9475 10.7498 13.8733 11.4351 13.5894C12.1203 13.3056 12.706 12.8249 13.118 12.2083C13.5301 11.5916 13.75 10.8666 13.75 10.125C13.749 9.13065 13.3535 8.17743 12.6505 7.47439C11.9475 6.77135 10.9942 6.37593 10 6.375ZM10 12.625C9.50555 12.625 9.0222 12.4784 8.61107 12.2036C8.19995 11.9289 7.87952 11.5385 7.6903 11.0817C7.50108 10.6248 7.45157 10.1221 7.54804 9.63717C7.6445 9.15222 7.8826 8.70676 8.23223 8.35713C8.58186 8.0075 9.02732 7.7694 9.51227 7.67293C9.99723 7.57647 10.4999 7.62598 10.9567 7.8152C11.4135 8.00442 11.804 8.32485 12.0787 8.73597C12.3534 9.14709 12.5 9.63044 12.5 10.125C12.5 10.788 12.2366 11.4239 11.7678 11.8928C11.2989 12.3616 10.663 12.625 10 12.625ZM13.75 2H6.25C5.09006 2.00124 3.97798 2.46257 3.15778 3.28277C2.33758 4.10298 1.87624 5.21506 1.875 6.375V13.875C1.87624 15.0349 2.33758 16.147 3.15778 16.9672C3.97798 17.7874 5.09006 18.2487 6.25 18.25H13.75C14.9099 18.2487 16.022 17.7874 16.8422 16.9672C17.6624 16.147 18.1238 15.0349 18.125 13.875V6.375C18.1238 5.21506 17.6624 4.10298 16.8422 3.28277C16.022 2.46257 14.9099 2.00124 13.75 2ZM16.875 13.875C16.875 14.7038 16.5458 15.4986 15.9597 16.0847C15.3737 16.6707 14.5788 17 13.75 17H6.25C5.4212 17 4.62634 16.6707 4.04029 16.0847C3.45424 15.4986 3.125 14.7038 3.125 13.875V6.375C3.125 5.54619 3.45424 4.75134 4.04029 4.16529C4.62634 3.57924 5.4212 3.25 6.25 3.25H13.75C14.5788 3.25 15.3737 3.57924 15.9597 4.16529C16.5458 4.75134 16.875 5.54619 16.875 6.375V13.875ZM15 6.0625C15 6.24792 14.945 6.42917 14.842 6.58334C14.739 6.73751 14.5926 6.85768 14.4213 6.92863C14.25 6.99959 14.0615 7.01816 13.8796 6.98198C13.6977 6.94581 13.5307 6.85652 13.3996 6.72541C13.2685 6.5943 13.1792 6.42725 13.143 6.24539C13.1068 6.06354 13.1254 5.87504 13.1964 5.70373C13.2673 5.53243 13.3875 5.38601 13.5417 5.28299C13.6958 5.17998 13.8771 5.125 14.0625 5.125C14.3111 5.125 14.5496 5.22377 14.7254 5.39958C14.9012 5.5754 15 5.81386 15 6.0625Z'
-                      fill='black'
-                    />
-                  </svg>
+                  <SvgIcons name={ICONS_NAMES.INSTAGRAM} className="w-5 h-5" />
                 ),
-                label: 'Instagram'
+                label: "Instagram",
               },
               {
-                href: 'https://www.youtube.com/sprite',
+                href: "https://www.youtube.com/sprite",
                 icon: (
-                  <svg
-                    width='20'
-                    height='20'
-                    viewBox='0 0 20 20'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M12.8469 9.60469L9.09688 7.10469C9.00273 7.04187 8.89329 7.0058 8.78024 7.00033C8.6672 6.99485 8.55479 7.02017 8.45501 7.07359C8.35523 7.12701 8.27183 7.20652 8.21371 7.30363C8.15559 7.40075 8.12493 7.51182 8.125 7.625V12.625C8.12493 12.7382 8.15559 12.8492 8.21371 12.9463C8.27183 13.0435 8.35523 13.123 8.45501 13.1764C8.55479 13.2298 8.6672 13.2551 8.78024 13.2497C8.89329 13.2442 9.00273 13.2081 9.09688 13.1453L12.8469 10.6453C12.9326 10.5882 13.0029 10.5109 13.0515 10.4201C13.1002 10.3293 13.1256 10.228 13.1256 10.125C13.1256 10.022 13.1002 9.92066 13.0515 9.82985C13.0029 9.73905 12.9326 9.6617 12.8469 9.60469ZM9.375 11.457V8.79687L11.3734 10.125L9.375 11.457ZM18.307 5.55625C18.2334 5.26824 18.0924 5.00186 17.8955 4.77909C17.6987 4.55631 17.4517 4.38353 17.175 4.275C14.4969 3.24062 10.2344 3.25 10 3.25C9.76562 3.25 5.50312 3.24062 2.825 4.275C2.54825 4.38353 2.30128 4.55631 2.10445 4.77909C1.90762 5.00186 1.76658 5.26824 1.69297 5.55625C1.49063 6.33594 1.25 7.76094 1.25 10.125C1.25 12.489 1.49063 13.914 1.69297 14.6937C1.76647 14.9819 1.90746 15.2484 2.1043 15.4713C2.30113 15.6942 2.54816 15.8672 2.825 15.9758C5.39062 16.9656 9.40625 17 9.94844 17H10.0516C10.5938 17 14.6117 16.9656 17.175 15.9758C17.4518 15.8672 17.6989 15.6942 17.8957 15.4713C18.0925 15.2484 18.2335 14.9819 18.307 14.6937C18.5094 13.9125 18.75 12.489 18.75 10.125C18.75 7.76094 18.5094 6.33594 18.307 5.55625ZM17.0969 14.3844C17.0731 14.4802 17.0269 14.569 16.9621 14.6436C16.8973 14.7182 16.8158 14.7763 16.7242 14.8133C14.2516 15.7679 10.0461 15.7508 10.0055 15.7508H10C9.95781 15.7508 5.75547 15.7664 3.28125 14.8133C3.18966 14.7763 3.10814 14.7182 3.04337 14.6436C2.97859 14.569 2.9324 14.4802 2.90859 14.3844C2.71875 13.6711 2.5 12.357 2.5 10.125C2.5 7.89297 2.71875 6.57891 2.90313 5.86953C2.92649 5.77311 2.97248 5.68364 3.03728 5.60851C3.10208 5.53338 3.18383 5.47477 3.27578 5.4375C5.66016 4.51641 9.65547 4.5 9.98281 4.5H10.0039C10.0461 4.5 14.2523 4.48594 16.7227 5.4375C16.8142 5.47446 16.8958 5.5326 16.9605 5.60716C17.0253 5.68171 17.0715 5.77055 17.0953 5.86641C17.2812 6.57891 17.5 7.89297 17.5 10.125C17.5 12.357 17.2812 13.6711 17.0969 14.3804V14.3844Z'
-                      fill='black'
-                    />
-                  </svg>
+                  <SvgIcons name={ICONS_NAMES.YOUTUBE} className="w-5 h-5" />
                 ),
-                label: 'YouTube'
+                label: "YouTube",
               },
               {
-                href: 'https://www.whatsapp.com',
+                href: "https://www.whatsapp.com",
                 icon: (
-                  <svg
-                    width='20'
-                    height='20'
-                    viewBox='0 0 20 20'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M14.6548 11.4406L12.1548 10.1906C12.0563 10.1416 11.9467 10.1194 11.837 10.1262C11.7273 10.1331 11.6213 10.1688 11.5298 10.2297L10.3821 10.9953C9.85526 10.7057 9.42171 10.2721 9.13209 9.74531L9.89772 8.59765C9.95863 8.50612 9.99432 8.40013 10.0012 8.29039C10.008 8.18066 9.98582 8.07106 9.93678 7.97265L8.68678 5.47265C8.63497 5.36802 8.55489 5.27999 8.45561 5.21855C8.35633 5.1571 8.24182 5.12469 8.12506 5.125C7.29626 5.125 6.50141 5.45424 5.91536 6.04029C5.3293 6.62634 5.00006 7.42119 5.00006 8.25C5.00213 10.0727 5.72712 11.8202 7.01599 13.1091C8.30485 14.3979 10.0523 15.1229 11.8751 15.125C12.2854 15.125 12.6918 15.0441 13.0709 14.8871C13.4501 14.7301 13.7946 14.4999 14.0848 14.2097C14.375 13.9195 14.6051 13.575 14.7622 13.1959C14.9192 12.8167 15.0001 12.4104 15.0001 12C15.0001 11.8839 14.9679 11.77 14.9069 11.6712C14.8459 11.5724 14.7586 11.4926 14.6548 11.4406ZM11.8751 13.875C10.3837 13.8733 8.95395 13.2802 7.89942 12.2256C6.84488 11.1711 6.25172 9.74131 6.25006 8.25C6.24994 7.8165 6.40004 7.39635 6.6748 7.06105C6.94956 6.72574 7.33202 6.49601 7.75709 6.41093L8.65397 8.20781L7.89069 9.34375C7.83365 9.4293 7.7986 9.52761 7.78866 9.62996C7.77871 9.7323 7.79417 9.83552 7.83366 9.93046C8.28083 10.9932 9.12633 11.8387 10.1891 12.2859C10.2844 12.3272 10.3884 12.344 10.4917 12.335C10.5951 12.326 10.6946 12.2914 10.7813 12.2344L11.9227 11.4734L13.7196 12.3703C13.6339 12.7959 13.4031 13.1785 13.0667 13.4529C12.7304 13.7273 12.3092 13.8765 11.8751 13.875ZM10.0001 2C8.5973 1.99969 7.21836 2.36257 5.99745 3.0533C4.77654 3.74404 3.75526 4.7391 3.03301 5.94164C2.31077 7.14417 1.91216 8.51322 1.87599 9.91547C1.83983 11.3177 2.16733 12.7056 2.82663 13.9437L1.93991 16.6039C1.86646 16.8241 1.8558 17.0605 1.90913 17.2864C1.96245 17.5124 2.07765 17.719 2.24182 17.8832C2.40599 18.0474 2.61264 18.1626 2.8386 18.2159C3.06456 18.2692 3.30091 18.2586 3.52116 18.1851L6.18131 17.2984C7.27098 17.878 8.47836 18.2017 9.7118 18.245C10.9453 18.2883 12.1724 18.05 13.3 17.5482C14.4276 17.0464 15.426 16.2944 16.2196 15.3491C17.0132 14.4038 17.5809 13.2902 17.8798 12.0927C18.1788 10.8953 18.2009 9.64547 17.9447 8.43815C17.6885 7.23083 17.1605 6.09776 16.401 5.12493C15.6415 4.1521 14.6703 3.36509 13.5612 2.82363C12.4521 2.28218 11.2343 2.0005 10.0001 2ZM10.0001 17C8.79145 17.0008 7.60405 16.6825 6.55788 16.0773C6.48128 16.0329 6.39612 16.0053 6.30803 15.9962C6.21995 15.9872 6.13095 15.997 6.04694 16.025L3.12506 17L4.09928 14.0781C4.12737 13.9941 4.13729 13.9052 4.1284 13.8171C4.11951 13.729 4.09201 13.6438 4.04772 13.5672C3.28989 12.2569 2.98562 10.7332 3.18212 9.23247C3.37862 7.73167 4.0649 6.33767 5.13451 5.26671C6.20411 4.19575 7.59725 3.50771 9.09779 3.30931C10.5983 3.11092 12.1224 3.41326 13.4336 4.16944C14.7448 4.92562 15.7698 6.09336 16.3496 7.49152C16.9293 8.88968 17.0315 10.4401 16.6402 11.9022C16.249 13.3644 15.3861 14.6566 14.1855 15.5783C12.9849 16.5 11.5137 16.9997 10.0001 17Z'
-                      fill='black'
-                    />
-                  </svg>
+                  <SvgIcons name={ICONS_NAMES.WHATSAPP} className="w-5 h-5" />
                 ),
-                label: 'WhatsApp'
-              }
+                label: "WhatsApp",
+              },
             ].map((social, index) => (
               <a
                 key={index}
                 href={social.href}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='bg-white rounded-full w-[31px] h-[31px] flex items-center justify-center'
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white rounded-full w-[31px] h-[31px] flex items-center justify-center"
                 aria-label={`Follow on ${social.label}`}
               >
                 {social.icon}
@@ -455,11 +474,11 @@ export default function Home () {
         <CircularBoxesModal
           isOpen={isModalOpen}
           onClose={() => {
-            setIsModalOpen(false)
+            setIsModalOpen(false);
           }}
         />
       )}
       <HomePageSurpriseButton />
     </div>
-  )
+  );
 }

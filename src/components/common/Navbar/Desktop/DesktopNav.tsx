@@ -25,19 +25,14 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const notificationDropdownRef = useRef<HTMLDivElement>(null)
 
   const exploreMenuItems = [
-    { id: 1, label: 'Scroll & LOL', href: '/scroll-and-lol' },
-    { id: 2, label: 'PJ Challenge?', href: '/pj-challenge' },
-    { id: 3, label: 'Pick your mood', href: '/pick-mood' },
-    { id: 4, label: 'Joke Box', href: '/joke-box' },
-    { id: 5, label: 'HALL-OF-LAME 😜', href: '/hall-of-lame-leaderboard' },
-    { id: 6, label: 'Refer A Friend', href: '/refer', type: 'refer' },
-    {
-      id: 7,
-      label: 'Have an Invite Code?',
-      href: '/invite',
-      type: 'invite-code'
-    }
-  ]
+    { id: 1, label: "Scroll & LOL", href: "/scroll-and-lol" },
+    { id: 2, label: "PJ Challenge?", href: "/submit-your-joke" },
+    { id: 3, label: "Pick your mood", href: "/pick-mood" },
+    { id: 4, label: "Joke Box", href: "/user-generated-jokes" },
+    { id: 5, label: "HALL-OF-LAME 😜", href: "/hall-of-lame" },
+    { id: 6, label: "Refer A Friend", href: "/refer" },
+    { id: 7, label: "Have an Invite Code?", href: "/invite" },
+  ];
 
   const languages = [
     { value: 'en', id: '1', label: 'ENGLISH' },
@@ -198,7 +193,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                 <div className='absolute top-full left-0 mt-4 w-[300px] bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 pb-4 pt-2'>
                   <div className='flex flex-col space-y-1'>
                     {exploreMenuItems.map(item => {
-                      if (item.type === 'refer') {
+                      if (item.label === 'Refer A Friend') {
                         return (
                           <button
                             onClick={() => {
@@ -211,7 +206,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                           </button>
                         )
                       }
-                      if (item.type === 'invite-code') {
+                      if (item.label === 'Have an Invite Code?') {
                         return (
                           <button
                             onClick={() => {
