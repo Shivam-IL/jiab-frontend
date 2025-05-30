@@ -27,6 +27,8 @@ import HomePageSurpriseButton from "@/components/HomePageSurpriseButton";
 import useWindowWidth from "@/hooks/useWindowWidth";
 import SvgIcons from "@/components/common/SvgIcons";
 import { ICONS_NAMES } from "@/constants";
+import UgcCard from "@/components/common/UgcCard";
+import Link from "next/link";
 
 export default function Home() {
   const { otpSent, otpFilled, loginModal, signupDone, crossModal } =
@@ -208,7 +210,7 @@ export default function Home() {
   const [current, setCurrent] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(6); // Default to desktop
-
+  const [activeTab, setActiveTab] = useState<"Latest" | "Trending">("Trending");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -291,7 +293,7 @@ export default function Home() {
         <Banner
           type="image"
           src={bannerImage.src}
-          className="rounded-lg banner-section"
+          className="rounded-lg banner-section mx-5"
         />
         {/* Video Scroll */}
         <Header
@@ -363,11 +365,59 @@ export default function Home() {
 
         {/* PJ Challenge */}
         <div className="challenge-section md:mt-0 mt-[20px]">
-          <Banner
-            type="image"
-            src={pjChallengeImage.src}
-            className="rounded-lg mb-4"
-          />
+          <Link href="/submit-your-joke">
+            <Banner
+              type="image"
+              src={pjChallengeImage.src}
+              className="rounded-lg mb-4 mx-5 cursor-pointer"
+            />
+          </Link>
+        </div>
+
+        {/* Joke Box */}
+        <Header
+          title="Joke Box"
+          className="md:mb-[40px] mb-[16px] md:mt-0 mt-[20px]"
+          viewAllUrl="/user-generated-jokes"
+          description="Jokes For you, Created By You"
+        />
+        <div className="mx-4 mt-[20px] mb-[20px]">
+          <div className="flex justify-center w-full">
+            <div className="flex items-center bg-white rounded-full w-max mb-4 p-2 justify-center gap-2 relative">
+              <div
+                className={`absolute transition-all duration-300 ease-in-out h-[calc(100%-8px)] rounded-full bg-green ${
+                  activeTab === "Latest"
+                    ? "left-[4px] w-[84px]"
+                    : "left-[92px] w-[87px]"
+                }`}
+              />
+              <button
+                onClick={() => setActiveTab("Latest")}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
+                  activeTab === "Latest"
+                    ? "text-white"
+                    : "text-gray-600 hover:text-black"
+                }`}
+              >
+                Latest
+              </button>
+              <button
+                onClick={() => setActiveTab("Trending")}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
+                  activeTab === "Trending"
+                    ? "text-white"
+                    : "text-gray-600 hover:text-black"
+                }`}
+              >
+                Trending
+              </button>
+            </div>
+          </div>
+
+          <div className="flex gap-4 overflow-x-scroll scrollbar-hide">
+            <UgcCard />
+            <UgcCard />
+          </div>
         </div>
 
         {/* Follow Sprite */}

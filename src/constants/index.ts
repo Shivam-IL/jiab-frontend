@@ -506,7 +506,7 @@ export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE: string[] = [
   "/my-profile/",
   "/send-reminder",
   "/leaderboard",
-  "/hall-of-lame-leaderboard",
+  "/hall-of-lame",
   "/submit-your-joke",
   "/claim-form",
   "/notifications",

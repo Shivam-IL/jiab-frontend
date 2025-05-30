@@ -15,6 +15,13 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import Link from "next/link";
+import LeaderBoardTable, { DisplayTable } from "@/components/LeaderBoardTable";
+import useWindowWidth from "@/hooks/useWindowWidth";
+import CalendarDialog from "@/components/CalendarDialog";
+import AktivGroteskText from "@/components/common/AktivGroteskText";
+import SvgIcons from "@/components/common/SvgIcons";
+import { DAILY_WINNERS, ICONS_NAMES } from "@/constants";
+import { DateRange } from "react-day-picker";
 
 const ContestPage: React.FC = () => {
   const rewardPool = [
@@ -72,6 +79,11 @@ const ContestPage: React.FC = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [pageCount, setPageCount] = useState(0);
+  const [isCalendarOpen, setIsCalendarOpen] = React.useState(false);
+
+  const handleDateRangeSelect = (range: DateRange | undefined) => {
+    console.log("Selected date range:", range);
+  };
 
   // Calculate page count for reward pool carousel
   useEffect(() => {
@@ -94,77 +106,105 @@ const ContestPage: React.FC = () => {
     api.scrollTo(pageIndex);
   };
 
+  const isContestOver = true;
+
+  const width = useWindowWidth();
+
   return (
     <>
       <ScreenWrapper className="overflow-hidden pt-20">
-        <AnnouncingWinnerTimer />
-
-        {/* How to participate */}
-        <HowToParticipate />
-
-        {/* Reward Pool */}
-        <Header
-          title="Reward Pool"
-          className="md:mt-[66px] mt-[16px] md:mb-[40px] mb-[12px] md:ml-0 -ml-[16px]"
-        />
-
-        {/* Desktop Layout */}
-        <div className="hidden md:flex md:gap-[88px] justify-center">
-          {rewardPool.map((item, index) => (
-            <WalletCard
-              key={index}
-              imageUrl={item.imageUrl}
-              imageAlt={item.imageAlt}
-              textContent={item.textContent}
-            />
-          ))}
-        </div>
-
-        {/* Mobile Carousel Layout */}
-        <div className="block md:hidden">
-          <Carousel
-            className="mx-0"
-            setApi={setApi}
-            opts={{
-              align: "center",
-              loop: false,
-              skipSnaps: false,
-            }}
-          >
-            <CarouselContent>
-              {rewardPool.map((item, index) => (
-                <CarouselItem key={index} className="basis-4/5">
-                  <div className="flex justify-center">
-                    <WalletCard
-                      imageUrl={item.imageUrl}
-                      imageAlt={item.imageAlt}
-                      textContent={item.textContent}
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-
-          {/* Navigation dots for mobile */}
-          <div className="flex justify-center gap-2 mt-4">
-            {Array.from({ length: pageCount }).map((_, index) => (
-              <button
-                key={index}
-                className={`h-1 rounded-full transition-all duration-300 ${
-                  index === current
-                    ? "md:w-8 w-[17.73px] bg-black"
-                    : "md:w-4 w-[8.86px] bg-gray-300"
-                }`}
-                onClick={() => goToPage(index)}
-                aria-label={`Go to reward ${index + 1}`}
+        {isContestOver ? (
+          <>
+            <div className="md:w-full h-auto md:mt-[28px] mt-[12px] md:mx-0 -mx-5">
+              <Banner
+                type="image"
+                src="other-svgs/contest-over-new.svg"
+                className="rounded-lg mx-5"
               />
-            ))}
-          </div>
-        </div>
+
+              <Header
+                title="Previous Winners List"
+                className="md:mt-[66px] mt-[16px]"
+              />
+              <div className="mx-4">
+                <div className="w-full flex flex-col gap-[28px] md:gap-[40px]">
+                  <DisplayTable />
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <AnnouncingWinnerTimer />
+
+            {/* How to participate */}
+            <HowToParticipate />
+
+            {/* Reward Pool */}
+            <Header
+              title="Reward Pool"
+              className="md:mt-[66px] mt-[16px] md:mb-[40px] mb-[12px] md:ml-0 -ml-[16px]"
+            />
+
+            {/* Desktop Layout */}
+            <div className="hidden md:flex md:gap-[88px] justify-center">
+              {rewardPool.map((item, index) => (
+                <WalletCard
+                  key={index}
+                  imageUrl={item.imageUrl}
+                  imageAlt={item.imageAlt}
+                  textContent={item.textContent}
+                />
+              ))}
+            </div>
+
+            {/* Mobile Carousel Layout */}
+            <div className="block md:hidden">
+              <Carousel
+                className="mx-0"
+                setApi={setApi}
+                opts={{
+                  align: "center",
+                  loop: false,
+                  skipSnaps: false,
+                }}
+              >
+                <CarouselContent>
+                  {rewardPool.map((item, index) => (
+                    <CarouselItem key={index} className="basis-4/5">
+                      <div className="flex justify-center">
+                        <WalletCard
+                          imageUrl={item.imageUrl}
+                          imageAlt={item.imageAlt}
+                          textContent={item.textContent}
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+
+              {/* Navigation dots for mobile */}
+              <div className="flex justify-center gap-2 mt-4">
+                {Array.from({ length: pageCount }).map((_, index) => (
+                  <button
+                    key={index}
+                    className={`h-1 rounded-full transition-all duration-300 ${
+                      index === current
+                        ? "md:w-8 w-[17.73px] bg-black"
+                        : "md:w-4 w-[8.86px] bg-gray-300"
+                    }`}
+                    onClick={() => goToPage(index)}
+                    aria-label={`Go to reward ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
 
         {/* Buttons */}
-        <div className="flex md:gap-[100px] gap-[40px] justify-center md:mt-[40px] mt-[16px]">
+        <div className="flex md:gap-[100px] md:justify-center justify-between md:mt-[40px] mt-[17px]">
           <Link href="/leaderboard">
             <ContentButton
               text="Leaderboard"
@@ -182,13 +222,13 @@ const ContestPage: React.FC = () => {
         {/* How to Gather */}
         <Header
           title="How to Gather Comic Coins"
-          className="md:mt-[40px] mt-[16px] md:ml-0 -ml-[16px]"
+          className="md:mt-[40px] mt-[16px] md:ml-0 -ml-[16px] mx-5"
         />
         <div className="md:w-full h-auto md:mt-[28px] mt-[12px] md:mx-0 -mx-5">
           <Banner
             type="image"
             src="/assets/images/banner-contest.png"
-            className="rounded-lg"
+            className="rounded-lg mx-5"
           />
         </div>
 

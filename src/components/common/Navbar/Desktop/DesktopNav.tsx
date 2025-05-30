@@ -25,19 +25,14 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const notificationDropdownRef = useRef<HTMLDivElement>(null)
 
   const exploreMenuItems = [
-    { id: 1, label: 'Scroll & LOL', href: '/scroll-and-lol' },
-    { id: 2, label: 'PJ Challenge?', href: '/pj-challenge' },
-    { id: 3, label: 'Pick your mood', href: '/pick-mood' },
-    { id: 4, label: 'Joke Box', href: '/joke-box' },
-    { id: 5, label: 'HALL-OF-LAME 😜', href: '/hall-of-lame-leaderboard' },
-    { id: 6, label: 'Refer A Friend', href: '/refer', type: 'refer' },
-    {
-      id: 7,
-      label: 'Have an Invite Code?',
-      href: '/invite',
-      type: 'invite-code'
-    }
-  ]
+    { id: 1, label: "Scroll & LOL", href: "/scroll-and-lol" },
+    { id: 2, label: "PJ Challenge?", href: "/submit-your-joke" },
+    { id: 3, label: "Pick your mood", href: "/pick-mood" },
+    { id: 4, label: "Joke Box", href: "/user-generated-jokes" },
+    { id: 5, label: "HALL-OF-LAME 😜", href: "/hall-of-lame" },
+    { id: 6, label: "Refer A Friend", href: "/refer" },
+    { id: 7, label: "Have an Invite Code?", href: "/invite" },
+  ];
 
   const languages = [
     { value: 'en', id: '1', label: 'ENGLISH' },

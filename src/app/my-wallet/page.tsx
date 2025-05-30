@@ -8,6 +8,7 @@ import GreenCTA from "@/components/GreenCTA";
 import Banner from "@/components/common/Banner/Banner";
 import AktivGroteskText from "@/components/common/AktivGroteskText";
 import Image from "next/image";
+import Link from "next/link";
 
 const ComicCoinsPage = () => {
   const reward = {
@@ -21,7 +22,7 @@ const ComicCoinsPage = () => {
         {/* Top Section */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 container mx-auto mt-20">
           {/* Comic Coins */}
-          <div>
+          <div className="mx-4 md:mx-0">
             <AktivGroteskText
               text="COMIC COINS"
               fontSize="text-[14px] md:text-[30px]"
@@ -44,14 +45,17 @@ const ComicCoinsPage = () => {
           </div>
         </div>
       </div>
-      <ScreenWrapper className="pt-6 md:pt-0">
+      <ScreenWrapper className="mt-0">
         {/* Announcing Winner Timer */}
         <AnnouncingWinnerTimer />
 
         {/* Reward Pool */}
-        <Header title="Reward Pool" className="mt-8" />
-        <div className="flex justify-center mt-4 w-[507px] mx-auto">
-          <WalletCard imageUrl={reward.imageUrl} imageAlt={reward.imageAlt}>
+        <Header title="My Wins" className="md:mt-8 mt-0 mx-0" />
+        <div className="flex justify-center mt-4 md:w-[507px] w-full mx-auto">
+          <WalletCard
+            imageUrl="/other-svgs/my-win.svg"
+            imageAlt={reward.imageAlt}
+          >
             <div className="flex flex-col items-center gap-2 md:gap-3">
               <AktivGroteskText
                 text="The Ultimate Retreat"
@@ -72,10 +76,10 @@ const ComicCoinsPage = () => {
         </div>
 
         {/* PhonePe Cashback */}
-        <Header title="PhonePe Cashback" className="mt-12" />
+        <Header title="PhonePe Cashback" className="md:mt-[40px] mt-[20px]" />
         <div className="bg-white rounded-[10.68px] flex flex-col items-center text-center p-6 md:p-10 gap-6 mt-4">
           <Image
-            src="/assets/images/reward-2.png"
+            src="/other-svgs/bummer.svg"
             alt="no-wins"
             width={180}
             height={180}
@@ -90,10 +94,10 @@ const ComicCoinsPage = () => {
           <GreenCTA
             text="Enter Code To Get Started"
             onClick={() => {}}
-            paddingClass="py-[6px] px-[16px] md:py-[14px] md:px-[60px]"
+            paddingClass="py-[6px] px-[16px] md:py-[14px] md:px-[60px] max-w-[337px]"
             fontSize="text-[12px] md:text-[20px]"
           />
-          <p className="text-[#616161] text-[10px] md:text-[14px] max-w-md">
+          <p className="text-[#616161] text-[10px] md:text-[14px]">
             Grab a Sprite® & participate in the Cashbacks for this hour have
             already been won by other participants. Please come back next hour
             to try again, or continue entering code to collect more Comic Coins
@@ -102,34 +106,38 @@ const ComicCoinsPage = () => {
         </div>
 
         {/* Previous Winners Banner */}
-        <div className="mt-12 bg-[url('/assets/images/green-bg.png')] bg-cover bg-center rounded-lg flex justify-between items-center p-4 md:p-6">
+        <div className="md:mt-12 mt-[16px] bg-[url('/other-svgs/banner-explore.svg')] bg-cover bg-center rounded-lg flex justify-between items-center p-4 md:p-6">
           <AktivGroteskText
             text="PREVIOUS WINNERS"
             fontSize="text-[16px] md:text-[30px]"
             fontWeight="font-[700]"
             className="text-white"
           />
-          <GreenCTA
-            text="Leaderboard"
-            onClick={() => {}}
-            paddingClass="py-[6px] px-[20px] md:py-[14px] md:px-[60px]"
-            fontSize="text-[12px] md:text-[20px]"
-            className="md:w-auto"
-          />
+          <Link href="/leaderboard">
+            <GreenCTA
+              text="Leaderboard"
+              onClick={() => {}}
+              paddingClass="py-[6px] px-[20px] md:py-[14px] md:px-[60px]"
+              fontSize="text-[12px] md:text-[20px]"
+              className="md:w-auto"
+            />
+          </Link>
         </div>
 
         {/* Promotional Banners */}
-        <div className="mt-8 flex flex-col gap-4">
+        <div className="md:mt-8 mt-[16px] flex flex-col gap-4">
           <Banner
             type="image"
-            src="/assets/images/banner-contest.png"
+            src="/other-svgs/share-laugh.svg"
             className="rounded-lg"
           />
-          <Banner
-            type="image"
-            src="/assets/images/banner-contest.png"
-            className="rounded-lg"
-          />
+          <Link href="/submit-your-joke">
+            <Banner
+              type="image"
+              src="/assets/images/pj-challenge.svg"
+              className="rounded-lg"
+            />
+          </Link>
         </div>
       </ScreenWrapper>
     </>

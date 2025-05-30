@@ -19,7 +19,7 @@ const UserGeneratedJokes = () => {
               fontWeight='font-[700]'
               text='Joke Box'
             />
-            <button onClick={() => router.push('/hall-of-lame-leaderboard')}>
+            <button onClick={() => router.push('/hall-of-lame')}>
               <AktivGroteskText
                 fontSize='text-[12px] md:text-[20px]'
                 fontWeight='font-[400]'

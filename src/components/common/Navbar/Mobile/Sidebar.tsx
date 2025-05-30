@@ -38,17 +38,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
   ];
 
   const exploreSubItems = [
-    { label: "Scroll & LOL", href: "/explore/scroll-lol" },
-    { label: "PJ Challenge?", href: "/explore/pj-challenge" },
-    { label: "Pick your mood", href: "/explore/mood" },
-    { label: "Joke Box", href: "/explore/jokes" },
-    { label: "HALL-OF-LAME 😊", href: "/explore/hall-of-lame" },
-    { label: "Refer A Friend", href: "/explore/refer" },
-    { label: "Have an Invite Code?", href: "/explore/invite" },
+    { label: "Scroll & LOL", href: "/scroll-lol" },
+    { label: "PJ Challenge?", href: "/submit-your-joke" },
+    { label: "Pick your mood", href: "/pick-mood" },
+    { label: "Joke Box", href: "/user-generated-jokes" },
+    { label: "HALL-OF-LAME 😊", href: "/hall-of-lame" },
+    { label: "Refer A Friend", href: "/" },
+    { label: "Have an Invite Code?", href: "/" },
   ];
 
   const bottomMenuItems = [
-    { icon: Phone, label: "Contact Us", href: "/contact" },
+    { icon: Phone, label: "Contact Us", href: "/" },
     { icon: HelpCircle, label: "FAQs", href: "/faqs" },
     {
       icon: FileText,
@@ -346,7 +346,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
             >
               <button
                 onClick={onClose}
-                className="w-full flex items-center px-4 py-3 mx-2 text-[#00953B] "
+                className="w-full flex items-center px-4 py-[50px] mx-2 text-[#00953B] "
               >
                 <span className="font-[700]">Logout</span>
               </button>
