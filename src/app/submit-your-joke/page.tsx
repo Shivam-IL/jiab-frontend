@@ -66,6 +66,11 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
               fontSize='text-[12px] md:text-[16px]'
               fontWeight='font-[400]'
             />
+            {title.includes('Image') && <AktivGroteskText
+              text='Preferred Dimensions : Square'
+              fontSize='text-[8px] md:text-[14px]'
+              fontWeight='font-[400]'
+            />}
           </div>
         </div>
       </div>
