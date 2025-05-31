@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Login from "@/components/common/Login";
 import OtpModal from "@/components/common/OtpModal";
 import Signup from "@/components/common/Signup";
@@ -9,7 +10,7 @@ import useAppSelector from "@/hooks/useSelector";
 
 import Banner from "@/components/common/Banner/Banner";
 import bannerImage from "../../public/assets/images/banner-top.svg";
-import pjChallengeImage from "../../public/assets/images/pj-challenge.svg";
+import pjChallengeImage from "../../public/home-page/banner-bottom.png";
 import Header from "@/components/common/Header/Header";
 import VideoScroll from "@/components/video-carousel/VideoScroll";
 import {
@@ -18,12 +19,9 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { useEffect, useState } from "react";
-import Image from "next/image";
 import CircularBoxesModal, {
   BoxIds,
 } from "@/components/common/CircularBoxesModal";
-import HomePageSurpriseButton from "@/components/HomePageSurpriseButton";
 import useWindowWidth from "@/hooks/useWindowWidth";
 import SvgIcons from "@/components/common/SvgIcons";
 import { ICONS_NAMES } from "@/constants";
@@ -212,6 +210,9 @@ export default function Home() {
   const [itemsPerPage, setItemsPerPage] = useState(6); // Default to desktop
   const [activeTab, setActiveTab] = useState<"Latest" | "Trending">("Trending");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [jokeBoxApi, setJokeBoxApi] = useState<CarouselApi>();
+  const [jokeBoxCurrent, setJokeBoxCurrent] = useState(0);
+  const [jokeBoxPageCount, setJokeBoxPageCount] = useState(0);
 
   useEffect(() => {
     // Use window check for client-side only
@@ -250,6 +251,10 @@ export default function Home() {
   }, [itemsPerPage, categories.length]);
 
   useEffect(() => {
+    setJokeBoxPageCount(3); // Assuming 3 UgcCards for now
+  }, []);
+
+  useEffect(() => {
     if (!api) {
       return;
     }
@@ -268,10 +273,25 @@ export default function Home() {
     });
   }, [api, itemsPerPage, categories.length]);
 
+  useEffect(() => {
+    if (!jokeBoxApi) {
+      return;
+    }
+
+    jokeBoxApi.on("select", () => {
+      setJokeBoxCurrent(jokeBoxApi.selectedScrollSnap());
+    });
+  }, [jokeBoxApi]);
+
   // Function to navigate to a specific page
   const goToPage = (pageIndex: number) => {
     if (!api) return;
     api.scrollTo(pageIndex * itemsPerPage);
+  };
+
+  const goToJokeBoxPage = (pageIndex: number) => {
+    if (!jokeBoxApi) return;
+    jokeBoxApi.scrollTo(pageIndex);
   };
 
   // Function to handle category click - will trigger modal
@@ -293,12 +313,12 @@ export default function Home() {
         <Banner
           type="image"
           src={bannerImage.src}
-          className="rounded-lg banner-section mx-5"
+          className="rounded-lg banner-section mx-5 md:mx-0"
         />
         {/* Video Scroll */}
         <Header
           title="SCROLL & LOL"
-          className="md:my-[40px] mt-[20px] mb-[16px]"
+          className="md:mt-[40px] md:mb-[24px] mt-[20px] mb-[16px]"
           viewAllUrl="/scroll-and-lol"
         />
         <div className="video-section">
@@ -307,13 +327,13 @@ export default function Home() {
         {/* Pick your mood */}
         <Header
           title="Pick your mood"
-          className="md:mb-[40px] mb-[16px] md:mt-0 mt-[20px]"
+          className="md:mb-[24px] mb-[16px] md:mt-0 mt-[20px]"
           viewAllUrl="/scroll-and-lol"
           description="Pick your Delulu, Get your Solulu"
         />
         <div id={BoxIds.PICK_YOUR_MOOD} className="categories-section">
           <Carousel
-            className="mx-4"
+            className="md:mx-0 mx-4"
             setApi={setApi}
             opts={{
               align: "start",
@@ -331,7 +351,7 @@ export default function Home() {
                     className="flex flex-col items-center cursor-pointer"
                     onClick={() => handleCategoryClick(category)}
                   >
-                    <div className="rounded-full bg-white w-[60px] h-[60px] md:w-[120px] md:h-[120px] flex items-center justify-center md:hover:border-2 hover:border hover:border-green transition-all duration-900 md:hover:shadow-lg">
+                    <div className="rounded-full bg-white w-[60px] h-[60px] md:w-[140px] md:h-[140px] flex items-center justify-center md:hover:border-2 hover:border hover:border-green transition-all duration-900 md:hover:shadow-lg">
                       <SvgIcons
                         name={category.icon}
                         className="w-10 h-10 md:w-20 md:h-20"
@@ -347,7 +367,7 @@ export default function Home() {
           </Carousel>
 
           {/* Navigation dots - page based */}
-          <div className="flex justify-center md:gap-2 gap-[1.77px] md:mb-10 mb-0 md:mt-[40px]">
+          <div className="flex justify-center md:gap-2 gap-[1.77px] md:mb-10 mb-0 md:mt-[40px] mt-[8px]">
             {Array.from({ length: pageCount }).map((_, index) => (
               <button
                 key={index}
@@ -369,7 +389,7 @@ export default function Home() {
             <Banner
               type="image"
               src={pjChallengeImage.src}
-              className="rounded-lg mb-4 mx-5 cursor-pointer"
+              className="rounded-lg md:mb-[40px] mx-5 md:mx-0 cursor-pointer"
             />
           </Link>
         </div>
@@ -377,18 +397,18 @@ export default function Home() {
         {/* Joke Box */}
         <Header
           title="Joke Box"
-          className="md:mb-[40px] mb-[16px] md:mt-0 mt-[20px]"
+          className="md:mb-[24px] mb-[16px] md:mt-0 mt-[20px]"
           viewAllUrl="/user-generated-jokes"
           description="Jokes For you, Created By You"
         />
-        <div className="mx-4 mt-[20px] mb-[20px]">
+        <div className="md:mx-0 mx-4 mt-[20px] mb-[20px]">
           <div className="flex justify-center w-full">
             <div className="flex items-center bg-white rounded-full w-max mb-4 p-2 justify-center gap-2 relative">
               <div
                 className={`absolute transition-all duration-300 ease-in-out h-[calc(100%-8px)] rounded-full bg-green ${
                   activeTab === "Latest"
                     ? "left-[4px] w-[84px]"
-                    : "left-[92px] w-[87px]"
+                    : "left-[96px] w-[87px]"
                 }`}
               />
               <button
@@ -414,15 +434,70 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex gap-4 overflow-x-scroll scrollbar-hide">
-            <UgcCard />
-            <UgcCard />
+          <div className="md:grid md:grid-cols-3 flex justify-start overflow-x-scroll scrollbar-hide md:gap-0 gap-4">
+            {width < 768 ? (
+              <Carousel
+                setApi={setJokeBoxApi}
+                opts={{
+                  align: "start",
+                  loop: false,
+                  skipSnaps: true,
+                }}
+                className="w-full"
+              >
+                <CarouselContent>
+                  <CarouselItem className="basis-auto">
+                    <div className="max-w-[320px] mx-auto">
+                      <UgcCard />
+                    </div>
+                  </CarouselItem>
+                  <CarouselItem className="basis-auto">
+                    <div className="max-w-[320px] mx-auto">
+                      <UgcCard />
+                    </div>
+                  </CarouselItem>
+                  <CarouselItem className="basis-auto">
+                    <div className="max-w-[320px] mx-auto">
+                      <UgcCard />
+                    </div>
+                  </CarouselItem>
+                </CarouselContent>
+              </Carousel>
+            ) : (
+              <>
+                <div className="max-w-[316px]">
+                  <UgcCard />
+                </div>
+                <div className="max-w-[316px]">
+                  <UgcCard />
+                </div>
+                <div className="max-w-[316px]">
+                  <UgcCard />
+                </div>
+              </>
+            )}
           </div>
+          {width < 768 && (
+            <div className="flex justify-center md:gap-2 gap-[1.77px] mt-[8px]">
+              {Array.from({ length: jokeBoxPageCount }).map((_, index) => (
+                <button
+                  key={index}
+                  className={`h-1 rounded-full transition-all duration-300 ${
+                    index === jokeBoxCurrent
+                      ? "w-[17.73px] bg-black"
+                      : "w-[8.86px] bg-gray-300"
+                  }`}
+                  onClick={() => goToJokeBoxPage(index)}
+                  aria-label={`Go to joke page ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Follow Sprite */}
         <div className="bg-[#121212] text-white pt-[13.19px] mx-4 rounded-lg mb-[90px] block md:hidden">
-          <h2 className="text-center text-md font-semibold mb-[13px]">
+          <h2 className="text-center text-md font-medium mb-[13px]">
             Follow Sprite<sup>®</sup>
           </h2>
           <div className="flex justify-center gap-6 pb-[16.18px]">

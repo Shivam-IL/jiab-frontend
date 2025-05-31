@@ -121,21 +121,11 @@ const ContestPage: React.FC = () => {
                 src="other-svgs/contest-over-new.svg"
                 className="rounded-lg mx-5"
               />
-
-              <Header
-                title="Previous Winners List"
-                className="md:mt-[66px] mt-[16px]"
-              />
-              <div className="mx-4">
-                <div className="w-full flex flex-col gap-[28px] md:gap-[40px]">
-                  <DisplayTable />
-                </div>
-              </div>
             </div>
           </>
         ) : (
           <>
-            <AnnouncingWinnerTimer />
+            {/* <AnnouncingWinnerTimer /> */}
 
             {/* How to participate */}
             <HowToParticipate />

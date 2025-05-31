@@ -47,11 +47,11 @@ const ComicCoinsPage = () => {
       </div>
       <ScreenWrapper className="mt-0">
         {/* Announcing Winner Timer */}
-        <AnnouncingWinnerTimer />
+        {/* <AnnouncingWinnerTimer /> */}
 
         {/* Reward Pool */}
-        <Header title="My Wins" className="md:mt-8 mt-0 mx-0" />
-        <div className="flex justify-center mt-4 md:w-[507px] w-full mx-auto">
+        {/* <Header title="My Wins" className="md:mt-8 mt-0 mx-0" /> */}
+        {/* <div className="flex justify-center mt-4 md:w-[507px] w-full mx-auto">
           <WalletCard
             imageUrl="/other-svgs/my-win.svg"
             imageAlt={reward.imageAlt}
@@ -73,10 +73,10 @@ const ComicCoinsPage = () => {
               />
             </div>
           </WalletCard>
-        </div>
+        </div> */}
 
         {/* PhonePe Cashback */}
-        <Header title="PhonePe Cashback" className="md:mt-[40px] mt-[20px]" />
+        {/* <Header title="PhonePe Cashback" className="md:mt-[40px] mt-[20px]" />
         <div className="bg-white rounded-[10.68px] flex flex-col items-center text-center p-6 md:p-10 gap-6 mt-4">
           <Image
             src="/other-svgs/bummer.svg"
@@ -103,7 +103,7 @@ const ComicCoinsPage = () => {
             to try again, or continue entering code to collect more Comic Coins
             in the meantime.
           </p>
-        </div>
+        </div> */}
 
         {/* Previous Winners Banner */}
         <div className="md:mt-12 mt-[16px] bg-[url('/other-svgs/banner-explore.svg')] bg-cover bg-center rounded-lg flex justify-between items-center p-4 md:p-6">
@@ -134,7 +134,7 @@ const ComicCoinsPage = () => {
           <Link href="/submit-your-joke">
             <Banner
               type="image"
-              src="/assets/images/pj-challenge.svg"
+              src="/home-page/banner-bottom.png"
               className="rounded-lg"
             />
           </Link>
