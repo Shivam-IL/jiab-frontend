@@ -1,10 +1,12 @@
 "use client";
 import React from "react";
 import VideoCard from "./VideoCard";
+import Link from "next/link";
 
 interface Video {
   src: string;
   id: string;
+  url: string;
 }
 
 interface VideoScrollProps {
@@ -20,7 +22,9 @@ const VideoScroll = ({ videos }: VideoScrollProps) => {
             key={video.id}
             className="md:aspect-[9/16] flex-shrink-0 w-auto md:w-auto md:flex-1"
           >
-            <VideoCard src={video.src} />
+            <Link href={video.url}>
+              <VideoCard src={video.src} />
+            </Link>
           </div>
         ))}
       </div>

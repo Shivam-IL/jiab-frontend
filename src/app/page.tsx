@@ -27,6 +27,7 @@ import SvgIcons from "@/components/common/SvgIcons";
 import { ICONS_NAMES } from "@/constants";
 import UgcCard from "@/components/common/UgcCard";
 import Link from "next/link";
+import { url } from "inspector";
 
 export default function Home() {
   const { otpSent, otpFilled, loginModal, signupDone, crossModal } =
@@ -89,117 +90,145 @@ export default function Home() {
     {
       id: "video1",
       src: thumbnailPath,
+      url: "/scroll-and-lol",
     },
     {
       id: "video2",
       src: thumbnailPath,
+      url: "/scroll-and-lol",
     },
     {
       id: "video3",
       src: thumbnailPath,
+      url: "/scroll-and-lol",
     },
   ];
 
-  const categories = [
+  const categories: {
+    id: string;
+    name: string;
+    icon: string;
+    url?: string;
+  }[] = [
     {
       id: "category1",
       name: "Cricket",
       icon: ICONS_NAMES.CRICKET,
+      url: "/scroll-and-lol",
     },
     {
       id: "category2",
       name: "Animals",
       icon: ICONS_NAMES.ANIMAL,
+      url: "/scroll-and-lol",
     },
     {
       id: "category3",
       name: "Food",
       icon: ICONS_NAMES.FOOD,
+      url: "/scroll-and-lol",
     },
     {
       id: "category4",
       name: "Wedding",
       icon: ICONS_NAMES.RELATIONSHIP,
+      url: "/scroll-and-lol",
     },
     {
       id: "category5",
       name: "College",
       icon: ICONS_NAMES.COLLEGE,
+      url: "/scroll-and-lol",
     },
     {
       id: "category6",
       name: "Office",
       icon: ICONS_NAMES.OFFICE,
+      url: "/scroll-and-lol",
     },
     {
       id: "category7",
       name: "Family",
       icon: ICONS_NAMES.FAMILY,
+      url: "/scroll-and-lol",
     },
     {
       id: "category8",
       name: "Friends",
       icon: ICONS_NAMES.FRIENDS,
+      url: "/scroll-and-lol",
     },
     {
       id: "category9",
       name: "Finance",
       icon: ICONS_NAMES.FINANCE,
+      url: "/scroll-and-lol",
     },
     {
       id: "category10",
       name: "Childhood",
       icon: ICONS_NAMES.DAILY_HUMOR,
+      url: "/scroll-and-lol",
     },
     {
       id: "category11",
       name: "Self",
       icon: ICONS_NAMES.SELF,
+      url: "/scroll-and-lol",
     },
     {
       id: "category12",
       name: "Adulting",
       icon: ICONS_NAMES.ADULTING,
+      url: "/scroll-and-lol",
     },
     {
       id: "category13",
       name: "Observation",
       icon: ICONS_NAMES.OBSERVING,
+      url: "/scroll-and-lol",
     },
     {
       id: "category14",
       name: "Internet",
       icon: ICONS_NAMES.INTERNET,
+      url: "/scroll-and-lol",
     },
     {
       id: "category15",
       name: "Pollution",
       icon: ICONS_NAMES.POLLUTION,
+      url: "/scroll-and-lol",
     },
     {
       id: "category16",
       name: "Travel",
       icon: ICONS_NAMES.TRAVEL,
+      url: "/scroll-and-lol",
     },
     {
       id: "category17",
       name: "Dating",
       icon: ICONS_NAMES.DATING,
+      url: "/scroll-and-lol",
     },
     {
       id: "category18",
       name: "Traffic",
       icon: ICONS_NAMES.TRAFFIC,
+      url: "/scroll-and-lol",
     },
     {
       id: "category19",
       name: "OTT",
       icon: ICONS_NAMES.OTT,
+      url: "/scroll-and-lol",
     },
     {
       id: "category20",
       name: "Non-Genre",
       icon: ICONS_NAMES.NON_GENRE,
+      url: "/scroll-and-lol",
     },
   ];
 
