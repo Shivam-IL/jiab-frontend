@@ -465,13 +465,13 @@ export default function Home() {
               </Carousel>
             ) : (
               <>
-                <div className="max-w-[316px]">
+                <div className="max-w-[335px]">
                   <UgcCard />
                 </div>
-                <div className="max-w-[316px]">
+                <div className="max-w-[335px]">
                   <UgcCard />
                 </div>
-                <div className="max-w-[316px]">
+                <div className="max-w-[335px]">
                   <UgcCard />
                 </div>
               </>
