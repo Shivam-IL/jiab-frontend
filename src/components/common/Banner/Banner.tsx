@@ -1,19 +1,17 @@
-import React from 'react';
-import { IBannerProps } from '@/interfaces';
-import Image from 'next/image';
+import React from "react";
+import { IBannerProps } from "@/interfaces";
+import Image from "next/image";
 const Banner: React.FC<IBannerProps> = ({
   type,
   src,
-  alt = '',
-  className = '',
-  overlayColor = 'rgba(0, 0, 0, 0)',
+  alt = "",
+  className = "",
+  overlayColor = "rgba(0, 0, 0, 0)",
   overlayOpacity = 0.5,
 }) => {
   return (
-    <div
-      className={`relative overflow-hidden md:mx-0 md:mx-5 h-full ${className}`}
-    >
-      {type === 'video' ? (
+    <div className={`relative overflow-hidden h-full ${className}`}>
+      {type === "video" ? (
         <video
           className="w-full h-full object-cover object-center"
           autoPlay
