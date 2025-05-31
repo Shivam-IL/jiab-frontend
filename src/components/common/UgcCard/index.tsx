@@ -8,10 +8,10 @@ import { MadeYouLaughExitPopup } from "@/components/ExitPopUps";
 
 const UgcCard = () => {
   return (
-    <div className="relative w-full p-[16px] md:px-[12px] flex flex-col gap-[16px] rounded-[5px] bg-[#FFFFFF]">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-[12px]">
-          <div className="w-[30px] md:w-[28px] h-[30px] md:h-[28px] flex items-end justify-center rounded-full border-[1px] border-black">
+    <div className='relative w-full p-[16px] md:px-[12px] flex flex-col gap-[16px] rounded-[5px] bg-[#FFFFFF]'>
+      <div className='flex justify-between items-center md:items-start'>
+        <div className='flex md:items-start items-center gap-[12px]'>
+          <div className='min-w-[30px] md:min-w-[28px] min-h-[30px] md:min-h-[28px] flex items-end justify-center rounded-full border-[1px] border-black'>
             <SvgIcons
               name={ICONS_NAMES.TRAFFIC_LIGHT}
               className="w-[13px] h-[24px]"
@@ -27,6 +27,12 @@ const UgcCard = () => {
               text="Kapil Sharma, Hindi"
               fontSize="text-[10px]"
               fontWeight="font-[500]"
+            />
+            <AktivGroteskText
+              text='The content displayed above is user generated and may not reflect the opinions of Sprite® '
+              fontSize='text-[10px]'
+              fontWeight='font-[500]'
+              className='text-[#313131] hidden md:block'
             />
           </div>
         </div>
@@ -55,7 +61,7 @@ const UgcCard = () => {
               className="w-[25px] md:w-[33px] h-[24px] md:h-[34px]"
             />
           </div>
-          <div className="absolute bottom-[3px] left-[10px]">
+          <div className='absolute md:hidden bottom-[3px] left-[10px]'>
             <AktivGroteskText
               text="The content displayed above is user generated and may not reflect the opinions of Sprite® "
               fontSize="text-[7px]"
@@ -86,10 +92,10 @@ const UgcCard = () => {
           <div className="flex gap-[12px]">
             <GreenCTA
               onClick={() => {}}
-              text="Vote"
-              paddingClass="px-[26px] py-[8px] md:px-[21px] md:py-[7px]"
-              fontSize="text-[12px] md:text-[20px]"
-              fontWeight="font-[700]"
+              text='Vote'
+              paddingClass='px-[26px] py-[8px] md:px-[21px] md:py-[7px]'
+              fontSize='text-[12px] md:text-[20px]'
+              fontWeight='font-[700]'
             />
             <SurpriseMeCTA
               name={ICONS_NAMES.VIEWS}

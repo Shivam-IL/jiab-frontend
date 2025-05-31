@@ -5,6 +5,7 @@ import SvgIcons from '../common/SvgIcons'
 import { aktivGrotesk } from '@/app/layout'
 import CalendarDialog from '../CalendarDialog'
 import { DateRange } from 'react-day-picker'
+import GreenCTA from '../GreenCTA'
 
 const DisplayTable = () => {
   return (
@@ -142,6 +143,24 @@ const HallOfLameLeaderboardTable = () => {
           />
         </div>*/}
       </div>
+        <div className='flex gap-[12px] md:gap-[24px] self-center'>
+          <button className='px-[36px] py-[8px] md:py-[20px] md:px-[60px] border-[1px] border-[rgba(0,0,0,0.3)] rounded-[100px]'>
+            <AktivGroteskText
+              text='Prev'
+              className='text-[rgba(0,0,0,0.3)]'
+              fontSize='text-[14px] md:text-[20px]'
+              fontWeight='font-[700]'
+            />
+          </button>
+          <GreenCTA
+            className=''
+            fontSize='text-[14px] md:text-[20px]'
+            fontWeight='font-[700]'
+            paddingClass='px-[36px] py-[8px] md:py-[20px] md:px-[60px] '
+            text='Next'
+            onClick={() => {}}
+          />
+        </div>
     </div>
   )
 }
