@@ -43,10 +43,11 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className='rounded-[5px] md:max-w-[401px] p-0 max-w-[358px] gap-2'>
-        <div className='w-full flex justify-between items-center box-border px-[8px] py-[10px]'>
+      <DialogContent className='rounded-[5px] md:max-w-[401px] flex flex-col px-0 gap-[18px] md:gap-[28px]  py-[20px] md:pt-[28px] md:pb-[20px] max-w-[358px]'>
+        <div className='w-full flex px-[15px] md:px-[19px] justify-between items-center box-border '>
           <AktivGroteskText
             text='Add Address'
+            className='leading-tight'
             fontSize='text-[16px]'
             fontWeight='font-[700]'
           />
@@ -59,16 +60,15 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
             <SvgIcons name={ICONS_NAMES.CROSS} className='w-[13px] h-[13px]' />
           </button>
         </div>
-        <div className='flex flex-col gap-[20px]'>
-          <div className='px-[8px] flex flex-col gap-[24px]'>
+        <div className='flex flex-col px-[8px] md:px-[16px] gap-[20px]'>
+          <div className='flex flex-col gap-[24px]'>
             <Input
               name='address_line_1'
               type='text'
-              placeholder='Address Line 1'
+              placeholder='Address Line 1*'
               value={data.address_line_1}
               onChange={handleChange}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
-              
             />
             <Input
               name='address_line_2'
@@ -77,7 +77,6 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
               value={data.address_line_2}
               onChange={handleChange}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
-
             />
             <Input
               name='nearest_landmark'
@@ -86,7 +85,6 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
               value={data.nearest_landmark}
               onChange={handleChange}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
-
             />
             <Input
               name='alternate_phone_number'
@@ -95,33 +93,37 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
               value={data.alternate_phone_number}
               onChange={handleChange}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
-
             />
             <Input
               name='pan_card_number'
               type='text'
-              placeholder='PAN Card Number'
+              placeholder='PAN Card Number*'
               value={data.pan_card_number}
               onChange={handleChange}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
-
             />
             <Input
               name='pincode'
               type='text'
-              placeholder='Pincode'
+              placeholder='Pincode*'
               value={data.pincode}
               onChange={handleChange}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
-
             />
             <Input
               name='state'
               type='text'
-              placeholder='State'
+              placeholder='State* '
               value={data.state}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
-
+              onChange={handleChange}
+            />
+            <Input
+              name='city'
+              type='text'
+              placeholder='City*'
+              value={data.city}
+              paddingClass='py-[16px] px-[20px] md:py-[14px]'
               onChange={handleChange}
             />
           </div>
@@ -141,8 +143,11 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
           </div>
           <div className='px-[8px] flex justify-between items-center box-border py-[10px]'>
             <GreenCTA
-              paddingClass='py-[16px]'
+              paddingClass='py-[13px]'
+              fontSize='text-[16px] md:text-[18px]'
+              fontWeight='font-[700]'
               text='Save Address'
+              className='leading-tight w-full'
               onClick={() => {
                 dispatch(updateAddressData({ addressData: data }))
                 setOpen(false)

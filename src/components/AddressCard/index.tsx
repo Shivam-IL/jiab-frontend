@@ -1,13 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AktivGroteskText from '../common/AktivGroteskText'
 import SvgIcons from '../common/SvgIcons'
 import { ICONS_NAMES } from '@/constants'
 import { Checkbox } from '../ui/checkbox'
 
-const AddressCard = () => {
+const AddressCard = ({
+  index,
+  allowBottomBorder = false
+}: {
+  index: number
+  allowBottomBorder?: boolean
+}) => {
   const [defaultAddress, setDefaultAddress] = useState<boolean>(true)
+
+  useEffect(() => {
+    if (index === 0) {
+      setDefaultAddress(true)
+    } else {
+      setDefaultAddress(false)
+    }
+  }, [index])
+
   return (
-    <div className='flex flex-col gap-[10px] md:gap-[20px] justify-between  w-full border-[#CDCDCD] pt-4 pb-4 md:pt-0 md:pb-[23px]'>
+    <div
+      className={`flex flex-col gap-[10px] md:gap-[20px] justify-between  w-full border-[#CDCDCD] pt-4 pb-4 md:pt-0 md:pb-[23px] ${
+        allowBottomBorder ? 'border-b-[1px]' : ''
+      }`}
+    >
       <div className='flex flex-col gap-[5px] md:gap-[12px]'>
         <div className='flex justify-between items-start gap-2 md:gap-4'>
           <AktivGroteskText
@@ -16,7 +35,10 @@ const AddressCard = () => {
             text='H.No. 2343, Rohini sector -3 , New Delhi -110085'
           />
           <button>
-            <SvgIcons name={ICONS_NAMES.PENCIL} className='w-[13px] h-[15px] md:w-[16px] md:h-[18px]' />
+            <SvgIcons
+              name={ICONS_NAMES.PENCIL}
+              className='w-[13px] h-[15px] md:w-[16px] md:h-[18px]'
+            />
           </button>
         </div>
         <AktivGroteskText
@@ -38,7 +60,10 @@ const AddressCard = () => {
           />
         </div>
         <button>
-          <SvgIcons name={ICONS_NAMES.TRASH} className='w-[15px] h-[15px] md:w-[18px] md:h-[18px]' />
+          <SvgIcons
+            name={ICONS_NAMES.TRASH}
+            className='w-[15px] h-[15px] md:w-[18px] md:h-[18px]'
+          />
         </button>
       </div>
     </div>

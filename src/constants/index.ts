@@ -717,7 +717,7 @@ export const PREV = "Prev";
 export const EXPLORE_MORE = "Explore More";
 export const TAP_TO_SEE_THE_FUNNIEST_LINE_UPS =
   "Tap to see the funniest line-ups";
-export const DAILY_WINNERS = "Daily Winners";
+export const WEEKLY_TOP_JOKES = "Weekly Top Jokes";
 
 export const PLEASE_ENTER_YOUR_DETAILS_TO_CLAIM_YOUR_REWARD =
   "Please enter your details to claim your reward.";

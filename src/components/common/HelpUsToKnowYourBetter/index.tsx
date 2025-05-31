@@ -22,7 +22,7 @@ const HelpUsToKnowYourBetter = () => {
   }, [])
 
   return (
-    <div className='bg-white w-full rounded-[5px] py-[16px] md:py-[44px] px-[14px] md:px-[33px] flex flex-col gap-[8px] md:gap-[20px]'>
+    <div className='bg-white w-full rounded-[5px] md:rounded-[20px] py-[16px] md:py-[44px] px-[14px] md:px-[33px] flex flex-col gap-[8px] md:gap-[20px]'>
       <AktivGroteskText
         text={HELP_US_TO_KNOW_YOUR_BETTER}
         fontSize='text-[16px] md:text-[28px]'
@@ -85,7 +85,7 @@ const HelpUsToKnowYourBetter = () => {
                     ? 'Save & Submit'
                     : SAVE
                 }
-                fontSize='text-[16px] md:text-[20px]'
+                fontSize='text-[14px] md:text-[20px]'
                 fontWeight='font-[700] md:font-[600]'
                 onClick={() => {}}
               />

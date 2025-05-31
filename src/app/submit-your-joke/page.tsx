@@ -96,9 +96,9 @@ const SubmitYourJoke = () => {
 
   const [jokeData, setJokeData] = useState<IJokeData>({
     language: '',
-    format: '',
+    format: 'Image',
     fileType: FileType.IMAGE,
-    acceptedFormats: '',
+    acceptedFormats: '.jpg,.jpeg,.png',
     jokeText: '',
     title: '',
     file: [],
@@ -111,6 +111,7 @@ const SubmitYourJoke = () => {
   const handleChange = (key: string, value: any) => {
     setJokeData(prev => ({ ...prev, [key]: value }))
   }
+
 
   console.log(jokeData, 'jokeData')
 
