@@ -19,8 +19,9 @@ const UserAddressCard = () => {
         </button>
       </div>
       <div className='flex flex-col gap-2 md:gap-[20px]'>
-        <AddressCard />
-        <AddressCard />
+        {Array.from({ length: 3 }).map((_, index) => (
+          <AddressCard index={index} allowBottomBorder={index !== 2} key={index} />
+        ))}
       </div>
      {open && <AddressModal open={open} setOpen={setOpen} />} 
     </div>

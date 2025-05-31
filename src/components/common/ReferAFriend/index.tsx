@@ -46,6 +46,8 @@ const ReferAFriend = () => {
           <div>
             <GreenCTA
               paddingClass='p-[10px] px-[20px]'
+              className='leading-tight'
+              fontSize='text-[14px] md:text-[24px]'
               text={REFER_NOW}
               onClick={() => {}}
             />
@@ -100,13 +102,14 @@ const ReferAFriend = () => {
             >
               <AktivGroteskText
                 text={SEND_REMINDER}
-                fontSize='text-[14px] md:text-[24px]'
+                className='leading-tight'
+                fontSize='text-[14px] md:text-[20px]'
                 fontWeight='font-[700]'
               />
             </button>
             <GreenCTA
-              className=''
-              fontSize='text-[14px] md:text-[24px]'
+              className='leading-tight'
+              fontSize='text-[14px] md:text-[20px]'
               fontWeight='font-[700]'
               paddingClass='px-[20px] py-[8px] md:py-[20px] md:px-[60px]'
               text={REFER_ANOTHER}

@@ -148,10 +148,10 @@ const SubmitYourJoke = () => {
               </div>
               <div className='flex flex-col gap-[10px] md:gap-[16px]'>
                 <div className='h-[149px] md:h-fit md:p-[20px] box-border px-[19px] flex justify-center bg-white rounded-[10px]'>
-                  <AddressCard />
+                  <AddressCard index={0} />
                 </div>
                 <div className='h-[149px] px-[19px] md:h-fit md:p-[20px] box-border flex justify-center bg-[#FEF6B3] border-[1px] border-[#CDCDCD] rounded-[10px]'>
-                  <AddressCard />
+                  <AddressCard index={1} />
                 </div>
               </div>
             </div>

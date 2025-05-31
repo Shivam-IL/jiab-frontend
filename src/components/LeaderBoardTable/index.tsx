@@ -5,6 +5,8 @@ import SvgIcons from "../common/SvgIcons";
 import { aktivGrotesk } from "@/app/layout";
 import CalendarDialog from "../CalendarDialog";
 import { DateRange } from "react-day-picker";
+import Image from "next/image";
+import coupon from '../../../public/static/sprite/icons/coupon.svg';
 
 export const DisplayTable = () => {
   return (
@@ -69,7 +71,7 @@ export const DisplayTable = () => {
           <td
             className={`${aktivGrotesk.className} text-[12px] md:rounded-r-[10px] flex justify-center items-center font-[500] text-center py-[12px] pr-[22px] rounded-r-[5px]`}
           >
-            <SvgIcons name={ICONS_NAMES.PENCIL} className="w-[20px] h-[19px]" />
+            <Image src={coupon} alt="coupon" className="w-[43px] h-[31px] md:w-[45px] md:h-[33px]" width={20} height={19} />
           </td>
         </tr>
       </tbody>
