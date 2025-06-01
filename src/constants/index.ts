@@ -246,6 +246,7 @@ export const ICONS_NAMES = {
   TRAFFIC: "category-traffic",
   TRAVEL: "category-travel",
   SURPRISE:"surprise",
+  EXTREME_LAUGH:"exteme-smiley"
 };
 
 export const FORMAT_OPTIONS = [
@@ -359,6 +360,7 @@ export const INVITE_CODE_POPUP_DATA = {
     CTA_TEXT: "Submit",
   },
 };
+
 
 export const MOBILE_TEMP_NAVBAR_DATA = {
   EDIT_PROFILE: {
@@ -529,6 +531,7 @@ export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE: string[] = [
   "/send-reminder",
   "/leaderboard",
   "/hall-of-lame",
+  "/scroll-and-lol",
   "/submit-your-joke",
   "/claim-form",
   "/notifications",

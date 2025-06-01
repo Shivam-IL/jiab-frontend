@@ -49,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
   ];
 
   const exploreSubItems = [
-    { label: "Scroll & LOL", href: "/scroll-lol" },
+    { label: "Scroll & LOL", href: "/scroll-and-lol" },
     { label: "PJ Challenge?", href: "/submit-your-joke" },
     { label: "Pick your mood", href: "/pick-mood" },
     { label: "Joke Box", href: "/user-generated-jokes" },
@@ -124,7 +124,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
       >
         {/* User Profile Section */}
         {isLoggedIn ? (
-          <Link href="/profile">
+          <Link href="/profile" onClick={onClose}>
             <div
               className={`mt-5 mx-4 bg-[#fef6b3] transition-all duration-500 delay-100 rounded-lg ${
                 isOpen
@@ -334,11 +334,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                     }}
                   >
                     <div className="mt-4">
-                      <button className="w-full bg-green text-white font-medium text-xs py-3 px-4 rounded-xl transition-colors duration-200 text-left">
-                        Vote for the funniest PJs
-                        <br />
-                        <span className="font-[700]">Collect Comic Coins!</span>
-                      </button>
+                      <Link href="/user-generated-jokes" onClick={onClose}>
+                        <button className="w-full bg-green text-white font-medium text-xs py-3 px-4 rounded-xl transition-colors duration-200 text-left">
+                          Vote for the funniest PJs
+                          <br />
+                          <span className="font-[700]">
+                            Collect Comic Coins!
+                          </span>
+                        </button>
+                      </Link>
                     </div>
                   </li>
                 </ul>

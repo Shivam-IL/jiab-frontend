@@ -202,11 +202,13 @@ const ContestPage: React.FC = () => {
               icon="/static/sprite/icons/leaderboard.svg"
             />
           </Link>
-          <ContentButton
-            text="Comic Coins"
-            onClick={() => {}}
-            icon="/assets/images/coin-final-sidebar.svg"
-          />
+          <Link href="/my-wallet">
+            <ContentButton
+              text="Comic Coins"
+              onClick={() => {}}
+              icon="/assets/images/coin-final-sidebar.svg"
+            />
+          </Link>
         </div>
 
         {/* How to Gather */}
