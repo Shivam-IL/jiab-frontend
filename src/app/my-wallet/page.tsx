@@ -106,7 +106,7 @@ const ComicCoinsPage = () => {
         </div> */}
 
         {/* Previous Winners Banner */}
-        <div className="md:mt-12 mt-[16px] bg-[url('/other-svgs/banner-explore.svg')] bg-cover bg-center rounded-lg flex justify-between items-center p-4 md:p-6">
+        <div className="md:mt-12 mt-[16px] bg-[url('/other-svgs/banner-explore.svg')] bg-cover bg-center md:rounded-[20px] rounded-[10px] flex justify-between items-center p-4 md:p-6">
           <AktivGroteskText
             text="PREVIOUS WINNERS"
             fontSize="text-[16px] md:text-[30px]"
@@ -118,7 +118,7 @@ const ComicCoinsPage = () => {
               text="Leaderboard"
               onClick={() => {}}
               paddingClass="py-[6px] px-[20px] md:py-[14px] md:px-[60px]"
-              fontSize="text-[12px] md:text-[20px]"
+              fontSize="text-[12px] md:text-[28px] md:font-bold"
               className="md:w-auto"
             />
           </Link>

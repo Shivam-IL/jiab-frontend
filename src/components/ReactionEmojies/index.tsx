@@ -88,7 +88,7 @@ const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({ onEmojiSelect }) => {
               height={36.2}
               className="md:w-[36.2px] md:h-[36.2px] w-[32px] h-[32px]"
             />
-            <span className="md:text-[22.5px] text-[10px]">
+            <span className="md:text-[22.5px] text-[10px] md:text-shadow-none text-shadow-2xl">
               {reaction.count}
             </span>
           </div>
