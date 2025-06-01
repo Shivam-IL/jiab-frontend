@@ -366,7 +366,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                 <span className="text-gray-800 font-[400] text-[14px]">
                   Text me, Maybe?
                 </span>
-                <button className="bg-green text-white px-2 py-1 rounded-full flex items-center gap-2 text-xs transition-colors duration-200">
+                <button className="bg-green text-white px-[14px] py-1 rounded-full flex items-center gap-[4px] text-xs transition-colors duration-200">
                   <svg
                     width="10"
                     height="10"

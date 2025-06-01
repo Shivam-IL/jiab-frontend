@@ -61,7 +61,7 @@ const page: React.FC = () => {
               >
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full py-4 md:py-6 text-left flex justify-between items-center"
+                  className="w-full py-[16px] md:py-[24px] text-left flex justify-between items-center"
                   aria-expanded={openFAQ === index}
                 >
                   <h3 className="text-base md:text-lg font-semibold text-gray-900 pr-4">
@@ -108,8 +108,8 @@ const page: React.FC = () => {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="px-6 md:px-8 pb-4 md:pb-6">
-                      <div className="border-t border-gray-100 pt-4">
+                    <div className="mt-[-4px] px-6 md:px-8 pb-4 md:pb-6">
+                      <div className="border-t border-gray-100">
                         <p className="text-sm md:text-base text-gray-700 leading-relaxed">
                           {faq.answer}
                         </p>

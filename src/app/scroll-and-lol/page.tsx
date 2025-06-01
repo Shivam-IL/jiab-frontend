@@ -228,7 +228,7 @@ const ScrollAndLol: React.FC = () => {
           </div>
 
           {/* Reaction Emojis - moved here, only visible on desktop */}
-          <div className="absolute md:bottom-[128.82px] bottom-[96px] md:right-[-5rem] right-[10px] z-20">
+          <div className="absolute md:bottom-[128.82px] bottom-[135px] md:right-[-5rem] right-[10px] z-20">
             <ReactionEmojies onEmojiSelect={handleEmojiSelect} />
           </div>
         </div>

@@ -21,13 +21,13 @@ const ContestFlatCard: React.FC<ContestFlatCardProps> = ({
       className={`bg-white rounded-[8px] md:p-4 p-[6px] flex items-center md:gap-4 gap-[10px] shadow-sm ${className}`}
     >
       {/* Icon Container */}
-      <div className="bg-green rounded-[8px] p-3 flex-shrink-0 flex items-center justify-center">
+      <div className="bg-green rounded-[8px] p-3 flex-shrink-0 flex items-center justify-center md:h-[104.8px] md:w-[86.75px]">
         <Image
           src={icon}
           alt={title}
           width={40}
           height={40}
-          className="md:w-10 w-[30.04px] md:h-10 h-[40px] filter brightness-0 invert"
+          className="md:w-[52.05px] w-[30.04px] md:h-[52.4px] h-[40px] filter brightness-0 invert"
         />
       </div>
 

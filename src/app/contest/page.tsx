@@ -20,7 +20,7 @@ import useWindowWidth from "@/hooks/useWindowWidth";
 import CalendarDialog from "@/components/CalendarDialog";
 import AktivGroteskText from "@/components/common/AktivGroteskText";
 import SvgIcons from "@/components/common/SvgIcons";
-import { DAILY_WINNERS, ICONS_NAMES } from "@/constants";
+import { ICONS_NAMES } from "@/constants";
 import { DateRange } from "react-day-picker";
 
 const ContestPage: React.FC = () => {
@@ -119,7 +119,7 @@ const ContestPage: React.FC = () => {
               <Banner
                 type="image"
                 src="other-svgs/contest-over-new.svg"
-                className="rounded-lg mx-5"
+                className="rounded-lg md:mx-0 mx-5"
               />
             </div>
           </>
@@ -220,7 +220,7 @@ const ContestPage: React.FC = () => {
           <Banner
             type="image"
             src="/assets/images/banner-contest.png"
-            className="rounded-lg mx-5"
+            className="rounded-lg md:mx-0 mx-5"
           />
         </div>
 
