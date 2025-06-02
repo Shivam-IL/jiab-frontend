@@ -21,7 +21,7 @@ export const DisplayTable = () => {
           <td
             className={`${aktivGrotesk.className} mb-[12px] text-[12px] md:text-[20px] font-[500] text-center py-[12px] md:py-[20px]`}
           >
-            Avataar
+            Avatar
           </td>
           <td
             className={`${aktivGrotesk.className} mb-[12px] text-[12px] md:text-[20px] font-[500] text-center py-[12px] md:py-[20px]   `}

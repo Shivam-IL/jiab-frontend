@@ -24,9 +24,9 @@ const UserComicsCoinsAndRankCard = () => {
               imageClassName='w-[12px] h-[12px] object-cover md:w-[28px] md:h-[28px]'
               image={LOCAL_IMAGES.SPRITE_GOLD}
               text='Comic Coins'
-              fontSize='text-[10px] md:text-[20px]'
+              fontSize='text-[12px] md:text-[28px]'
               fontWeight='font-[400]'
-              textColor='text-[rgba(0,0,0,0.25)] '
+              textColor='text-black'
             />
           </div>
         </div>
@@ -44,9 +44,9 @@ const UserComicsCoinsAndRankCard = () => {
               icon={ICONS_NAMES.RANK}
               iconClassName='w-[9px] h-[12px] md:w-[18px] md:h-[24px]'
               text='Rank'
-              fontSize='text-[10px] md:text-[20px]'
+              fontSize='text-[12px] md:text-[28px]'
               fontWeight='font-[400]'
-              textColor='text-[rgba(0,0,0,0.25)] '
+              textColor='text-black'
             />
           </div>
         </div>

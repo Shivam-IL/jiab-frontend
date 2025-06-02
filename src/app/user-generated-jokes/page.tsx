@@ -6,6 +6,7 @@ import UgcComponent from '@/components/UgcComponent'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { MadeYouLaughExitPopup } from '@/components/ExitPopUps'
+import UgcFilter from '@/components/common/UgcFilter'
 
 const UserGeneratedJokes = () => {
   const router = useRouter()
@@ -31,16 +32,19 @@ const UserGeneratedJokes = () => {
               <AktivGroteskText
                 fontSize='text-[12px] md:text-[20px]'
                 fontWeight='font-[400]'
-                className='text-[#11A64B] md:block hidden'
+                className='text-[#11A64B] '
                 text='HALL-OF-LAME 🤪>'
               />
             </button>
           </div>
-          <AktivGroteskText
-            fontSize='text-[12px] md:text-[20px]'
-            fontWeight='font-[400]'
-            text='Jokes For you, Created By You'
-          />
+          <div className='flex flex-col md:flex-row justify-between gap-[16px] md:gap-0'>
+            <AktivGroteskText
+              fontSize='text-[12px] md:text-[20px]'
+              fontWeight='font-[400]'
+              text='Jokes For you, Created By You'
+            />
+            <UgcFilter/>
+          </div>
         </div>
         <UgcComponent />
       </div>

@@ -10,7 +10,9 @@ import GreenCTA from '@/components/GreenCTA'
 import useAppSelector from '@/hooks/useSelector'
 import EditProfileImage from '@/components/EditProfileImage'
 import useAppDispatch from '@/hooks/useDispatch'
-import { updateSignupDone } from '@/store/auth/auth.slice'
+import { updateCrossModal, updateSignupDone } from '@/store/auth/auth.slice'
+import SvgIcons from '../SvgIcons'
+import { ICONS_NAMES } from '@/constants'
 
 interface IUserData {
   profileImage: string
@@ -125,6 +127,16 @@ const Signup = () => {
         className={`flex flex-col gap-[24px] pt-[28px]`}
         onClick={handleContainerClick}
       >
+        <div className='w-full absolute top-[4px] right-[4px] flex justify-end box-border pt-[10px] pr-[10px]'>
+          <button
+            className='flex justify-center items-center outline-none border-none'
+            onClick={() => {
+              setOpen(false)
+            }}
+          >
+            <SvgIcons name={ICONS_NAMES.CROSS} className='w-[16px] h-[16px]' />
+          </button>
+        </div>
         <div className='flex flex-col justify-center items-center gap-[8px]'>
           <AuthHeading title='Sign Up' />
 
@@ -212,7 +224,7 @@ const Signup = () => {
             if (isFormValid()) {
               console.log('Form submitted:', userData)
               setOpen(false)
-              dispatch(updateSignupDone({signupDone:true}))
+              dispatch(updateSignupDone({ signupDone: true }))
             }
           }}
           text='Submit'

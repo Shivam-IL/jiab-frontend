@@ -26,7 +26,7 @@ const SurpriseMeLockModal: React.FC<{}> = () => {
         </div>
         <div className='w-full flex justify-end box-border pt-[10px] pr-[10px]'>
           <button
-            className='flex justify-center items-center'
+            className='flex justify-center items-center outline-none border-none'
             onClick={() => {
               setOpen(false)
               dispatch(updateCrossModal({ crossModal: true }))

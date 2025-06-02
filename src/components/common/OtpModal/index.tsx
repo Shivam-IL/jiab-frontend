@@ -9,8 +9,10 @@ import Input from '@/components/Input'
 import GreenCTA from '@/components/GreenCTA'
 import useAppSelector from '@/hooks/useSelector'
 import useAppDispatch from '@/hooks/useDispatch'
-import { updateOtpFilled } from '@/store/auth/auth.slice'
+import { updateCrossModal, updateOtpFilled } from '@/store/auth/auth.slice'
 import { useMutateRequestOTP, useMutateVerifyOTP } from '@/api/hooks/LoginHooks'
+import SvgIcons from '../SvgIcons'
+import { ICONS_NAMES } from '@/constants'
 
 const OtpModal = () => {
   const [otp, setOtp] = useState<string>('')
@@ -94,8 +96,8 @@ const OtpModal = () => {
     if (isPending && isSuccess) {
       const { data: responseData } = data
       console.log(responseData)
-        dispatch(updateOtpFilled({ otpFilled: true }))
-        setOpen(false)
+      dispatch(updateOtpFilled({ otpFilled: true }))
+      setOpen(false)
     }
   }, [isPending, isSuccess])
   return (
@@ -110,6 +112,16 @@ const OtpModal = () => {
           width={134.68}
           height={234.68}
         />
+      </div>
+      <div className='w-full absolute top-[4px] right-[4px] flex justify-end box-border pt-[10px] pr-[10px]'>
+        <button
+          className='flex justify-center items-center outline-none border-none'
+          onClick={() => {
+            setOpen(false)
+          }}
+        >
+          <SvgIcons name={ICONS_NAMES.CROSS} className='w-[16px] h-[16px]' />
+        </button>
       </div>
       <div className={`flex flex-col gap-[24px] pt-[50px]`}>
         <div className='flex flex-col justify-center items-center md:gap-[12px] gap-[8px]'>
