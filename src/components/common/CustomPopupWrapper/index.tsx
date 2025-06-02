@@ -48,11 +48,12 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
           <div className='flex pb-[16px] gap-[14px]'>
             <button
               onClick={onClose}
-              className={`py-[10px] ${aktivGrotesk.className} px-[28px] bg-white border-[1px] border-black rounded-[100px] text-[14px] font-[700]`}
+              className={`py-[10px] ${aktivGrotesk.className} leading-tight px-[28px] bg-white border-[1px] border-black rounded-[100px] text-[16px] md:text-[20px] font-[700]`}
             >
               Yes
             </button>
             <GreenCTA
+              className='leading-tight'
               paddingClass='py-[10px] px-[28px]'
               text='No'
               onClick={onClose}

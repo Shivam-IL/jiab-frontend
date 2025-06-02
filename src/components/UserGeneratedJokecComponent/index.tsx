@@ -8,7 +8,7 @@ const UserGeneratedJokecComponent = () => {
   const router = useRouter()
   return (
     <div className='flex flex-col gap-[16px] md:gap-[32px]'>
-      <div className='relative flex md:px-[37px] justify-between items-center'>
+      <div className='relative flex justify-between items-center'>
         <AktivGroteskText
           text={MY_JOKES}
           fontSize='text-[16px] md:text-[28px]'

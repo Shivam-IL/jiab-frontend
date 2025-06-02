@@ -154,6 +154,7 @@ export const REFER_NOW_MODAL_DATA = {
     ctaText: "Refer Now",
   },
 };
+export const DAILY_WINNERS = 'Daily Winners'
 
 export const ICONS_NAMES = {
   SPRITE_BOTTLE: "sprite-bottle",

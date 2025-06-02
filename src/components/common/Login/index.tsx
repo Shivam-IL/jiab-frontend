@@ -7,16 +7,18 @@ import LoginSignupWrapper, {
 } from '@/components/LoginSignupWrapper'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { Button } from '@/components/ui/button'
 import GreenCTA from '@/components/GreenCTA'
 import useDispatch from '../../../hooks/useDispatch'
 import useAppSelector from '@/hooks/useSelector'
 import {
   updateOtpStatus,
   updateLoginModal,
-  updatePhoneNumber
+  updatePhoneNumber,
+  updateCrossModal
 } from '@/store/auth/auth.slice'
 import { useMutateRequestOTP } from '@/api/hooks/LoginHooks'
+import SvgIcons from '../SvgIcons'
+import { ICONS_NAMES } from '@/constants'
 
 const Login = () => {
   const {
@@ -90,6 +92,17 @@ const Login = () => {
           width={134.68}
           height={234.68}
         />
+      </div>
+      <div className='w-full absolute top-[4px] right-[4px] flex justify-end box-border pt-[10px] pr-[10px]'>
+        <button
+          className='flex justify-center items-center outline-none border-none'
+          onClick={() => {
+            handleClose()
+            dispatch(updateCrossModal({ crossModal: true }))
+          }}
+        >
+          <SvgIcons name={ICONS_NAMES.CROSS} className='w-[16px] h-[16px]' />
+        </button>
       </div>
       <div className={`flex flex-col gap-[24px] pt-[50px]`}>
         <div className='flex flex-col justify-center items-center gap-[8px]'>

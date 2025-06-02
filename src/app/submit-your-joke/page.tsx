@@ -66,11 +66,13 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
               fontSize='text-[12px] md:text-[16px]'
               fontWeight='font-[400]'
             />
-            {title.includes('Image') && <AktivGroteskText
-              text='Preferred Dimensions : Square'
-              fontSize='text-[8px] md:text-[14px]'
-              fontWeight='font-[400]'
-            />}
+            {title.includes('Image') && (
+              <AktivGroteskText
+                text='Preferred Dimensions : Square'
+                fontSize='text-[8px] md:text-[14px]'
+                fontWeight='font-[400]'
+              />
+            )}
           </div>
         </div>
       </div>
@@ -92,8 +94,6 @@ const SubmitYourJoke = () => {
   const [openJokeOffensivePopup, setOpenJokeOffensivePopup] =
     useState<boolean>(false)
 
-
-
   const [jokeData, setJokeData] = useState<IJokeData>({
     language: '',
     format: 'Image',
@@ -111,7 +111,6 @@ const SubmitYourJoke = () => {
   const handleChange = (key: string, value: any) => {
     setJokeData(prev => ({ ...prev, [key]: value }))
   }
-
 
   console.log(jokeData, 'jokeData')
 
@@ -138,8 +137,11 @@ const SubmitYourJoke = () => {
             fontWeight='font-[400]'
           />
         </div>
-        <div className='mt-[36px] md:mt-0 flex flex-col md:justify-center md:items-center gap-[24px] md:gap-[32px]'>
-          <LabeledInput labelClassName='md:text-center' label='Select Language*'>
+        <div className='md:mt-0 flex flex-col md:justify-center md:items-center gap-[24px] md:gap-[32px]'>
+          <LabeledInput
+            labelClassName='md:text-center'
+            label='Select Language*'
+          >
             <Input
               bgColor='bg-white'
               name='language'
@@ -150,7 +152,11 @@ const SubmitYourJoke = () => {
               placeholder='Select Language'
             />
           </LabeledInput>
-          <LabeledInput labelClassName='md:text-center' width='w-full' label='Select Format*'>
+          <LabeledInput
+            labelClassName='md:text-center'
+            width='w-full'
+            label='Select Format*'
+          >
             <div className='flex w-full  md:flex-row md:justify-center'>
               <div className='flex w-full md:w-[600px] gap-[8px]  justify-between'>
                 {FORMAT_OPTIONS.map(item => {
@@ -205,28 +211,30 @@ const SubmitYourJoke = () => {
             )}
             {jokeData.format.toLowerCase() === FileType.TEXT.toLowerCase() && (
               <div>
-                <AktivGroteskText
-                  text='Add your Joke*  👇'
-                  fontSize='text-[16px]'
-                  fontWeight='font-[700]'
-                />
-                <Input
-                  name='jokeText'
-                  type='textarea'
-                  bgColor='bg-[#9BD4B1]'
-                  paddingClass='p-[12px] mt-[24px]'
-                  borderRadius='rounded-[10px]'
-                  fontSize='text-[12px] md:text-[20px] font-[400]'
-                  className=''
-                  rows={6}
-                  onChange={handleChange}
-                  value={jokeData.jokeText}
-                  placeholder='Type your joke here...'
-                />
+                <div className='flex flex-col gap-[8px]'>
+                  <AktivGroteskText
+                    text='Add your Joke*  👇'
+                    fontSize='md:text-[16px] text-[14px]'
+                    fontWeight='font-[700]'
+                  />
+                  <Input
+                    name='jokeText'
+                    type='textarea'
+                    bgColor='bg-[#9BD4B1]'
+                    paddingClass='p-[12px]'
+                    borderRadius='rounded-[10px]'
+                    fontSize='text-[12px] md:text-[20px] font-[400]'
+                    className=''
+                    rows={6}
+                    onChange={handleChange}
+                    value={jokeData.jokeText}
+                    placeholder='Type your joke here...'
+                  />
+                </div>
                 <AktivGroteskText
                   text='Max. limit 200 words'
-                  className='text-[rgba(0,0,0,0.5)] mt-[10px]'
-                  fontSize='text-[8px] md:text-[12px]'
+                  className='text-[rgba(0,0,0,0.5)] mt-[10px] md:mt-[12px]'
+                  fontSize='text-[8px] md:text-[16px]'
                   fontWeight='font-[400]'
                 />
               </div>
@@ -248,7 +256,7 @@ const SubmitYourJoke = () => {
               fontWeight='font-[400]'
             />
           </LabeledInput>
-          <LabeledInput 
+          <LabeledInput
             labelClassName='md:text-center'
             width='md:max-w-[720px] lg:max-w-[920px]'
             label='Select Category* '
