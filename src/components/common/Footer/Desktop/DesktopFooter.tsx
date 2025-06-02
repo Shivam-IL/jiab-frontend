@@ -2,6 +2,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+const currentYear = new Date().getFullYear();
+
 const DesktopFooter = () => {
   return (
     <footer className="bg-black w-full h-[440px] py-[60px] text-white">
@@ -118,8 +120,7 @@ const DesktopFooter = () => {
           </div>
         </div>
         <div className="w-full flex-0.5 content-end text-right mt-[41px]">
-          © {new Date().getFullYear()} The Coca‑Cola Company. All rights
-          reserved.
+          © {currentYear} The Coca‑Cola Company. All rights reserved.
         </div>
       </div>
     </footer>

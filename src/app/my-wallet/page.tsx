@@ -106,7 +106,8 @@ const ComicCoinsPage = () => {
         </div> */}
 
         {/* Previous Winners Banner */}
-        <div className="md:mt-12 mt-[16px] bg-[url('/other-svgs/banner-explore.svg')] bg-cover bg-center md:rounded-[20px] rounded-[10px] flex justify-between items-center p-4 md:p-6">
+        {/* */}
+        <div className="mt-[40px] bg-[url('/other-svgs/banner-explore.svg')] bg-cover bg-center md:rounded-[20px] rounded-[10px] flex justify-between items-center p-4 md:p-6 ">
           <AktivGroteskText
             text="PREVIOUS WINNERS"
             fontSize="text-[16px] md:text-[30px]"
@@ -125,7 +126,7 @@ const ComicCoinsPage = () => {
         </div>
 
         {/* Promotional Banners */}
-        <div className="md:mt-8 mt-[16px] flex flex-col gap-4">
+        <div className="md:my-[40px] my-[16px] flex flex-col md:gap-y-[40px] gap-y-[16px]">
           <Banner
             type="image"
             src="/other-svgs/share-laugh.svg"
