@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface AuthState {
   user: null;
+  phoneNumber: string;
+  otp: string;
   loginModal: boolean;
   isLoading: boolean;
   isAuthenticated: boolean;
@@ -16,12 +18,14 @@ const initialState: AuthState = {
   user: null,
   isLoading: false,
   isAuthenticated: false,
+  otp: "",
   otpSent: false,
   otpFilled: false,
   loginModal: false,
   signupDone: false,
   crossModal: false,
-  addressData:[]
+  addressData: [],
+  phoneNumber: "",
 };
 
 const authSlice = createSlice({
@@ -30,6 +34,12 @@ const authSlice = createSlice({
   reducers: {
     updateOtpStatus: (state, action) => {
       state.otpSent = action.payload.otpSent;
+    },
+    updatePhoneNumber: (state, action) => {
+      state.phoneNumber = action.payload.phoneNumber;
+    },
+    updateOtp: (state, action) => {
+      state.otp = action.payload.otp;
     },
     updateOtpFilled: (state, action) => {
       state.otpFilled = action.payload.otpFilled;
@@ -56,5 +66,7 @@ export const {
   updateSignupDone,
   updateAddressData,
   updateCrossModal,
+  updateOtp,
+  updatePhoneNumber,
 } = authSlice.actions;
 export default authSlice.reducer;

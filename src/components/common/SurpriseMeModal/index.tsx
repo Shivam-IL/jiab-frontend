@@ -16,7 +16,6 @@ import { MakeLaughExitPopup } from '@/components/ExitPopUps'
 const SurpriseMeModal = () => {
   const [open, setOpen] = useState<boolean>(true)
 
-  
   const [makeLaughExitPopup, setMakeLaughExitPopup] = useState<boolean>(false)
   console.log('open', open,makeLaughExitPopup)
   return (
