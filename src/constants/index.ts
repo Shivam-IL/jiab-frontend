@@ -247,7 +247,10 @@ export const ICONS_NAMES = {
   TRAFFIC: "category-traffic",
   TRAVEL: "category-travel",
   SURPRISE:"surprise",
-  EXTREME_LAUGH:"exteme-smiley"
+  EXTREME_LAUGH:"exteme-smiley",
+  LOGOUT_ICON: "logout-icon-desktop",
+  PROFILE_ICON: "profile-icon-desktop",
+  WALLET_ICON: "wallet-icon-desktop",
 };
 
 export const FORMAT_OPTIONS = [
@@ -357,7 +360,7 @@ export const INVITE_CODE_POPUP_DATA = {
   },
   CHEAT_CODE_NOT_ALLOWED: {
     TITLE: "Cheat codes not allowed! 🚫",
-    SUB_TITLE: "You've entered a used referral code.  Please enter a valid code to proceed!",
+    SUB_TITLE: "You've entered a used referral code. Please enter a valid code to proceed!",
     CTA_TEXT: "Submit",
   },
 };
@@ -510,7 +513,7 @@ export const REFFERAL_STATUS_POPUP_DATA = {
   PAST_ON_US: {
     ICON: ICONS_NAMES.CALENDAR_NOTIFICATION,
     TITLE: "Trying to get one past us?",
-    SUB_TITLE: "You've already referred this person. 👐  Try sending them a reminder, instead!",
+    SUB_TITLE: "You've already referred this person. 👐 Try sending them a reminder, instead!",
     SINGLE_BUTTON: true,
     SINGLE_BUTTON_TEXT: "Refer Another",      
   },

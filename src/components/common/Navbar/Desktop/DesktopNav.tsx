@@ -2,10 +2,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Bell, ChevronDown } from "lucide-react";
+import {
+  Bell,
+  ChevronDown,
+  ChevronRight,
+  ChevronUp,
+  LogOut,
+} from "lucide-react";
 import { ILogoAndProfileImageProps } from "@/interfaces";
 import NotificationItem from "../../NotificationItem/NotificationItem";
 import {
+  ICONS_NAMES,
   INVITE_CODE_POPUP_DATA,
   REFER_NOW_MODAL_DATA,
   REFFERAL_STATUS_POPUP_DATA,
@@ -14,6 +21,9 @@ import ReferNowModal from "../../ReferNowModal";
 import InviteCodePopupWrapper from "@/components/InviteCodePopus";
 import CustomPopupWrapper from "../../CustomPopupWrapper";
 import AktivGroteskText from "../../AktivGroteskText";
+import useAppDispatch from "@/hooks/useDispatch";
+import { updateLoginModal } from "@/store/auth/auth.slice";
+import SvgIcons from "../../SvgIcons";
 
 const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
@@ -23,10 +33,13 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const [isExploreDropdownOpen, setIsExploreDropdownOpen] = useState(false);
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
     useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState("en");
   const langDropdownRef = useRef<HTMLDivElement>(null);
   const exploreDropdownRef = useRef<HTMLDivElement>(null);
   const notificationDropdownRef = useRef<HTMLDivElement>(null);
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
 
   const exploreMenuItems = [
     { id: 1, label: "Scroll & LOL", href: "/scroll-and-lol" },
@@ -141,6 +154,12 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
       ) {
         setIsNotificationDropdownOpen(false);
       }
+      if (
+        profileDropdownRef.current &&
+        !profileDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsProfileDropdownOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -190,7 +209,11 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                 onClick={() => setIsExploreDropdownOpen(!isExploreDropdownOpen)}
               >
                 <span className="mr-1">Explore</span>
-                <ChevronDown className="h-5 w-5" />
+                {isExploreDropdownOpen ? (
+                  <ChevronDown className="h-5 w-5" />
+                ) : (
+                  <ChevronRight className="h-5 w-5" />
+                )}
               </div>
 
               {isExploreDropdownOpen && (
@@ -330,8 +353,67 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
             )}
           </div>
 
-          <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white cursor-pointer">
-            <Image src={profileImage} alt="Profile Image" width={40} />
+          <div
+            className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-black cursor-pointer relative"
+            ref={profileDropdownRef}
+            onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+          >
+            {isLoggedIn ? (
+              <Image src={profileImage} alt="Profile Image" width={40} />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-xl font-bold">
+                ?
+              </div>
+            )}
+
+            {isProfileDropdownOpen && (
+              <div className="absolute top-full right-0 mt-2 bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 text-[18px] min-w-[183px]">
+                {isLoggedIn ? (
+                  <>
+                    <Link
+                      href="/profile"
+                      className="hover:bg-gray-50 flex justify-between items-center px-[20px] py-[10px]"
+                    >
+                      My Profile
+                      <SvgIcons
+                        name={ICONS_NAMES.PROFILE_ICON}
+                        width={20}
+                        height={20}
+                      />
+                    </Link>
+                    <Link
+                      href="/my-wallet"
+                      className="px-[20px] py-[10px] hover:bg-gray-50 flex justify-between items-center"
+                    >
+                      Comic Coins
+                      <SvgIcons
+                        name={ICONS_NAMES.WALLET_ICON}
+                        width={20}
+                        height={20}
+                      />
+                    </Link>
+                    <button className="w-full text-left px-[20px] py-[10px] hover:bg-gray-50 text-red-500 flex items-center justify-between">
+                      <span>Logout</span>
+                      <SvgIcons
+                        name={ICONS_NAMES.LOGOUT_ICON}
+                        width={20}
+                        height={20}
+                      />
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className="w-full text-left px-4 py-2 hover:bg-gray-50"
+                    onClick={() => {
+                      dispatch(updateLoginModal({ loginModal: true }));
+                      setIsProfileDropdownOpen(false);
+                    }}
+                  >
+                    Login
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
