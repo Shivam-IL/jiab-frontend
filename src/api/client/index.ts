@@ -9,9 +9,7 @@ const apiClient: AxiosInstance = axios.create({
 
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    throw new Error(error?.message)
-  }
+  (error) => error.response
 );
 
 export default apiClient;

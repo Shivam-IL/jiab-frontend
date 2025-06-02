@@ -8,9 +8,11 @@ import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES } from '@/constants'
 import useAppDispatch from '@/hooks/useDispatch'
 import { updateCrossModal, updateLoginModal } from '@/store/auth/auth.slice'
+import useAppSelector from '@/hooks/useSelector'
 
 const SurpriseMeLockModal: React.FC<{}> = () => {
   const [open, setOpen] = useState<boolean>(true)
+  const { isAuthenticated } = useAppSelector(state => state.auth)
 
   const dispatch = useAppDispatch()
   return (
@@ -43,8 +45,13 @@ const SurpriseMeLockModal: React.FC<{}> = () => {
             <div className='self-center z-10 absolute top-[204px] md:top-[182px] left-[99px] md:left-[78px]'>
               <button
                 onClick={() => {
-                  dispatch(updateLoginModal({ loginModal: true }))
-                  setOpen(false)
+                  if (isAuthenticated) {
+                    dispatch(updateLoginModal({ loginModal: true }))
+                    setOpen(false)
+                  } else {
+                    dispatch(updateLoginModal({ loginModal: true }))
+                    setOpen(false)
+                  }
                 }}
                 className='relative'
               >
