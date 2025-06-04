@@ -69,6 +69,8 @@ export default function RootLayout({
       <head>
         <title>{String(metadata?.title || "")}</title>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#00ff5f" />
       </head>
       <body className={`${aktivGrotesk.variable} antialiased bg-[#F2F2F2]`}>
         <LayoutClient>{children}</LayoutClient>

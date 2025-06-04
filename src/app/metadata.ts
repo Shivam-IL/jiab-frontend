@@ -8,4 +8,6 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
   },
+  manifest: "/manifest.json",
+  themeColor: "#00ff5f",
 };
