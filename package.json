@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-sprite": "svg-sprite -s --symbol-dest ./public/static/sprite --symbol-sprite sprite.svg ./public/static/sprite/icons/*.svg"
+    "predev": "npm run generate-sprite",
+    "generate-sprite": "svg-sprite -s --symbol-dest ./public/static/sprite --symbol-sprite sprite.svg ./public/static/sprite/icons/*.svg",
+    "dev:https": "next dev --experimental-https"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.3.2",
@@ -35,7 +37,8 @@
     "react-redux": "^9.2.0",
     "svg-sprite": "^2.0.4",
     "tailwind-merge": "^3.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "@ducanh2912/next-pwa": "^10.2.9"
   },
   "devDependencies": {
     "@types/node": "^20",
