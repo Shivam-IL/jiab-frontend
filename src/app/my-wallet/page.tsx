@@ -1,9 +1,6 @@
 "use client";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
 import React from "react";
-import AnnouncingWinnerTimer from "@/components/AnnouncingWinnerTimer";
-import Header from "@/components/common/Header/Header";
-import WalletCard from "@/components/WalletCard";
 import GreenCTA from "@/components/GreenCTA";
 import Banner from "@/components/common/Banner/Banner";
 import AktivGroteskText from "@/components/common/AktivGroteskText";
@@ -11,11 +8,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 const ComicCoinsPage = () => {
-  const reward = {
-    imageUrl: "/assets/images/reward-1.png",
-    imageAlt: "reward-1",
-  };
-
   return (
     <>
       <div className="bg-white -mt-5 pt-5">
@@ -37,9 +29,9 @@ const ComicCoinsPage = () => {
               <Image
                 src="/assets/images/sprite-gold.png"
                 alt="coin"
-                width={60}
-                height={60}
-                className="w-[20px] md:w-[60px] h-auto"
+                width={50}
+                height={50}
+                className="w-[20px] md:w-[50px] h-auto"
               />
             </div>
           </div>

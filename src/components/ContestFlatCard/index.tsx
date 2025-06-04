@@ -41,12 +41,12 @@ const ContestFlatCard: React.FC<ContestFlatCardProps> = ({
             <Image
               src="/assets/images/coin-final-sidebar.svg"
               alt="coin"
-              width={20}
-              height={20}
-              className="w-5 h-5"
+              width={25}
+              height={25}
+              className="md:w-[25px] md:h-[25px] w-[14px] h-[14px]"
             />
           </div>
-          <span className="text-[#666666] md:text-[14px] text-[7px] font-medium">
+          <span className="text-[#666666] md:text-[16px] text-[7px] font-medium">
             {reward} {rewardText}
           </span>
         </div>

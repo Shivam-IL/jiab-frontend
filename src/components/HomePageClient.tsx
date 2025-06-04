@@ -36,46 +36,8 @@ export default function HomePageClient() {
     useAppSelector((state) => state.auth);
   const width = useWindowWidth();
 
-  // Tour Guide State
-  const [runCenteredTour, setRunCenteredTour] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  // Tour Guide State - REMOVED unused variables
   const [isClient, setIsClient] = useState(false);
-
-  // Tour steps with targets
-  const centeredTourSteps = [
-    {
-      target: ".banner-section",
-      content:
-        "Welcome to Joke In A Bottle! This is your starting point for endless entertainment.",
-      title: "Welcome Guide",
-      placement: "bottom" as const,
-      disableBeacon: true,
-    },
-    {
-      target: ".video-section",
-      content:
-        "Scroll through hilarious videos and discover amazing content creators!",
-      title: "Video Content",
-      placement: "bottom" as const,
-      disableBeacon: true,
-    },
-    {
-      target: ".categories-section",
-      content:
-        "Pick your mood and explore different comedy categories that match your vibe!",
-      title: "Pick Your Mood",
-      placement: "bottom" as const,
-      disableBeacon: true,
-    },
-    {
-      target: ".challenge-section",
-      content:
-        "Join special challenges and events for extra fun and amazing prizes!",
-      title: "Special Events",
-      placement: "bottom" as const,
-      disableBeacon: true,
-    },
-  ];
 
   // Path to the thumbnail image - you'll need to ensure this exists in your project
   const thumbnailPath = "/videos/thumbnail.jpg";
@@ -397,14 +359,14 @@ export default function HomePageClient() {
           </Carousel>
 
           {/* Navigation dots - page based */}
-          <div className="flex justify-center md:gap-2 gap-[1.77px] md:mb-10 mb-0 md:mt-[40px] mt-[8px]">
+          <div className="flex justify-center md:gap-1 gap-[1.77px] md:mb-10 mb-0 md:mt-[40px] mt-[8px]">
             {Array.from({ length: pageCount }).map((_, index) => (
               <button
                 key={index}
                 className={`h-1 rounded-full transition-all duration-300 ${
                   index === current
-                    ? "md:w-8 w-[17.73px] bg-black"
-                    : "md:w-4 w-[8.86px] bg-gray-300"
+                    ? "md:w-[24px] w-[17.73px] bg-black"
+                    : "md:w-[12px] w-[8.86px] bg-gray-300"
                 }`}
                 onClick={() => goToPage(index)}
                 aria-label={`Go to page ${index + 1}`}

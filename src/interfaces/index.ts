@@ -9,7 +9,7 @@ export interface ILogoAndProfileImageProps {
 
 export interface ILoginSignupWrapper {
   children: React.ReactNode;
-  logo?: Boolean;
+  logo?: boolean;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

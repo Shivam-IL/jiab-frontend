@@ -3,11 +3,9 @@ import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { aktivGrotesk } from "@/app/layout";
-import { format, isSameDay } from "date-fns";
+import { format } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DateRange } from "react-day-picker";
 

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
-import AnnouncingWinnerTimer from "@/components/AnnouncingWinnerTimer";
 import HowToParticipate from "@/components/HowToParticipate";
 import Header from "@/components/common/Header/Header";
 import WalletCard from "@/components/WalletCard";
@@ -15,13 +14,6 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import Link from "next/link";
-import LeaderBoardTable, { DisplayTable } from "@/components/LeaderBoardTable";
-import useWindowWidth from "@/hooks/useWindowWidth";
-import CalendarDialog from "@/components/CalendarDialog";
-import AktivGroteskText from "@/components/common/AktivGroteskText";
-import SvgIcons from "@/components/common/SvgIcons";
-import { ICONS_NAMES } from "@/constants";
-import { DateRange } from "react-day-picker";
 
 const ContestPage: React.FC = () => {
   const rewardPool = [
@@ -79,11 +71,6 @@ const ContestPage: React.FC = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [pageCount, setPageCount] = useState(0);
-  const [isCalendarOpen, setIsCalendarOpen] = React.useState(false);
-
-  const handleDateRangeSelect = (range: DateRange | undefined) => {
-    console.log("Selected date range:", range);
-  };
 
   // Calculate page count for reward pool carousel
   useEffect(() => {
@@ -107,8 +94,6 @@ const ContestPage: React.FC = () => {
   };
 
   const isContestOver = true;
-
-  const width = useWindowWidth();
 
   return (
     <>

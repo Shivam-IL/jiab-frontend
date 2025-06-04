@@ -53,14 +53,12 @@ const ScrollAndLol: React.FC = () => {
   ]);
 
   const [activeVideoIndex, setActiveVideoIndex] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [videoPlayStates, setVideoPlayStates] = useState<boolean[]>(
+    new Array(15).fill(true)
+  );
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [showEndOfFeedPopup, setShowEndOfFeedPopup] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [loadedVideos, setLoadedVideos] = useState<Set<number>>(new Set());
-  // State to store the selected reaction
-  const [selectedReaction, setSelectedReaction] =
-    useState<SelectedReactionData | null>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const isDesktopRef = useRef(false);
@@ -92,13 +90,17 @@ const ScrollAndLol: React.FC = () => {
     if (!containerRef.current) return;
 
     const container = containerRef.current;
-    const videoElements = container.querySelectorAll(".snap-start");
+    const videoElements = container.querySelectorAll(".video-container");
 
     // Find the current video index based on scroll position
     let currentIndex = 0;
+    const containerRect = container.getBoundingClientRect();
+
     videoElements.forEach((el, idx) => {
       const rect = el.getBoundingClientRect();
-      if (rect.top <= window.innerHeight / 2) {
+      const relativeTop = rect.top - containerRect.top;
+
+      if (relativeTop <= container.clientHeight / 2) {
         currentIndex = idx;
       }
     });
@@ -109,19 +111,29 @@ const ScrollAndLol: React.FC = () => {
         ? Math.max(0, currentIndex - 1)
         : Math.min(videoElements.length - 1, currentIndex + 1);
 
-    // Get target element and scroll to it
+    // Scroll to target position
     const targetElement = videoElements[targetIndex] as HTMLElement;
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
-      setActiveVideoIndex(targetIndex);
+    if (targetElement && container) {
+      // For desktop, account for gaps between videos (24px margin-bottom = 1.5rem)
+      const isDesktop = window.innerWidth >= 768;
+      const gapSize = isDesktop ? 24 : 0; // 24px = 1.5rem (mb-6)
+      const videoHeight = isDesktop
+        ? container.clientHeight
+        : container.clientHeight;
+
+      const targetOffset = targetIndex * (videoHeight + gapSize);
+      container.scrollTo({
+        top: targetOffset,
+        behavior: "smooth",
+      });
     }
   };
 
   useEffect(() => {
     const options = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.7,
+      root: containerRef.current,
+      rootMargin: "-20% 0px -20% 0px",
+      threshold: 0.5,
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -131,45 +143,54 @@ const ScrollAndLol: React.FC = () => {
         );
 
         if (entry.isIntersecting) {
+          // Pause all other videos
+          videoRefs.current.forEach((video, idx) => {
+            if (video && idx !== videoIndex) {
+              video.pause();
+            }
+          });
+
+          // Update active video index
           setActiveVideoIndex(videoIndex);
-          if (isPlaying) {
-            videoRefs.current[videoIndex]?.play();
+
+          // Play current video if it should be playing
+          const currentVideo = videoRefs.current[videoIndex];
+          if (currentVideo && videoPlayStates[videoIndex]) {
+            currentVideo.play().catch(console.error);
           }
+
           if (videoIndex === videos.length - 1) {
             setShowEndOfFeedPopup(true);
           }
         } else {
-          videoRefs.current[videoIndex]?.pause();
+          // Pause video when it goes out of view
+          const video = videoRefs.current[videoIndex];
+          if (video) {
+            video.pause();
+          }
         }
       });
     }, options);
 
     videoRefs.current.forEach((videoRef) => {
       if (videoRef) {
-        observer.observe(videoRef);
+        observer.observe(videoRef.parentElement!);
       }
     });
 
     return () => {
       observer.disconnect();
     };
-  }, [isPlaying, videos.length]);
+  }, [videoPlayStates, videos.length]);
 
   // Handle video load to hide loading spinner
   const handleVideoLoad = (index: number) => {
     console.log(`Video ${index} loaded`);
-    setLoadedVideos((prev) => {
-      const newSet = new Set(prev);
-      newSet.add(index);
-
-      // Hide loading when first video is loaded
-      if (index === 0) {
-        console.log("First video loaded, hiding loader");
-        setIsLoading(false);
-      }
-
-      return newSet;
-    });
+    // Hide loading when first video is loaded
+    if (index === 0) {
+      console.log("First video loaded, hiding loader");
+      setIsLoading(false);
+    }
   };
 
   // Handle video ready to play
@@ -191,19 +212,24 @@ const ScrollAndLol: React.FC = () => {
 
   // Handler for when an emoji is selected
   const handleEmojiSelect = (reaction: SelectedReactionData) => {
-    setSelectedReaction(reaction);
-    // Here you can also send the payload to an API if needed
+    // Here you can send the payload to an API if needed
     console.log("Selected Reaction:", reaction);
   };
 
   const togglePlay = (index: number) => {
     if (index === activeVideoIndex) {
-      if (isPlaying) {
-        videoRefs.current[index]?.pause();
-      } else {
-        videoRefs.current[index]?.play();
+      const newPlayStates = [...videoPlayStates];
+      newPlayStates[index] = !newPlayStates[index];
+      setVideoPlayStates(newPlayStates);
+
+      const video = videoRefs.current[index];
+      if (video) {
+        if (newPlayStates[index]) {
+          video.play().catch(console.error);
+        } else {
+          video.pause();
+        }
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -218,7 +244,7 @@ const ScrollAndLol: React.FC = () => {
 
   return (
     <>
-      <div className="md:w-full md:h-screen md:pt-[130px] pt-0 flex flex-col justify-center items-center bg-[url('/assets/images/scroll-and-lol-bg.png')] bg-cover bg-center bg-fixed overflow-hidden">
+      <div className="md:w-full md:h-screen md:pt-[100px] pt-0 flex flex-col justify-center items-center bg-[url('/assets/images/scroll-and-lol-bg.png')] bg-cover bg-center bg-fixed overflow-hidden">
         {isLoading ? (
           <></>
         ) : (
@@ -234,24 +260,32 @@ const ScrollAndLol: React.FC = () => {
             <>
               <div
                 ref={containerRef}
-                className="relative md:w-fit md:h-full w-full h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth scrollbar-hide"
+                className="relative md:w-[442px] md:h-[calc(100vh-200px)] w-full h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth scrollbar-hide md:gap-[30px]"
+                style={{
+                  scrollSnapType: "y mandatory",
+                  scrollBehavior: "smooth",
+                }}
               >
                 {videos.map((video, index) => (
                   <div
                     key={video.id}
-                    className="relative h-screen w-full snap-start snap-always"
+                    className="video-container relative md:h-[calc(100vh-200px)] h-screen w-full flex-shrink-0 md:mb-[100px] last:md:mb-0"
+                    data-index={index}
+                    style={{
+                      scrollSnapAlign: "start",
+                      scrollSnapStop: "always",
+                    }}
                   >
                     <video
                       ref={(el) => {
                         videoRefs.current[index] = el;
                       }}
-                      className="md:w-[442px] md:h-auto h-full w-full object-cover"
+                      className="md:w-[442px] md:h-[calc(100vh-200px)] h-full w-full object-cover"
                       src={video.url}
                       loop
                       playsInline
                       muted={isMuted}
-                      autoPlay={index === 0}
-                      data-index={index}
+                      autoPlay={false}
                       onLoadedData={() => handleVideoLoad(index)}
                       onCanPlay={() => handleVideoCanPlay(index)}
                       onLoadStart={() => {
@@ -275,16 +309,20 @@ const ScrollAndLol: React.FC = () => {
                       >
                         <Image
                           src={
-                            isPlaying && index === activeVideoIndex
+                            videoPlayStates[index] && index === activeVideoIndex
                               ? "/other-svgs/pause-icon.svg"
                               : "/other-svgs/play-icon.svg"
                           }
-                          alt={isPlaying ? "Pause" : "Play"}
+                          alt={videoPlayStates[index] ? "Pause" : "Play"}
                           width={
-                            isPlaying && index === activeVideoIndex ? 12 : 20
+                            videoPlayStates[index] && index === activeVideoIndex
+                              ? 12
+                              : 20
                           }
                           height={
-                            isPlaying && index === activeVideoIndex ? 12 : 20
+                            videoPlayStates[index] && index === activeVideoIndex
+                              ? 12
+                              : 20
                           }
                         />
                       </button>

@@ -35,13 +35,7 @@ const HowToParticipate: React.FC = () => {
     },
   ];
 
-  const StepItem = ({
-    step,
-    index,
-  }: {
-    step: (typeof steps)[0];
-    index: number;
-  }) => (
+  const StepItem = ({ step }: { step: (typeof steps)[0] }) => (
     <div className="flex flex-col items-center text-center">
       {/* Icon */}
       <div className="mb-2 md:mb-6">
@@ -82,7 +76,7 @@ const HowToParticipate: React.FC = () => {
         {/* Grid for both mobile and desktop */}
         <div className="grid grid-cols-4 gap-2 md:gap-6 max-w-6xl mx-auto">
           {steps.map((step, index) => (
-            <StepItem key={index} step={step} index={index} />
+            <StepItem key={index} step={step} />
           ))}
         </div>
       </div>

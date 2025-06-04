@@ -1,10 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MobileTempNavBar from "@/components/common/MobileTempNavBar";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
 import Header from "@/components/common/Header/Header";
 
-const page: React.FC = () => {
+const Page: React.FC = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
   const faqData = [
@@ -126,4 +126,4 @@ const page: React.FC = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -51,7 +51,7 @@ export const DisplayTable = () => {
             className={`${aktivGrotesk.className} flex justify-center font-[400]  md:py-[19px]  text-center py-[12px]`}
           >
             <div className="w-[24px] h-[24px] md:w-[40px] md:h-[40px] rounded-full bg-[#11A64B]">
-              <img
+              <Image
                 className="w-full h-full object-cover"
                 src={PROFILE_IMAGES?.[0]?.imageURL}
                 alt="avatar"

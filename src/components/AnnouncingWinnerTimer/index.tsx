@@ -63,14 +63,6 @@ const AnnouncingWinnerTimer = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const formatNumber = (num: number): string => {
-    return num.toString().padStart(2, "0");
-  };
-
-  const timerText = `${formatNumber(timeLeft.hours)}:${formatNumber(
-    timeLeft.minutes
-  )}:${formatNumber(timeLeft.seconds)}`;
-
   return (
     <div className="w-full flex md:gap-[48px] justify-between items-start py-[10px]">
       <AktivGroteskText

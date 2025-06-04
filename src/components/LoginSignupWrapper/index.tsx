@@ -1,25 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogOverlay,
-  DialogPortal,
-} from "@/components/ui/dialog2";
-import { Input } from "@/components/ui/input";
-import sprite from "../../../public/other-svgs/sprite.svg";
-import Image from "next/image";
+import React from "react";
+import { Dialog, DialogOverlay, DialogPortal } from "@/components/ui/dialog2";
 import { ILoginSignupWrapper } from "@/interfaces";
 import { aktivGrotesk } from "@/app/layout";
-import SvgIcons from "../common/SvgIcons";
-import { ICONS_NAMES } from "@/constants";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 export const AuthHeading: React.FC<{ title: string }> = ({ title }) => {
@@ -34,7 +18,6 @@ export const AuthHeading: React.FC<{ title: string }> = ({ title }) => {
 
 const LoginSignupWrapper: React.FC<ILoginSignupWrapper> = ({
   children,
-  logo = true,
   open,
   setOpen,
 }) => {

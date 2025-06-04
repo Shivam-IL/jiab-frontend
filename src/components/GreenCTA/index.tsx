@@ -1,16 +1,14 @@
-import React from 'react'
-import { Button } from '../ui/button'
-import { IGreenCTA } from '@/interfaces'
-import { aktivGrotesk } from '@/app/layout'
-import AktivGroteskText from '../common/AktivGroteskText'
+import React from "react";
+import { IGreenCTA } from "@/interfaces";
+import { aktivGrotesk } from "@/app/layout";
 
 const GreenCTA: React.FC<IGreenCTA> = ({
   onClick,
   text,
-  paddingClass = 'px-[24px] py-[24px]',
-  fontSize = 'text-[16px] md:text-[20px]',
-  fontWeight = 'md:font-[500] font-[700]',
-  className = 'w-full'
+  paddingClass = "px-[24px] py-[24px]",
+  fontSize = "text-[16px] md:text-[20px]",
+  fontWeight = "md:font-[500] font-[700]",
+  className = "w-full",
 }) => {
   return (
     <button
@@ -19,7 +17,7 @@ const GreenCTA: React.FC<IGreenCTA> = ({
     >
       {text}
     </button>
-  )
-}
+  );
+};
 
-export default GreenCTA
+export default GreenCTA;

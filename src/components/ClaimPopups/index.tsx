@@ -1,5 +1,4 @@
 import { CLAIM_POPUP_DATA } from '@/constants'
-import CustomDialogWrapper from '../common/CustomDialogWrapper'
 import CustomPopupWrapper from '../common/CustomPopupWrapper'
 import AktivGroteskText from '../common/AktivGroteskText'
 

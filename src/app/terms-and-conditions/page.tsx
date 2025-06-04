@@ -18,18 +18,18 @@ const termsContent = [
         >
           https://sprite-joke-in-a-bottle.coke2home.com/
         </a>{" "}
-        ('Site') is subject to the following Terms of Use and all applicable
-        laws and regulations. The most current version of the Terms of Use may
-        be accessed by clicking on the 'Terms & Conditions' hypertext link
-        located at the bottom of the Site. By accessing and using the Site, you
-        accept, without limitation or qualification, these Terms of Use, and
-        acknowledge that any other agreements between you and The Coca Cola
-        Company which shall include its direct or indirect subsidiaries and
-        affiliated entities, including but not limited to Coca-Cola India
-        Private Limited, (collectively referred hereon forward as "TCCC") are
-        superseded with respect to this subject matter. If you do not agree and
-        accept, without limitation or qualification, these Terms of Use, please
-        exit the Site.
+        (&apos;Site&apos;) is subject to the following Terms of Use and all
+        applicable laws and regulations. The most current version of the Terms
+        of Use may be accessed by clicking on the &apos;Terms & Conditions&apos;
+        hypertext link located at the bottom of the Site. By accessing and using
+        the Site, you accept, without limitation or qualification, these Terms
+        of Use, and acknowledge that any other agreements between you and The
+        Coca Cola Company which shall include its direct or indirect
+        subsidiaries and affiliated entities, including but not limited to
+        Coca-Cola India Private Limited, (collectively referred hereon forward
+        as &quot;TCCC&quot;) are superseded with respect to this subject matter.
+        If you do not agree and accept, without limitation or qualification,
+        these Terms of Use, please exit the Site.
       </>
     ),
   },
@@ -39,20 +39,20 @@ const termsContent = [
       <>
         <strong>Ownership of Content:</strong> The Site and all of its contents
         including, but not limited to, all text, logos, videos and images
-        ("Content") are owned and copyrighted by The Coca-Cola Company or others
-        with all rights reserved unless otherwise noted. This Site features
-        logos, brand identities and other trademarks and service marks
-        (collectively, the "Marks") that are the registered and/or unregistered
-        trademark of The Coca-Cola Company and/or its subsidiaries. Nothing
-        contained on this Site should be construed as granting, by implication,
-        estoppel, or otherwise, any license or right to use any Mark displayed
-        on this Site without written permission of TCCC or any such third party
-        that may own a Mark displayed on the Site. Your use of any Content,
-        except as provided in these Terms of Use, without the written permission
-        of the Content owner is strictly prohibited. You are also advised that
-        The Coca-Cola Company will aggressively enforce its/their intellectual
-        property rights to the fullest extent of the law, including the seeking
-        of criminal prosecution.
+        (&quot;Content&quot;) are owned and copyrighted by The Coca-Cola Company
+        or others with all rights reserved unless otherwise noted. This Site
+        features logos, brand identities and other trademarks and service marks
+        (collectively, the &quot;Marks&quot;) that are the registered and/or
+        unregistered trademark of The Coca-Cola Company and/or its subsidiaries.
+        Nothing contained on this Site should be construed as granting, by
+        implication, estoppel, or otherwise, any license or right to use any
+        Mark displayed on this Site without written permission of TCCC or any
+        such third party that may own a Mark displayed on the Site. Your use of
+        any Content, except as provided in these Terms of Use, without the
+        written permission of the Content owner is strictly prohibited. You are
+        also advised that The Coca-Cola Company will aggressively enforce
+        its/their intellectual property rights to the fullest extent of the law,
+        including the seeking of criminal prosecution.
       </>
     ),
   },
@@ -81,7 +81,7 @@ const termsContent = [
             you may not distribute, modify, copy (except as set forth above),
             transmit, display, reuse, reproduce, publish, license, create
             derivative works from, transfer, sell or otherwise use Content
-            without TCCC's written permission;
+            without TCCC&apos;s written permission;
           </li>
           <li>
             you are prohibited from using the Site to post or transmit any
@@ -159,14 +159,14 @@ const termsContent = [
             </li>
             <li>
               use any robot, spider, website search/retrieval application or
-              other manual or automatic device to retrieve, index, "scrape",
-              "data mine" or in any way reproduce or circumvent the navigational
+              other manual or automatic device to retrieve, index, &quot;scrape&quot;,
+              &quot;data mine&quot; or in any way reproduce or circumvent the navigational
               structure or presentation of our website, without our express
               prior written consent.
             </li>
             <li>
               publish any unsolicited or unauthorised advertising, promotional
-              materials, "junk mail", "spam", "chain letters", "pyramid scheme"
+              materials, &quot;junk mail&quot;, &quot;spam&quot;, &quot;chain letters&quot;, &quot;pyramid scheme&quot;
               or investment opportunity, or any other form of solicitation.
             </li>
             <li>
@@ -198,7 +198,7 @@ const termsContent = [
             edit, modify, translate and reformat), derive, transmit, display and
             perform (publicly or otherwise) such content in any media now known
             or hereafter developed, for Coca-Cola India Private Limited and/or
-            affiliated entities' business purposes; and
+            affiliated entities&apos; business purposes; and
           </li>
           <li>
             to sublicense the foregoing rights, through multiple tiers, to the
@@ -220,14 +220,14 @@ const termsContent = [
         </div>
         <div className="mt-4">
           You further, to the extent permissible by law, irrevocably waive any
-          "moral rights" or other rights with respect to attribution of
+          &quot;moral rights&quot; or other rights with respect to attribution of
           authorship or integrity of materials regarding each item of user
           content that you submit.
         </div>
         <div className="mt-4">
           We do not solicit or encourage submissions of content containing ideas
           or suggestions relating to our website, our business or our affiliated
-          entities' businesses.
+          entities&apos; businesses.
         </div>
       </>
     ),
@@ -239,7 +239,7 @@ const termsContent = [
         <strong>Privacy.</strong> Any personal data (for example, your name,
         address, telephone number or e-mail address) you transmit to the Site by
         electronic mail or otherwise will be used by Coca-Cola India Private
-        Limited in accordance with the Site's Privacy Policy available at{" "}
+        Limited in accordance with the Site&apos;s Privacy Policy available at{" "}
         <a
           className="text-[#1985d3] cursor-pointer hover:underline"
           href="https://www.coca-cola.com/in/en"
@@ -258,19 +258,20 @@ const termsContent = [
     content: (
       <>
         <strong>Disclaimer of Warranties.</strong> All Content is subject to
-        change and is provided to you "as is" without any warranty of any kind,
-        either expressed or implied, including, but not limited to, the implied
-        warranties of merchantability, fitness for a particular purpose, or
-        non-infringement. TCCC neither warrants nor represents that your use of
-        any Content will not infringe the rights of any third parties nor that
-        the Content will be accurate, complete, or up to date. We use all
-        reasonable efforts to include accurate and up to date information in the
-        Site. However, TCCC makes no warranties or representations as to the
-        accuracy, correctness or reliability of the information contained in the
-        Site. Accordingly, TCCC assumes no liability or responsibility for any
-        omissions or errors (including, without limitation, typographical
-        errors, and technical errors) in the Content of the Site. Information in
-        the Site is subject to change without notice.
+        change and is provided to you &quot;as is&quot; without any warranty of
+        any kind, either expressed or implied, including, but not limited to,
+        the implied warranties of merchantability, fitness for a particular
+        purpose, or non-infringement. TCCC neither warrants nor represents that
+        your use of any Content will not infringe the rights of any third
+        parties nor that the Content will be accurate, complete, or up to date.
+        We use all reasonable efforts to include accurate and up to date
+        information in the Site. However, TCCC makes no warranties or
+        representations as to the accuracy, correctness or reliability of the
+        information contained in the Site. Accordingly, TCCC assumes no
+        liability or responsibility for any omissions or errors (including,
+        without limitation, typographical errors, and technical errors) in the
+        Content of the Site. Information in the Site is subject to change
+        without notice.
         <div className="mt-4">
           Additionally, with reference to any discussions, chats, postings,
           transmissions, bulletin boards, and the like that may be on the Site,
@@ -309,8 +310,8 @@ const termsContent = [
       <>
         <strong>Indemnification:</strong> You agree to defend, indemnify and
         hold TCCC harmless from and against any and all claims, damages, costs
-        and expenses, including advocate's fees, arising from and related to
-        your use of the Site
+        and expenses, including advocate&apos;s fees, arising from and related
+        to your use of the Site
       </>
     ),
   },
@@ -325,7 +326,7 @@ const termsContent = [
         such sites. Without limiting the foregoing, TCCC specifically disclaims
         any responsibility if such sites:
         <ol className="list-[lower-alpha] pl-5 mt-2 space-y-1">
-          <li>infringe any third party's intellectual property rights;</li>
+          <li>infringe any third party&apos;s intellectual property rights;</li>
           <li>are inaccurate, incomplete or misleading;</li>
           <li>are not merchantable or fit for a particular purpose;</li>
           <li>do not provide adequate security;</li>
@@ -376,14 +377,14 @@ const termsContent = [
     content: (
       <>
         <strong>Account Registration:</strong> To use certain portions of the
-        Sites, you may be required to create an account ("Account") and create a
-        password. To create an Account, you must have a unique, valid email
-        address or mobile number, as may be applicable. Accounts cannot be
-        shared. Your username and password are for your personal use only and
-        should be kept confidential. Each individual can have only one (1)
-        Account. If you attempt to exceed this limit in any way, we reserve the
-        right, in our sole discretion, to lock, disable, block or delete your
-        Account(s).
+        Sites, you may be required to create an account (&quot;Account&quot;)
+        and create a password. To create an Account, you must have a unique,
+        valid email address or mobile number, as may be applicable. Accounts
+        cannot be shared. Your username and password are for your personal use
+        only and should be kept confidential. Each individual can have only one
+        (1) Account. If you attempt to exceed this limit in any way, we reserve
+        the right, in our sole discretion, to lock, disable, block or delete
+        your Account(s).
       </>
     ),
   },
@@ -405,25 +406,26 @@ const termsContent = [
         privileges may be suspended or terminated, resulting in the loss of
         offers, prizes or other items.
         <div className="mt-4">
-          The "Sprite® Joke-in-a-Bottle" website is an ongoing platform for
-          consumer engagement. Upon registering on the Website, individuals may
-          participate in various activities and accumulate Comic Coins (as
-          defined herein). These Comic Coins can be utilized in upcoming
-          promotions on the Website, subject to the terms and conditions
-          specific to each promotion. Participants must adhere to the terms and
-          conditions applicable to each individual promotion, in addition to
-          these Terms of Use, which may be updated from time to time
+          The &quot;Sprite&reg; Joke-in-a-Bottle&quot; website is an ongoing
+          platform for consumer engagement. Upon registering on the Website,
+          individuals may participate in various activities and accumulate Comic
+          Coins (as defined herein). These Comic Coins can be utilized in
+          upcoming promotions on the Website, subject to the terms and
+          conditions specific to each promotion. Participants must adhere to the
+          terms and conditions applicable to each individual promotion, in
+          addition to these Terms of Use, which may be updated from time to time
         </div>
         <div className="mt-4">
-          The Comic Coins associated with Sprite® Joke-in-a-Bottle ("Comic
-          Coins") collected are not digital currency and only strictly for
-          promotional engagement on this Campaign Website and hold no monetary
-          value. Comic coins are not transferrable outside this Campaign Website
-          or to any third party within the Campaign Website. They are not a
-          currency and cannot be exchanged for cash or any form of legal tender.
-          The use of these Comic Coins is limited to the activities and rewards
-          within the confines of this promotion and are intended to enhance your
-          experience while engaging with our promotional content.
+          The Comic Coins associated with Sprite&reg; Joke-in-a-Bottle
+          (&quot;Comic Coins&quot;) collected are not digital currency and only
+          strictly for promotional engagement on this Campaign Website and hold
+          no monetary value. Comic coins are not transferrable outside this
+          Campaign Website or to any third party within the Campaign Website.
+          They are not a currency and cannot be exchanged for cash or any form
+          of legal tender. The use of these Comic Coins is limited to the
+          activities and rewards within the confines of this promotion and are
+          intended to enhance your experience while engaging with our
+          promotional content.
         </div>
       </>
     ),
@@ -442,7 +444,7 @@ const termsContent = [
         </a>{" "}
         You may also contact us by calling us at 1800-208-2653.
         <div className="mt-4">
-          Copyright © 2025 The Coca-Cola Company. All rights reserved.
+          Copyright &copy; 2025 The Coca-Cola Company. All rights reserved.
         </div>
       </>
     ),
@@ -454,13 +456,14 @@ const spriteRefreshRingsTerms = [
     id: 1,
     content: (
       <>
-        The <strong>Sprite® Refresh Rings</strong> campaign{" "}
-        <strong>("Campaign")</strong> is organized by Coca-Cola India Private
-        Limited("CCIPL") wherein individuals upon purchasing a 250ml, 600ml, or
-        750ml PET bottle of Sprite® and sharing an image of the Sprite® bottle
-        by scanning the QR code available at select outlets will receive one (1)
-        Phone Pe voucher worth Rs.10/-once per mobile number in accordance with
-        the terms and conditions mentioned herein.
+        The <strong>Sprite&reg; Refresh Rings</strong> campaign{" "}
+        <strong>(&quot;Campaign&quot;)</strong> is organized by Coca-Cola India
+        Private Limited(&quot;CCIPL&quot;) wherein individuals upon purchasing a
+        250ml, 600ml, or 750ml PET bottle of Sprite&reg; and sharing an image of
+        the Sprite&reg; bottle by scanning the QR code available at select
+        outlets will receive one (1) Phone Pe voucher worth Rs.10/-once per
+        mobile number in accordance with the terms and conditions mentioned
+        herein.
       </>
     ),
   },
@@ -482,10 +485,10 @@ const spriteRefreshRingsTerms = [
     id: 3,
     content: (
       <>
-        The Campaign is valid from 7th March 2025 to 31st Dec 2025 ("Campaign
-        Period"). Any entries received outside this period shall not be eligible
-        for the Voucher(s) and shall not be carried forward to any other
-        promotional scheme ahead.
+        The Campaign is valid from 7th March 2025 to 31st Dec 2025
+        (&quot;Campaign Period&quot;). Any entries received outside this period
+        shall not be eligible for the Voucher(s) and shall not be carried
+        forward to any other promotional scheme ahead.
       </>
     ),
   },
@@ -494,10 +497,11 @@ const spriteRefreshRingsTerms = [
     content: (
       <>
         All individuals shall get one (1) Phone Pe voucher worth Rs.10/-
-        ("Voucher") once per mobile number on sharing an image of one (1) 250ml
-        or 600ml or 750ml PET bottle of Sprite® to confirm the purchase and
-        subsequently receive Joke-In-A-Bottle content ("JIAB Content") six (6)
-        times per mobile number subject to clause 6 below.
+        (&quot;Voucher&quot;) once per mobile number on sharing an image of one
+        (1) 250ml or 600ml or 750ml PET bottle of Sprite&reg; to confirm the
+        purchase and subsequently receive Joke-In-A-Bottle content (&quot;JIAB
+        Content&quot;) six (6) times per mobile number subject to clause 6
+        below.
       </>
     ),
   },
@@ -519,18 +523,18 @@ const spriteRefreshRingsTerms = [
         To avail the Campaign benefits, the individual must:
         <ol className="list-[lower-alpha] pl-5 mt-2 space-y-2">
           <li>
-            Scan the QR code available at the select outlet to visit Sprite®
+            Scan the QR code available at the select outlet to visit Sprite&reg;
             official WhatsApp channel.
           </li>
           <li>
             By registering, consent to the Terms & Conditions and the handling
             of personal information as per the Privacy Policy posted on the
-            Sprite® official WhatsApp channel.
+            Sprite&reg; official WhatsApp channel.
           </li>
           <li>
-            After registration, share a photo of the Sprite® bottle purchased on
-            Sprite® official WhatsApp channel. The collected photos shall not be
-            utilized for commercial or any other purposes.
+            After registration, share a photo of the Sprite&reg; bottle
+            purchased on Sprite&reg; official WhatsApp channel. The collected
+            photos shall not be utilized for commercial or any other purposes.
           </li>
           <li>The PhonePe Voucher is valid only till 31st December 2025.</li>
         </ol>
@@ -609,7 +613,9 @@ const spriteRefreshRingsTerms = [
             Any comment or image/video that contains content which violates
             copyright laws or the intellectual property rights of a third party.
           </li>
-          <li>Any picture that doesn't show Sprite® bottle clearly.</li>
+          <li>
+            Any picture that doesn&apos;t show Sprite&reg; bottle clearly.
+          </li>
         </ul>
       </>
     ),
@@ -619,7 +625,7 @@ const spriteRefreshRingsTerms = [
     content: (
       <>
         CCIPL reserves the right to amend, modify or cancel the Campaign without
-        any prior notice. It is Participant's sole responsibility to review
+        any prior notice. It is Participant&apos;s sole responsibility to review
         these Terms & Conditions periodically for updates or changes.
       </>
     ),
@@ -632,12 +638,12 @@ const spriteRefreshRingsTerms = [
         <ul className="list-disc pl-5 mt-2 space-y-1">
           <li>
             Any errors, omissions or inaccuracies of content or Entry/ies or
-            Participant's personal details.
+            Participant&apos;s personal details.
           </li>
           <li>
             Personal injury or property damage of any nature resulting from
-            Participant's access to, Participant's exposure to or Participant's
-            participation in the Campaign.
+            Participant&apos;s access to, Participant&apos;s exposure to or
+            Participant&apos;s participation in the Campaign.
           </li>
           <li>
             Technical failure or any other causes beyond the control of CCIPL.
@@ -650,15 +656,16 @@ const spriteRefreshRingsTerms = [
     id: 11,
     content: (
       <>
-        At CCIPL's request, individuals with valid entries as per these terms
-        agree to participate in all promotional activity (such as publicity and
-        photography) surrounding receiving the Voucher, free of charge, and they
-        consent to CCIPL using their name, likeness, image and/or voice
-        (including photograph, film and/or recording of the same), along with
-        the use of their submissions in whichever form, in promotional material
-        or in any media, without remuneration for the purpose of promoting this
-        Campaign and promoting any products manufactured, distributed, marketed
-        and/or supplied under the trademarks owned by The Coca-Cola Company.
+        At CCIPL&apos;s request, individuals with valid entries as per these
+        terms agree to participate in all promotional activity (such as
+        publicity and photography) surrounding receiving the Voucher, free of
+        charge, and they consent to CCIPL using their name, likeness, image
+        and/or voice (including photograph, film and/or recording of the same),
+        along with the use of their submissions in whichever form, in
+        promotional material or in any media, without remuneration for the
+        purpose of promoting this Campaign and promoting any products
+        manufactured, distributed, marketed and/or supplied under the trademarks
+        owned by The Coca-Cola Company.
       </>
     ),
   },
@@ -755,7 +762,7 @@ const spriteRefreshRingsTerms = [
   },
   {
     id: 22,
-    content: <>CCIPL's decision shall be final in all respects.</>,
+    content: <>CCIPL&apos;s decision shall be final in all respects.</>,
   },
 ];
 
@@ -782,7 +789,7 @@ const page: React.FC = () => {
           {/* Sprite Refresh Rings Terms */}
           <div className="mt-8">
             <h2 className="md:text-xl text-xs font-bold mb-4 underline text-center">
-              SPRITE® Refresh Rings <br />
+              SPRITE&reg; Refresh Rings <br />
               Terms and Conditions
             </h2>
             <p className="md:text-xl text-xs mb-4">
