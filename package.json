@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "predev": "npm run generate-sprite",
     "generate-sprite": "svg-sprite -s --symbol-dest ./public/static/sprite --symbol-sprite sprite.svg ./public/static/sprite/icons/*.svg"
   },
   "dependencies": {

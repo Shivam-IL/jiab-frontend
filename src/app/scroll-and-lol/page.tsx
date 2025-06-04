@@ -21,6 +21,18 @@ interface VideoData {
   title: string;
 }
 
+// Loading Spinner Component
+const LoadingSpinner: React.FC = () => {
+  return (
+    <div className="relative md:w-fit md:h-full w-full h-screen flex items-center justify-center">
+      <div className="flex flex-col items-center">
+        <div className="w-16 h-16 border-[8px] border-[#08C270] border-t-[#009639] rounded-full animate-spin mb-4"></div>
+        <p className="text-green text-xl font-bold">Loading...</p>
+      </div>
+    </div>
+  );
+};
+
 const ScrollAndLol: React.FC = () => {
   const [videos] = useState<VideoData[]>([
     { id: 1, url: "/videos/dummy-video.mp4", title: "Video 1" },
@@ -44,6 +56,8 @@ const ScrollAndLol: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [showEndOfFeedPopup, setShowEndOfFeedPopup] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loadedVideos, setLoadedVideos] = useState<Set<number>>(new Set());
   // State to store the selected reaction
   const [selectedReaction, setSelectedReaction] =
     useState<SelectedReactionData | null>(null);
@@ -61,6 +75,18 @@ const ScrollAndLol: React.FC = () => {
       window.removeEventListener("resize", checkDesktop);
     };
   }, []);
+
+  // Fallback to hide loading after a timeout
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isLoading) {
+        console.log("Loading timeout reached, hiding loader");
+        setIsLoading(false);
+      }
+    }, 3000); // 3 second timeout
+
+    return () => clearTimeout(timer);
+  }, [isLoading]);
 
   const scrollToVideo = (direction: "up" | "down") => {
     if (!containerRef.current) return;
@@ -129,6 +155,40 @@ const ScrollAndLol: React.FC = () => {
     };
   }, [isPlaying, videos.length]);
 
+  // Handle video load to hide loading spinner
+  const handleVideoLoad = (index: number) => {
+    console.log(`Video ${index} loaded`);
+    setLoadedVideos((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(index);
+
+      // Hide loading when first video is loaded
+      if (index === 0) {
+        console.log("First video loaded, hiding loader");
+        setIsLoading(false);
+      }
+
+      return newSet;
+    });
+  };
+
+  // Handle video ready to play
+  const handleVideoCanPlay = (index: number) => {
+    console.log(`Video ${index} can play`);
+    if (index === 0) {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle video error
+  const handleVideoError = (index: number) => {
+    console.error(`Error loading video ${index}`);
+    // Still mark as "loaded" to prevent infinite loading
+    if (index === 0) {
+      setIsLoading(false);
+    }
+  };
+
   // Handler for when an emoji is selected
   const handleEmojiSelect = (reaction: SelectedReactionData) => {
     setSelectedReaction(reaction);
@@ -159,117 +219,143 @@ const ScrollAndLol: React.FC = () => {
   return (
     <>
       <div className="md:w-full md:h-screen md:pt-[130px] pt-0 flex flex-col justify-center items-center bg-[url('/assets/images/scroll-and-lol-bg.png')] bg-cover bg-center bg-fixed overflow-hidden">
-        <div className="w-full container md:block hidden">
-          <Header title="Scroll & LOL" />
-        </div>
+        {isLoading ? (
+          <></>
+        ) : (
+          <div className="w-full container md:block hidden">
+            <Header title="Scroll & LOL" />
+          </div>
+        )}
 
         <div className="relative md:w-fit md:h-full w-full h-screen">
-          <div
-            ref={containerRef}
-            className="relative md:w-fit md:h-full w-full h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth scrollbar-hide"
-          >
-            {videos.map((video, index) => (
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <>
               <div
-                key={video.id}
-                className="relative h-screen w-full snap-start snap-always"
+                ref={containerRef}
+                className="relative md:w-fit md:h-full w-full h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth scrollbar-hide"
               >
-                <video
-                  ref={(el) => {
-                    videoRefs.current[index] = el;
-                  }}
-                  className="md:w-[442px] md:h-auto h-full w-full object-cover"
-                  src={video.url}
-                  loop
-                  playsInline
-                  muted={isMuted}
-                  autoPlay={index === 0}
-                  data-index={index}
-                  style={{
-                    aspectRatio: "9/16",
-                  }}
-                />
+                {videos.map((video, index) => (
+                  <div
+                    key={video.id}
+                    className="relative h-screen w-full snap-start snap-always"
+                  >
+                    <video
+                      ref={(el) => {
+                        videoRefs.current[index] = el;
+                      }}
+                      className="md:w-[442px] md:h-auto h-full w-full object-cover"
+                      src={video.url}
+                      loop
+                      playsInline
+                      muted={isMuted}
+                      autoPlay={index === 0}
+                      data-index={index}
+                      onLoadedData={() => handleVideoLoad(index)}
+                      onCanPlay={() => handleVideoCanPlay(index)}
+                      onLoadStart={() => {
+                        console.log(`Video ${index} started loading`);
+                        if (index === 0) {
+                          // Give a small delay then hide loading as fallback
+                          setTimeout(() => setIsLoading(false), 2000);
+                        }
+                      }}
+                      onError={() => handleVideoError(index)}
+                      style={{
+                        aspectRatio: "9/16",
+                      }}
+                    />
 
-                {/* Top controls */}
-                <div className="absolute top-4 w-full flex justify-between px-4 z-10">
-                  <button
-                    onClick={() => togglePlay(index)}
-                    className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
-                  >
-                    <Image
-                      src={
-                        isPlaying && index === activeVideoIndex
-                          ? "/other-svgs/pause-icon.svg"
-                          : "/other-svgs/play-icon.svg"
-                      }
-                      alt={isPlaying ? "Pause" : "Play"}
-                      width={isPlaying && index === activeVideoIndex ? 12 : 20}
-                      height={isPlaying && index === activeVideoIndex ? 12 : 20}
-                    />
-                  </button>
-                  <button
-                    onClick={() => toggleMute(index)}
-                    className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
-                  >
-                    <Image
-                      src={
-                        isMuted
-                          ? "/other-svgs/mute-icon.svg"
-                          : "/other-svgs/unmute-icon.svg"
-                      }
-                      alt={isMuted ? "Unmute" : "Mute"}
-                      width={20}
-                      height={20}
-                      className="text-white"
-                    />
-                  </button>
-                </div>
+                    {/* Top controls */}
+                    <div className="absolute top-4 w-full flex justify-between px-4 z-10">
+                      <button
+                        onClick={() => togglePlay(index)}
+                        className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
+                      >
+                        <Image
+                          src={
+                            isPlaying && index === activeVideoIndex
+                              ? "/other-svgs/pause-icon.svg"
+                              : "/other-svgs/play-icon.svg"
+                          }
+                          alt={isPlaying ? "Pause" : "Play"}
+                          width={
+                            isPlaying && index === activeVideoIndex ? 12 : 20
+                          }
+                          height={
+                            isPlaying && index === activeVideoIndex ? 12 : 20
+                          }
+                        />
+                      </button>
+                      <button
+                        onClick={() => toggleMute(index)}
+                        className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
+                      >
+                        <Image
+                          src={
+                            isMuted
+                              ? "/other-svgs/mute-icon.svg"
+                              : "/other-svgs/unmute-icon.svg"
+                          }
+                          alt={isMuted ? "Unmute" : "Mute"}
+                          width={20}
+                          height={20}
+                          className="text-white"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          {/* Reaction Emojis - moved here, only visible on desktop */}
-          <div className="absolute md:bottom-[128.82px] bottom-[135px] md:right-[-5rem] right-[10px] z-20">
-            <ReactionEmojies onEmojiSelect={handleEmojiSelect} />
-          </div>
+              {/* Reaction Emojis - only visible when not loading */}
+              <div className="absolute md:bottom-[128.82px] bottom-[135px] md:right-[-5rem] right-[10px] z-20">
+                <ReactionEmojies onEmojiSelect={handleEmojiSelect} />
+              </div>
+            </>
+          )}
         </div>
 
-        {/* Scroll buttons - only visible on desktop */}
-        <div className="hidden md:flex flex-col gap-4 absolute bottom-[97.32px] right-[100px] transform z-20">
-          <button
-            onClick={() => scrollToVideo("up")}
-            className={`w-[64px] h-[64px] rounded-full border-2 border-green flex items-center justify-center transition-all duration-300 ${
-              activeVideoIndex === 0 ? "opacity-50" : ""
-            }`}
-            aria-label="Scroll up"
-            disabled={activeVideoIndex === 0}
-          >
-            <Image
-              src="/other-svgs/up-arrow.svg"
-              alt="Scroll up"
-              width={25}
-              height={25}
-              className={activeVideoIndex === 0 ? "opacity-50" : ""}
-            />
-          </button>
-          <button
-            onClick={() => scrollToVideo("down")}
-            className={`w-[64px] h-[64px] rounded-full border-2 border-green flex items-center justify-center transition-all duration-300 ${
-              activeVideoIndex === videos.length - 1 ? "opacity-50" : ""
-            }`}
-            aria-label="Scroll down"
-            disabled={activeVideoIndex === videos.length - 1}
-          >
-            <Image
-              src="/other-svgs/down-arrow.svg"
-              alt="Scroll down"
-              width={25}
-              height={25}
-              className={`${
+        {/* Scroll buttons - only visible when not loading */}
+        {!isLoading && (
+          <div className="hidden md:flex flex-col gap-4 absolute bottom-[97.32px] right-[100px] transform z-20">
+            <button
+              onClick={() => scrollToVideo("up")}
+              className={`w-[64px] h-[64px] rounded-full border-2 border-green flex items-center justify-center transition-all duration-300 ${
+                activeVideoIndex === 0 ? "opacity-50" : ""
+              }`}
+              aria-label="Scroll up"
+              disabled={activeVideoIndex === 0}
+            >
+              <Image
+                src="/other-svgs/up-arrow.svg"
+                alt="Scroll up"
+                width={25}
+                height={25}
+                className={activeVideoIndex === 0 ? "opacity-50" : ""}
+              />
+            </button>
+            <button
+              onClick={() => scrollToVideo("down")}
+              className={`w-[64px] h-[64px] rounded-full border-2 border-green flex items-center justify-center transition-all duration-300 ${
                 activeVideoIndex === videos.length - 1 ? "opacity-50" : ""
               }`}
-            />
-          </button>
-        </div>
+              aria-label="Scroll down"
+              disabled={activeVideoIndex === videos.length - 1}
+            >
+              <Image
+                src="/other-svgs/down-arrow.svg"
+                alt="Scroll down"
+                width={25}
+                height={25}
+                className={`${
+                  activeVideoIndex === videos.length - 1 ? "opacity-50" : ""
+                }`}
+              />
+            </button>
+          </div>
+        )}
       </div>
       {showEndOfFeedPopup && (
         <CustomPopupWrapper
