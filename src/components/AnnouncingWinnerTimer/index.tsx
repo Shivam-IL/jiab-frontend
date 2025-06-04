@@ -106,7 +106,7 @@ const AnnouncingWinnerTimer = () => {
               </div>
               {index !== TIMER_DATA?.length - 1 && (
                 <SvgIcons
-                  className="mt-[4px] md:mt-[10px] w-[10px] h-[10px] md:w-[15px] md:h-[15px]"
+                  className="mt-[4px] self-start md:mt-[9px] w-[10px] h-[10px] md:w-[15px] md:h-[15px]"
                   name={ICONS_NAMES.COLON}
                 />
               )}

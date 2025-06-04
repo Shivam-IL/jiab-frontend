@@ -52,7 +52,7 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
       >
         <div className='flex flex-col justify-center items-center gap-[16px]'>
           <SvgIcons
-            className='w-[40px] h-[40px] md:w-[68px] md:h-[68px]'
+            className='w-[40px] h-[40px] md:w-[69px] md:h-[69px]'
             name={ICONS_NAMES.UPLOAD_FILE}
           />
           <div className='flex flex-col justify-center items-center'>
@@ -99,6 +99,7 @@ const SubmitYourJoke = () => {
     format: 'Image',
     fileType: FileType.IMAGE,
     acceptedFormats: '.jpg,.jpeg,.png',
+    accptedFormatText:'Accepted formats .jpg, .jpeg & .png',
     jokeText: '',
     title: '',
     file: [],
@@ -168,6 +169,7 @@ const SubmitYourJoke = () => {
                       onClick={() => {
                         handleChange('format', item.label)
                         handleChange('acceptedFormats', item.acceptedFormats)
+                        handleChange('accptedFormatText', item.accptedFormatText)
                       }}
                     >
                       <ImageIconCard
@@ -198,7 +200,7 @@ const SubmitYourJoke = () => {
                 <FileContainer
                   ref={fileRef}
                   title={`Upload Your ${jokeData.format}`}
-                  subtitle={`Accepted formats ${jokeData.acceptedFormats}`}
+                  subtitle={jokeData.accptedFormatText}
                 />
                 <input
                   ref={fileRef}
@@ -213,6 +215,7 @@ const SubmitYourJoke = () => {
               <div>
                 <div className='flex flex-col gap-[8px]'>
                   <AktivGroteskText
+                    className='w-full md:text-center'
                     text='Add your Joke*  👇'
                     fontSize='md:text-[16px] text-[14px]'
                     fontWeight='font-[700]'
@@ -247,11 +250,12 @@ const SubmitYourJoke = () => {
               type='text'
               onChange={handleChange}
               value={jokeData.title}
+              paddingClass='md:p-[16px] py-[19px] px-[16px]'
               placeholder='Joke Title'
             />
             <AktivGroteskText
               text='Max 30 character limit'
-              className=''
+              className='w-full md:text-center'
               fontSize='text-[8px] md:text-[12px]'
               fontWeight='font-[400]'
             />
@@ -259,7 +263,7 @@ const SubmitYourJoke = () => {
           <LabeledInput
             labelClassName='md:text-center'
             width='md:max-w-[720px] lg:max-w-[920px]'
-            label='Select Category* '
+            label='Category* '
           >
             <CustomCarousel>
               {CATEGORIES_CAROUSEL_DATA.map(item => {

@@ -110,7 +110,7 @@ const HelpUsToKnowYourBetter = () => {
                   />
                   <SvgIcons
                     name={ICONS_NAMES.RIGHT_ARROW}
-                    className='md:w-[40px] md:h-[40px] hidden md:block rotate-180 fill-[rgba(0,0,0,0.3)]'
+                    className='md:w-[33px] md:h-[33px] hidden md:block rotate-180 fill-[rgba(0,0,0,0.3)]'
                   />
                 </button>
                 <button
@@ -132,7 +132,7 @@ const HelpUsToKnowYourBetter = () => {
                   />
                   <SvgIcons
                     name={ICONS_NAMES.RIGHT_ARROW}
-                    className='md:w-[40px] md:h-[40px] hidden md:block'
+                    className='md:w-[33px] md:h-[33px] hidden md:block'
                   />
                 </button>
               </div>
