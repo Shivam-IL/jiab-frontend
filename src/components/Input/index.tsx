@@ -130,7 +130,7 @@ const Input: React.FC<IInput> = ({
             }
           }}
         >
-          <span className={!value ? 'text-[rgba(0,0,0,0.3)]' : ''}>
+          <span className={!value ? 'text-[rgba(0,0,0,0.3)] leading-tight' : ''}>
             {value
               ? options.find(
                   (opt: { value: string; label: string }) => opt.value === value
@@ -200,7 +200,7 @@ const Input: React.FC<IInput> = ({
             error !== '' ? 'border-[#FD0202] border-[1px]' : ''
           } outline-none ${fontSize} font-[400] placeholder:text-[rgba(0,0,0,0.3)] ${
             aktivGrotesk.className
-          } ${paddingClass} ${bgColor} ${borderRadius} border border-transparent transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B]`}
+          } ${paddingClass} leading-tight ${bgColor} ${borderRadius} border border-transparent transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B]`}
           onChange={event => onChange(event.target.name, event.target.value)}
           type={type}
           readOnly={readonly}

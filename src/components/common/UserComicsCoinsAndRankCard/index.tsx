@@ -15,7 +15,7 @@ const UserComicsCoinsAndRankCard = () => {
           <AktivGroteskText
             text='2800'
             className='text-black'
-            fontSize='text-[16px] md:text-[32px]'
+            fontSize='text-[16px] md:text-[24px]'
             fontWeight='font-[700]'
           />
           <div className='flex justify-center'>
@@ -24,7 +24,7 @@ const UserComicsCoinsAndRankCard = () => {
               imageClassName='w-[12px] h-[12px] object-cover md:w-[28px] md:h-[28px]'
               image={LOCAL_IMAGES.SPRITE_GOLD}
               text='Comic Coins'
-              fontSize='text-[12px] md:text-[28px]'
+              fontSize='text-[12px] md:text-[20px]'
               fontWeight='font-[400]'
               textColor='text-black'
             />
@@ -35,7 +35,7 @@ const UserComicsCoinsAndRankCard = () => {
           <AktivGroteskText
             text='100'
             className='text-black'
-            fontSize='text-[16px] md:text-[32px]'
+            fontSize='text-[16px] md:text-[24px]'
             fontWeight='font-[700]'
           />
           <div className='flex justify-center'>
@@ -44,7 +44,7 @@ const UserComicsCoinsAndRankCard = () => {
               icon={ICONS_NAMES.RANK}
               iconClassName='w-[9px] h-[12px] md:w-[18px] md:h-[24px]'
               text='Rank'
-              fontSize='text-[12px] md:text-[28px]'
+              fontSize='text-[12px] md:text-[20px]'
               fontWeight='font-[400]'
               textColor='text-black'
             />

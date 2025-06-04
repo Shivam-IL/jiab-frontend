@@ -20,6 +20,7 @@ const SendReminderPage = () => {
       >
         <div className='relative w-full md:flex hidden justify-center items-center md:mb-[24px]'>
           <AktivGroteskText
+            className='uppercase leading-tight'
             text='Send Reminder'
             fontSize='text-[30px]'
             fontWeight='font-[700]'

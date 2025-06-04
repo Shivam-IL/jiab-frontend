@@ -12,14 +12,29 @@ import AktivGroteskText from '../AktivGroteskText'
 import Input from '@/components/Input'
 import GreenCTA from '@/components/GreenCTA'
 
-const ReferNowModal: React.FC<IReferNowModal> = ({ open, onClose,  title, subtitle, ctaText ,phoneNumber ,onChange}) => {
-
+const ReferNowModal: React.FC<IReferNowModal> = ({
+  open,
+  onClose,
+  title,
+  subtitle,
+  ctaText,
+  phoneNumber,
+  onChange
+}) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className='max-w-[343px] md:max-w-[401px] gap-0 rounded-[10px] p-0'>
         <div className='flex justify-end pt-[12px]  pr-[16px] md:pr-[18px]'>
-          <button onClick={() => {onClose()}} className='p-0 self-end'>
-            <SvgIcons name={ICONS_NAMES.CROSS} className='w-[13px] h-[13px] md:w-[14px] md:h-[12px]' />
+          <button
+            onClick={() => {
+              onClose()
+            }}
+            className='p-0 self-end'
+          >
+            <SvgIcons
+              name={ICONS_NAMES.CROSS}
+              className='w-[13px] h-[13px] md:w-[14px] md:h-[12px]'
+            />
           </button>
         </div>
         <div className='w-full px-[22px] md:px-[16px] pt-[29.78px] md:pt-[18px] pb-[23px] flex flex-col gap-[30px] md:gap-[24px]'>
@@ -42,12 +57,19 @@ const ReferNowModal: React.FC<IReferNowModal> = ({ open, onClose,  title, subtit
               value={phoneNumber}
               fontSize='text-[14px] md:text-[16px]'
               onChange={onChange}
-              
-              placeholder='Enter Phone Number'
+              placeholder="Enter Your Friend's Mobile No."
             />
-            <GreenCTA text={ctaText} fontSize='text-[16px] md:text-[20px]' paddingClass='py-[16px] md:py-[14px] px-[24px]' onClick={() => {
-                onClose()
-            }} />
+            <div className='flex flex-col justify-center items-center'>
+              <GreenCTA
+                className=''
+                text={ctaText}
+                fontSize='text-[16px] md:text-[20px]'
+                paddingClass='py-[10px] md:py-[10px] px-[28px]'
+                onClick={() => {
+                  onClose()
+                }}
+              />
+            </div>
           </div>
         </div>
       </DialogContent>

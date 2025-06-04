@@ -260,12 +260,14 @@ export const FORMAT_OPTIONS = [
     label: "Image",
     iconClassName: "w-[31px] h-[39px]",
     acceptedFormats: ".jpg,.jpeg,.png",
+    accptedFormatText:'Accepted formats .jpg, .jpeg & .png'
   },
   {
     id: "2",
     icon: ICONS_NAMES.TEXT,
     iconClassName: "w-[39px] h-[40px]",
     label: "Text",
+    accptedFormatText:'',
     acceptedFormats: ".txt",
   },
   {
@@ -273,12 +275,14 @@ export const FORMAT_OPTIONS = [
     icon: ICONS_NAMES.HEADPHONE,
     iconClassName: "w-[41px] h-[40px]",
     label: "Audio",
+    accptedFormatText:'Accepted formats .MP3, .WAV',
     acceptedFormats: ".mp3,.wav",
   },
   {
     id: "4",
     icon: ICONS_NAMES.VIDEO,
     iconClassName: "w-[49px] h-[39px]",
+    accptedFormatText:'Accepted formats .MP4',
     label: "Video",
     acceptedFormats: ".mp4",
   },
@@ -715,7 +719,7 @@ export const ARTISTS_PAGE_HEADERS_DATA = {
   SUB_TITLE: "Discover jokes from renowned comics",
 };
 
-export const ALL_FIElDS_ARE_MANDATORY = "All fields are mandatory*-";
+export const ALL_FIElDS_ARE_MANDATORY = "*All fields are mandatory";
 export const PENDING = "Pending";
 export const APPROVED = "Approved";
 export const NEXT = "Next";

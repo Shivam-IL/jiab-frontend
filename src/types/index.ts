@@ -11,6 +11,7 @@ export interface IJokeData {
   format: string;
   fileType: FileType;
   jokeText: string;
+  accptedFormatText: string;
   acceptedFormats: string;
   title: string;
   category: string;

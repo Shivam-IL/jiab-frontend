@@ -57,11 +57,11 @@ const ProfileCard = () => {
           />
         </button>
       </div>
-      <div className='grid grid-cols-2 gap-2 md:gap-[28px] px-[16px] md:px-[66px] pt-[16px] md:pt-[66px] pb-[10px] md:pb-[44px] w-full'>
+      <div className='grid grid-cols-2 gap-2 md:gap-[28px] md:gap-x-[9rem] lg:gap-x-[20rem] gap-x-0 px-[16px] md:px-[66px] pt-[16px] md:pt-[66px] pb-[10px] md:pb-[44px] w-full'>
         {USER_INFO_CARD_DATA?.length > 0 &&
           USER_INFO_CARD_DATA?.map(item => (
             <UserInfoCard
-              iconClassName='w-[14px] h-[14px] md:w-[29px] md:h-[29px]'
+              iconClassName='w-[14px] h-[14px] md:min-w-[29px] md:min-h-[29px]'
               key={item?.id}
               iconName={item?.iconName}
               text={item?.text}

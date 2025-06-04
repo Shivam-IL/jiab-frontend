@@ -4,7 +4,7 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  type CarouselApi,
+  type CarouselApi
 } from '@/components/ui/carousel'
 
 export interface CarouselItemData {
@@ -118,7 +118,6 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({
     api.scrollTo(pageIndex * itemsPerPage)
   }
 
-
   // Render custom children (your preferred approach)
   const renderCustomChildren = () => {
     if (childArray) {
@@ -146,9 +145,7 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({
           key={index}
           className={`basis-1/${mobileItemsPerPage} md:basis-1/${desktopItemsPerPage} ${itemClassName}`}
         >
-          <div className='h-full'>
-            {child}
-          </div>
+          <div className='h-full'>{child}</div>
         </CarouselItem>
       ))
     }
@@ -158,31 +155,28 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({
 
   console.log(itemsPerPage, 'itemsPerPage')
 
-
   return (
     <div className={`space-y-3 ${className}`}>
       <Carousel
-        className=""
+        className=''
         setApi={setApi}
         opts={{
           align: 'start',
           loop: false,
-          skipSnaps: true,
+          skipSnaps: true
         }}
       >
-        <CarouselContent>
-          {renderCustomChildren()}
-        </CarouselContent>
+        <CarouselContent>{renderCustomChildren()}</CarouselContent>
       </Carousel>
 
       {/* Navigation dots - page based */}
       {showDots && pageCount > 1 && (
-        <div className="flex justify-center gap-[10px]">
+        <div className='flex justify-center gap-[10px]'>
           {Array.from({ length: pageCount }).map((_, index) => (
             <button
               key={index}
               className={`h-1 rounded-full transition-all duration-300 ${
-                index === current ? 'w-8 bg-black' : 'w-4 bg-gray-300'
+                index === current ? 'w-[24px] bg-black' : 'w-[12px] bg-gray-300'
               }`}
               onClick={() => goToPage(index)}
               aria-label={`Go to page ${index + 1}`}
@@ -194,4 +188,4 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({
   )
 }
 
-export default CustomCarousel 
+export default CustomCarousel
