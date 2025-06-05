@@ -30,7 +30,7 @@ const Leaderboard = () => {
 
   return (
     <div className="flex flex-col gap-3">
-      <ReactJoyride
+      {/* <ReactJoyride
         steps={steps}
         run={run}
         continuous
@@ -42,7 +42,7 @@ const Leaderboard = () => {
             zIndex: 10000,
           },
         }}
-      />
+      /> */}
 
       <MobileTempNavBar
         title={MOBILE_TEMP_NAVBAR_DATA.LEADERBOARD.TITLE}

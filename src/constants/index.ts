@@ -83,7 +83,7 @@ if (typeof window !== "undefined") {
 } else {
   // Fallback for server-side rendering
   // You can set a default URL or environment variable here
-  CLIENT_URL = process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3001";
+  CLIENT_URL = process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000";
 }
 
 export const LANGUAGE_OPTIONS = [
@@ -155,6 +155,10 @@ export const REFER_NOW_MODAL_DATA = {
   },
 };
 export const DAILY_WINNERS = 'Daily Winners'
+
+export const IMAGES = {
+  COUPON: "coupon.png",
+}
 
 export const ICONS_NAMES = {
   SPRITE_BOTTLE: "sprite-bottle",
@@ -251,6 +255,7 @@ export const ICONS_NAMES = {
   LOGOUT_ICON: "logout-icon-desktop",
   PROFILE_ICON: "profile-icon-desktop",
   WALLET_ICON: "wallet-icon-desktop",
+  PROFILE: "profile",
 };
 
 export const FORMAT_OPTIONS = [

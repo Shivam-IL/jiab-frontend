@@ -16,7 +16,7 @@ const ProfilePage = () => {
   return (
     <ScreenWrapper>
       <div className="flex flex-col gap-2">
-        <AnnouncingWinnerTimer />
+          {/* <AnnouncingWinnerTimer /> */}
         <ProfileCard />
         <UserComicsCoinsAndRankCard />
         <div className="flex flex-col gap-[24px] md:gap-[40px]">
