@@ -8,6 +8,7 @@ const withPWA = nextPwa({
   devOptions: {
     enabled: true,
   },
+  buildExcludes: [/\.map$/], // .map files excluded
 });
 
 /** @type {import('next').NextConfig} */
