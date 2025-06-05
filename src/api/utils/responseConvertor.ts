@@ -1,4 +1,4 @@
-export const SuccessResponse = (data: any[]) => {
+export const SuccessResponse = <T = unknown>(data: T) => {
   return { ok: true, data };
 };
 

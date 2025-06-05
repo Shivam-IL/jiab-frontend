@@ -8,7 +8,7 @@ import { MOBILE_TEMP_NAVBAR_DATA } from "@/constants";
 import useWindowWidth from "@/hooks/useWindowWidth";
 
 import React from "react";
-const page: React.FC = () => {
+const NotificationsPage: React.FC = () => {
   const notifications = [
     {
       title: "Welcome to the chill-zone! 🤩",
@@ -112,4 +112,4 @@ const page: React.FC = () => {
   );
 };
 
-export default page;
+export default NotificationsPage;

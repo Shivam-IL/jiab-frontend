@@ -1,13 +1,6 @@
-import { AxiosError, AxiosResponse } from "axios";
 import apiClient from "../client";
 import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
 import { API_ROUTES } from "../client/config";
-import {
-  TRefreshToken,
-  TRequestOTP,
-  TSignUp,
-  TVerifyOTP,
-} from "../types/LoginTypes";
 import { TReferral, TReferralSendAgain } from "../types/ReferralTypes";
 import { MainService } from "./MainService";
 

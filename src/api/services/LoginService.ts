@@ -10,6 +10,47 @@ import {
 } from "../types/LoginTypes";
 import { MainService } from "./MainService";
 
+interface ValidationErrors {
+  validation_errors?: Record<string, string[]>;
+}
+
+interface RequestOTPResponse {
+  success: boolean;
+  data: {
+    message: string;
+  };
+  details?: ValidationErrors;
+}
+
+interface VerifyOTPResponse {
+  success: boolean;
+  data: {
+    access_token: string;
+    refresh_token: string;
+    user_id: string;
+  };
+  details?: ValidationErrors;
+  message?: string;
+}
+
+interface SignUpResponse {
+  success: boolean;
+  data: {
+    user_id: string;
+    message: string;
+  };
+  message?: string;
+}
+
+interface RefreshTokenResponse {
+  success: boolean;
+  data: {
+    access_token: string;
+    refresh_token: string;
+  };
+  message?: string;
+}
+
 export class LoginService extends MainService {
   private static instance: LoginService;
   private token: string | null = this.getAccessToken() ?? null;
@@ -35,50 +76,54 @@ export class LoginService extends MainService {
 
   public async RequestOTP({ mobile_number }: TRequestOTP) {
     try {
-      const response = await apiClient.post(API_ROUTES.AUTH.REQUEST_OTP, {
+      const response: AxiosResponse<RequestOTPResponse> = await apiClient.post(API_ROUTES.AUTH.REQUEST_OTP, {
         mobile_number,
       });
       const data = response.data;
       if (data?.success) {
-        return SuccessResponse(data);
+        return SuccessResponse(data.data);
       }
       return ErrorResponse(
         data?.details?.validation_errors?.mobile_number?.[0] ||
           "Please enter a valid phone number"
       );
     } catch (error) {
-      console.log(error);
-      throw new Error(error as string);
+      if (error instanceof AxiosError) {
+        return ErrorResponse(error.response?.data?.message || "Network error occurred");
+      }
+      return ErrorResponse("An unexpected error occurred");
     }
   }
 
   public async VerifyOTP({ otp, mobile_number }: TVerifyOTP) {
     try {
-      const response = await apiClient.post(API_ROUTES.AUTH.VERIFY_OTP, {
+      const response: AxiosResponse<VerifyOTPResponse> = await apiClient.post(API_ROUTES.AUTH.VERIFY_OTP, {
         otp,
         mobile_number,
       });
       const data = response.data;
       if (data?.success) {
-        return SuccessResponse(data);
+        return SuccessResponse(data.data);
       }
-      const errorArr: any[] = Object.entries(
+      const errorArr: [string, string[]][] = Object.entries(
         data?.details?.validation_errors ?? {}
       );
       if (errorArr?.length > 0) {
-        const errorMessage =
-          errorArr?.[0]?.value?.[0] ?? "Please enter a valid OTP";
+        const errorMessage = errorArr[0][1][0] ?? "Please enter a valid OTP";
         return ErrorResponse(errorMessage);
       }
       return ErrorResponse(data?.message ?? "Something went wrong");
     } catch (error) {
-      throw new Error(error as string);
+      if (error instanceof AxiosError) {
+        return ErrorResponse(error.response?.data?.message || "Network error occurred");
+      }
+      return ErrorResponse("An unexpected error occurred");
     }
   }
 
   public async SignUp(data: TSignUp) {
     try {
-      const response = await apiClient.post(
+      const response: AxiosResponse<SignUpResponse> = await apiClient.post(
         API_ROUTES.AUTH.SIGN_UP,
         {
           ...data,
@@ -91,26 +136,32 @@ export class LoginService extends MainService {
       );
       const responseData = response.data;
       if (responseData?.success) {
-        return SuccessResponse(responseData);
+        return SuccessResponse(responseData.data);
       }
       return ErrorResponse(responseData?.message ?? "Something went wrong");
     } catch (error) {
-      throw new Error(error as string);
+      if (error instanceof AxiosError) {
+        return ErrorResponse(error.response?.data?.message || "Network error occurred");
+      }
+      return ErrorResponse("An unexpected error occurred");
     }
   }
 
   public async RefreshToken({ refresh_token }: TRefreshToken) {
     try {
-      const response = await apiClient.post(API_ROUTES.AUTH.REFRESH_TOKEN, {
+      const response: AxiosResponse<RefreshTokenResponse> = await apiClient.post(API_ROUTES.AUTH.REFRESH_TOKEN, {
         refresh_token,
       });
       const responseData = response.data;
       if (responseData?.success) {
-        return SuccessResponse(responseData);
+        return SuccessResponse(responseData.data);
       }
       return ErrorResponse(responseData?.message ?? "Something went wrong");
     } catch (error) {
-      throw new Error(error as string);
+      if (error instanceof AxiosError) {
+        return ErrorResponse(error.response?.data?.message || "Network error occurred");
+      }
+      return ErrorResponse("An unexpected error occurred");
     }
   }
 }

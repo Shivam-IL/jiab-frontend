@@ -33,7 +33,7 @@ const Header: React.FC<HeaderProps> = ({
       {viewAllUrl && (
         <a
           href={viewAllUrl}
-          className="flex items-center md:text-lg text-[12px] font-medium text-gray-900 group"
+          className="flex items-center md:text-[20px] text-[12px] font-medium text-gray-900 group"
         >
           View All
           <span className="ml-1 group-hover:translate-x-1 transition-transform">
