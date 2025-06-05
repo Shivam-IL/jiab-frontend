@@ -2,7 +2,6 @@ import React from "react";
 import SvgIcons from "../common/SvgIcons";
 import {
   ICONS_NAMES,
-  IMAGES_LINK,
   PROFILE_IMAGES,
   USER_INFO_CARD_DATA,
 } from "@/constants";

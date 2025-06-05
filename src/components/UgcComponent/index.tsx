@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import SvgIcons from "../common/SvgIcons";
 import { ICONS_NAMES } from "@/constants";
-import { aktivGrotesk } from "@/app/layout";
 import AktivGroteskText from "../common/AktivGroteskText";
 import UgcCard from "../common/UgcCard";
-import UgcFilterModal from "../UgcFilterModal";
 import { Dialog, DialogContent } from "../ui/dialog";
 import GreenCTA from "../GreenCTA";
 import { IUgcComponent } from "@/interfaces";

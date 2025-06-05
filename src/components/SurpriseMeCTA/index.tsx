@@ -3,7 +3,7 @@ import React from "react";
 import SvgIcons from "../common/SvgIcons";
 import { aktivGrotesk } from "@/app/layout";
 
-const SurpriseMeCTA: React.FC<ISurpriseMeCTA> = ({ name, onClick, text }) => {
+const SurpriseMeCTA: React.FC<ISurpriseMeCTA> = ({ name, text }) => {
   return (
     <div className="flex flex-col justify-center items-center gap-[2px]">
       <SvgIcons
