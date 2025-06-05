@@ -302,7 +302,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
                   name={ICONS_NAMES.HOME}
                   className='w-[20px] h-[20px] stroke-2 stroke-[#11A64B]'
                 />
-                <p className='text-[9px] text-[#11A64B]'>Home</p>
+                <p className='text-[9px] uppercase text-[#11A64B]'>Home</p>
               </div>
             </div>
           </div>
@@ -329,7 +329,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
                   name={ICONS_NAMES.CUP}
                   className='w-[20px] h-[20px]'
                 />
-                <p className='text-[9px] text-center text-[#11A64B]'>Contest</p>
+                <p className='text-[9px] text-center uppercase text-[#11A64B]'>Contest</p>
               </div>
             </div>
           </div>
@@ -356,7 +356,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
                   name={ICONS_NAMES.UNIQUE_CODE}
                   className='w-[22px] h-[30px]'
                 />
-                <p className='text-[9px] text-center w-[80%]'>Unique code</p>
+                <p className='text-[9px] text-center uppercase w-[80%]'>Unique code</p>
               </div>
             </div>
           </div>
@@ -383,7 +383,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
                   name={ICONS_NAMES.COMIC_COINS}
                   className='w-[22px] h-[22px]'
                 />
-                <p className='text-[9px] text-center text-[#11A64B]'>
+                <p className='text-[9px] text-center uppercase text-[#11A64B]'>
                   Comic Coins
                 </p>
               </div>
@@ -410,9 +410,9 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
               <div className='w-[50px] relative top-[15px] h-[50px] bg-white rounded-full flex flex-col items-center justify-center'>
                 <SvgIcons
                   name={ICONS_NAMES.NEW_USER}
-                  className='w-[20px] h-[20px] stroke-2 fill-[#11A64B]'
+                  className='w-[20px] h-[20px] stroke-10 fill-[#11A64B]'
                 />
-                <p className='text-[9px] text-center text-[#11A64B]'>Profile</p>
+                <p className='text-[9px] text-center uppercase text-[#11A64B]'>Profile</p>
               </div>
             </div>
           </div>
