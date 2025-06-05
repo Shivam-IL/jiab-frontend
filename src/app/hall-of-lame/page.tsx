@@ -21,7 +21,7 @@ const HallOfLameLeaderboard = () => {
         className={`${width > 750 ? 'mt-[71px] flex justify-center' : 'mt-0'}`}
       >
         <div className='flex flex-col gap-[16.1px]'>
-          <AnnouncingWinnerTimer />
+          {/* <AnnouncingWinnerTimer /> */}
           <div className='md:flex md:flex-col justify-center items-center md:mt-[37px] md:mb-[8px] gap-[12px] hidden'>
             <AktivGroteskText
               text={MOBILE_TEMP_NAVBAR_DATA.HALL_OF_LAME_LEADERBOARD.TITLE}

@@ -70,7 +70,7 @@ const AnnouncingWinnerTimer = () => {
         fontSize="text-[12px] md:text-[28px]"
         fontWeight="font-[700]"
       />
-      <div className="flex gap-[1.51px]">
+      {/* <div className="flex gap-[1.51px]">
         {TIMER_DATA?.map((item, index) => {
           const { key, text } = item;
           const time: number = timeLeft[key as keyof TimeLeft];
@@ -105,7 +105,7 @@ const AnnouncingWinnerTimer = () => {
             </div>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 };
