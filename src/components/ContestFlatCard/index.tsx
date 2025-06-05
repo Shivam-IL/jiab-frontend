@@ -7,6 +7,7 @@ interface ContestFlatCardProps {
   reward: number;
   rewardText: string;
   className?: string;
+  onClick?: () => void;
 }
 
 const ContestFlatCard: React.FC<ContestFlatCardProps> = ({
@@ -15,10 +16,14 @@ const ContestFlatCard: React.FC<ContestFlatCardProps> = ({
   reward,
   rewardText,
   className = "",
+  onClick,
 }) => {
   return (
     <div
-      className={`bg-white rounded-[8px] md:p-4 p-[6px] flex items-center md:gap-4 gap-[10px] shadow-sm ${className}`}
+      className={`bg-white rounded-[8px] md:p-4 p-[6px] flex items-center md:gap-4 gap-[10px] shadow-sm ${
+        onClick ? "cursor-pointer hover:shadow-md transition-shadow" : ""
+      } ${className}`}
+      onClick={onClick}
     >
       {/* Icon Container */}
       <div className="bg-green rounded-[8px] p-3 flex-shrink-0 flex items-center justify-center md:h-[104.8px] md:w-[86.75px]">
