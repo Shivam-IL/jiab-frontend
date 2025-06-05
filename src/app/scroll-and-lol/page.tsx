@@ -54,7 +54,14 @@ const ScrollAndLol: React.FC = () => {
 
   const [activeVideoIndex, setActiveVideoIndex] = useState<number>(0);
   const [videoPlayStates, setVideoPlayStates] = useState<boolean[]>(
-    new Array(15).fill(true)
+    (() => {
+      const arr = new Array(15).fill(false);
+      arr[0] = true; // first video will start playing automatically
+      return arr;
+    })()
+  );
+  const [userPausedVideos, setUserPausedVideos] = useState<boolean[]>(
+    new Array(15).fill(false)
   );
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [showEndOfFeedPopup, setShowEndOfFeedPopup] = useState<boolean>(false);
@@ -84,6 +91,22 @@ const ScrollAndLol: React.FC = () => {
     }, 3000); // 3 second timeout
 
     return () => clearTimeout(timer);
+  }, [isLoading]);
+
+  // Auto-play first video when component mounts and loading is complete
+  useEffect(() => {
+    if (!isLoading && videoRefs.current[0]) {
+      const firstVideo = videoRefs.current[0];
+      firstVideo.currentTime = 0;
+      firstVideo.play().catch(console.error);
+
+      setVideoPlayStates((prev) => {
+        const newStates = [...prev];
+        newStates[0] = true;
+        return newStates;
+      });
+      setActiveVideoIndex(0);
+    }
   }, [isLoading]);
 
   const scrollToVideo = (direction: "up" | "down") => {
@@ -143,7 +166,7 @@ const ScrollAndLol: React.FC = () => {
         );
 
         if (entry.isIntersecting) {
-          // Pause all other videos
+          // Pause all other videos (except current) and keep their time reset
           videoRefs.current.forEach((video, idx) => {
             if (video && idx !== videoIndex) {
               video.pause();
@@ -153,20 +176,51 @@ const ScrollAndLol: React.FC = () => {
           // Update active video index
           setActiveVideoIndex(videoIndex);
 
-          // Play current video if it should be playing
+          // Auto-play the current video only if user hasn't paused it
           const currentVideo = videoRefs.current[videoIndex];
-          if (currentVideo && videoPlayStates[videoIndex]) {
-            currentVideo.play().catch(console.error);
+          if (currentVideo) {
+            // Check if user has manually paused this video
+            setUserPausedVideos((prevUserPaused) => {
+              const userHasPaused = prevUserPaused[videoIndex];
+
+              if (!userHasPaused && currentVideo.paused) {
+                currentVideo.play().catch(console.error);
+              }
+
+              // Update play state based on whether video should be playing
+              setVideoPlayStates((prev) => {
+                const newStates = [...prev];
+                newStates[videoIndex] = !userHasPaused;
+                return newStates;
+              });
+
+              return prevUserPaused; // Don't change user pause state
+            });
           }
 
           if (videoIndex === videos.length - 1) {
             setShowEndOfFeedPopup(true);
           }
         } else {
-          // Pause video when it goes out of view
+          // Pause video when it goes out of view and reset play state
           const video = videoRefs.current[videoIndex];
           if (video) {
             video.pause();
+            video.currentTime = 0; // Reset to beginning so next time it starts from start
+
+            // Update play state to reflect that video is paused
+            setVideoPlayStates((prev) => {
+              const newStates = [...prev];
+              newStates[videoIndex] = false;
+              return newStates;
+            });
+
+            // Reset user pause state when video goes out of view
+            setUserPausedVideos((prev) => {
+              const newStates = [...prev];
+              newStates[videoIndex] = false;
+              return newStates;
+            });
           }
         }
       });
@@ -181,7 +235,7 @@ const ScrollAndLol: React.FC = () => {
     return () => {
       observer.disconnect();
     };
-  }, [videoPlayStates, videos.length]);
+  }, [videoPlayStates, userPausedVideos, videos.length]);
 
   // Handle video load to hide loading spinner
   const handleVideoLoad = (index: number) => {
@@ -221,6 +275,11 @@ const ScrollAndLol: React.FC = () => {
       const newPlayStates = [...videoPlayStates];
       newPlayStates[index] = !newPlayStates[index];
       setVideoPlayStates(newPlayStates);
+
+      // Track user-initiated pause/play
+      const newUserPausedStates = [...userPausedVideos];
+      newUserPausedStates[index] = !newPlayStates[index]; // If not playing, then user paused
+      setUserPausedVideos(newUserPausedStates);
 
       const video = videoRefs.current[index];
       if (video) {
@@ -285,7 +344,7 @@ const ScrollAndLol: React.FC = () => {
                       loop
                       playsInline
                       muted={isMuted}
-                      autoPlay={false}
+                      autoPlay
                       onLoadedData={() => handleVideoLoad(index)}
                       onCanPlay={() => handleVideoCanPlay(index)}
                       onLoadStart={() => {
@@ -313,7 +372,11 @@ const ScrollAndLol: React.FC = () => {
                               ? "/other-svgs/pause-icon.svg"
                               : "/other-svgs/play-icon.svg"
                           }
-                          alt={videoPlayStates[index] ? "Pause" : "Play"}
+                          alt={
+                            videoPlayStates[index] && index === activeVideoIndex
+                              ? "Pause"
+                              : "Play"
+                          }
                           width={
                             videoPlayStates[index] && index === activeVideoIndex
                               ? 12

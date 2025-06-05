@@ -14,8 +14,42 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import ReferNowModal from "@/components/common/ReferNowModal";
+import InviteCodePopupWrapper from "@/components/InviteCodePopus";
+import CustomPopupWrapper from "@/components/common/CustomPopupWrapper";
+import AktivGroteskText from "@/components/common/AktivGroteskText";
+import {
+  REFER_NOW_MODAL_DATA,
+  REFFERAL_STATUS_POPUP_DATA,
+  INVITE_CODE_POPUP_DATA,
+} from "@/constants";
 
 const ContestPage: React.FC = () => {
+  const router = useRouter();
+
+  // Modal states for refer functionality
+  const [refer1, setRefer1] = useState<boolean>(false);
+  const [refer2, setRefer2] = useState<boolean>(false);
+  const [refer3, setRefer3] = useState<boolean>(false);
+  const [referPhoneNumber, setReferPhoneNumber] = useState<string>("");
+  const [referStatus1, setReferStatus1] = useState<boolean>(false);
+  const [referStatus2, setReferStatus2] = useState<boolean>(false);
+  const [referStatus3, setReferStatus3] = useState<boolean>(false);
+
+  // Modal states for invite code functionality
+  const [invite1, setInvite1] = useState<boolean>(false);
+  const [invite2, setInvite2] = useState<boolean>(false);
+  const [inviteCode, setInviteCode] = useState<string>("");
+
+  const handleChange = (key: string, value: string) => {
+    setReferPhoneNumber(value);
+  };
+
+  const handleChangeInvite = (key: string, value: string) => {
+    setInviteCode(value);
+  };
+
   const rewardPool = [
     {
       imageUrl: "/assets/images/reward-1.png",
@@ -36,6 +70,7 @@ const ContestPage: React.FC = () => {
       title: "React to a Joke",
       reward: 1,
       rewardText: "Per Joke",
+      action: () => router.push("/user-generated-jokes"),
     },
     {
       id: 2,
@@ -43,6 +78,7 @@ const ContestPage: React.FC = () => {
       title: "Vote for Favorite Joke",
       reward: 1,
       rewardText: "Per Language Weekly",
+      action: () => router.push("/hall-of-lame"),
     },
     {
       id: 3,
@@ -50,6 +86,7 @@ const ContestPage: React.FC = () => {
       title: "Refer a Friend",
       reward: 5,
       rewardText: "Per Successful Referral",
+      action: () => setRefer1(true),
     },
     {
       id: 4,
@@ -57,6 +94,7 @@ const ContestPage: React.FC = () => {
       title: "Use Invite Code",
       reward: 1,
       rewardText: "For Using Invite Code",
+      action: () => setInvite1(true),
     },
     {
       id: 5,
@@ -64,6 +102,14 @@ const ContestPage: React.FC = () => {
       title: "Complete Your Profile",
       reward: 10,
       rewardText: "On Completion",
+      action: () => router.push("/profile"),
+    },
+    {
+      id: 6,
+      icon: "/other-svgs/haha.svg",
+      title: "Play and Stay",
+      reward: 1,
+      rewardText: "For Using Invite Code",
     },
   ];
 
@@ -218,10 +264,147 @@ const ContestPage: React.FC = () => {
               title={activity.title}
               reward={activity.reward}
               rewardText={activity.rewardText}
+              onClick={activity.action}
             />
           ))}
         </div>
       </ScreenWrapper>
+
+      {/* Refer Modals */}
+      {refer1 && (
+        <ReferNowModal
+          title={REFER_NOW_MODAL_DATA.DEFAULT.title}
+          subtitle={REFER_NOW_MODAL_DATA.DEFAULT.subtitle}
+          ctaText={REFER_NOW_MODAL_DATA.DEFAULT.ctaText}
+          phoneNumber={referPhoneNumber}
+          onChange={handleChange}
+          open={refer1}
+          onClose={() => {
+            setRefer1(false);
+            setRefer2(true);
+          }}
+        />
+      )}
+      {refer2 && (
+        <ReferNowModal
+          title={REFER_NOW_MODAL_DATA.PRANK_US.title}
+          subtitle={REFER_NOW_MODAL_DATA.PRANK_US.subtitle}
+          ctaText={REFER_NOW_MODAL_DATA.PRANK_US.ctaText}
+          phoneNumber={referPhoneNumber}
+          onChange={handleChange}
+          open={refer2}
+          onClose={() => {
+            setRefer2(false);
+            setRefer3(true);
+          }}
+        />
+      )}
+      {refer3 && (
+        <ReferNowModal
+          title={REFER_NOW_MODAL_DATA.SELF_LOVE.title}
+          subtitle={REFER_NOW_MODAL_DATA.SELF_LOVE.subtitle}
+          ctaText={REFER_NOW_MODAL_DATA.SELF_LOVE.ctaText}
+          phoneNumber={referPhoneNumber}
+          onChange={handleChange}
+          open={refer3}
+          onClose={() => {
+            setRefer3(false);
+            setReferStatus1(true);
+          }}
+        />
+      )}
+      {referStatus1 && (
+        <CustomPopupWrapper
+          open={referStatus1}
+          onClose={() => {
+            setReferStatus1(false);
+            setReferStatus2(true);
+          }}
+          icon={REFFERAL_STATUS_POPUP_DATA.EASY.ICON}
+          title={REFFERAL_STATUS_POPUP_DATA.EASY.TITLE}
+          subtitle={REFFERAL_STATUS_POPUP_DATA.EASY.SUB_TITLE}
+        >
+          <div className="flex flex-col gap-[20px]">
+            <AktivGroteskText
+              fontSize="text-[16px]"
+              fontWeight="font-[700]"
+              className="text-[#00953B] text-center"
+              text={REFFERAL_STATUS_POPUP_DATA.EASY.SECOND_TEXT}
+            />
+            <AktivGroteskText
+              fontSize="text-[12px]"
+              fontWeight="font-[400] text-center"
+              text={REFFERAL_STATUS_POPUP_DATA.EASY.THIRD_TEXT}
+            />
+          </div>
+        </CustomPopupWrapper>
+      )}
+      {referStatus2 && (
+        <CustomPopupWrapper
+          open={referStatus2}
+          onClose={() => {
+            setReferStatus2(false);
+          }}
+          icon={REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.ICON}
+          title={REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.TITLE}
+          subtitle={REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.SUB_TITLE}
+          singleButton={REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.SINGLE_BUTTON}
+          singleButtonText={
+            REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.SINGLE_BUTTON_TEXT
+          }
+          singleButtonOnClick={() => {
+            setReferStatus2(false);
+            setReferStatus3(true);
+          }}
+        />
+      )}
+      {referStatus3 && (
+        <CustomPopupWrapper
+          open={referStatus3}
+          onClose={() => {
+            setReferStatus3(false);
+          }}
+          icon={REFFERAL_STATUS_POPUP_DATA.TRUE_COLORS.ICON}
+          title={REFFERAL_STATUS_POPUP_DATA.TRUE_COLORS.TITLE}
+          subtitle={REFFERAL_STATUS_POPUP_DATA.TRUE_COLORS.SUB_TITLE}
+          singleButton={REFFERAL_STATUS_POPUP_DATA.TRUE_COLORS.SINGLE_BUTTON}
+          singleButtonText={
+            REFFERAL_STATUS_POPUP_DATA.TRUE_COLORS.SINGLE_BUTTON_TEXT
+          }
+          singleButtonOnClick={() => {
+            setReferStatus3(false);
+          }}
+        />
+      )}
+
+      {/* Invite Code Modals */}
+      {invite1 && (
+        <InviteCodePopupWrapper
+          title={INVITE_CODE_POPUP_DATA.INVITE_CODE.TITLE}
+          subtitle={INVITE_CODE_POPUP_DATA.INVITE_CODE.SUB_TITLE}
+          ctaText={INVITE_CODE_POPUP_DATA.INVITE_CODE.CTA_TEXT}
+          code={inviteCode}
+          onChange={handleChangeInvite}
+          open={invite1}
+          onClose={() => {
+            setInvite1(false);
+            setInvite2(true);
+          }}
+        />
+      )}
+      {invite2 && (
+        <InviteCodePopupWrapper
+          title={INVITE_CODE_POPUP_DATA.CHEAT_CODE_NOT_ALLOWED.TITLE}
+          subtitle={INVITE_CODE_POPUP_DATA.CHEAT_CODE_NOT_ALLOWED.SUB_TITLE}
+          ctaText={INVITE_CODE_POPUP_DATA.CHEAT_CODE_NOT_ALLOWED.CTA_TEXT}
+          code={inviteCode}
+          onChange={handleChangeInvite}
+          open={invite2}
+          onClose={() => {
+            setInvite2(false);
+          }}
+        />
+      )}
     </>
   );
 };
