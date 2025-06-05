@@ -194,15 +194,25 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-[343px] p-0 rounded-[20px] shadow-xl border-none bg-white/95 backdrop-blur-sm">
         {viewMode === "calendar" ? (
-          <div className="w-full p-6">
+          <div className="w-full py-[10.5px] px-[8px]">
             <Calendar
               mode="range"
               selected={dateRange}
               onSelect={handleDateSelect}
               numberOfMonths={1}
-              className="w-full"
+              className="w-full space-y-[7px]"
               defaultMonth={currentDate}
               captionLayout="buttons"
+              modifiers={{ 
+                first_of_row: (date) => date.getDay() === 0,
+                last_of_row: (date) => date.getDay() === 6,
+                has_range: () => dateRange?.from !== dateRange?.to && dateRange?.to !== undefined
+              }}
+              modifiersClassNames={{
+                first_of_row: "rounded-l-full",
+                last_of_row: "rounded-r-full",
+                has_range: "show-range-bg"
+              }}
               components={{
                 IconLeft: () => <ChevronLeft className="h-4 w-4" />,
                 IconRight: () => <ChevronRight className="h-4 w-4" />,
@@ -225,34 +235,34 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
               }}
               classNames={{
                 months: "space-y-4",
-                month: "space-y-4 w-full",
-                caption: "flex justify-between items-center pt-1 relative",
+                month: "space-y-[32px] w-full",
+                caption: "flex justify-between items-center relative mb-4",
                 caption_label: `${aktivGrotesk.className} text-[18px] font-[600]`,
                 nav: "flex items-center space-x-2",
                 nav_button: "bg-transparent hover:bg-transparent",
                 nav_button_previous: "relative",
                 nav_button_next: "relative",
-                table: "w-full border-collapse",
-                head_row: "flex w-full justify-between",
+                table: "w-full border-collapse space-y-[7px]",
+                head_row: "flex w-full justify-between mb-2",
                 head_cell: `${aktivGrotesk.className} text-[14px] font-[500] w-[40px] text-center`,
-                row: "flex w-full",
+                row: "flex w-full mb-2",
                 cell: `${aktivGrotesk.className} flex-1 relative p-0 text-center text-sm focus-within:relative focus-within:z-20`,
-                day: `${aktivGrotesk.className} h-8 w-full p-0 font-[400] text-[14px] aria-selected:opacity-100 hover:bg-[#E8F5E9] rounded-none flex items-center justify-center`,
+                day: `${aktivGrotesk.className} text-[#666666] h-[35px] w-full p-0 font-[400] text-[14px] aria-selected:opacity-100 hover:bg-[#11A64B] hover:text-white hover:rounded-full rounded-none flex items-center justify-center [&.rdp-day_selected]:text-white [&.rdp-day_range_start]:text-white [&.rdp-day_range_end]:text-white`,
                 day_range_start:
-                  "[&:not(disabled)]:bg-[#4CAF50] [&:not(disabled)]:text-white hover:bg-[#4CAF50] rounded-l-full",
+                  "!rounded-full text-white relative before:absolute before:inset-y-0 before:right-0 before:w-1/2 before:bg-[#CFEDDB] before:-z-10 [&:not(.show-range-bg)]:before:hidden [&:not(disabled)]:bg-[#11A64B]",
                 day_range_end:
-                  "[&:not(disabled)]:bg-[#4CAF50] [&:not(disabled)]:text-white hover:bg-[#4CAF50] rounded-r-full",
+                  "!rounded-full text-white relative before:absolute before:inset-y-0 before:left-0 before:w-1/2 before:bg-[#CFEDDB] before:-z-10 [&:not(.show-range-bg)]:before:hidden [&:not(disabled)]:bg-[#11A64B]",
                 day_range_middle:
-                  "[&:not(disabled)]:bg-[#E8F5E9] [&:not(disabled)]:text-black hover:bg-[#E8F5E9] rounded-none",
+                  "[&:not(disabled)]:bg-[#CFEDDB] text-[#666666] hover:bg-[#11A64B] hover:text-white hover:rounded-none rounded-none",
                 day_selected:
-                  "[&:not(disabled)]:bg-[#4CAF50] [&:not(disabled)]:text-white hover:bg-[#4CAF50]",
+                  "[&:not(disabled)]:bg-[#11A64B]  hover:bg-[#11A64B]",
                 day_today: "bg-transparent text-black",
                 day_outside: "invisible",
                 day_disabled: "text-gray-500 opacity-50",
                 day_hidden: "invisible",
               }}
             />
-          </div>
+          </div> 
         ) : viewMode === "year" ? (
           renderYearGrid()
         ) : (
