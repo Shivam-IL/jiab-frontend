@@ -12,6 +12,8 @@ const UgcFilter = () => {
     category: ''
   })
 
+  console.log(selectedFilters)
+
   const handleApplyFilters = (filters: {
     language: string
     category: string

@@ -1,5 +1,4 @@
-import React, { useCallback } from "react";
-import useEmblaCarousel from "embla-carousel-react";
+import React from "react";
 import AktivGroteskText from "../AktivGroteskText";
 import ExploreMoreArtistCard from "@/components/ExploreMoreArtistCard";
 import { useRouter } from "next/navigation";
@@ -12,10 +11,7 @@ import CustomCarousel from "../CustomCarousel";
 
 const ArtistExploreMoreComponent = () => {
   const router = useRouter();
-  const [emblaRef] = useEmblaCarousel({
-    align: "start",
-    containScroll: "trimSnaps",
-  });
+ 
 
   return (
     <div className="relative flex flex-col gap-[24px] w-full mt-[23px]">
@@ -47,7 +43,7 @@ const ArtistExploreMoreComponent = () => {
 
       {/* Mobile View (below md breakpoint) */}
       <div className="w-full md:hidden flex gap-[15px] overflow-scroll scrollbar-hide">
-        {ARTIST_DATA.map((item: any) => (
+        {ARTIST_DATA.map((item) => (
           <ExploreMoreArtistCard
             key={item.id}
             name={item.profile.fullName}

@@ -8,7 +8,6 @@ interface CustomJoyrideProps {
   run: boolean;
   onComplete: () => void;
   onSkip: () => void;
-  continuous?: boolean;
   showProgress?: boolean;
   showSkipButton?: boolean;
   spotlightClicks?: boolean;
@@ -19,7 +18,6 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
   run,
   onComplete,
   onSkip,
-  continuous = true,
   showProgress = false,
   showSkipButton = false,
   spotlightClicks = false,

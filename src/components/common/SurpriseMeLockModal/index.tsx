@@ -10,7 +10,7 @@ import useAppDispatch from '@/hooks/useDispatch'
 import { updateCrossModal, updateLoginModal } from '@/store/auth/auth.slice'
 import useAppSelector from '@/hooks/useSelector'
 
-const SurpriseMeLockModal: React.FC<{}> = () => {
+const SurpriseMeLockModal = () => {
   const [open, setOpen] = useState<boolean>(true)
   const { isAuthenticated } = useAppSelector(state => state.auth)
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
 import {
   Carousel,
   CarouselContent,
@@ -10,7 +9,7 @@ import {
 export interface CarouselItemData {
   id: string
   name: string
-  icon: any // StaticImageData or string
+  icon: string // StaticImageData or string
   onClick?: () => void
 }
 

@@ -1,11 +1,10 @@
 'use client'
 
-import { aktivGrotesk } from '@/app/layout'
 import Input from '@/components/Input'
 import LoginSignupWrapper, {
   AuthHeading
 } from '@/components/LoginSignupWrapper'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import GreenCTA from '@/components/GreenCTA'
 import useDispatch from '../../../hooks/useDispatch'
@@ -33,9 +32,9 @@ const Login = () => {
   const dispatch = useDispatch()
   const { loginModal } = useAppSelector(state => state.auth)
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     dispatch(updateLoginModal({ loginModal: false }))
-  }
+  }, [dispatch,updateLoginModal])
 
   useEffect(() => {
     // Skip validation if number is empty
@@ -61,21 +60,20 @@ const Login = () => {
     requestOTP({ mobile_number: mobileNumber })
   }
 
-  const handleDataUpdation = () => {
+  const handleDataUpdation = useCallback(() => {
     if (isSuccess) {
       const otpData = data
-      const { data: responseData } = otpData
       if (otpData?.ok) {
         dispatch(updatePhoneNumber({ phoneNumber: mobileNumber }))
         dispatch(updateOtpStatus({ otpSent: true }))
         handleClose()
       }
     }
-  }
+  }, [isSuccess, data, dispatch,handleClose,mobileNumber])
 
   useEffect(() => {
     handleDataUpdation()
-  }, [isPending])
+  }, [isPending,handleDataUpdation])
 
   console.log(data, isPending, isSuccess)
 

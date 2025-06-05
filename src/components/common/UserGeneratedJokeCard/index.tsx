@@ -10,6 +10,8 @@ const UserGeneratedJokeCard: React.FC<IUserGeneratedJokeCard> = ({
   date,
   status
 }) => {
+
+  console.log(status)
   return (
     <div className='w-full bg-white rounded-[5px] md:rounded-[20px] px-[8px] py-[12px] md:px-[24px] md:py-[24px] flex items-center  gap-[16px] md:gap-[40px]'>
       <div

@@ -1,12 +1,9 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { IReferNowModal } from '@/interfaces'
-import React, { useState } from 'react'
+import React from 'react'
 import SvgIcons from '../SvgIcons'
 import {
-  BRO_CODE_WE_FOLLOW,
-  GET_ONE_FRIEND_LAUGHING,
   ICONS_NAMES,
-  REFER_NOW
 } from '@/constants'
 import AktivGroteskText from '../AktivGroteskText'
 import Input from '@/components/Input'

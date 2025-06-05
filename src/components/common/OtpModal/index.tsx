@@ -2,14 +2,13 @@ import LoginSignupWrapper, {
   AuthHeading
 } from '@/components/LoginSignupWrapper'
 import React, { useEffect, useState } from 'react'
-import sprite from '../../../../public/other-svgs/sprite.svg'
 import Image from 'next/image'
 import { aktivGrotesk } from '@/app/layout'
 import Input from '@/components/Input'
 import GreenCTA from '@/components/GreenCTA'
 import useAppSelector from '@/hooks/useSelector'
 import useAppDispatch from '@/hooks/useDispatch'
-import { updateCrossModal, updateOtpFilled } from '@/store/auth/auth.slice'
+import { updateOtpFilled } from '@/store/auth/auth.slice'
 import { useMutateRequestOTP, useMutateVerifyOTP } from '@/api/hooks/LoginHooks'
 import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES } from '@/constants'
@@ -22,9 +21,6 @@ const OtpModal = () => {
   const { phoneNumber } = useAppSelector(state => state.auth)
   const {
     mutate: requestOTP,
-    isPending: requestOTPIsPending,
-    isSuccess: requestOTPIsSuccess,
-    data: requestOTPData
   } = useMutateRequestOTP()
   const { mutate: verifyOTP, isPending, isSuccess, data } = useMutateVerifyOTP()
 
@@ -99,7 +95,7 @@ const OtpModal = () => {
       dispatch(updateOtpFilled({ otpFilled: true }))
       setOpen(false)
     }
-  }, [isPending, isSuccess])
+  }, [isPending, isSuccess, data,dispatch])
   return (
     <LoginSignupWrapper open={open} setOpen={setOpen} logo={true}>
       <div

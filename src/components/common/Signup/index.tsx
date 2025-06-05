@@ -2,15 +2,12 @@ import LoginSignupWrapper, {
   AuthHeading
 } from '@/components/LoginSignupWrapper'
 import React, { useEffect, useState } from 'react'
-import sprite from '../../../../public/other-svgs/sprite.svg'
-import Image from 'next/image'
 import { aktivGrotesk } from '@/app/layout'
 import Input from '@/components/Input'
 import GreenCTA from '@/components/GreenCTA'
-import useAppSelector from '@/hooks/useSelector'
 import EditProfileImage from '@/components/EditProfileImage'
 import useAppDispatch from '@/hooks/useDispatch'
-import { updateCrossModal, updateSignupDone } from '@/store/auth/auth.slice'
+import {  updateSignupDone } from '@/store/auth/auth.slice'
 import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES } from '@/constants'
 
@@ -143,7 +140,7 @@ const Signup = () => {
           <p
             className={`${aktivGrotesk.className} font-[400] text-[#313131] md:text-[20px] text-[16px] w-[80%] flex justify-center text-center`}
           >
-            Let's break the ice
+            Let&apos;s break the ice
           </p>
           <div onClick={(e: React.MouseEvent) => e.stopPropagation()}>
             <EditProfileImage

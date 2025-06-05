@@ -12,8 +12,25 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import GreenCTA from '@/components/GreenCTA'
 import SvgIcons from '../SvgIcons'
 
+interface IOption {
+  optionId: number
+  displayOrder: number
+  optionText: string
+  isSelected: boolean
+}
+
+interface IQuestion {
+  questionId: number
+  questionText: string
+  isAnswered: boolean
+  options: IOption[]
+  noofQuestion: number
+}
+
 const HelpUsToKnowYourBetter = () => {
-  const [selectedQuestion, setSelectedQuestion] = useState<any | null>(null)
+  const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
+    null
+  )
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState<number>(0)
 
   useEffect(() => {
@@ -55,7 +72,7 @@ const HelpUsToKnowYourBetter = () => {
             </div>
             <div className='pt-[24px] md:pt-[20px] pb-[34px] md:pb-[32px]'>
               <RadioGroup className='flex flex-col gap-[16px] md:gap-[20px]'>
-                {selectedQuestion?.options?.map((item: any, index: number) => (
+                {selectedQuestion?.options?.map((item: IOption) => (
                   <div
                     key={item.optionId}
                     className='flex items-center space-x-2'
@@ -63,9 +80,9 @@ const HelpUsToKnowYourBetter = () => {
                     <RadioGroupItem
                       className='w-[12px] h-[12px] md:w-[16px] md:h-[16px]'
                       value={item?.optionText}
-                      id={item?.optionId}
+                      id={item?.optionId.toString()}
                     />
-                    <label htmlFor={item?.optionId}>
+                    <label htmlFor={item?.optionId.toString()}>
                       <AktivGroteskText
                         text={item?.optionText}
                         fontSize='text-[12px] md:text-[20px]'

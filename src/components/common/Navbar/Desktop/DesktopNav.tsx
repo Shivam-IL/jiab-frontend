@@ -6,8 +6,6 @@ import {
   Bell,
   ChevronDown,
   ChevronRight,
-  ChevronUp,
-  LogOut,
 } from "lucide-react";
 import { ILogoAndProfileImageProps } from "@/interfaces";
 import NotificationItem from "../../NotificationItem/NotificationItem";
