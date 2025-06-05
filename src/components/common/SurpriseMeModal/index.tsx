@@ -35,7 +35,7 @@ const SurpriseMeModal = () => {
             />
             <div className="flex flex-col gap-[2px]">
               <p
-                className={`${aktivGrotesk.className} font-[400] md:text-[9px] text-[12px] text-[#000000]`}
+                className={`${aktivGrotesk.className} font-[700] md:text-[9px] text-[12px] text-[#000000]`}
               >
                 Observation_English_cool boy & cool girl
               </p>
@@ -72,7 +72,7 @@ const SurpriseMeModal = () => {
           </video>
         </div>
         <div className="bg-white rounded-[10px] px-[12px] pb-[16px] flex justify-between">
-          <div className="flex gap-[24px] md:gap-[34px] pl-[10px]">
+          <div className="flex gap-[24px] md:gap-[14px] pl-[10px]">
             <SurpriseMeCTA
               name={ICONS_NAMES.FUNNY}
               text="2.3k"
