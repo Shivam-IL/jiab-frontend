@@ -579,6 +579,8 @@ export const USER_INFO_CARD_DATA = [
 
 export const LOCAL_IMAGES = {
   SPRITE_GOLD: "sprite-gold.png",
+  PROFILE_BG:"profile-bg.png",
+  PROFILE_MD_BG:"profile-md-bg.png"
 };
 
 export const IMAGES_LINK = {
