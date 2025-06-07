@@ -69,6 +69,7 @@ const ScrollAndLol: React.FC = () => {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const isDesktopRef = useRef(false);
+  const hasShownEndOfFeedPopup = useRef<boolean>(false);
 
   useEffect(() => {
     const checkDesktop = () => {
@@ -113,43 +114,25 @@ const ScrollAndLol: React.FC = () => {
     if (!containerRef.current) return;
 
     const container = containerRef.current;
-    const videoElements = container.querySelectorAll(".video-container");
+    const videoElements = Array.from(
+      container.querySelectorAll(".video-container")
+    );
 
-    // Find the current video index based on scroll position
-    let currentIndex = 0;
-    const containerRect = container.getBoundingClientRect();
-
-    videoElements.forEach((el, idx) => {
-      const rect = el.getBoundingClientRect();
-      const relativeTop = rect.top - containerRect.top;
-
-      if (relativeTop <= container.clientHeight / 2) {
-        currentIndex = idx;
-      }
-    });
-
-    // Calculate target index
-    const targetIndex =
+    // Calculate the new target index
+    const newIndex =
       direction === "up"
-        ? Math.max(0, currentIndex - 1)
-        : Math.min(videoElements.length - 1, currentIndex + 1);
+        ? Math.max(0, activeVideoIndex - 1)
+        : Math.min(videoElements.length - 1, activeVideoIndex + 1);
 
-    // Scroll to target position
-    const targetElement = videoElements[targetIndex] as HTMLElement;
-    if (targetElement && container) {
-      // For desktop, account for gaps between videos (24px margin-bottom = 1.5rem)
-      const isDesktop = window.innerWidth >= 768;
-      const gapSize = isDesktop ? 24 : 0; // 24px = 1.5rem (mb-6)
-      const videoHeight = isDesktop
-        ? container.clientHeight
-        : container.clientHeight;
+    // Get the target element
+    const targetElement = videoElements[newIndex];
+    if (!targetElement) return;
 
-      const targetOffset = targetIndex * (videoHeight + gapSize);
-      container.scrollTo({
-        top: targetOffset,
-        behavior: "smooth",
-      });
-    }
+    // Scroll to the target element
+    targetElement.scrollIntoView({ behavior: "smooth" });
+
+    // Update the active video index
+    setActiveVideoIndex(newIndex);
   };
 
   useEffect(() => {
@@ -198,8 +181,12 @@ const ScrollAndLol: React.FC = () => {
             });
           }
 
-          if (videoIndex === videos.length - 1) {
+          if (
+            videoIndex === videos.length - 1 &&
+            !hasShownEndOfFeedPopup.current
+          ) {
             setShowEndOfFeedPopup(true);
+            hasShownEndOfFeedPopup.current = true;
           }
         } else {
           // Pause video when it goes out of view and reset play state
@@ -461,7 +448,9 @@ const ScrollAndLol: React.FC = () => {
       {showEndOfFeedPopup && (
         <CustomPopupWrapper
           open={showEndOfFeedPopup}
-          onClose={() => setShowEndOfFeedPopup(false)}
+          onClose={() => {
+            setShowEndOfFeedPopup(false);
+          }}
           icon={ICONS_NAMES.EXTREME_LAUGH}
           title="Serial Chiller! 👀"
           subtitle="You've exhausted your daily limit of jokes."
