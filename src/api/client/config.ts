@@ -1,6 +1,6 @@
 export const API_CONFIG = {
   baseURL:
-    process.env.NEXT_PUBLIC_API_URL ?? "http://13.212.103.80:8080/api/v1/",
+    process.env.NEXT_PUBLIC_API_URL ?? "http://13.200.122.221:8122/api/v1",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -37,4 +37,11 @@ export const API_ROUTES = {
     GET_INVITEES: "/referral/invitees",
     SEND_AGAIN: "/referral/send-again",
   },
+  REFERENCE_DATA: {
+    GET_FORMATS: "/reference-data/formats",
+    GET_GENRES: "/reference-data/genres",
+  },
+  COMIC_COINS: {
+    GET_COINS: "/comic-coins",
+  }
 };

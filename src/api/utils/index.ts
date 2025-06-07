@@ -6,5 +6,5 @@ export const keys = {
   },
   referral: {
     getAllReferrals: () => ["get-all-referrals"],
-  },
+  }
 };
