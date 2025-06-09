@@ -8,21 +8,37 @@ import Input from '@/components/Input'
 import GreenCTA from '@/components/GreenCTA'
 import useAppSelector from '@/hooks/useSelector'
 import useAppDispatch from '@/hooks/useDispatch'
-import { updateOtpFilled } from '@/store/auth/auth.slice'
+import {
+  updateIsAuthenticated,
+  updateIsFirstLogin,
+  updateOtpFilled,
+  updateOtpVerified,
+  updateToken
+} from '@/store/auth/auth.slice'
 import { useMutateRequestOTP, useMutateVerifyOTP } from '@/api/hooks/LoginHooks'
 import SvgIcons from '../SvgIcons'
-import { ICONS_NAMES } from '@/constants'
+import { ICONS_NAMES, TOKEN_TYPE } from '@/constants'
+import { MainService } from '@/api/services/MainService'
+import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
+import { setLocalStorageItem } from '@/utils'
 
 const OtpModal = () => {
   const [otp, setOtp] = useState<string>('')
   const [error, setError] = useState<string>('')
   const [open, setOpen] = useState<boolean>(false)
 
+  const mainServiceInstance = MainService.getInstance()
+
   const { phoneNumber } = useAppSelector(state => state.auth)
   const {
     mutate: requestOTP,
   } = useMutateRequestOTP()
-  const { mutate: verifyOTP, isPending, isSuccess, data } = useMutateVerifyOTP()
+  const {
+    mutate: verifyOTP,
+    isPending,
+    isSuccess,
+    data: verifyOTPData
+  } = useMutateVerifyOTP()
 
   const { otpSent } = useAppSelector(state => state.auth)
 
@@ -89,13 +105,33 @@ const OtpModal = () => {
   }
 
   useEffect(() => {
-    if (isPending && isSuccess) {
-      const { data: responseData } = data
-      console.log(responseData)
+    console.log('verifyOTPData', verifyOTPData)
+    if (verifyOTPData?.ok) {
+      const { data: verifyTokenData } = verifyOTPData
+      const token = verifyTokenData?.access_token ?? ''
+      const tokenType = verifyTokenData?.token_type ?? ''
+      dispatch(updateToken({ token }))
+      dispatch(updateIsAuthenticated({ isAuthenticated: true }))
+      dispatch(updateOtpVerified({ otpVerified: true }))
+
+      console.log('tokenType', tokenType)
+      if (tokenType === TOKEN_TYPE.TEMPORARY) {
+        dispatch(updateIsFirstLogin({ isFirstLogin: true }))
+      }else if(tokenType === TOKEN_TYPE.BEARER){
+        const refreshToken = verifyTokenData?.refresh_token ?? ''
+        dispatch(updateIsFirstLogin({ isFirstLogin: false }))
+        setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN,refreshToken)
+      }
+      mainServiceInstance.setAccessToken(token)
       dispatch(updateOtpFilled({ otpFilled: true }))
       setOpen(false)
     }
-  }, [isPending, isSuccess, data,dispatch])
+    else if (verifyOTPData?.ok === false) {
+      const { data } = verifyOTPData
+      setError(data?.message ?? 'Invalid OTP')
+    }
+  }, [verifyOTPData])
+
   return (
     <LoginSignupWrapper open={open} setOpen={setOpen} logo={true}>
       <div

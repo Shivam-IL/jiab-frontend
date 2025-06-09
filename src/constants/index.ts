@@ -557,21 +557,25 @@ export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE: string[] = [
 export const USER_INFO_CARD_DATA = [
   {
     id: 1,
+    type: "phone_number",
     iconName: ICONS_NAMES.PHONE_ICON,
     text: "9876543210",
   },
   {
     id: 2,
+    type:'email',
     iconName: ICONS_NAMES.MAIL,
     text: "kartikeya@gmail.com",
   },
   {
     id: 3,
+    type: "dob",
     iconName: ICONS_NAMES.CALENDAR,
     text: "24/05/2025",
   },
   {
     id: 4,
+    type: "gender",
     iconName: ICONS_NAMES.GENDER,
     text: "Male",
   },
@@ -581,6 +585,11 @@ export const LOCAL_IMAGES = {
   SPRITE_GOLD: "sprite-gold.png",
   PROFILE_BG:"profile-bg.png",
   PROFILE_MD_BG:"profile-md-bg.png"
+};
+
+export const TOKEN_TYPE = {
+  BEARER: "Bearer",
+  TEMPORARY: "temp",
 };
 
 export const IMAGES_LINK = {
@@ -705,6 +714,7 @@ export const PROFILE_QUESTIONS = [
     noofQuestion: 0,
   },
 ];
+
 
 export const ANNOUNCING_WINNER_TIMER_TEXT = "Announcing the winners in...";
 export const HELP_US_TO_KNOW_YOUR_BETTER = "Help us get to know you better!";

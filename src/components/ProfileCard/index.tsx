@@ -13,11 +13,26 @@ import UserInfoCard from '../common/UserInfoCard'
 import { useRouter } from 'next/navigation'
 import { generateImageurl } from '@/utils'
 import useWindowWidth from '@/hooks/useWindowWidth'
+import useAppSelector from '@/hooks/useSelector'
+import { IUserInfoCard } from '@/interfaces'
+import { User } from '@/store/profile/profile.slice'
+
+interface InfoDataItem {
+  id: number
+  type: string
+  iconName: string
+  text: string
+  visible: boolean
+}
 
 const ProfileCard = () => {
   const router = useRouter()
 
   const width = useWindowWidth()
+  const [infoData, setInfoData] = useState<InfoDataItem[]>([])
+
+  const { user } = useAppSelector(state => state.profile)
+  const { name, phone_number, profile_percentage, profile_picture, id } = user
 
   const [bgImage, setBgImage] = useState<string>('')
 
@@ -28,6 +43,30 @@ const ProfileCard = () => {
       setBgImage(LOCAL_IMAGES.PROFILE_MD_BG)
     }
   }, [width])
+
+  useEffect(() => {
+    if (user && user?.id) {
+      const newInfoData = USER_INFO_CARD_DATA.map(item => {
+        const itemKey = item.type as keyof User
+        const value = user[itemKey]
+        if (value !== undefined && value !== null) {
+          return {
+            ...item,
+            text: String(value),
+            visible: true
+          }
+        }
+        return { ...item, visible: false, text: '' }
+      })
+      setInfoData(newInfoData)
+    }
+  }, [user])
+
+  const handleEditProfile = () => {
+    if (id) {
+      router.push(`/my-profile/${id}`)
+    }
+  }
 
   return (
     <div className='relative w-full rounded-[10px]  bg-white md:rounded-[20px]'>
@@ -41,7 +80,7 @@ const ProfileCard = () => {
           className={`w-full h-[135px] md:h-[210px] flex flex-col items-center justify-center `}
         >
           <div className='md:hidden'>
-            <CircularProgress value={30}>
+            <CircularProgress value={profile_percentage}>
               <div className='text-sm w-[90%] h-[90%] rounded-full font-medium bg-[#11A64B] text-gray-700'>
                 <Image
                   className='w-full h-full'
@@ -54,7 +93,7 @@ const ProfileCard = () => {
             </CircularProgress>
           </div>
           <div className='hidden md:block'>
-            <CircularProgress size={148} value={30}>
+            <CircularProgress size={148} value={profile_percentage}>
               <div className='text-sm w-[90%] h-[90%] rounded-full font-medium bg-[#11A64B] text-gray-700'>
                 <Image
                   className='w-full h-full'
@@ -69,14 +108,12 @@ const ProfileCard = () => {
         </div>
         <div className='relative h-[23px] md:h-fit flex justify-center'>
           <AktivGroteskText
-            text='Kartikeya Rai'
+            text={name ?? ''}
             fontSize='text-[16px] md:text-[28px]'
             fontWeight='font-[700]'
           />
           <button
-            onClick={() => {
-              router.push('/my-profile/1')
-            }}
+            onClick={handleEditProfile}
             className='absolute bottom-[5px] md:bottom-[12px] right-[8px] md:right-[33px] outline-none border-none'
           >
             <SvgIcons
@@ -87,15 +124,21 @@ const ProfileCard = () => {
         </div>
       </div>
       <div className='grid grid-cols-2 gap-2 md:gap-[28px] md:gap-x-[9rem] lg:gap-x-[20rem] gap-x-0 px-[16px] md:px-[66px] pt-[16px] md:pt-[66px] pb-[10px] md:pb-[44px] w-full'>
-        {USER_INFO_CARD_DATA?.length > 0 &&
-          USER_INFO_CARD_DATA?.map(item => (
-            <UserInfoCard
-              iconClassName='w-[14px] h-[14px] md:min-w-[29px] md:min-h-[29px]'
-              key={item?.id}
-              iconName={item?.iconName}
-              text={item?.text}
-            />
-          ))}
+        {infoData?.length > 0 &&
+          infoData?.map(item => {
+            if (item?.visible) {
+              return (
+                <UserInfoCard
+                  iconClassName='w-[14px] h-[14px] md:min-w-[29px] md:min-h-[29px]'
+                  key={item?.id}
+                  iconName={item?.iconName}
+                  text={item?.text}
+                />
+              )
+            } else {
+              return null
+            }
+          })}
       </div>
     </div>
   )

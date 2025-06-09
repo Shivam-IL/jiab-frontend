@@ -1,5 +1,6 @@
 'use client'
 
+import { useEditUserProfileDetails } from '@/api/hooks/ProfileHooks'
 import AktivGroteskText from '@/components/common/AktivGroteskText'
 import MobileTempNavBar from '@/components/common/MobileTempNavBar'
 import ScreenWrapper from '@/components/common/ScreenWrapper'
@@ -8,11 +9,13 @@ import GreenCTA from '@/components/GreenCTA'
 import Input from '@/components/Input'
 import { Separator } from '@/components/ui/separator'
 import { MOBILE_TEMP_NAVBAR_DATA } from '@/constants'
+import useAppSelector from '@/hooks/useSelector'
 import useWindowWidth from '@/hooks/useWindowWidth'
-import React, { useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 
 interface IUserData {
-  image: string
+  avatar_id: number
   name: string
   email: string
   phone: string
@@ -20,12 +23,23 @@ interface IUserData {
   gender: string
 }
 
+interface IErrors {
+  name: string
+  dob: string
+  gender: string
+}
+
 const EditProfilePage = () => {
   const width = useWindowWidth()
+  const params = useParams()
+  const router = useRouter()
+
+  const { mutate: editUserProfileDetails ,isPending} = useEditUserProfileDetails()
 
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false)
+  const { user } = useAppSelector(state => state.profile)
   const [userData, setUserData] = useState<IUserData>({
-    image: '',
+    avatar_id: 0,
     name: '',
     email: '',
     phone: '+91-8989898989',
@@ -33,8 +47,71 @@ const EditProfilePage = () => {
     gender: ''
   })
 
+  const [errors, setErrors] = useState<IErrors>({
+    name: '',
+    dob: '',
+    gender: ''
+  })
+
+  const validateName = (name: string) => {
+    if (!name.trim()) {
+      return 'Name is required'
+    }
+    if (name.length < 2) {
+      return 'Name should be at least 2 characters long'
+    }
+    if (!/^[a-zA-Z\s]*$/.test(name)) {
+      return 'Name should only contain letters and spaces'
+    }
+    return ''
+  }
+
+  const validateDOB = (dob: string) => {
+    if (!dob) {
+      return 'Date of birth is required'
+    }
+    const dobDate = new Date(dob)
+    const today = new Date()
+    const minAge = 0 // Minimum age requirement
+    
+    // Calculate age
+    let age = today.getFullYear() - dobDate.getFullYear()
+    const monthDiff = today.getMonth() - dobDate.getMonth()
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+      age--
+    }
+
+    if (age < minAge) {
+      return `You must be at least ${minAge} years old`
+    }
+    if (dobDate > today) {
+      return 'Date of birth cannot be in the future'
+    }
+    return ''
+  }
+
+  const validateGender = (gender: string) => {
+    if (!gender) {
+      return 'Gender is required'
+    }
+    return ''
+  }
+
   const handleChange = (key: string, value: string) => {
     setUserData({ ...userData, [key]: value })
+    
+    // Validate the changed field
+    switch (key) {
+      case 'name':
+        setErrors(prev => ({ ...prev, name: validateName(value) }))
+        break
+      case 'dob':
+        setErrors(prev => ({ ...prev, dob: validateDOB(value) }))
+        break
+      case 'gender':
+        setErrors(prev => ({ ...prev, gender: validateGender(value) }))
+        break
+    }
   }
 
   const handleContainerClick = () => {
@@ -43,7 +120,46 @@ const EditProfilePage = () => {
     }
   }
 
-  console.log(userData)
+  useEffect(() => {
+    if (user?.id !== params?.userId) {
+      router.push('/')
+    }
+  }, [user, params?.userId])
+
+  useEffect(() => {
+    if (user?.id === params?.userId) {
+      const { profile_picture, name, email, phone_number, dob, gender } = user
+      setUserData({
+        avatar_id: 0,
+        name: name,
+        email: email,
+        phone: phone_number,
+        dob: dob ?? '',
+        gender
+      })
+    }
+  }, [user, params?.userId])
+
+  const isFormValid = () => {
+    const nameError = validateName(userData.name)
+    const dobError = validateDOB(userData.dob)
+    const genderError = validateGender(userData.gender)
+
+    setErrors({
+      name: nameError,
+      dob: dobError,
+      gender: genderError
+    })
+
+    return !nameError && !dobError && !genderError
+  }
+
+  const submitHandler = () => {
+    if (isFormValid()) {
+      console.log('Form is valid, submitting:', userData)
+      editUserProfileDetails(userData)
+    }
+  }
 
   return (
     <div onClick={handleContainerClick} className='flex flex-col gap-3'>
@@ -68,12 +184,15 @@ const EditProfilePage = () => {
             />
           </div>
           <div className='flex flex-col pt-[23px] gap-[24px] md:gap-[16px]'>
-            <div className='md:mb-[8px]' onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+            <div
+              className='md:mb-[8px]'
+              onClick={(e: React.MouseEvent) => e.stopPropagation()}
+            >
               <EditProfileImage
                 name={'image'}
                 editProfileImage={editProfileImage}
                 setEditProfileImage={setEditProfileImage}
-                image={userData.image}
+                image={userData.avatar_id?.toString()}
                 onChange={handleChange}
               />
             </div>
@@ -83,6 +202,7 @@ const EditProfilePage = () => {
               bgColor='bg-white'
               name={'name'}
               type='text'
+              error={errors.name}
               value={userData.name}
               onChange={handleChange}
               placeholder='Enter your name'
@@ -96,7 +216,7 @@ const EditProfilePage = () => {
               readonly={true}
               value={userData.phone}
               onChange={handleChange}
-              placeholder='Enter your phone'
+              placeholder='Enter your phone number'
             />
             <Input
               fontSize='text-[14px] md:text-[18px]'
@@ -106,6 +226,7 @@ const EditProfilePage = () => {
               type='date'
               value={userData.dob}
               onChange={handleChange}
+              error={errors.dob}
               placeholder='YYYY/MM/DD'
             />
             <Input
@@ -114,6 +235,7 @@ const EditProfilePage = () => {
               paddingClass='md:py-[10px] md:px-[17px] pl-[16px] pr-[16px] py-[16px] '
               name={'email'}
               type='email'
+              readonly={true}
               value={userData.email}
               onChange={handleChange}
               placeholder='Enter your email'
@@ -130,11 +252,13 @@ const EditProfilePage = () => {
                 { value: 'female', label: 'Female' }
               ]}
               value={userData.gender}
+              error={errors.gender}
               onChange={handleChange}
             />
             <GreenCTA
-              onClick={() => {}}
-               className='md:mt-[24px]'
+              disabled={isPending}
+              onClick={submitHandler}
+              className='md:mt-[24px]'
               paddingClass='py-[17px]'
               text='Save Details'
               fontSize='text-[16px]'
