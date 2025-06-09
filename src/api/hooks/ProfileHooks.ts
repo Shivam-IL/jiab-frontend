@@ -8,13 +8,19 @@ import {
   TEditProfile,
   TSubmitQuestions,
 } from "../types/ProfileTypes";
+import useAppSelector from "@/hooks/useSelector";
 
 const profileService = ProfileService.getInstance();
 
-const useGetUserProfileDetails = (userId: string) => {
+const useGetUserProfileDetails = () => {
+  const { isAuthenticated, token } = useAppSelector((state) => state.auth);
+
   return useQuery({
-    queryKey: keys.profile.userProfileDetails(userId),
-    queryFn: () => profileService.getUserProfileDetails(userId),
+    queryKey: keys.profile.userProfileDetails(),
+    queryFn: () => profileService.getUserProfileDetails(),
+    enabled: isAuthenticated && token ? true : false,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -26,9 +32,12 @@ const useEditUserProfileDetails = () => {
 };
 
 const useGetUserAddresses = () => {
+  const { isAuthenticated, token } = useAppSelector((state) => state.auth);
+
   return useQuery({
     queryKey: keys.profile.getUserAddresses(),
     queryFn: () => profileService.getUserAddresses(),
+    enabled: isAuthenticated && token ? true : false,
   });
 };
 
@@ -54,9 +63,12 @@ const useDeleteAddress = () => {
 };
 
 const useGetUserBalanceAndRank = () => {
+  const { isAuthenticated, token } = useAppSelector((state) => state.auth);
+
   return useQuery({
     queryKey: keys.profile.getUserBalanceAndRank(),
     queryFn: () => profileService.getUserBalanceAndRank(),
+    enabled: isAuthenticated && token ? true : false,
   });
 };
 

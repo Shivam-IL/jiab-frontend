@@ -1,6 +1,6 @@
 import apiClient from "../client";
 import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
-import { API_ROUTES } from "../client/config";
+import { API_ROUTES, LOCAL_STORAGE_KEYS } from "../client/config";
 import {
   IAddress,
   TAddessId,
@@ -12,7 +12,6 @@ import { MainService } from "./MainService";
 
 export class ProfileService extends MainService {
   private static instance: ProfileService;
-  private token: string | null = this.getAccessToken() ?? null;
 
   public static getInstance(): ProfileService {
     if (!ProfileService.instance) {
@@ -21,22 +20,18 @@ export class ProfileService extends MainService {
     return ProfileService.instance;
   }
 
-  public setToken(token: string) {
-    this.token = token;
-  }
-
   private getAuthHeaders() {
-    return this.token
+    const token = localStorage.getItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
+    return token
       ? {
-          Authorization: `Bearer ${this.token}`,
+          Authorization: `Bearer ${token}`,
         }
       : {};
   }
 
-  public async getUserProfileDetails(userId: string) {
+  public async getUserProfileDetails() {
     try {
-      const endpoint = `${API_ROUTES.USER.PROFILE.GET}?userId=${userId}`;
-      const response = await apiClient.get(endpoint, {
+      const response = await apiClient.get(API_ROUTES.USER.PROFILE.GET, {
         headers: this.getAuthHeaders(),
       });
       const data = response.data;
@@ -51,7 +46,7 @@ export class ProfileService extends MainService {
 
   public async editUserProfileDetails(userData: TEditProfile) {
     try {
-      const response = await apiClient.put(
+      const response = await apiClient.patch(
         API_ROUTES.USER.PROFILE.EDIT,
         { ...userData },
         {

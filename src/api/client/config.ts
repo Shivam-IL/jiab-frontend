@@ -1,10 +1,15 @@
 export const API_CONFIG = {
   baseURL:
-    process.env.NEXT_PUBLIC_API_URL ?? "http://13.200.122.221:8122/api/v1",
+    process.env.NEXT_PUBLIC_API_URL,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
   },
+};
+
+export const LOCAL_STORAGE_KEYS = {
+  ACCESS_TOKEN: "accessToken",
+  REFRESH_TOKEN: "refreshToken",
 };
 
 export const API_ROUTES = {
@@ -16,8 +21,8 @@ export const API_ROUTES = {
   },
   USER: {
     PROFILE: {
-      GET: "/profile",
-      EDIT: "/profile/",
+      GET: "/profile/",
+      EDIT: "/profile",
     },
     ADDRESS: {
       GET: "/profile/address",

@@ -1,12 +1,12 @@
 import apiClient from "../client";
 import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
-import { API_ROUTES } from "../client/config";
+import { API_ROUTES, LOCAL_STORAGE_KEYS } from "../client/config";
 import { TReferral, TReferralSendAgain } from "../types/ReferralTypes";
 import { MainService } from "./MainService";
+import { getLocalStorageItem } from "@/utils";
 
 export class ReferralService extends MainService {
   private static instance: ReferralService;
-  private token: string | null = this.getAccessToken() ?? null;
 
   public static getInstance(): ReferralService {
     if (!ReferralService.instance) {
@@ -15,14 +15,11 @@ export class ReferralService extends MainService {
     return ReferralService.instance;
   }
 
-  public setToken(token: string) {
-    this.token = token;
-  }
-
   private getAuthHeaders() {
-    return this.token
+    const token = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN)
+    return token
       ? {
-          Authorization: `Bearer ${this.token}`,
+          Authorization: `Bearer ${token}`,
         }
       : {};
   }

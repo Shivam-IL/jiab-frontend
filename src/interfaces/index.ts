@@ -43,6 +43,7 @@ export interface IGreenCTA {
   fontSize?: string;
   fontWeight?: string;
   className?: string;
+  disabled?: boolean;
 }
 
 export interface IEditProfileImage {

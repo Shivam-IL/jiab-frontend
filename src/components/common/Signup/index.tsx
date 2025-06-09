@@ -7,9 +7,22 @@ import Input from '@/components/Input'
 import GreenCTA from '@/components/GreenCTA'
 import EditProfileImage from '@/components/EditProfileImage'
 import useAppDispatch from '@/hooks/useDispatch'
-import {  updateSignupDone } from '@/store/auth/auth.slice'
+import {
+  
+  updateIsAuthenticated,
+  updateIsFirstLogin,
+  updateOtpFilled,
+  updateOtpStatus,
+  updatePhoneNumber,
+  updateSignupDone,
+  updateToken
+} from '@/store/auth/auth.slice'
 import SvgIcons from '../SvgIcons'
-import { ICONS_NAMES } from '@/constants'
+import { ICONS_NAMES, TOKEN_TYPE } from '@/constants'
+import { MainService } from '@/api/services/MainService'
+import { useMutateSignUp } from '@/api/hooks/LoginHooks'
+import { setLocalStorageItem } from '@/utils'
+import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
 
 interface IUserData {
   profileImage: string
@@ -21,16 +34,27 @@ interface IUserData {
 }
 
 const Signup = () => {
+  const mainServiceInstance = MainService.getInstance()
+
   const [open, setOpen] = useState<boolean>(true)
   const [nameError, setNameError] = useState<string>('')
   const [emailError, setEmailError] = useState<string>('')
   const [inviteCodeError, setInviteCodeError] = useState<string>('')
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false)
 
+  const { isFirstLogin, phoneNumber, otpVerified } = useAppSelector(
+    state => state.auth
+  )
+  const {
+    mutate: signupToCoke,
+    isPending,
+    data: signupData
+  } = useMutateSignUp()
+
   const [userData, setUserData] = useState<IUserData>({
     profileImage: '',
     name: '',
-    number: '+91-8989898988',
+    number: '',
     email: '',
     invite_code: '',
     agree: false
@@ -109,6 +133,14 @@ const Signup = () => {
   }, [userData.invite_code])
 
   const isFormValid = () => {
+    if (userData?.name === '') {
+      setNameError('Name is required')
+      return false
+    }
+    if (userData?.email === '') {
+      setEmailError('Email is required')
+      return false
+    }
     return (
       userData.name.length > 0 &&
       userData.email.length > 0 &&
@@ -117,6 +149,69 @@ const Signup = () => {
       !inviteCodeError
     )
   }
+
+  const removeAuthentication = () => {
+    dispatch(updateIsFirstLogin({ isFirstLogin: false }))
+    dispatch(updateIsAuthenticated({ isAuthenticated: false }))
+    dispatch(updateOtpFilled({ otpFilled: false }))
+    dispatch(updateOtpStatus({ otpSent: false }))
+    dispatch(updatePhoneNumber({ phoneNumber: '' }))
+    dispatch(updateToken({ token: '' }))
+    dispatch(updateIsFirstLogin({ isFirstLogin: false }))
+    mainServiceInstance.setAccessToken('')
+  }
+
+  useEffect(() => {
+    if (isFirstLogin) {
+      setUserData({
+        ...userData,
+        number: phoneNumber
+      })
+    }
+  }, [isFirstLogin])
+
+  useEffect(() => {
+    if (!otpVerified) {
+      removeAuthentication()
+    }
+  }, [otpVerified])
+
+  const handleSignup = () => {
+    setEditProfileImage(false)
+    if (isFormValid()) {
+      const formData = {
+        avatar: userData.profileImage,
+        email: userData.email,
+        full_name: userData.name,
+        mobile_number: userData.number,
+        referral_code: userData.invite_code ?? ''
+      }
+      signupToCoke(formData)
+    }
+  }
+
+  useEffect(() => {
+    if (signupData?.ok) {
+      const { data } = signupData
+      const tokenType = data?.token_type ?? ''
+      if (
+        data?.access_token &&
+        tokenType === TOKEN_TYPE.BEARER &&
+        data?.refresh_token !== ''
+      ) {
+        setLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, data?.access_token)
+        setLocalStorageItem(
+          LOCAL_STORAGE_KEYS.REFRESH_TOKEN,
+          data?.refresh_token
+        )
+        dispatch(updateToken({ token: data?.access_token }))
+        mainServiceInstance.setAccessToken(data?.access_token)
+        dispatch(updateIsAuthenticated({ isAuthenticated: true }))
+        dispatch(updateIsFirstLogin({ isFirstLogin: false }))
+        setOpen(false)
+      }
+    }
+  }, [signupData])
 
   return (
     <LoginSignupWrapper open={open} setOpen={setOpen} logo={true}>
@@ -129,6 +224,9 @@ const Signup = () => {
             className='flex justify-center items-center outline-none border-none'
             onClick={() => {
               setOpen(false)
+              if (isFirstLogin) {
+                removeAuthentication()
+              }
             }}
           >
             <SvgIcons name={ICONS_NAMES.CROSS} className='w-[16px] h-[16px]' />
@@ -217,12 +315,7 @@ const Signup = () => {
         </div>
         <GreenCTA
           onClick={() => {
-            setEditProfileImage(false)
-            if (isFormValid()) {
-              console.log('Form submitted:', userData)
-              setOpen(false)
-              dispatch(updateSignupDone({ signupDone: true }))
-            }
+            handleSignup()
           }}
           text='Submit'
         />

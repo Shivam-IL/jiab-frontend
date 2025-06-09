@@ -15,29 +15,33 @@ export interface IAddressData {
 export interface AuthState {
   user: null;
   phoneNumber: string;
-  otp: string;
   loginModal: boolean;
   isLoading: boolean;
   isAuthenticated: boolean;
   otpSent: boolean;
   otpFilled: boolean;
+  otpVerified: boolean;
   signupDone: boolean;
   crossModal: boolean;
   addressData: IAddressData[];
+  token: string;
+  isFirstLogin: boolean;
 }
 
 const initialState: AuthState = {
   user: null,
   isLoading: false,
   isAuthenticated: false,
-  otp: "",
   otpSent: false,
   otpFilled: false,
+  otpVerified: false,
   loginModal: false,
   signupDone: false,
   crossModal: false,
   addressData: [],
   phoneNumber: "",
+  token: "",
+  isFirstLogin: false,
 };
 
 const authSlice = createSlice({
@@ -47,11 +51,11 @@ const authSlice = createSlice({
     updateOtpStatus: (state, action) => {
       state.otpSent = action.payload.otpSent;
     },
+    updateOtpVerified: (state, action) => {
+      state.otpVerified = action.payload.otpVerified;
+    },
     updatePhoneNumber: (state, action) => {
       state.phoneNumber = action.payload.phoneNumber;
-    },
-    updateOtp: (state, action) => {
-      state.otp = action.payload.otp;
     },
     updateOtpFilled: (state, action) => {
       state.otpFilled = action.payload.otpFilled;
@@ -68,6 +72,15 @@ const authSlice = createSlice({
     updateCrossModal: (state, action) => {
       state.crossModal = action.payload.crossModal;
     },
+    updateToken: (state, action) => {
+      state.token = action.payload.token;
+    },
+    updateIsAuthenticated: (state, action) => {
+      state.isAuthenticated = action.payload.isAuthenticated;
+    },
+    updateIsFirstLogin: (state, action) => {
+      state.isFirstLogin = action.payload.isFirstLogin;
+    },
   },
 });
 
@@ -78,7 +91,10 @@ export const {
   updateSignupDone,
   updateAddressData,
   updateCrossModal,
-  updateOtp,
   updatePhoneNumber,
+  updateToken,
+  updateIsAuthenticated,
+  updateIsFirstLogin,
+  updateOtpVerified,
 } = authSlice.actions;
 export default authSlice.reducer;

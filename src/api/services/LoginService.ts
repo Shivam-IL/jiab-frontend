@@ -1,7 +1,7 @@
 import { AxiosError, AxiosResponse } from "axios";
 import apiClient from "../client";
 import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
-import { API_ROUTES } from "../client/config";
+import { API_ROUTES, LOCAL_STORAGE_KEYS } from "../client/config";
 import {
   TRefreshToken,
   TRequestOTP,
@@ -9,51 +9,10 @@ import {
   TVerifyOTP,
 } from "../types/LoginTypes";
 import { MainService } from "./MainService";
-
-interface ValidationErrors {
-  validation_errors?: Record<string, string[]>;
-}
-
-interface RequestOTPResponse {
-  success: boolean;
-  data: {
-    message: string;
-  };
-  details?: ValidationErrors;
-}
-
-interface VerifyOTPResponse {
-  success: boolean;
-  data: {
-    access_token: string;
-    refresh_token: string;
-    user_id: string;
-  };
-  details?: ValidationErrors;
-  message?: string;
-}
-
-interface SignUpResponse {
-  success: boolean;
-  data: {
-    user_id: string;
-    message: string;
-  };
-  message?: string;
-}
-
-interface RefreshTokenResponse {
-  success: boolean;
-  data: {
-    access_token: string;
-    refresh_token: string;
-  };
-  message?: string;
-}
+import { getLocalStorageItem } from "@/utils";
 
 export class LoginService extends MainService {
   private static instance: LoginService;
-  private token: string | null = this.getAccessToken() ?? null;
 
   public static getInstance(): LoginService {
     if (!LoginService.instance) {
@@ -62,21 +21,18 @@ export class LoginService extends MainService {
     return LoginService.instance;
   }
 
-  public setToken(token: string) {
-    this.token = token;
-  }
-
   private getAuthHeaders() {
-    return this.token
+    const token = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN)
+    return token
       ? {
-          Authorization: `Bearer ${this.token}`,
+          Authorization: `Bearer ${token}`,
         }
       : {};
   }
 
   public async RequestOTP({ mobile_number }: TRequestOTP) {
     try {
-      const response: AxiosResponse<RequestOTPResponse> = await apiClient.post(API_ROUTES.AUTH.REQUEST_OTP, {
+      const response = await apiClient.post(API_ROUTES.AUTH.REQUEST_OTP, {
         mobile_number,
       });
       const data = response.data;
@@ -89,7 +45,9 @@ export class LoginService extends MainService {
       );
     } catch (error) {
       if (error instanceof AxiosError) {
-        return ErrorResponse(error.response?.data?.message || "Network error occurred");
+        return ErrorResponse(
+          error.response?.data?.message || "Network error occurred"
+        );
       }
       return ErrorResponse("An unexpected error occurred");
     }
@@ -97,7 +55,7 @@ export class LoginService extends MainService {
 
   public async VerifyOTP({ otp, mobile_number }: TVerifyOTP) {
     try {
-      const response: AxiosResponse<VerifyOTPResponse> = await apiClient.post(API_ROUTES.AUTH.VERIFY_OTP, {
+      const response = await apiClient.post(API_ROUTES.AUTH.VERIFY_OTP, {
         otp,
         mobile_number,
       });
@@ -115,7 +73,9 @@ export class LoginService extends MainService {
       return ErrorResponse(data?.message ?? "Something went wrong");
     } catch (error) {
       if (error instanceof AxiosError) {
-        return ErrorResponse(error.response?.data?.message || "Network error occurred");
+        return ErrorResponse(
+          error.response?.data?.message || "Network error occurred"
+        );
       }
       return ErrorResponse("An unexpected error occurred");
     }
@@ -123,7 +83,8 @@ export class LoginService extends MainService {
 
   public async SignUp(data: TSignUp) {
     try {
-      const response: AxiosResponse<SignUpResponse> = await apiClient.post(
+      console.log("data", this.getAuthHeaders());
+      const response = await apiClient.post(
         API_ROUTES.AUTH.SIGN_UP,
         {
           ...data,
@@ -141,7 +102,9 @@ export class LoginService extends MainService {
       return ErrorResponse(responseData?.message ?? "Something went wrong");
     } catch (error) {
       if (error instanceof AxiosError) {
-        return ErrorResponse(error.response?.data?.message || "Network error occurred");
+        return ErrorResponse(
+          error.response?.data?.message || "Network error occurred"
+        );
       }
       return ErrorResponse("An unexpected error occurred");
     }
@@ -149,17 +112,29 @@ export class LoginService extends MainService {
 
   public async RefreshToken({ refresh_token }: TRefreshToken) {
     try {
-      const response: AxiosResponse<RefreshTokenResponse> = await apiClient.post(API_ROUTES.AUTH.REFRESH_TOKEN, {
-        refresh_token,
-      });
+      const response = await apiClient.post(
+        API_ROUTES.AUTH.REFRESH_TOKEN,
+        {
+          refresh_token,
+        },
+        {
+          headers: {
+            ...this.getAuthHeaders(),
+          },
+        }
+      );
       const responseData = response.data;
+      console.log('responseData', responseData)
       if (responseData?.success) {
+        console.log('responseData', responseData.data)
         return SuccessResponse(responseData.data);
       }
       return ErrorResponse(responseData?.message ?? "Something went wrong");
     } catch (error) {
       if (error instanceof AxiosError) {
-        return ErrorResponse(error.response?.data?.message || "Network error occurred");
+        return ErrorResponse(
+          error.response?.data?.message || "Network error occurred"
+        );
       }
       return ErrorResponse("An unexpected error occurred");
     }

@@ -5,15 +5,17 @@ import { ICONS_NAMES, LOCAL_IMAGES } from '@/constants'
 import { Separator } from '@/components/ui/separator'
 import GreenCTA from '@/components/GreenCTA'
 import { useRouter } from 'next/navigation'
+import useAppSelector from '@/hooks/useSelector'
 
 const UserComicsCoinsAndRankCard = () => {
   const router = useRouter()
+  const { current_balance, rank } = useAppSelector(state => state.profile)
   return (
     <div className='flex gap-2 md:justify-between py-3 md:pt-[24px]'>
       <div className='relative flex md:gap-[50px] md:w-auto w-[60%]'>
         <div className='relative w-[50%] md:w-auto flex flex-col items-center justify-between gap-[6px] md:gap-[8px]'>
           <AktivGroteskText
-            text='2800'
+            text={current_balance.toString()}
             className='text-black'
             fontSize='text-[16px] md:text-[24px]'
             fontWeight='font-[700]'
@@ -33,13 +35,14 @@ const UserComicsCoinsAndRankCard = () => {
         <Separator className='w-[1px] md:w-[2px] bg-[#EBEBEB] h-full mx-0 px-0' />
         <div className='relative w-[50%] md:w-auto flex flex-col items-center justify-between gap-[6px] md:gap-[8px]'>
           <AktivGroteskText
-            text='100'
+            text={rank ? rank.toString() : '0'}
             className='text-black'
             fontSize='text-[16px] md:text-[24px]'
             fontWeight='font-[700]'
           />
           <div className='flex justify-center'>
             <ImageIconCard
+              image=''
               itemsGapClass='gap-[5px] md:gap-[8px]'
               icon={ICONS_NAMES.RANK}
               iconClassName='w-[9px] h-[12px] md:w-[18px] md:h-[24px]'
