@@ -222,6 +222,7 @@ export interface ISurpriseMeCTA {
 export interface IBannerProps {
   type: "video" | "image";
   src: string;
+  msrc?: string; // Mobile source for responsive images
   alt?: string;
   className?: string;
   overlayColor?: string;
@@ -241,6 +242,7 @@ export interface IContentButton {
   text: string;
   onClick?: () => void;
   icon?: string;
+  className?: string;
 }
 
 export interface ICustomDialogWrapper {
@@ -269,4 +271,19 @@ export interface IUgcComponent {
     category: string;
   };
   isUnmounting?: boolean;
+}
+
+export interface IRewardPool {
+  imageUrl: string;
+  imageAlt: string;
+  textContent: string;
+}
+
+export interface IContestActivities {
+  id: number;
+  icon: string;
+  title: string;
+  reward: number;
+  rewardText: string;
+  action: () => void;
 }

@@ -4,6 +4,7 @@ import Image from "next/image";
 const Banner: React.FC<IBannerProps> = ({
   type,
   src,
+  msrc,
   alt = "",
   className = "",
   overlayColor = "rgba(0, 0, 0, 0)",
@@ -23,13 +24,24 @@ const Banner: React.FC<IBannerProps> = ({
           Your browser does not support the video tag.
         </video>
       ) : (
-        <Image
-          src={src}
-          alt={alt}
-          className="w-full h-full object-cover object-center"
-          width={1000}
-          height={1000}
-        />
+        <>
+          {/* Desktop Image */}
+          <Image
+            src={src}
+            alt={alt}
+            className="w-full h-full object-cover object-center hidden md:block"
+            width={1000}
+            height={1000}
+          />
+          {/* Mobile Image - uses msrc if provided, otherwise falls back to src */}
+          <Image
+            src={msrc || src}
+            alt={alt}
+            className="w-full h-full object-cover object-center block md:hidden"
+            width={1000}
+            height={1000}
+          />
+        </>
       )}
       <div
         className="absolute inset-0 pointer-events-none"
