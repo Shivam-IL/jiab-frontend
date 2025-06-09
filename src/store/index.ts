@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from './auth/auth.slice';
 import profileReducer from './profile/profile.slice';
+import cmsReducer from './cms/cms.slice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    cms: cmsReducer,
   },
 });
 

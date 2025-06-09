@@ -6,6 +6,14 @@ export const API_CONFIG = {
   },
 };
 
+export const CMS_API_CONFIG = {
+  baseURL: process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "http://13.200.122.221:8121/api/",
+  timeout: 10000,
+  headers: {
+    "Content-Type": "application/json",
+  },
+};
+
 export const LOCAL_STORAGE_KEYS = {
   ACCESS_TOKEN: "accessToken",
   REFRESH_TOKEN: "refreshToken",
@@ -54,5 +62,8 @@ export const API_ROUTES = {
   JOKES: {
     GET_JOKES: "/joke/jokes",
     GET_SURPRISE_ME: "/joke/surprise-me",
+  },
+  CMS: {
+    GET_HOME_PAGE_CONTENT: "/content?locale=en",
   },
 };

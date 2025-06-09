@@ -34,13 +34,27 @@ import { updateSurpriseMe } from '@/store/auth/auth.slice'
 import useAppDispatch from '@/hooks/useDispatch'
 
 export default function HomePageClient() {
-  const { otpSent, otpVerified, loginModal, signupDone, crossModal } =
+  const { otpSent, otpVerified, loginModal, crossModal } =
     useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch()
+  const { homePageContent } = useAppSelector((state) => state.cms);
   const width = useWindowWidth();
 
   // Tour Guide State - REMOVED unused variables
   const [isClient, setIsClient] = useState(false);
+
+  const [mounted, setMounted] = useState(false);
+
+  // Use effect to handle client-side hydration
+  useEffect(() => {
+    setMounted(true);
+    setIsClient(true);
+  }, []);
+
+  // Provide fallback values to prevent hydration mismatches
+  const scrollAndLolHeading = mounted
+    ? homePageContent?.scroll_and_lol_heading ?? "Scroll & LOL"
+    : "Scroll & LOL";
 
   // Path to the thumbnail image - you'll need to ensure this exists in your project
   const thumbnailPath = "/videos/thumbnail.jpg";
@@ -297,6 +311,7 @@ export default function HomePageClient() {
     setIsClient(true);
   }, []);
 
+
   return (
     <div className="bg-lightGray min-h-screen">
       <div className="container mx-auto md:pt-24 pt-20">
@@ -320,7 +335,7 @@ export default function HomePageClient() {
         />
         {/* Video Scroll */}
         <Header
-          title="SCROLL & LOL"
+          title={scrollAndLolHeading}
           className="md:mt-[40px] md:mb-[24px] mt-[20px] mb-[16px]"
           viewAllUrl="/scroll-and-lol"
         />

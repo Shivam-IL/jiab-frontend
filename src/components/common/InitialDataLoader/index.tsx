@@ -1,44 +1,47 @@
-import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
-import { useMutateRefreshToken } from '@/api/hooks/LoginHooks'
+import { LOCAL_STORAGE_KEYS } from "@/api/client/config";
+import { useMutateRefreshToken } from "@/api/hooks/LoginHooks";
 import {
   useGetUserAddresses,
-  useGetUserProfileDetails
-} from '@/api/hooks/ProfileHooks'
-import { MainService } from '@/api/services/MainService'
+  useGetUserProfileDetails,
+} from "@/api/hooks/ProfileHooks";
+import { MainService } from "@/api/services/MainService";
 import { REDUX_UPDATION_TYPES } from '@/constants'
-import useAppDispatch from '@/hooks/useDispatch'
-import useAppSelector from '@/hooks/useSelector'
-import { updateIsAuthenticated, updateToken } from '@/store/auth/auth.slice'
+import useAppDispatch from "@/hooks/useDispatch";
+import useAppSelector from "@/hooks/useSelector";
+import { updateIsAuthenticated, updateToken } from "@/store/auth/auth.slice";
 import {
   updateAddresses,
   updateBalance,
   updateBreakTheIceModal,
   updateRank,
-  updateUser
-} from '@/store/profile/profile.slice'
+  updateUser,
+} from "@/store/profile/profile.slice";
 import {
   getLocalStorageItem,
   removeLocalStorageItem,
-  setLocalStorageItem
-} from '@/utils'
-import { ReactNode, useEffect, useState } from 'react'
+  setLocalStorageItem,
+} from "@/utils";
+import { ReactNode, useEffect, useState } from "react";
 
-const mainServiceInstance = MainService.getInstance()
+const mainServiceInstance = MainService.getInstance();
 
-const InitialDataLoader = ({ children }: { children: ReactNode }) => {
-  const dispatch = useAppDispatch()
-  const [tokenUpdated, setTokenUpdated] = useState(false)
-  const { data: userProfileData } = useGetUserProfileDetails()
-  const { data: userAddressesData } = useGetUserAddresses()
+const AuthWrapper = ({ children }: { children: ReactNode }) => {
+  const dispatch = useAppDispatch();
+  const { isAuthenticated, isFirstLogin } = useAppSelector(
+    (state) => state.auth
+  );
+  const [tokenUpdated, setTokenUpdated] = useState(false);
+  const { data: userProfileData } = useGetUserProfileDetails();
+  const { data: userBalanceAndRankData } = useGetUserAddresses();
 
   const {
     mutate: mutateRefreshToken,
     data: refreshTokenData,
-    isPending: refreshTokenLoading
-  } = useMutateRefreshToken()
+    isPending: refreshTokenLoading,
+  } = useMutateRefreshToken();
 
   useEffect(() => {
-    const refreshToken = getLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN)
+    const refreshToken = getLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN);
     if (refreshToken) {
       mutateRefreshToken({ refresh_token: refreshToken })
       const userDetails = getLocalStorageItem(LOCAL_STORAGE_KEYS.USER_DETAILS)
@@ -80,9 +83,9 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (tokenUpdated) {
       setTimeout(() => {
-        dispatch(updateIsAuthenticated({ isAuthenticated: true }))
-        setTokenUpdated(false)
-      }, 1000)
+        dispatch(updateIsAuthenticated({ isAuthenticated: true }));
+        setTokenUpdated(false);
+      }, 1000);
     }
   }, [tokenUpdated])
 
