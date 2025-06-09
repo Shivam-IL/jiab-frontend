@@ -28,11 +28,11 @@ const WalletCard = ({
   children,
   imageUrl = "/assets/images/reward-1.png",
   imageAlt = "reward-1",
-  textContent = "Reward worth Rs.25,000",
+  textContent = "",
   imageClassName = "object-cover rounded-[10.68px]",
   textClassName = "md:text-[24px] text-[12px] font-bold",
   containerClassName = "bg-white rounded-[10.68px] p-4 md:py-[25.63px] py-[8px] md:px-[26px] px-[8px] flex flex-col md:gap-[25.63px] gap-[8px]",
-  showInfoIcon = true,
+  showInfoIcon = false,
   tooltipText = "Top 5 users on the Leaderboard win this reward. Prizes announced daily at 8 P.M.",
 }: WalletCardProps) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);

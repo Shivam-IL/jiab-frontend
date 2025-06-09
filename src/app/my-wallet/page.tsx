@@ -6,13 +6,15 @@ import Banner from "@/components/common/Banner/Banner";
 import AktivGroteskText from "@/components/common/AktivGroteskText";
 import Image from "next/image";
 import Link from "next/link";
+import Header from "@/components/common/Header/Header";
+import WalletCard from "@/components/WalletCard";
 
 const ComicCoinsPage = () => {
   return (
     <>
       <div className="bg-white -mt-5 pt-5">
         {/* Top Section */}
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 container mx-auto mt-20">
+        <div className="flex justify-between items-end h-full container mx-auto mt-20">
           {/* Comic Coins */}
           <div className="mx-4 md:mx-0">
             <AktivGroteskText
@@ -20,10 +22,10 @@ const ComicCoinsPage = () => {
               fontSize="text-[14px] md:text-[30px]"
               fontWeight="font-[700]"
             />
-            <div className="flex items-center gap-2 md:gap-3 mt-1 md:mt-[-px]">
+            <div className="flex items-center gap-2 md:gap-3 mt-1">
               <AktivGroteskText
                 text="0"
-                fontSize="text-[44px] md:text-[64px]"
+                fontSize="text-[28px] md:text-[64px]"
                 fontWeight="font-[700]"
               />
               <Image
@@ -31,9 +33,17 @@ const ComicCoinsPage = () => {
                 alt="coin"
                 width={50}
                 height={50}
-                className="w-[20px] md:w-[50px] h-auto"
+                className="w-[21px] md:w-[50px] h-[21px] md:h-[50px]"
               />
             </div>
+          </div>
+          <div className="md:mt-0 mt-[16px] md:mr-0 mr-[16px] md:mb-[30px] mb-[12px]">
+            <GreenCTA
+              text="How To Earn?"
+              onClick={() => {}}
+              paddingClass="py-[8px] px-[20px] md:py-[16px] md:px-[50px]"
+              fontSize="text-[12px] md:text-[28px]"
+            />
           </div>
         </div>
       </div>
@@ -42,30 +52,35 @@ const ComicCoinsPage = () => {
         {/* <AnnouncingWinnerTimer /> */}
 
         {/* Reward Pool */}
-        {/* <Header title="My Wins" className="md:mt-8 mt-0 mx-0" /> */}
-        {/* <div className="flex justify-center mt-4 md:w-[507px] w-full mx-auto">
+        <Header title="My Wins" className="md:mt-8 mt-0 mx-[-19px] md:mx-0" />
+        <div className="mt-4 w-full">
           <WalletCard
             imageUrl="/other-svgs/my-win.svg"
-            imageAlt={reward.imageAlt}
+            imageClassName="w-full h-auto"
+            imageAlt="my-win"
+            containerClassName="bg-white rounded-[10.68px] px-[13px] py-[14.57px] md:pt-[16px] md:pb-[35px] md:px-[33.5px] flex flex-col md:gap-[18.5px] gap-[8px] w-full"
           >
-            <div className="flex flex-col items-center gap-2 md:gap-3">
-              <AktivGroteskText
-                text="The Ultimate Retreat"
-                fontSize="text-[14px] md:text-[24px]"
-                fontWeight="font-[700]"
-              />
-              <p className="text-[#313131] md:text-lg text-[12px] text-center">
-                Participate & win* MakeMyTrip voucher worth Rs.25,000 ✈️
-              </p>
+            <div className="flex flex-col items-center gap-[24px] md:gap-[36px]">
+              <div className="flex flex-col items-center gap-[0px] md:gap-[20px]">
+                <AktivGroteskText
+                  text="The Ultimate Retreat"
+                  fontSize="text-[20px] md:text-[28px]"
+                  fontWeight="font-[700]"
+                />
+                <p className="text-[#313131] md:text-[20px] text-[16px] text-center max-w-[291px]">
+                  Participate & win* MakeMyTrip voucher worth Rs.25,000 ✈️
+                </p>
+              </div>
               <GreenCTA
                 text="Collect More"
                 onClick={() => {}}
-                paddingClass="py-[6px] px-[24px] md:py-[14px] md:px-[60px]"
+                paddingClass="py-[12px] px-[36px] md:py-[20px] md:px-[44px]"
                 fontSize="text-[12px] md:text-[20px]"
+                className="max-w-[210px]"
               />
             </div>
           </WalletCard>
-        </div> */}
+        </div>
 
         {/* PhonePe Cashback */}
         {/* <Header title="PhonePe Cashback" className="md:mt-[40px] mt-[20px]" />
@@ -99,7 +114,7 @@ const ComicCoinsPage = () => {
 
         {/* Previous Winners Banner */}
         {/* */}
-        <div className="mt-[40px] bg-[url('/other-svgs/banner-explore.svg')] bg-cover bg-center md:rounded-[20px] rounded-[10px] flex justify-between items-center p-4 md:p-6 ">
+        <div className="md:mt-[40px] mt-[16px] bg-[url('/other-svgs/banner-explore.svg')] bg-cover bg-center md:rounded-[20px] rounded-[10px] flex justify-between items-center p-4 md:p-6 ">
           <AktivGroteskText
             text="PREVIOUS WINNERS"
             fontSize="text-[16px] md:text-[30px]"
