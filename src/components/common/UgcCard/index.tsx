@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES } from '@/constants'
 import AktivGroteskText from '../AktivGroteskText'
 import SurpriseMeCTA from '@/components/SurpriseMeCTA'
 import GreenCTA from '@/components/GreenCTA'
-import { MadeYouLaughExitPopup } from '@/components/ExitPopUps'
+
 
 const UgcCard = () => {
   return (

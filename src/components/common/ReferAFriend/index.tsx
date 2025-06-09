@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation'
 import CustomPopupWrapper from '../CustomPopupWrapper'
 
 const ReferAFriend = () => {
-  const data: any[] = [1]
+  const data: number[] = [1]
   const [open, setOpen] = useState<boolean>(false)
   const [open2, setOpen2] = useState<boolean>(false)
   const [open3, setOpen3] = useState<boolean>(false)

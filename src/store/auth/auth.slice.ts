@@ -1,5 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export interface IAddressData {
+  address_line_1: string;
+  address_line_2: string;
+  nearest_landmark: string;
+  alternate_phone_number: string;
+  pan_card_number: string;
+  pincode: string;
+  state: string;
+  city: string;
+  default: boolean;
+}
+
 export interface AuthState {
   user: null;
   phoneNumber: string;
@@ -11,7 +23,7 @@ export interface AuthState {
   otpFilled: boolean;
   signupDone: boolean;
   crossModal: boolean;
-  addressData: any[];
+  addressData: IAddressData[];
 }
 
 const initialState: AuthState = {

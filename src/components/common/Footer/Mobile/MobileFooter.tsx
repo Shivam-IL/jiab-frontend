@@ -6,13 +6,8 @@ import { BoxIds } from "../../../common/CircularBoxesModal";
 
 const MobileFooter = () => {
   const [currentPath, setCurrentPath] = useState("/");
-  const [coordinates, setCoordinates] = useState({
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-  });
 
+  
   useEffect(() => {
     // Set initial path
     if (typeof window !== "undefined") {

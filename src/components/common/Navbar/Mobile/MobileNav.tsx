@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { ILogoAndProfileImageProps } from '@/interfaces'
 import Image from 'next/image'
 import { Bell, ChevronDown } from 'lucide-react'
@@ -18,9 +18,11 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   const [selectedLang, setSelectedLang] = useState('en')
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [hideNavbar, setHideNavbar] = useState<boolean>(false)
-  const [isVisible, setIsVisible] = useState(true)
+  const isVisible = true
   const langDropdownRef = useRef<HTMLDivElement>(null)
   const isLoggedIn = true // This should come from your auth state management
+
+  console.log(profileImage)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -80,7 +82,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
 
   const pathName = usePathname()
 
-  const handleHideNavbarForMobile = () => {
+  const handleHideNavbarForMobile = useCallback(() => {
     for (const route of ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE) {
       if (pathName === route) {
         setHideNavbar(true)
@@ -92,11 +94,11 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
         setHideNavbar(false)
       }
     }
-  }
+  }, [pathName,setHideNavbar])
 
   useEffect(() => {
     handleHideNavbarForMobile()
-  }, [pathName])
+  }, [pathName,handleHideNavbarForMobile])
 
 
   return (

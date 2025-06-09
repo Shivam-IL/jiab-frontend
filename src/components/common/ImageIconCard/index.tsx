@@ -16,7 +16,6 @@ const ImageIconCard: React.FC<IImageIconCard> = ({
   fontSize = 'text-[16px]',
   fontWeight = 'font-[500]',
   boxWidth = 'min-w-full',
-  imageUrl = '',
   imageClassName = 'w-[56px] h-[34px]',
   textColor = 'text-[#121212]'
 }) => {
@@ -32,7 +31,8 @@ const ImageIconCard: React.FC<IImageIconCard> = ({
           name={icon}
         />
       )}
-      {image && (
+      {image!=='' && (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           className={imageClassName}
           src={image ? generateImageurl(image) : ''}

@@ -9,18 +9,8 @@ import GreenCTA from "@/components/GreenCTA";
 import { Checkbox } from "@/components/ui/checkbox";
 import useAppDispatch from "@/hooks/useDispatch";
 import { updateAddressData } from "@/store/auth/auth.slice";
+import { IAddressData } from "@/store/auth/auth.slice";
 
-interface IAddressData {
-  address_line_1: string;
-  address_line_2: string;
-  nearest_landmark: string;
-  alternate_phone_number: string;
-  pan_card_number: string;
-  pincode: string;
-  state: string;
-  city: string;
-  default: boolean;
-}
 
 const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
   const [data, setData] = useState<IAddressData>({
@@ -37,7 +27,7 @@ const AddressModal: React.FC<IAddressModal> = ({ open, setOpen }) => {
 
   const dispatch = useAppDispatch();
 
-  const handleChange = (key: string, value: any) => {
+  const handleChange = (key: string, value: string | boolean) => {
     setData({ ...data, [key]: value });
   };
 

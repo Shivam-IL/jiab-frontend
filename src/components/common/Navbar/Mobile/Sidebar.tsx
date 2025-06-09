@@ -2,18 +2,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  X,
-  Home,
-  Trophy,
-  Search,
   ChevronRight,
   ChevronDown,
-  MessageCircle,
-  Phone,
-  HelpCircle,
-  FileText,
-  Shield,
-  LogOut,
 } from "lucide-react";
 import Image from "next/image";
 import useAppDispatch from "@/hooks/useDispatch";
@@ -37,6 +27,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
   const [isExploreOpen, setIsExploreOpen] = useState(true);
   const dispatch = useAppDispatch();
 
+
+  console.log(isAnimating,spriteLogo)
   const isLoggedIn = true;
   const coinImage = "/assets/images/coin-final-sidebar.svg";
   const mainMenuItems = [

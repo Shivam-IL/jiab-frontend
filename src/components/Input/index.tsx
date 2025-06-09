@@ -124,7 +124,9 @@ const Input: React.FC<IInput> = ({
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              !readonly && setIsOpen(!isOpen);
+              if (!readonly) {
+                setIsOpen(!isOpen);
+              }
             }
           }}
         >

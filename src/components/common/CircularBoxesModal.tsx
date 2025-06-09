@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import AktivGroteskText from './AktivGroteskText'
 import SvgIcons from './SvgIcons'
 import { ICONS_NAMES } from '@/constants'
-import Image from 'next/image'
-import comicCoin from '../../../public/other-svgs/comic-coin-footer.svg'
 import { aktivGrotesk } from '@/app/layout'
 
 // Export box IDs for reuse in other components
@@ -69,7 +66,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
         onClose()
       }
     }
-  }, [])
+  }, [onClose])
 
   // Save to local storage when modal is closed with browser check
   const handleClose = () => {
@@ -276,7 +273,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
                   Pick your Mood
                 </div>
                 <div className={`text-start relative w-[70%] text-[12px] ${aktivGrotesk.className} font-[400]`}>
-                  Tell us what's annoying you today! 😎🌡️
+                  Tell us what&apos;s annoying you today! 😎🌡️
                 </div>
               </div>
             </div>
@@ -405,7 +402,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
           >
             <div className='flex relative w-full text-center h-full flex-col justify-center items-center gap-[9px]'>
               <div className='w-[40%] absolute top-[25px] left-[25px] text-[12px]'>
-                Let's get to know you better!
+                Let&apos;s get to know you better!
               </div>
               <div className='w-[50px] relative top-[15px] h-[50px] bg-white rounded-full flex flex-col items-center justify-center'>
                 <SvgIcons

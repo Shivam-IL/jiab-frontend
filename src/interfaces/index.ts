@@ -90,7 +90,6 @@ export interface IImageIconCard {
   fontSize?: string;
   fontWeight?: string;
   boxWidth?: string;
-  imageUrl?: string;
   imageClassName?: string;
   textColor?: string;
 }
@@ -175,7 +174,7 @@ export interface IArtistCard {
 
 export interface ILoginSignupWrapper {
   children: React.ReactNode;
-  logo?: Boolean;
+  logo?: boolean;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

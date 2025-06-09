@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogPortal,
-  DialogOverlay,
 } from "@/components/ui/dialog";
 import SvgIcons from "../SvgIcons";
 import { ICONS_NAMES } from "@/constants";
