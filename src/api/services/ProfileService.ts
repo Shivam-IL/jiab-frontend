@@ -70,7 +70,7 @@ export class ProfileService extends MainService {
       });
       const data = response.data;
       if (data?.success) {
-        return SuccessResponse(data);
+        return SuccessResponse(data?.data);
       }
       return ErrorResponse(data?.message || "Invalid User Id");
     } catch (error) {
@@ -89,7 +89,7 @@ export class ProfileService extends MainService {
       );
       const data = response.data;
       if (data?.success) {
-        return SuccessResponse(data);
+        return SuccessResponse(data?.data);
       }
       return ErrorResponse(data?.message || "Invalid Address Data");
     } catch (error) {
@@ -99,7 +99,7 @@ export class ProfileService extends MainService {
 
   public async editAddress(addressData: IAddress) {
     try {
-      const endpoint = `${API_ROUTES.USER.ADDRESS.EDIT}/${addressData.address_id}`;
+      const endpoint = `${API_ROUTES.USER.ADDRESS.EDIT}${addressData.address_id}`;
       const response = await apiClient.put(
         endpoint,
         { ...addressData },
@@ -109,7 +109,7 @@ export class ProfileService extends MainService {
       );
       const data = response.data;
       if (data?.success) {
-        return SuccessResponse(data);
+        return SuccessResponse(data?.data);
       }
       return ErrorResponse(data?.message || "Invalid Address Data");
     } catch (error) {
@@ -119,13 +119,13 @@ export class ProfileService extends MainService {
 
   public async deleteAddress({ address_id }: TAddessId) {
     try {
-      const endpoint = `${API_ROUTES.USER.ADDRESS.DELETE}/${address_id}`;
+      const endpoint = `${API_ROUTES.USER.ADDRESS.DELETE}${address_id}`;
       const response = await apiClient.delete(endpoint, {
         headers: this.getAuthHeaders(),
       });
       const data = response.data;
       if (data?.success) {
-        return SuccessResponse(data);
+        return SuccessResponse(data?.data);
       }
       return ErrorResponse(data?.message || "Invalid Address Data");
     } catch (error) {

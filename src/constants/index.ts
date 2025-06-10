@@ -133,8 +133,6 @@ export const LANGUAGE_OPTIONS = [
   },
 ];
 
-
-
 export const REFER_NOW_MODAL_DATA = {
   DEFAULT: {
     title: "Bro-code we follow!",
@@ -154,11 +152,11 @@ export const REFER_NOW_MODAL_DATA = {
     ctaText: "Refer Now",
   },
 };
-export const DAILY_WINNERS = 'Daily Winners'
+export const DAILY_WINNERS = "Daily Winners";
 
 export const IMAGES = {
   COUPON: "coupon.png",
-}
+};
 
 export const ICONS_NAMES = {
   SPRITE_BOTTLE: "sprite-bottle",
@@ -250,8 +248,8 @@ export const ICONS_NAMES = {
   SELF: "category-self",
   TRAFFIC: "category-traffic",
   TRAVEL: "category-travel",
-  SURPRISE:"surprise",
-  EXTREME_LAUGH:"exteme-smiley",
+  SURPRISE: "surprise",
+  EXTREME_LAUGH: "exteme-smiley",
   LOGOUT_ICON: "logout-icon-desktop",
   PROFILE_ICON: "profile-icon-desktop",
   WALLET_ICON: "wallet-icon-desktop",
@@ -265,14 +263,14 @@ export const FORMAT_OPTIONS = [
     label: "Image",
     iconClassName: "w-[31px] h-[39px]",
     acceptedFormats: ".jpg,.jpeg,.png",
-    accptedFormatText:'Accepted formats .jpg, .jpeg & .png'
+    accptedFormatText: "Accepted formats .jpg, .jpeg & .png",
   },
   {
     id: "2",
     icon: ICONS_NAMES.TEXT,
     iconClassName: "w-[39px] h-[40px]",
     label: "Text",
-    accptedFormatText:'',
+    accptedFormatText: "",
     acceptedFormats: ".txt",
   },
   {
@@ -280,14 +278,14 @@ export const FORMAT_OPTIONS = [
     icon: ICONS_NAMES.HEADPHONE,
     iconClassName: "w-[41px] h-[40px]",
     label: "Audio",
-    accptedFormatText:'Accepted formats .MP3, .WAV',
+    accptedFormatText: "Accepted formats .MP3, .WAV",
     acceptedFormats: ".mp3,.wav",
   },
   {
     id: "4",
     icon: ICONS_NAMES.VIDEO,
     iconClassName: "w-[49px] h-[39px]",
-    accptedFormatText:'Accepted formats .MP4',
+    accptedFormatText: "Accepted formats .MP4",
     label: "Video",
     acceptedFormats: ".mp4",
   },
@@ -363,17 +361,17 @@ export const CATEGORIES_CAROUSEL_DATA = [
 
 export const INVITE_CODE_POPUP_DATA = {
   INVITE_CODE: {
-  TITLE: "Have an Invite Code?",
+    TITLE: "Have an Invite Code?",
     SUB_TITLE: "Enter & collect Comic Coins",
     CTA_TEXT: "Submit",
   },
   CHEAT_CODE_NOT_ALLOWED: {
     TITLE: "Cheat codes not allowed! 🚫",
-    SUB_TITLE: "You've entered a used referral code. Please enter a valid code to proceed!",
+    SUB_TITLE:
+      "You've entered a used referral code. Please enter a valid code to proceed!",
     CTA_TEXT: "Submit",
   },
 };
-
 
 export const MOBILE_TEMP_NAVBAR_DATA = {
   EDIT_PROFILE: {
@@ -515,27 +513,29 @@ export const REFFERAL_STATUS_POPUP_DATA = {
   EASY: {
     ICON: ICONS_NAMES.CHECK,
     TITLE: "Easy , Peasy , Lemon Squeezy!",
-    SUB_TITLE: "You've successfully referred a friend. Your points will be credited when they sign up using your unique invite code.",
+    SUB_TITLE:
+      "You've successfully referred a friend. Your points will be credited when they sign up using your unique invite code.",
     SECOND_TEXT: "“S6876”",
-    THIRD_TEXT: "Your points will be credited on successful sign up using the invite code",
+    THIRD_TEXT:
+      "Your points will be credited on successful sign up using the invite code",
   },
   PAST_ON_US: {
     ICON: ICONS_NAMES.CALENDAR_NOTIFICATION,
     TITLE: "Trying to get one past us?",
-    SUB_TITLE: "You've already referred this person. 👐 Try sending them a reminder, instead!",
+    SUB_TITLE:
+      "You've already referred this person. 👐 Try sending them a reminder, instead!",
     SINGLE_BUTTON: true,
-    SINGLE_BUTTON_TEXT: "Refer Another",      
+    SINGLE_BUTTON_TEXT: "Refer Another",
   },
   TRUE_COLORS: {
     ICON: ICONS_NAMES.SMILE,
     TITLE: "Your friend has shown their true colors...",
-    SUB_TITLE: "By joining us! Your gang is growing, and we've added 5 points. Keep'em coming, refer another!",
+    SUB_TITLE:
+      "By joining us! Your gang is growing, and we've added 5 points. Keep'em coming, refer another!",
     SINGLE_BUTTON: true,
     SINGLE_BUTTON_TEXT: "Got it",
   },
 };
-
-
 
 export const ARE_YOU_SURE_YOU_WANT_TO_EXIT = "Are you sure you want to exit?";
 
@@ -563,7 +563,7 @@ export const USER_INFO_CARD_DATA = [
   },
   {
     id: 2,
-    type:'email',
+    type: "email",
     iconName: ICONS_NAMES.MAIL,
     text: "kartikeya@gmail.com",
   },
@@ -581,15 +581,29 @@ export const USER_INFO_CARD_DATA = [
   },
 ];
 
+export const PROTECTED_ROUTES = [
+  "/my-profile/",
+  "/send-reminder",
+  "/leaderboard",
+  "/pick-mood",
+  "/hall-of-lame",
+  "/scroll-and-lol",
+];
+
 export const LOCAL_IMAGES = {
   SPRITE_GOLD: "sprite-gold.png",
-  PROFILE_BG:"profile-bg.png",
-  PROFILE_MD_BG:"profile-md-bg.png"
+  PROFILE_BG: "profile-bg.png",
+  PROFILE_MD_BG: "profile-md-bg.png",
 };
 
 export const TOKEN_TYPE = {
   BEARER: "Bearer",
   TEMPORARY: "temp",
+};
+
+export const REDUX_UPDATION_TYPES = {
+  SINGLE_ADDED: "single_added",
+  MULTIPLE_ADDED: "multiple_added",
 };
 
 export const IMAGES_LINK = {
@@ -714,7 +728,6 @@ export const PROFILE_QUESTIONS = [
     noofQuestion: 0,
   },
 ];
-
 
 export const ANNOUNCING_WINNER_TIMER_TEXT = "Announcing the winners in...";
 export const HELP_US_TO_KNOW_YOUR_BETTER = "Help us get to know you better!";

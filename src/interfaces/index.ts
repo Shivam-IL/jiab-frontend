@@ -1,3 +1,5 @@
+import { AddressModalType } from "@/types";
+
 export interface IQueryClientAndReduxWrapper {
   children: React.ReactNode;
 }
@@ -109,6 +111,8 @@ export interface IUserInfoCard {
 export interface IAddressModal {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  type:AddressModalType,
+  addressId?:number | null
 }
 
 export interface IUserGeneratedJokeCard {
@@ -138,6 +142,7 @@ export interface IReferNowModal {
   ctaText: string;
   phoneNumber: string;
   onChange: (key: string, value: string) => void;
+  onSubmit: () => void;
 }
 
 export interface IInviteCodePopup {
@@ -273,6 +278,25 @@ export interface IUgcComponent {
   isUnmounting?: boolean;
 }
 
+export interface IAddressData {
+  address_line_1: string;
+  address_line_2: string;
+  nearest_landmark: string;
+  alternate_phone_number: string;
+  pincode: string;
+  state: string;
+  city: string;
+  default: boolean;
+}
+
+export interface IAddressError {
+  address_line_1: string;
+  nearest_landmark: string;
+  alternate_phone_number: string;
+  pincode: string;
+  state: string;
+  city: string;
+}
 export interface IRewardPool {
   imageUrl: string;
   imageAlt: string;

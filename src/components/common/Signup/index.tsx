@@ -23,6 +23,7 @@ import { MainService } from '@/api/services/MainService'
 import { useMutateSignUp } from '@/api/hooks/LoginHooks'
 import { setLocalStorageItem } from '@/utils'
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
+import useAppSelector from '@/hooks/useSelector'
 
 interface IUserData {
   profileImage: string
