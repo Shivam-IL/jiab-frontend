@@ -5,7 +5,7 @@ const ContentButton: React.FC<IContentButton> = ({ text, onClick, icon, classNam
   return (
     <button
       onClick={onClick}
-      className={`bg-green text-white md:text-[32px] text-[12px] rounded-full flex items-center md:gap-[16px] gap-[8.06px] justify-center font-medium ${className}`}
+      className={`md:text-[32px] text-[12px] rounded-full flex items-center md:gap-[16px] gap-[8.06px] justify-center md:font-bold font-medium ${className}`}
     >
       {icon && (
         <Image

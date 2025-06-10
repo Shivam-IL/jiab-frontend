@@ -46,6 +46,7 @@ export interface IGreenCTA {
   fontWeight?: string;
   className?: string;
   disabled?: boolean;
+  isCoinIcon?: boolean;
   children?:React.ReactNode;
   childrenPosition?:string;
 }
