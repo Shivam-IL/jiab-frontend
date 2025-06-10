@@ -10,7 +10,6 @@ const GreenCTA: React.FC<IGreenCTA> = ({
   isCoinIcon = false,
   paddingClass = 'px-[24px] py-[12px] md:py-[14px]',
   fontSize = 'text-[16px] md:text-[20px]',
-  fontWeight = 'md:font-[500] font-[700]',
   className = 'w-full',
   disabled = false,
   children,
