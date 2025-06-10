@@ -11,7 +11,7 @@ import { CircularProgress } from '../common/CircularProgress'
 import AktivGroteskText from '../common/AktivGroteskText'
 import UserInfoCard from '../common/UserInfoCard'
 import { useRouter } from 'next/navigation'
-import { generateImageurl } from '@/utils'
+import { dateConvert, generateImageurl } from '@/utils'
 import useWindowWidth from '@/hooks/useWindowWidth'
 import useAppSelector from '@/hooks/useSelector'
 import { IUserInfoCard } from '@/interfaces'
@@ -52,7 +52,10 @@ const ProfileCard = () => {
         if (value !== undefined && value !== null) {
           return {
             ...item,
-            text: String(value),
+            text:
+              item.type === 'dob'
+                ? dateConvert(value as string)
+                : String(value),
             visible: true
           }
         }

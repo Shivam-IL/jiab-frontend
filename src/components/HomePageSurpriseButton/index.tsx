@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import SvgIcons from '../common/SvgIcons'
-import { ICONS_NAMES } from '@/constants'
+import { ICONS_NAMES, LOCAL_IMAGES } from '@/constants'
 import AktivGroteskText from '../common/AktivGroteskText'
 import SurpriseMeModal from '../common/SurpriseMeModal'
+import surpriseMeIcon from '@/assets/images/surprise-me-icon.png'
+import { generateImageurl } from '@/utils'
 
 const HomePageSurpriseButton = () => {
   const [surpriseMeModal, setSurpriseMeModal] = useState<boolean>(false)
@@ -14,10 +16,15 @@ const HomePageSurpriseButton = () => {
     py-[8px] pl-[5px] pr-[8px] md:px-[24px] md:py-[15px] flex items-center gap-[5px] bg-yellow'
     >
       <div className='relative  min-w-[25px] min-h-[25px] md:min-w-[42px]  md:min-h-[42px]  rounded-full bg-white flex items-center justify-center'>
-        <SvgIcons
+        <img
+          className='md:w-[33px] md:h-[33px] w-[20px] h-[20px]'
+          src={generateImageurl(LOCAL_IMAGES.SURPRISE_ME)}
+          alt='surprise me'
+        />
+        {/* <SvgIcons
           name={ICONS_NAMES.SURPRISE}
           className='md:w-[33px] md:h-[33px] w-[20px] h-[20px]'
-        />
+        /> */}
       </div>
       <AktivGroteskText
         text='Surprise Me'

@@ -19,8 +19,7 @@ const useGetUserProfileDetails = () => {
     queryKey: keys.profile.userProfileDetails(),
     queryFn: () => profileService.getUserProfileDetails(),
     enabled: isAuthenticated && token ? true : false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 60 * 60,
   });
 };
 
@@ -72,6 +71,13 @@ const useGetUserBalanceAndRank = () => {
   });
 };
 
+const useGetUserQuestions = () => {
+  return useQuery({
+    queryKey: keys.profile.getUserQuestions(),
+    queryFn: () => profileService.getUserQuestions(),
+  });
+};
+
 const useSubmitUserQuestions = () => {
   return useMutation({
     mutationFn: (questions: TSubmitQuestions) =>
@@ -87,5 +93,6 @@ export {
   useEditAddress,
   useDeleteAddress,
   useGetUserBalanceAndRank,
+  useGetUserQuestions,
   useSubmitUserQuestions,
 };

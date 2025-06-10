@@ -6,18 +6,19 @@ import { Separator } from '@/components/ui/separator'
 import GreenCTA from '@/components/GreenCTA'
 import { useRouter } from 'next/navigation'
 import useAppSelector from '@/hooks/useSelector'
+import SvgIcons from '../SvgIcons'
 
 const UserComicsCoinsAndRankCard = () => {
   const router = useRouter()
   const { current_balance, rank } = useAppSelector(state => state.profile)
   return (
     <div className='flex gap-2 md:justify-between py-3 md:pt-[24px]'>
-      <div className='relative flex md:gap-[50px] md:w-auto w-[60%]'>
-        <div className='relative w-[50%] md:w-auto flex flex-col items-center justify-between gap-[6px] md:gap-[8px]'>
+      <div className='relative flex md:gap-[50px] md:w-[75%] w-[65%]'>
+        <div className='relative w-[48%] md:w-[35%] flex flex-col items-center justify-between gap-[6px] md:gap-[8px]'>
           <AktivGroteskText
             text={current_balance?.toString() || '0'}
             className='text-black'
-            fontSize='text-[16px] md:text-[24px]'
+            fontSize='text-[16px] md:text-[32px]'
             fontWeight='font-[700]'
           />
           <div className='flex justify-center'>
@@ -26,18 +27,18 @@ const UserComicsCoinsAndRankCard = () => {
               imageClassName='w-[12px] h-[12px] object-cover md:w-[28px] md:h-[28px]'
               image={LOCAL_IMAGES.SPRITE_GOLD}
               text='Comic Coins'
-              fontSize='text-[12px] md:text-[20px]'
-              fontWeight='font-[400]'
+              fontSize='text-[12px] md:text-[28px]'
+              fontWeight='font-[700]'
               textColor='text-black'
             />
           </div>
         </div>
         <Separator className='w-[1px] md:w-[2px] bg-[#EBEBEB] h-full mx-0 px-0' />
-        <div className='relative w-[50%] md:w-auto flex flex-col items-center justify-between gap-[6px] md:gap-[8px]'>
+        <div className='relative w-[48%] md:w-[35%]  flex flex-col items-center justify-between gap-[6px] md:gap-[8px]'>
           <AktivGroteskText
             text={rank?.toString() || '0'}
             className='text-black'
-            fontSize='text-[16px] md:text-[24px]'
+            fontSize='text-[16px] md:text-[32px]'
             fontWeight='font-[700]'
           />
           <div className='flex justify-center'>
@@ -45,27 +46,30 @@ const UserComicsCoinsAndRankCard = () => {
               image=''
               itemsGapClass='gap-[5px] md:gap-[8px]'
               icon={ICONS_NAMES.RANK}
-              iconClassName='w-[9px] h-[12px] md:w-[18px] md:h-[24px]'
+              iconClassName='w-[9px] h-[12px] md:w-[18px] md:h-[28px]'
               text='Rank'
               fontSize='text-[12px] md:text-[20px]'
-              fontWeight='font-[400]'
+              fontWeight='font-[700]'
               textColor='text-black'
             />
           </div>
         </div>
         <Separator className='w-[1px] md:w-[2px]  bg-[#EBEBEB] h-full mx-0 px-0' />
       </div>
-      <div className='relative w-[40%] flex justify-end items-center'>
+      <div className='relative md:w-[25%] w-[35%] flex justify-end items-center'>
         <GreenCTA
           className=''
           fontSize='text-[12px] md:text-[20px]'
           fontWeight='font-[700] md:font-[600]'
-          paddingClass='py-[5px] md:py-[20px] px-[16px] md:px-[60px]'
+          paddingClass='py-[8px] md:py-[20px] px-[17px] md:px-[60px] flex items-center justify-center gap-[4px] md:gap-[12px]'
           text='Leaderboard'
           onClick={() => {
             router.push('/leaderboard')
           }}
-        />
+          childrenPosition='left'
+        >
+          <SvgIcons name={ICONS_NAMES.STAIRS} className='w-[13px] h-[12px] md:w-[25px] self-center md:h-[24px] text-white' />
+        </GreenCTA>
       </div>
     </div>
   )

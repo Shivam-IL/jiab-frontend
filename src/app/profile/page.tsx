@@ -20,16 +20,9 @@ const ProfilePage = () => {
   const router = useRouter()
   const { user } = useAppSelector(state => state.profile)
 
-  useEffect(() => {
-    if (!user?.id) {
-      router.back()
-    }
-  }, [user])
-
   return (
     <ScreenWrapper>
       <div className='flex flex-col gap-2'>
-        {/* <AnnouncingWinnerTimer /> */}
         <ProfileCard />
         <UserComicsCoinsAndRankCard />
         <div className='flex flex-col gap-[24px] md:gap-[40px]'>

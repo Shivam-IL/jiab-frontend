@@ -11,7 +11,9 @@ import useAppDispatch from '@/hooks/useDispatch'
 import {
   updateIsAuthenticated,
   updateIsFirstLogin,
+  updateLoginModal,
   updateOtpFilled,
+  updateOtpStatus,
   updateOtpVerified,
   updateToken
 } from '@/store/auth/auth.slice'
@@ -20,7 +22,7 @@ import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES, TOKEN_TYPE } from '@/constants'
 import { MainService } from '@/api/services/MainService'
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
-import { setLocalStorageItem } from '@/utils'
+import { removeLocalStorageItem, setLocalStorageItem } from '@/utils'
 
 const OtpModal = () => {
   const [otp, setOtp] = useState<string>('')
@@ -30,9 +32,7 @@ const OtpModal = () => {
   const mainServiceInstance = MainService.getInstance()
 
   const { phoneNumber } = useAppSelector(state => state.auth)
-  const {
-    mutate: requestOTP,
-  } = useMutateRequestOTP()
+  const { mutate: requestOTP } = useMutateRequestOTP()
   const {
     mutate: verifyOTP,
     isPending,
@@ -40,7 +40,7 @@ const OtpModal = () => {
     data: verifyOTPData
   } = useMutateVerifyOTP()
 
-  const { otpSent } = useAppSelector(state => state.auth)
+  const { otpSent, isAuthenticated } = useAppSelector(state => state.auth)
 
   const [counter, setCounter] = useState<string>('12')
   const [counterEnd, setCounterEnd] = useState<boolean>(false)
@@ -111,26 +111,24 @@ const OtpModal = () => {
       const token = verifyTokenData?.access_token ?? ''
       const tokenType = verifyTokenData?.token_type ?? ''
       dispatch(updateToken({ token }))
-      dispatch(updateIsAuthenticated({ isAuthenticated: true }))
       dispatch(updateOtpVerified({ otpVerified: true }))
 
-      console.log('tokenType', tokenType)
       if (tokenType === TOKEN_TYPE.TEMPORARY) {
         dispatch(updateIsFirstLogin({ isFirstLogin: true }))
-      }else if(tokenType === TOKEN_TYPE.BEARER){
+      } else if (tokenType === TOKEN_TYPE.BEARER) {
         const refreshToken = verifyTokenData?.refresh_token ?? ''
         dispatch(updateIsFirstLogin({ isFirstLogin: false }))
-        setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN,refreshToken)
+        dispatch(updateIsAuthenticated({ isAuthenticated: true }))
+        setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, refreshToken)
       }
       mainServiceInstance.setAccessToken(token)
       dispatch(updateOtpFilled({ otpFilled: true }))
       setOpen(false)
-    }
-    else if (verifyOTPData?.ok === false) {
+    } else if (verifyOTPData?.ok === false) {
       const { data } = verifyOTPData
       setError(data?.message ?? 'Invalid OTP')
     }
-  }, [verifyOTPData])
+  }, [verifyOTPData,isPending])
 
   return (
     <LoginSignupWrapper open={open} setOpen={setOpen} logo={true}>
@@ -150,6 +148,12 @@ const OtpModal = () => {
           className='flex justify-center items-center outline-none border-none'
           onClick={() => {
             setOpen(false)
+            dispatch(updateIsAuthenticated({ isAuthenticated: false }))
+            dispatch(updateIsFirstLogin({ isFirstLogin: false }))
+            dispatch(updateOtpVerified({ otpVerified: false }))
+            dispatch(updateOtpFilled({ otpFilled: false }))
+            dispatch(updateLoginModal({ loginModal: false }))
+            dispatch(updateOtpStatus({ otpSent: false }))
           }}
         >
           <SvgIcons name={ICONS_NAMES.CROSS} className='w-[16px] h-[16px]' />
@@ -191,7 +195,7 @@ const OtpModal = () => {
                   setCounter('12')
                   resendOTP()
                 }}
-                className={`text-[#606060] self-center border-b-[#606060] border-b-[1px] ${aktivGrotesk.className} font-[500] text-[12px] outline-none`}
+                className={`text-[#606060] self-center border-b-[#606060] border-b-[1px] ${aktivGrotesk.className} font-[500] text-[12px] md:text-[16px] outline-none`}
               >
                 Resend
               </button>

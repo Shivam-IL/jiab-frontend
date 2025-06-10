@@ -47,6 +47,8 @@ export interface IGreenCTA {
   className?: string;
   disabled?: boolean;
   isCoinIcon?: boolean;
+  children?:React.ReactNode;
+  childrenPosition?:string;
 }
 
 export interface IEditProfileImage {

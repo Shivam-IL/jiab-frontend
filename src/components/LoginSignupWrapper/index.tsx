@@ -9,7 +9,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 export const AuthHeading: React.FC<{ title: string }> = ({ title }) => {
   return (
     <span
-      className={`${aktivGrotesk.className} uppercase font-[700] text-[20px]`}
+      className={`${aktivGrotesk.className} uppercase font-[700] text-[20px] md:text-[24px]`}
     >
       {title}
     </span>

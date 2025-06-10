@@ -254,6 +254,8 @@ export const ICONS_NAMES = {
   PROFILE_ICON: "profile-icon-desktop",
   WALLET_ICON: "wallet-icon-desktop",
   PROFILE: "profile",
+  LEADERBOARD: "leaderboard",
+  STAIRS: "stairs",
 };
 
 export const FORMAT_OPTIONS = [
@@ -594,6 +596,7 @@ export const LOCAL_IMAGES = {
   SPRITE_GOLD: "sprite-gold.png",
   PROFILE_BG: "profile-bg.png",
   PROFILE_MD_BG: "profile-md-bg.png",
+  SURPRISE_ME: "surprise-me.gif",
 };
 
 export const TOKEN_TYPE = {
@@ -750,6 +753,7 @@ export const ARTISTS_PAGE_HEADERS_DATA = {
 };
 
 export const ALL_FIElDS_ARE_MANDATORY = "*All fields are mandatory";
+export const FIELDS_MARKED_STAR_ARE_MANDATORY = "Fields marked * are mandatory";
 export const PENDING = "Pending";
 export const APPROVED = "Approved";
 export const NEXT = "Next";
