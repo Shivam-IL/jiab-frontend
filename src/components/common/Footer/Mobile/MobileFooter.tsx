@@ -276,8 +276,8 @@ const MobileFooter = () => {
             </Link>
           </div>
         </div>
-        <div className="h-[17px] w-full bg-[#E0E0E0] flex flex-row items-center">
-          <div className="px-5 flex flex-row gap-[2px]">
+        <div className="h-[17px] w-full bg-[#E0E0E0] flex flex-row items-center justify-between px-5">
+          <div className="flex flex-row gap-[2px]">
             <Link href="/terms-and-conditions">
               <p className="text-center text-[7px] text-black">T&C*</p>
             </Link>
