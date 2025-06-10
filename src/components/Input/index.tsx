@@ -193,15 +193,16 @@ const Input: React.FC<IInput> = ({
     );
   }
 
+  console.log(error)
   return (
     <div className="flex flex-col gap-[6px] w-full">
       {type !== "textarea" && (
         <input
           className={`w-full ${className} ${
-            error !== "" ? "border-[#FD0202] border-[1px]" : ""
+            error !== "" ? "border-[#FD0202] border-[1px]" : "hover:border-gray-200 focus:border-[#11A64B] border border-transparent"
           } outline-none ${fontSize} font-[400] placeholder:text-[rgba(0,0,0,0.3)] ${
             aktivGrotesk.className
-          } ${paddingClass} leading-tight ${bgColor} ${borderRadius} border border-transparent transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B]`}
+          } ${paddingClass} leading-tight ${bgColor} ${borderRadius}  transition-all duration-200 `}
           onChange={(event) => onChange(event.target.name, event.target.value)}
           type={type}
           readOnly={readonly}

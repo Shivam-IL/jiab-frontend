@@ -46,6 +46,8 @@ export interface IGreenCTA {
   fontWeight?: string;
   className?: string;
   disabled?: boolean;
+  children?:React.ReactNode;
+  childrenPosition?:string;
 }
 
 export interface IEditProfileImage {

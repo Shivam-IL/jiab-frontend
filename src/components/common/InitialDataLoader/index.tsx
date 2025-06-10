@@ -26,7 +26,6 @@ const mainServiceInstance = MainService.getInstance()
 
 const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const dispatch = useAppDispatch()
-  const { isAuthenticated, isFirstLogin } = useAppSelector(state => state.auth)
   const [tokenUpdated, setTokenUpdated] = useState(false)
   const { data: userProfileData } = useGetUserProfileDetails()
   const { data: userAddressesData } = useGetUserAddresses()
@@ -66,6 +65,8 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       }, 1000)
     }
   }, [tokenUpdated])
+
+
 
   // Handle profile data changes
   useEffect(() => {

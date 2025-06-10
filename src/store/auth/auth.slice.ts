@@ -2,10 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 export interface AuthState {
-  user: null;
   phoneNumber: string;
   loginModal: boolean;
-  isLoading: boolean;
   isAuthenticated: boolean;
   otpSent: boolean;
   otpFilled: boolean;
@@ -17,8 +15,6 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: null,
-  isLoading: false,
   isAuthenticated: false,
   otpSent: false,
   otpFilled: false,
@@ -65,6 +61,17 @@ const authSlice = createSlice({
     updateIsFirstLogin: (state, action) => {
       state.isFirstLogin = action.payload.isFirstLogin;
     },
+    resetAuth: (state) => {
+      state.phoneNumber = "";
+      state.loginModal = false;
+      state.isAuthenticated = false;
+      state.otpSent = false;
+      state.otpFilled = false;
+      state.otpVerified = false;
+      state.signupDone = false;
+      state.crossModal = false;
+      state.token = "";
+    },
   },
 });
 
@@ -79,5 +86,6 @@ export const {
   updateIsAuthenticated,
   updateIsFirstLogin,
   updateOtpVerified,
+  resetAuth,
 } = authSlice.actions;
 export default authSlice.reducer;

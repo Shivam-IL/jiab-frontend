@@ -3,8 +3,8 @@
 import MobileTempNavBar from "@/components/common/MobileTempNavBar";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
 import {
-  ALL_FIElDS_ARE_MANDATORY,
   CATEGORIES_CAROUSEL_DATA,
+  FIELDS_MARKED_STAR_ARE_MANDATORY,
   FORMAT_OPTIONS,
   ICONS_NAMES,
   LANGUAGE_OPTIONS,
@@ -271,7 +271,7 @@ const SubmitYourJoke = () => {
           <LabeledInput
             labelClassName="md:text-center"
             width="md:max-w-[720px] lg:max-w-[920px]"
-            label="Category* "
+            label="Category"
           >
             <CustomCarousel>
               {CATEGORIES_CAROUSEL_DATA.map((item) => {
@@ -330,7 +330,7 @@ const SubmitYourJoke = () => {
               paddingClass="pt-[17px] pb-[12px] md:py-[24px]"
             />
             <AktivGroteskText
-              text={ALL_FIElDS_ARE_MANDATORY}
+              text={FIELDS_MARKED_STAR_ARE_MANDATORY}
               fontWeight="font-[400] md:font-[700]"
               fontSize="text-[8px] md:text-[14px]"
             />
