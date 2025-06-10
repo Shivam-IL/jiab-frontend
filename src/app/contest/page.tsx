@@ -66,6 +66,13 @@ const ContestPage: React.FC = () => {
   const contestActivities = [
     {
       id: 1,
+      icon: "/other-svgs/unique.svg",
+      title: "Enter Unique Code",
+      reward: 20,
+      rewardText: "For Using Unique Code",
+    },
+    {
+      id: 2,
       icon: "/other-svgs/haha.svg",
       title: "React to a Joke",
       reward: 1,
@@ -73,7 +80,7 @@ const ContestPage: React.FC = () => {
       action: () => router.push("/scroll-and-lol"),
     },
     {
-      id: 2,
+      id: 3,
       icon: "/other-svgs/vote.svg",
       title: "Vote for Favorite Joke",
       reward: 1,
@@ -81,7 +88,7 @@ const ContestPage: React.FC = () => {
       action: () => router.push("/user-generated-jokes"),
     },
     {
-      id: 3,
+      id: 4,
       icon: "/other-svgs/referral.svg",
       title: "Refer a Friend",
       reward: 5,
@@ -89,7 +96,7 @@ const ContestPage: React.FC = () => {
       action: () => setRefer1(true),
     },
     {
-      id: 4,
+      id: 5,
       icon: "/other-svgs/invite.svg",
       title: "Use Invite Code",
       reward: 1,
@@ -97,19 +104,12 @@ const ContestPage: React.FC = () => {
       action: () => setInvite1(true),
     },
     {
-      id: 5,
+      id: 6,
       icon: "/other-svgs/project.svg",
       title: "Complete Your Profile",
       reward: 10,
       rewardText: "On Completion",
       action: () => router.push("/profile"),
-    },
-    {
-      id: 6,
-      icon: "/other-svgs/unique.svg",
-      title: "Enter Unique Code",
-      reward: 20,
-      rewardText: "For Using Unique Code",
     },
   ];
 
@@ -146,7 +146,7 @@ const ContestPage: React.FC = () => {
       <ScreenWrapper className="overflow-hidden pt-20">
         {isContestOver ? (
           <>
-            <div className="md:w-full h-auto md:mt-[28px] mt-[12px] md:mx-0 -mx-5">
+            <div className="md:w-full h-auto md:mt-[40px] mt-[18px] md:mx-0 -mx-5">
               <Banner
                 type="image"
                 msrc="other-svgs/contest-over-new.svg"
@@ -232,7 +232,7 @@ const ContestPage: React.FC = () => {
               text="Previous Winners List"
               onClick={() => {}}
               icon="/static/sprite/icons/leaderboard.svg"
-              className="md:py-[25px] py-[10.4px] md:pl-[58px] pl-[23px] md:pr-[42.4px] pr-[22.62px]"
+              className="md:py-[25px] py-[10.4px] md:pl-[58px] pl-[23px] md:pr-[42.4px] pr-[22.62px] bg-yellow text-black"
             />
           </Link>
         </div>
@@ -251,7 +251,7 @@ const ContestPage: React.FC = () => {
         </div> */}
 
         {/* Contest Activities */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 md:gap-[30px] gap-x-[15px] gap-y-[10px] md:pb-[41px] pb-[28px] mt-[28px]">
+        <div className="grid grid-cols-2 lg:grid-cols-3 md:gap-[30px] gap-x-[15px] gap-y-[10px] md:pb-[41px] pb-[28px] md:mt-[40px] mt-[16px]">
           {contestActivities.map((activity) => (
             <ContestFlatCard
               key={activity.id}
@@ -278,6 +278,9 @@ const ContestPage: React.FC = () => {
             setRefer1(false);
             setRefer2(true);
           }}
+          onSubmit={function (): void {
+            throw new Error("Function not implemented.");
+          }}
         />
       )}
       {refer2 && (
@@ -292,6 +295,9 @@ const ContestPage: React.FC = () => {
             setRefer2(false);
             setRefer3(true);
           }}
+          onSubmit={function (): void {
+            throw new Error("Function not implemented.");
+          }}
         />
       )}
       {refer3 && (
@@ -305,6 +311,9 @@ const ContestPage: React.FC = () => {
           onClose={() => {
             setRefer3(false);
             setReferStatus1(true);
+          }}
+          onSubmit={function (): void {
+            throw new Error("Function not implemented.");
           }}
         />
       )}

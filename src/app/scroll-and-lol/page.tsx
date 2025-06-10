@@ -89,7 +89,7 @@ const ScrollAndLol: React.FC = () => {
         console.log("Loading timeout reached, hiding loader");
         setIsLoading(false);
       }
-    }, 3000); // 3 second timeout
+    }, 1000); // 3 second timeout
 
     return () => clearTimeout(timer);
   }, [isLoading]);
@@ -215,7 +215,11 @@ const ScrollAndLol: React.FC = () => {
 
     videoRefs.current.forEach((videoRef) => {
       if (videoRef) {
-        observer.observe(videoRef.parentElement!);
+        // Find the video-container element with data-index
+        const videoContainer = videoRef.closest(".video-container");
+        if (videoContainer) {
+          observer.observe(videoContainer);
+        }
       }
     });
 
@@ -306,7 +310,7 @@ const ScrollAndLol: React.FC = () => {
             <>
               <div
                 ref={containerRef}
-                className="relative md:w-[442px] md:h-[calc(100vh-200px)] w-full h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth scrollbar-hide md:gap-[30px]"
+                className="relative md:max-h-[calc(100vh-200px)] w-full h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth scrollbar-hide md:gap-[30px]"
                 style={{
                   scrollSnapType: "y mandatory",
                   scrollBehavior: "smooth",
@@ -315,90 +319,95 @@ const ScrollAndLol: React.FC = () => {
                 {videos.map((video, index) => (
                   <div
                     key={video.id}
-                    className="video-container relative md:h-[calc(100vh-200px)] h-screen w-full flex-shrink-0 md:mb-[100px] last:md:mb-0"
+                    className="video-container relative md:max-h-[calc(100vh-200px)] h-screen w-full flex-shrink-0 md:mb-[100px] last:md:mb-0 md:flex md:items-center md:justify-center"
                     data-index={index}
                     style={{
                       scrollSnapAlign: "start",
                       scrollSnapStop: "always",
                     }}
                   >
-                    <video
-                      ref={(el) => {
-                        videoRefs.current[index] = el;
-                      }}
-                      className="md:w-[442px] md:h-[calc(100vh-200px)] h-full w-full object-cover"
-                      src={video.url}
-                      loop
-                      playsInline
-                      muted={isMuted}
-                      autoPlay
-                      onLoadedData={() => handleVideoLoad(index)}
-                      onCanPlay={() => handleVideoCanPlay(index)}
-                      onLoadStart={() => {
-                        console.log(`Video ${index} started loading`);
-                        if (index === 0) {
-                          // Give a small delay then hide loading as fallback
-                          setTimeout(() => setIsLoading(false), 2000);
-                        }
-                      }}
-                      onError={() => handleVideoError(index)}
-                      style={{
-                        aspectRatio: "9/16",
-                      }}
-                    />
-
-                    {/* Top controls */}
-                    <div className="absolute top-4 w-full flex justify-between px-4 z-10">
-                      <button
-                        onClick={() => togglePlay(index)}
-                        className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
-                      >
-                        <Image
-                          src={
-                            videoPlayStates[index] && index === activeVideoIndex
-                              ? "/other-svgs/pause-icon.svg"
-                              : "/other-svgs/play-icon.svg"
+                    <div className="relative md:w-auto md:h-auto w-full h-full">
+                      <video
+                        ref={(el) => {
+                          videoRefs.current[index] = el;
+                        }}
+                        className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] h-full w-full md:object-contain object-cover relative"
+                        src={video.url}
+                        loop
+                        playsInline
+                        muted={isMuted}
+                        autoPlay
+                        onLoadedData={() => handleVideoLoad(index)}
+                        onCanPlay={() => handleVideoCanPlay(index)}
+                        onLoadStart={() => {
+                          console.log(`Video ${index} started loading`);
+                          if (index === 0) {
+                            // Give a small delay then hide loading as fallback
+                            setTimeout(() => setIsLoading(false), 2000);
                           }
-                          alt={
-                            videoPlayStates[index] && index === activeVideoIndex
-                              ? "Pause"
-                              : "Play"
-                          }
-                          width={
-                            videoPlayStates[index] && index === activeVideoIndex
-                              ? 12
-                              : 20
-                          }
-                          height={
-                            videoPlayStates[index] && index === activeVideoIndex
-                              ? 12
-                              : 20
-                          }
-                        />
-                      </button>
-                      <button
-                        onClick={() => toggleMute(index)}
-                        className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
-                      >
-                        <Image
-                          src={
-                            isMuted
-                              ? "/other-svgs/mute-icon.svg"
-                              : "/other-svgs/unmute-icon.svg"
-                          }
-                          alt={isMuted ? "Unmute" : "Mute"}
-                          width={20}
-                          height={20}
-                          className="text-white"
-                        />
-                      </button>
+                        }}
+                        onError={() => handleVideoError(index)}
+                        style={{
+                          aspectRatio: "9/16",
+                        }}
+                      />
+                        {/* Top controls */}
+                        <div className="absolute top-4 w-full flex justify-between px-4 z-50">
+                          <button
+                            onClick={() => togglePlay(index)}
+                            className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
+                          >
+                            <Image
+                              src={
+                                videoPlayStates[index] &&
+                                index === activeVideoIndex
+                                  ? "/other-svgs/pause-icon.svg"
+                                  : "/other-svgs/play-icon.svg"
+                              }
+                              alt={
+                                videoPlayStates[index] &&
+                                index === activeVideoIndex
+                                  ? "Pause"
+                                  : "Play"
+                              }
+                              width={
+                                videoPlayStates[index] &&
+                                index === activeVideoIndex
+                                  ? 12
+                                  : 20
+                              }
+                              height={
+                                videoPlayStates[index] &&
+                                index === activeVideoIndex
+                                  ? 12
+                                  : 20
+                              }
+                            />
+                          </button>
+                          <button
+                            onClick={() => toggleMute(index)}
+                            className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
+                          >
+                            <Image
+                              src={
+                                isMuted
+                                  ? "/other-svgs/mute-icon.svg"
+                                  : "/other-svgs/unmute-icon.svg"
+                              }
+                              alt={isMuted ? "Unmute" : "Mute"}
+                              width={20}
+                              height={20}
+                              className="text-white"
+                            />
+                          </button>
+                        </div>
                     </div>
                   </div>
                 ))}
               </div>
 
               {/* Reaction Emojis - only visible when not loading */}
-              <div className="absolute md:bottom-[128.82px] bottom-[135px] md:right-[-5rem] right-[10px] z-20">
+              <div className="absolute md:bottom-[88.82px] bottom-[135px] md:right-[-5rem] right-[10px] z-20">
                 <ReactionEmojies onEmojiSelect={handleEmojiSelect} />
               </div>
             </>

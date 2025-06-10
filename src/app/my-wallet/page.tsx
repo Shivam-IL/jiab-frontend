@@ -43,6 +43,7 @@ const ComicCoinsPage = () => {
               onClick={() => {}}
               paddingClass="py-[8px] px-[20px] md:py-[16px] md:px-[50px]"
               fontSize="text-[12px] md:text-[28px]"
+              isCoinIcon={true}
             />
           </div>
         </div>

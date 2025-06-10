@@ -1,10 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  ChevronRight,
-  ChevronDown,
-} from "lucide-react";
+import { ChevronRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import useAppDispatch from "@/hooks/useDispatch";
 import { updateLoginModal } from "@/store/auth/auth.slice";
@@ -27,8 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
   const [isExploreOpen, setIsExploreOpen] = useState(true);
   const dispatch = useAppDispatch();
 
-
-  console.log(isAnimating,spriteLogo)
+  console.log(isAnimating, spriteLogo);
   const isLoggedIn = true;
   const coinImage = "/assets/images/coin-final-sidebar.svg";
   const mainMenuItems = [
@@ -454,6 +450,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
             setRefer1(false);
             setRefer2(true);
           }}
+          onSubmit={() => {}}
         />
       )}
       {refer2 && (
@@ -468,6 +465,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
             setRefer2(false);
             setRefer3(true);
           }}
+          onSubmit={() => {}}
         />
       )}
       {refer3 && (
@@ -482,6 +480,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
             setRefer3(false);
             setReferStatus1(true);
           }}
+          onSubmit={() => {}}
         />
       )}
       {referStatus1 && (

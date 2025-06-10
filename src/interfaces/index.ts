@@ -46,6 +46,7 @@ export interface IGreenCTA {
   fontWeight?: string;
   className?: string;
   disabled?: boolean;
+  isCoinIcon?: boolean;
 }
 
 export interface IEditProfileImage {
