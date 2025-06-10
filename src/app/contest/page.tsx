@@ -70,19 +70,19 @@ const ContestPage: React.FC = () => {
       title: "React to a Joke",
       reward: 1,
       rewardText: "Per Joke",
-      action: () => router.push("/user-generated-jokes"),
+      action: () => router.push("/scroll-and-lol"),
     },
     {
       id: 2,
-      icon: "/other-svgs/haha.svg",
+      icon: "/other-svgs/vote.svg",
       title: "Vote for Favorite Joke",
       reward: 1,
       rewardText: "Per Language Weekly",
-      action: () => router.push("/hall-of-lame"),
+      action: () => router.push("/user-generated-jokes"),
     },
     {
       id: 3,
-      icon: "/other-svgs/haha.svg",
+      icon: "/other-svgs/referral.svg",
       title: "Refer a Friend",
       reward: 5,
       rewardText: "Per Successful Referral",
@@ -90,7 +90,7 @@ const ContestPage: React.FC = () => {
     },
     {
       id: 4,
-      icon: "/other-svgs/haha.svg",
+      icon: "/other-svgs/invite.svg",
       title: "Use Invite Code",
       reward: 1,
       rewardText: "For Using Invite Code",
@@ -98,7 +98,7 @@ const ContestPage: React.FC = () => {
     },
     {
       id: 5,
-      icon: "/other-svgs/haha.svg",
+      icon: "/other-svgs/project.svg",
       title: "Complete Your Profile",
       reward: 10,
       rewardText: "On Completion",
@@ -106,10 +106,10 @@ const ContestPage: React.FC = () => {
     },
     {
       id: 6,
-      icon: "/other-svgs/haha.svg",
-      title: "Play and Stay",
-      reward: 1,
-      rewardText: "For Using Invite Code",
+      icon: "/other-svgs/unique.svg",
+      title: "Enter Unique Code",
+      reward: 20,
+      rewardText: "For Using Unique Code",
     },
   ];
 
@@ -149,7 +149,8 @@ const ContestPage: React.FC = () => {
             <div className="md:w-full h-auto md:mt-[28px] mt-[12px] md:mx-0 -mx-5">
               <Banner
                 type="image"
-                src="other-svgs/contest-over-new.svg"
+                msrc="other-svgs/contest-over-new.svg"
+                src="other-svgs/contest-over-new-mobile.svg"
                 className="rounded-lg md:mx-0 mx-5"
               />
             </div>
@@ -225,25 +226,19 @@ const ContestPage: React.FC = () => {
         )}
 
         {/* Buttons */}
-        <div className="flex md:gap-[100px] md:justify-center justify-between md:mt-[40px] mt-[17px]">
+        <div className="flex justify-center md:mt-[40px] mt-[17px]">
           <Link href="/leaderboard">
             <ContentButton
-              text="Leaderboard"
+              text="Previous Winners List"
               onClick={() => {}}
               icon="/static/sprite/icons/leaderboard.svg"
-            />
-          </Link>
-          <Link href="/my-wallet">
-            <ContentButton
-              text="Comic Coins"
-              onClick={() => {}}
-              icon="/assets/images/coin-final-sidebar.svg"
+              className="md:py-[25px] py-[10.4px] md:pl-[58px] pl-[23px] md:pr-[42.4px] pr-[22.62px]"
             />
           </Link>
         </div>
 
         {/* How to Gather */}
-        <Header
+        {/* <Header
           title="How to Gather Comic Coins"
           className="md:mt-[40px] mt-[16px] md:ml-0 -ml-[16px] mx-5"
         />
@@ -253,7 +248,7 @@ const ContestPage: React.FC = () => {
             src="/assets/images/banner-contest.png"
             className="rounded-lg md:mx-0 mx-5"
           />
-        </div>
+        </div> */}
 
         {/* Contest Activities */}
         <div className="grid grid-cols-2 lg:grid-cols-3 md:gap-[30px] gap-x-[15px] gap-y-[10px] md:pb-[41px] pb-[28px] mt-[28px]">

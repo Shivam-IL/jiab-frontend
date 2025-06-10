@@ -26,13 +26,17 @@ const ContestFlatCard: React.FC<ContestFlatCardProps> = ({
       onClick={onClick}
     >
       {/* Icon Container */}
-      <div className="bg-green rounded-[8px] p-3 flex-shrink-0 flex items-center justify-center md:h-[104.8px] md:w-[86.75px]">
+      <div className="bg-green rounded-[8px] flex-shrink-0 flex items-center justify-center md:h-[104.8px] h-[48px] md:w-[86.75px] w-[40px]">
         <Image
           src={icon}
           alt={title}
           width={40}
           height={40}
-          className="md:w-[52.05px] w-[30.04px] md:h-[52.4px] h-[40px] filter brightness-0 invert"
+          className={
+            icon.includes("unique.svg")
+              ? "md:w-[56px] w-[26.44px] md:h-[56px] h-[23px] md:px-0 md:py-0 md:mx-[6.78px] mx-2 md:my-[12px] my-3 filter brightness-0 invert"
+              : "md:w-[52.05px] w-[23.04px] md:h-[52.4px] h-[24px] filter brightness-0 invert m-3"
+          }
         />
       </div>
 
