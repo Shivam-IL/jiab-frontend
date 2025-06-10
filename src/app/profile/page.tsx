@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react'
 import { BreakTheIceExitPopup } from '@/components/ExitPopUps'
 import useAppSelector from '@/hooks/useSelector'
 import { useRouter } from 'next/navigation'
+import gluedin from 'gluedin'
 import { updateBreakTheIceModal } from '@/store/profile/profile.slice'
 import useAppDispatch from '@/hooks/useDispatch'
 import { useCMSData } from '@/data'
@@ -25,6 +26,23 @@ const ProfilePage = () => {
   const cmsData = useCMSData(mounted)
   const dispatch = useAppDispatch()
   const { user, breakTheIceModal } = useAppSelector(state => state.profile)
+
+  const fetchUGC = async () => {
+    var feedModuleObj = new gluedin.GluedInFeedModule()
+    var limit = 10
+    var feedModuleResponse = await feedModuleObj.getFeedList({
+      limit: limit,
+      offset: 0,
+      c_type: 'UGC'
+    })
+    const curatedContentModuleObj = new gluedin.GluedInCuratedContentModule();
+    const curatedContentModuleResponse = await curatedContentModuleObj.getCuratedContentList('discover')
+    console.log('curatedContentModuleResponse', curatedContentModuleResponse)
+  }
+
+  useEffect(() => {
+    fetchUGC()
+  }, [])
 
   return (
     <ScreenWrapper>

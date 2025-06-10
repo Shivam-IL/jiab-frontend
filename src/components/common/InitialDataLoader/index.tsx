@@ -1,10 +1,11 @@
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
-import { useMutateRefreshToken } from '@/api/hooks/LoginHooks'
+import { useMutateGludeinLogin, useMutateRefreshToken } from '@/api/hooks/LoginHooks'
 import {
   useGetUserAddresses,
   useGetAvatarsData,
   useGetUserProfileDetails
 } from '@/api/hooks/ProfileHooks'
+import gluedin from 'gluedin'
 import { MainService } from '@/api/services/MainService'
 import { REDUX_UPDATION_TYPES } from '@/constants'
 import useAppDispatch from '@/hooks/useDispatch'
@@ -31,6 +32,13 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const [tokenUpdated, setTokenUpdated] = useState(false)
   const { data: userProfileData } = useGetUserProfileDetails()
   const { data: userAddressesData } = useGetUserAddresses()
+  const { mutate: mutateGludeinLogin } = useMutateGludeinLogin()
+
+  let gluedInSDKInitilize = new gluedin.GluedInSDKInitilize()
+  gluedInSDKInitilize.initialize({
+    apiKey: process.env.NEXT_PUBLIC_GLUEDIN_API_KEY || '',
+    secretKey: process.env.NEXT_PUBLIC_GLUEDIN_SECRET_KEY || ''
+  })
   const { data: referralData } = useGetAllReferrals({ page: 1 })
   const { data: avatarsData } = useGetAvatarsData()
   const { data: leaderboardData } = useGetLeaderBoard()
@@ -73,6 +81,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, refresh_token)
       setLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, access_token)
       setTokenUpdated(true)
+      mutateGludeinLogin()
     } else {
       localStorage.clear()
       dispatch(updateIsAuthenticated({ isAuthenticated: false }))

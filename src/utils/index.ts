@@ -1,4 +1,5 @@
 import { CLIENT_URL } from "@/constants";
+import CryptoJS from "crypto-js";
 
 export const generateImageurl = (image: string): string => {
   const imageUrl: string = `${CLIENT_URL}/assets/images/${image}`;
@@ -9,12 +10,13 @@ export const formatNumberToK = (number: number): string => {
   if (number < 1000) {
     return number.toString();
   }
-  
-  const units = ['', 'K', 'M', 'B'];
+
+  const units = ["", "K", "M", "B"];
   const unitIndex = Math.floor(Math.log10(number) / 3);
   const value = number / Math.pow(1000, unitIndex);
-  const formattedValue = value >= 10 ? Math.floor(value) : Math.round(value * 10) / 10;
-  
+  const formattedValue =
+    value >= 10 ? Math.floor(value) : Math.round(value * 10) / 10;
+
   return `${formattedValue}${units[unitIndex]}`;
 };
 
@@ -29,6 +31,11 @@ export const getLocalStorageItem = (key: string) => {
 export const removeLocalStorageItem = (key: string) => {
   localStorage.removeItem(key);
 };
+
+export const encryptData = async (text: string, secretKey: string) => {
+  return CryptoJS.AES.encrypt(text, secretKey).toString();
+};
+
 
 export const dateConvert = (date: string) => {
   const dateObj = new Date(date);

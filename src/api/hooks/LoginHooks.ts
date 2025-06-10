@@ -6,6 +6,9 @@ import {
   TSignUp,
   TVerifyOTP,
 } from "../types/LoginTypes";
+import { encryptData } from "@/utils";
+import { v4 as uuid } from "uuid";
+import { useEffect, useState } from "react";
 
 const useMutateRequestOTP = () => {
   const loginInstance = LoginService.getInstance();
@@ -35,9 +38,35 @@ const useMutateRefreshToken = () => {
   });
 };
 
+const useMutateGludeinLogin = () => {
+  const loginInstance = LoginService.getInstance();
+
+  const [uniqueId, setUniqueId] = useState<string>("");
+  const [accessToken, setAccessToken] = useState<string>("");
+
+  const setData = async () => {
+    const data = await encryptData(
+      window.location.origin,
+      process.env.NEXT_PUBLIC_SECRET_KEY || ""
+    );
+    setAccessToken(data);
+    setUniqueId(uuid());
+  };
+
+  useEffect(() => {
+    setData();
+  }, []);
+
+  return useMutation({
+    mutationFn: () => loginInstance.GludeinLogin({ uniqueId, accessToken }),
+    retry: 3,
+  });
+};
+
 export {
   useMutateRequestOTP,
   useMutateVerifyOTP,
   useMutateSignUp,
   useMutateRefreshToken,
+  useMutateGludeinLogin,
 };

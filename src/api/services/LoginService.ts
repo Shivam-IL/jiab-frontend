@@ -9,7 +9,9 @@ import {
   TVerifyOTP,
 } from "../types/LoginTypes";
 import { MainService } from "./MainService";
-import { getLocalStorageItem } from "@/utils";
+import { encryptData, getLocalStorageItem } from "@/utils";
+import gluedin from "gluedin";
+import { v4 as uuid } from "uuid";
 
 export class LoginService extends MainService {
   private static instance: LoginService;
@@ -22,7 +24,7 @@ export class LoginService extends MainService {
   }
 
   private getAuthHeaders() {
-    const token = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN)
+    const token = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
     return token
       ? {
           Authorization: `Bearer ${token}`,
@@ -124,9 +126,9 @@ export class LoginService extends MainService {
         }
       );
       const responseData = response.data;
-      console.log('responseData', responseData)
+      console.log("responseData", responseData);
       if (responseData?.success) {
-        console.log('responseData', responseData.data)
+        console.log("responseData", responseData.data);
         return SuccessResponse(responseData.data);
       }
       return ErrorResponse(responseData?.message ?? "Something went wrong");
@@ -137,6 +139,35 @@ export class LoginService extends MainService {
         );
       }
       return ErrorResponse("An unexpected error occurred");
+    }
+  }
+
+  public async GludeinLogin({
+    uniqueId,
+    accessToken,
+  }: {
+    uniqueId: string;
+    accessToken: string;
+  }) {
+    try {
+      
+      const formData = {
+        email: `${uniqueId}@gmail.com`,
+        password: uniqueId,
+        autoCreate: true,
+        accessToken,
+      };
+
+      const gluedinLogin = new gluedin.GluedInAuthModule();
+      const gluedinLoginResponse = await gluedinLogin.AuthRawData(formData);
+
+      if (gluedinLoginResponse?.status !== 200) {
+        throw new Error("Failed to login with GluedIn");
+      }
+
+      return gluedinLoginResponse;
+    } catch (error: any) {
+      throw new Error(error?.message || "Failed to login with Gluedin");
     }
   }
 }
