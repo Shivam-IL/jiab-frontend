@@ -5,10 +5,12 @@ import {
   useGetUserProfileDetails
 } from '@/api/hooks/ProfileHooks'
 import { MainService } from '@/api/services/MainService'
+import { REDUX_UPDATION_TYPES } from '@/constants'
 import useAppDispatch from '@/hooks/useDispatch'
 import useAppSelector from '@/hooks/useSelector'
 import { updateIsAuthenticated, updateToken } from '@/store/auth/auth.slice'
 import {
+  updateAddresses,
   updateBalance,
   updateRank,
   updateUser
@@ -22,12 +24,12 @@ import { ReactNode, useEffect, useState } from 'react'
 
 const mainServiceInstance = MainService.getInstance()
 
-const AuthWrapper = ({ children }: { children: ReactNode }) => {
+const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const dispatch = useAppDispatch()
   const { isAuthenticated, isFirstLogin } = useAppSelector(state => state.auth)
   const [tokenUpdated, setTokenUpdated] = useState(false)
   const { data: userProfileData } = useGetUserProfileDetails()
-  const { data: userBalanceAndRankData } = useGetUserAddresses()
+  const { data: userAddressesData } = useGetUserAddresses()
 
   const {
     mutate: mutateRefreshToken,
@@ -44,7 +46,6 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
     }
   }, [])
 
-  
   useEffect(() => {
     if (refreshTokenData?.ok) {
       const { data } = refreshTokenData ?? {}
@@ -55,7 +56,7 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
       setLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, access_token)
       setTokenUpdated(true)
     }
-  }, [refreshTokenLoading,refreshTokenData])
+  }, [refreshTokenLoading, refreshTokenData])
 
   useEffect(() => {
     if (tokenUpdated) {
@@ -69,7 +70,6 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
   // Handle profile data changes
   useEffect(() => {
     if (userProfileData?.ok) {
-      console.log('userProfileData', userProfileData)
       const { data } = userProfileData?.data ?? {}
       dispatch(updateRank({ rank: data?.rank }))
       dispatch(updateBalance({ current_balance: data?.current_balance }))
@@ -77,7 +77,19 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
     }
   }, [userProfileData])
 
+  useEffect(() => {
+    if (userAddressesData?.ok) {
+      const { data } = userAddressesData ?? {}
+      dispatch(
+        updateAddresses({
+          type: REDUX_UPDATION_TYPES.MULTIPLE_ADDED,
+          address: data
+        })
+      )
+    }
+  }, [userAddressesData])
+
   return <>{children}</>
 }
 
-export default AuthWrapper
+export default InitialDataLoader

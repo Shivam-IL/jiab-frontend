@@ -6,6 +6,11 @@ export enum FileType {
   VIDEO = "video",
 }
 
+export enum AddressModalType {
+  ADD = "add",
+  EDIT = "edit",
+}
+
 export interface IJokeData {
   language: string;
   format: string;

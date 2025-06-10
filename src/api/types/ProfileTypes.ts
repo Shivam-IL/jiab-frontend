@@ -7,16 +7,14 @@ export type TEditProfile = {
 };
 
 export type TAddress = {
-  address_line_1: string;
-  address_line_2?: string;
-  alternate_phone_number?: string;
+  address1: string;
+  address2: string;
   city: string;
-  country: string;
   is_default: boolean;
-  nearest_landmark?: string;
-  pan_card_number: string;
+  nearest_landmark: string;
+  pincode: number;
+  shipping_mobile: string;
   state: string;
-  zip_code: string;
 };
 
 export type TAddessId = {

@@ -71,7 +71,7 @@ const ProfileCard = () => {
   return (
     <div className='relative w-full rounded-[10px]  bg-white md:rounded-[20px]'>
       <div
-        className='relative bg-cover bg-center bg-no-repeat'
+        className='relative rounded-t-[10px] md:rounded-t-[20px] bg-cover bg-center bg-no-repeat'
         style={{
           backgroundImage: `url(${generateImageurl(bgImage)})`
         }}

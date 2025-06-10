@@ -15,7 +15,7 @@ const UserComicsCoinsAndRankCard = () => {
       <div className='relative flex md:gap-[50px] md:w-auto w-[60%]'>
         <div className='relative w-[50%] md:w-auto flex flex-col items-center justify-between gap-[6px] md:gap-[8px]'>
           <AktivGroteskText
-            text={current_balance.toString()}
+            text={current_balance?.toString() || '0'}
             className='text-black'
             fontSize='text-[16px] md:text-[24px]'
             fontWeight='font-[700]'
@@ -35,7 +35,7 @@ const UserComicsCoinsAndRankCard = () => {
         <Separator className='w-[1px] md:w-[2px] bg-[#EBEBEB] h-full mx-0 px-0' />
         <div className='relative w-[50%] md:w-auto flex flex-col items-center justify-between gap-[6px] md:gap-[8px]'>
           <AktivGroteskText
-            text={rank ? rank.toString() : '0'}
+            text={rank?.toString() || '0'}
             className='text-black'
             fontSize='text-[16px] md:text-[24px]'
             fontWeight='font-[700]'

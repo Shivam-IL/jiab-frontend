@@ -16,7 +16,8 @@ const ReferNowModal: React.FC<IReferNowModal> = ({
   subtitle,
   ctaText,
   phoneNumber,
-  onChange
+  onChange,
+  onSubmit
 }) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -63,7 +64,7 @@ const ReferNowModal: React.FC<IReferNowModal> = ({
                 fontSize='text-[16px] md:text-[20px]'
                 paddingClass='py-[10px] md:py-[10px] px-[28px]'
                 onClick={() => {
-                  onClose()
+                  onSubmit()
                 }}
               />
             </div>

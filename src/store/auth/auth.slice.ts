@@ -1,16 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export interface IAddressData {
-  address_line_1: string;
-  address_line_2: string;
-  nearest_landmark: string;
-  alternate_phone_number: string;
-  pan_card_number: string;
-  pincode: string;
-  state: string;
-  city: string;
-  default: boolean;
-}
 
 export interface AuthState {
   user: null;
@@ -23,7 +12,6 @@ export interface AuthState {
   otpVerified: boolean;
   signupDone: boolean;
   crossModal: boolean;
-  addressData: IAddressData[];
   token: string;
   isFirstLogin: boolean;
 }
@@ -38,7 +26,6 @@ const initialState: AuthState = {
   loginModal: false,
   signupDone: false,
   crossModal: false,
-  addressData: [],
   phoneNumber: "",
   token: "",
   isFirstLogin: false,
@@ -66,9 +53,6 @@ const authSlice = createSlice({
     updateSignupDone: (state, action) => {
       state.signupDone = action.payload.signupDone;
     },
-    updateAddressData: (state, action) => {
-      state.addressData = [...state.addressData, action.payload.addressData];
-    },
     updateCrossModal: (state, action) => {
       state.crossModal = action.payload.crossModal;
     },
@@ -89,7 +73,6 @@ export const {
   updateOtpFilled,
   updateLoginModal,
   updateSignupDone,
-  updateAddressData,
   updateCrossModal,
   updatePhoneNumber,
   updateToken,

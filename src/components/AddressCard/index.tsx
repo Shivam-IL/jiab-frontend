@@ -3,23 +3,45 @@ import AktivGroteskText from '../common/AktivGroteskText'
 import SvgIcons from '../common/SvgIcons'
 import { ICONS_NAMES } from '@/constants'
 import { Checkbox } from '../ui/checkbox'
+import {
+  deleteAddress,
+  IUserAddressData,
+  updateAddresses
+} from '@/store/profile/profile.slice'
+import { useDeleteAddress } from '@/api/hooks/ProfileHooks'
+import useAppDispatch from '@/hooks/useDispatch'
+import { AddressModalType } from '@/types'
+import AddressModal from '../common/AddressModal/index'
 
 const AddressCard = ({
   index,
-  allowBottomBorder = false
+  allowBottomBorder = false,
+  address
 }: {
   index: number
   allowBottomBorder?: boolean
+  address?: IUserAddressData | null
 }) => {
-  const [defaultAddress, setDefaultAddress] = useState<boolean>(true)
+  const [openAddressModal, setOpenAddressModal] = useState<boolean>(false)
+  const [addressId, setAddressId] = useState<number | null>(null)
+  const dispatch = useAppDispatch()
+  const {
+    mutate: deleteAddess,
+    isPending,
+    data: deleteAddressData
+  } = useDeleteAddress()
 
+  const handleDeleteAddress = (id: number) => {
+    if (!id) return
+    deleteAddess({ address_id: id })
+  }
   useEffect(() => {
-    if (index === 0) {
-      setDefaultAddress(true)
-    } else {
-      setDefaultAddress(false)
+    console.log('deleteAddressData', deleteAddressData)
+    if (deleteAddressData?.ok && address?.id) {
+      console.log('Enter', address)
+      dispatch(deleteAddress({ addressId: address?.id }))
     }
-  }, [index])
+  }, [deleteAddressData])
 
   return (
     <div
@@ -29,12 +51,29 @@ const AddressCard = ({
     >
       <div className='flex flex-col gap-[5px] md:gap-[12px]'>
         <div className='flex justify-between items-start gap-2 md:gap-4'>
-          <AktivGroteskText
-            fontSize='text-[14px] md:text-[20px]'
-            fontWeight='font-[400]'
-            text='H.No. 2343, Rohini sector -3 , New Delhi -110085'
-          />
-          <button>
+          <div className='flex flex-col gap-2'>
+            {address?.address1 && (
+              <AktivGroteskText
+                fontSize='text-[14px] md:text-[20px]'
+                fontWeight='font-[400]'
+                text={`${address?.address1} - ${address?.pincode}`}
+              />
+            )}
+            {address?.address2 && (
+              <AktivGroteskText
+                fontSize='text-[14px] md:text-[20px]'
+                fontWeight='font-[400]'
+                text={address?.address2}
+              />
+            )}
+          </div>
+          <button
+            onClick={() => {
+              if (!address?.id) return
+              setOpenAddressModal(true)
+              setAddressId(address.id)
+            }}
+          >
             <SvgIcons
               name={ICONS_NAMES.PENCIL}
               className='w-[13px] h-[15px] md:w-[16px] md:h-[18px]'
@@ -44,13 +83,13 @@ const AddressCard = ({
         <AktivGroteskText
           fontSize='text-[14px] md:text-[20px]'
           fontWeight='font-[400]'
-          text='+91 - 9867362878'
+          text={`${address?.shipping_mobile}`}
         />
       </div>
       <div className='flex justify-between items-center gap-2'>
         <div className='flex items-center gap-2'>
           <Checkbox
-            checked={defaultAddress}
+            checked={address?.is_default ?? false}
             className='w-[16px] h-[16px] md:w-[19px] md:h-[19px]'
           />
           <AktivGroteskText
@@ -59,13 +98,26 @@ const AddressCard = ({
             text='Set as Default'
           />
         </div>
-        <button>
+        <button
+          onClick={() => {
+            if (!address?.id) return
+            handleDeleteAddress(address.id)
+          }}
+        >
           <SvgIcons
             name={ICONS_NAMES.TRASH}
             className='w-[15px] h-[15px] md:w-[18px] md:h-[18px]'
           />
         </button>
       </div>
+      {openAddressModal && (
+        <AddressModal
+          type={AddressModalType.EDIT}
+          addressId={addressId}
+          open={openAddressModal}
+          setOpen={setOpenAddressModal}
+        />
+      )}
     </div>
   )
 }
