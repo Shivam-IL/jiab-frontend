@@ -35,6 +35,7 @@ export const API_ROUTES = {
     },
     QUESTIONS: {
       POST: "/profile/questions",
+      GET: "/profile/questions",
     },
   },
   REFERRAL: {

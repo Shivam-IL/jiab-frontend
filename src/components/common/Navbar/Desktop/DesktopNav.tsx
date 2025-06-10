@@ -28,6 +28,7 @@ import SvgIcons from '../../SvgIcons'
 import useAppSelector from '@/hooks/useSelector'
 import { removeLocalStorageItem } from '@/utils'
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
+import useLogout from '@/hooks/useLogout'
 
 const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
@@ -184,6 +185,8 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const [referStatus2, setReferStatus2] = useState<boolean>(false)
   const [referStatus3, setReferStatus3] = useState<boolean>(false)
 
+  const { logoutHandler } = useLogout()
+
   const [invite1, setInvite1] = useState<boolean>(false)
   const [invite2, setInvite2] = useState<boolean>(false)
   const [inviteCode, setInviteCode] = useState<string>('')
@@ -199,15 +202,6 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   }
 
   const isLoggedIn: boolean = true
-
-  const logoutHandler = () => {
-    dispatch(updateIsAuthenticated(false))
-    dispatch(updateToken({ token: '' }))
-    removeLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN)
-    removeLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN)
-    dispatch(updateOtpStatus({ otpSent: false }))
-    dispatch(updateOtpFilled({ otpFilled: false }))
-  }
 
   const loginHandler = () => {
     dispatch(updateLoginModal({ loginModal: true }))

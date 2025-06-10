@@ -11,32 +11,44 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import GreenCTA from '@/components/GreenCTA'
 import SvgIcons from '../SvgIcons'
+import {
+  useGetUserProfileDetails,
+  useGetUserQuestions
+} from '@/api/hooks/ProfileHooks'
 
 interface IOption {
-  optionId: number
-  displayOrder: number
-  optionText: string
-  isSelected: boolean
+  id: number
+  display_order: number
+  option_text: string
 }
 
 interface IQuestion {
-  questionId: number
-  questionText: string
+  id: number
+  question_text: string
+  language_id: string
   isAnswered: boolean
   options: IOption[]
-  noofQuestion: number
+  ques_point: number
 }
 
 const HelpUsToKnowYourBetter = () => {
   const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
     null
   )
+  const [allQuestions, setAllQuestions] = useState<IQuestion[]>([])
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState<number>(0)
 
+  const { data: userProfileQuestions } = useGetUserQuestions()
+
   useEffect(() => {
-    setSelectedQuestion(PROFILE_QUESTIONS[0])
-    setCurrentQuestionNumber(1)
-  }, [])
+    if (userProfileQuestions?.ok) {
+      setAllQuestions(userProfileQuestions?.data)
+      setSelectedQuestion(userProfileQuestions?.data[0])
+      setCurrentQuestionNumber(1)
+    }
+  }, [userProfileQuestions])
+
+  console.log('userProfileQuestions = ', userProfileQuestions)
 
   return (
     <div className='bg-white w-full rounded-[5px] md:rounded-[20px] py-[16px] md:py-[44px] px-[14px] md:px-[33px] flex flex-col gap-[8px] md:gap-[20px]'>
@@ -47,11 +59,11 @@ const HelpUsToKnowYourBetter = () => {
       />
       <div>
         {selectedQuestion && (
-          <div className='w-full' key={selectedQuestion.questionId}>
+          <div className='w-full' key={selectedQuestion.id}>
             <div className='w-full flex'>
               <div className='min-w-[90%]'>
                 <AktivGroteskText
-                  text={selectedQuestion.questionText}
+                  text={selectedQuestion.question_text}
                   fontSize='text-[12px] md:text-[24px]'
                   fontWeight='font-[700]'
                 />
@@ -73,18 +85,15 @@ const HelpUsToKnowYourBetter = () => {
             <div className='pt-[24px] md:pt-[20px] pb-[34px] md:pb-[32px]'>
               <RadioGroup className='flex flex-col gap-[16px] md:gap-[20px]'>
                 {selectedQuestion?.options?.map((item: IOption) => (
-                  <div
-                    key={item.optionId}
-                    className='flex items-center space-x-2'
-                  >
+                  <div key={item.id} className='flex items-center space-x-2'>
                     <RadioGroupItem
                       className='w-[12px] h-[12px] md:w-[16px] md:h-[16px]'
-                      value={item?.optionText}
-                      id={item?.optionId.toString()}
+                      value={item?.option_text}
+                      id={item?.id.toString()}
                     />
-                    <label htmlFor={item?.optionId.toString()}>
+                    <label htmlFor={item?.id.toString()}>
                       <AktivGroteskText
-                        text={item?.optionText}
+                        text={item?.option_text}
                         fontSize='text-[12px] md:text-[20px]'
                         fontWeight='font-[400]'
                       />
@@ -112,9 +121,7 @@ const HelpUsToKnowYourBetter = () => {
                     if (currentQuestionNumber > 1) {
                       const newQuestionNumber = currentQuestionNumber - 1
                       setCurrentQuestionNumber(newQuestionNumber)
-                      setSelectedQuestion(
-                        PROFILE_QUESTIONS[newQuestionNumber - 1]
-                      )
+                      setSelectedQuestion(allQuestions[newQuestionNumber - 1])
                     }
                   }}
                   className='text-[rgba(0,0,0,0.5)] hover:bg-[#E0E0E0] transition-all duration-300 rounded-[100px] md:border-none border-[1px] md:p-0 border-[rgba(0,0,0,0.5)] text-[10px] font-[700] py-[6px] px-[36px]'
@@ -127,16 +134,18 @@ const HelpUsToKnowYourBetter = () => {
                   />
                   <SvgIcons
                     name={ICONS_NAMES.RIGHT_ARROW}
-                    className='md:w-[33px] md:h-[33px] hidden md:block rotate-180 fill-[rgba(0,0,0,0.3)]'
+                    className={`md:w-[33px] md:h-[33px] hidden md:block rotate-180 ${
+                      currentQuestionNumber === 1
+                        ? 'fill-[rgba(0,0,0,0.3)]'
+                        : 'fill-[#000000]'
+                    }`}
                   />
                 </button>
                 <button
                   onClick={() => {
-                    if (currentQuestionNumber < PROFILE_QUESTIONS?.length) {
+                    if (currentQuestionNumber < allQuestions?.length) {
                       setCurrentQuestionNumber(prev => prev + 1)
-                      setSelectedQuestion(
-                        PROFILE_QUESTIONS[currentQuestionNumber]
-                      )
+                      setSelectedQuestion(allQuestions[currentQuestionNumber])
                     }
                   }}
                   className='text-[rgba(0,0,0,0.5)] hover:bg-[#E0E0E0] transition-all duration-300 rounded-[100px] border-[1px] md:border-none md:p-0 border-[#000000] text-[10px] font-[700] py-[6px] px-[36px]'
@@ -149,7 +158,11 @@ const HelpUsToKnowYourBetter = () => {
                   />
                   <SvgIcons
                     name={ICONS_NAMES.RIGHT_ARROW}
-                    className='md:w-[33px] md:h-[33px] hidden md:block'
+                    className={`md:w-[33px] md:h-[33px] hidden md:block ${
+                      currentQuestionNumber === allQuestions?.length
+                        ? 'fill-[rgba(0,0,0,0.3)]'
+                        : 'fill-[#000000]'
+                    }`}
                   />
                 </button>
               </div>

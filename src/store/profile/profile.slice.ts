@@ -49,7 +49,31 @@ export interface UserState {
 const initialState: UserState = {
   current_balance: 0,
   rank: 0,
-  user: {} as User,
+  user: {
+    alternate_mobile: "",
+    avatar_id: 0,
+    contest_onboarding_status: false,
+    dob: "",
+    email: "",
+    gender: "",
+    home_onboarding_status: false,
+    id: "",
+    ip_address: "",
+    is_active: false,
+    is_profile_complete: false,
+    is_referral: false,
+    last_language_selection: 0,
+    name: "",
+    phone_number: "",
+    platform_master_id: 0,
+    profile_percentage: 0,
+    profile_picture: "",
+    refer_by: "",
+    referral_code: "",
+    refresh_token: "",
+    refresh_token_expiry_time: "",
+    registered_on: "",
+  } as User,
   addresses: [],
 };
 
@@ -117,6 +141,36 @@ const profileSlice = createSlice({
       newAddresses[indexOfAddress] = address;
       state.addresses = [...newAddresses];
     },
+    resetProfile: (state) => {
+      state.current_balance = 0;
+      state.rank = 0;
+      state.user = {
+        alternate_mobile: "",
+        avatar_id: 0,
+        contest_onboarding_status: false,
+        dob: "",
+        email: "",
+        gender: "",
+        home_onboarding_status: false,
+        id: "",
+        ip_address: "",
+        is_active: false,
+        is_profile_complete: false,
+        is_referral: false,
+        last_language_selection: 0,
+        name: "",
+        phone_number: "",
+        platform_master_id: 0,
+        profile_percentage: 0,
+        profile_picture: "",
+        refer_by: "",
+        referral_code: "",
+        refresh_token: "",
+        refresh_token_expiry_time: "",
+        registered_on: "",
+      };
+      state.addresses = [];
+    },
   },
 });
 
@@ -127,5 +181,6 @@ export const {
   updateAddresses,
   deleteAddress,
   editAddress,
+  resetProfile,
 } = profileSlice.actions;
 export default profileSlice.reducer;

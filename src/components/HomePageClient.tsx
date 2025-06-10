@@ -299,7 +299,7 @@ export default function HomePageClient () {
         {!isAuthenticated && <SurpriseMeLockModal />}
         {!isAuthenticated && loginModal && <Login />}
         {!isAuthenticated && otpSent && <OtpModal />}
-        {isAuthenticated && otpVerified && isFirstLogin && <Signup />}
+        {!isAuthenticated && otpVerified && isFirstLogin && <Signup />}
         {isAuthenticated && !isFirstLogin && <SurpriseMeModal />}
 
         <Banner

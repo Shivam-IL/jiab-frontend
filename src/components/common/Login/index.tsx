@@ -34,26 +34,18 @@ const Login = () => {
 
   const handleClose = useCallback(() => {
     dispatch(updateLoginModal({ loginModal: false }))
-  }, [dispatch,updateLoginModal])
+  }, [dispatch, updateLoginModal])
 
   useEffect(() => {
-    // Skip validation if number is empty
-    if (!mobileNumber) {
+    if (
+      mobileNumber?.length === 10 &&
+      mobileNumber?.[0] &&
+      parseInt(mobileNumber[0]) < 6
+    ) {
+      setError('Please enter a valid 10-digit mobile number')
+    } else if (mobileNumber?.length === 10 && mobileNumber?.[0] && parseInt(mobileNumber[0]) >= 6) {
       setError('')
-      return
-    }
-
-    const timeoutId = setTimeout(() => {
-      // Check if it's a valid 10-digit number
-      if (!/^\d{10}$/.test(mobileNumber)) {
-        setError('Please enter a valid 10-digit mobile number')
-      } else {
-        setError('')
-      }
-    }, 500)
-
-    // Cleanup timeout on component unmount or when mobileNumber changes
-    return () => clearTimeout(timeoutId)
+    } 
   }, [mobileNumber])
 
   const handleGetOTP = () => {
@@ -69,11 +61,11 @@ const Login = () => {
         handleClose()
       }
     }
-  }, [isSuccess, data, dispatch,handleClose,mobileNumber])
+  }, [isSuccess, data, dispatch, handleClose, mobileNumber])
 
   useEffect(() => {
     handleDataUpdation()
-  }, [isPending,handleDataUpdation])
+  }, [isPending, handleDataUpdation])
 
   console.log(data, isPending, isSuccess)
 
@@ -104,7 +96,7 @@ const Login = () => {
       </div>
       <div className={`flex flex-col gap-[24px] pt-[50px]`}>
         <div className='flex flex-col justify-center items-center gap-[8px]'>
-          <AuthHeading title='LOGIN' />
+          <AuthHeading title='LOG IN' />
         </div>
         <div className='flex flex-col gap-[28px]'>
           <Input
@@ -114,12 +106,15 @@ const Login = () => {
             placeholder='Mobile Number*'
             error={error}
             onChange={(key, value) => {
-              setMobileNumber(value)
+              const numericValue = value?.replace(/[^0-9]/g, '')
+              const valueString = numericValue?.slice(0, 10)
+              setMobileNumber(valueString)
             }}
             type='text'
           />
 
           <GreenCTA
+            disabled={isPending}
             className=''
             onClick={() => {
               handleGetOTP()

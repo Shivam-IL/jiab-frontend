@@ -94,12 +94,11 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
         setHideNavbar(false)
       }
     }
-  }, [pathName,setHideNavbar])
+  }, [pathName, setHideNavbar])
 
   useEffect(() => {
     handleHideNavbarForMobile()
-  }, [pathName,handleHideNavbarForMobile])
-
+  }, [pathName, handleHideNavbarForMobile])
 
   return (
     <>
@@ -138,7 +137,11 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
           <div className='flex items-center gap-4 absolute right-[17px]'>
             {/* Bell Icon Conditional Rendering */}
             {isLoggedIn ? (
-              <Link id={BoxIds.NOTIFICATIONS} className='relative' href='/notifications'>
+              <Link
+                id={BoxIds.NOTIFICATIONS}
+                className='relative'
+                href='/notifications'
+              >
                 <Bell className='h-6 w-6' />
                 <div className='absolute -top-0.5 right-0 bg-yellow text-black rounded-full w-[12px] h-[12px] flex items-center justify-center text-[6.86px] font-semibold'>
                   10

@@ -9,7 +9,9 @@ const GreenCTA: React.FC<IGreenCTA> = ({
   fontSize = 'text-[16px] md:text-[20px]',
   fontWeight = 'md:font-[500] font-[700]',
   className = 'w-full',
-  disabled = false
+  disabled = false,
+  children,
+  childrenPosition
 }) => {
   return (
     <button
@@ -23,7 +25,9 @@ const GreenCTA: React.FC<IGreenCTA> = ({
         aktivGrotesk.className
       }`}
     >
+      {childrenPosition==='left' && children}
       {text}
+      {childrenPosition==='right' && children}
     </button>
   )
 }

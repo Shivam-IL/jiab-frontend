@@ -148,6 +148,21 @@ export class ProfileService extends MainService {
     }
   }
 
+  public async getUserQuestions() {
+    try {
+      const response = await apiClient.get(API_ROUTES.USER.QUESTIONS.GET, {
+        headers: this.getAuthHeaders(),
+      });
+      const data = response.data;
+      if (data?.success) {
+        return SuccessResponse(data?.data);
+      }
+      return ErrorResponse(data?.message || "Invalid User Id");
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
   public async submitUserQuestions({ questions }: TSubmitQuestions) {
     try {
       const response = await apiClient.post(
