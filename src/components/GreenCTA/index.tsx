@@ -21,7 +21,7 @@ const GreenCTA: React.FC<IGreenCTA> = ({
       onClick={onClick}
       className={`${className} ${
         disabled
-          ? "cursor-not-allowed bg-[#73C392]"
+          ? "cursor-not-allowed bg-[#73C392] text-white"
           : isCoinIcon
           ? "hover:bg-yellow/60  bg-yellow text-black"
           : "hover:bg-[#73C392]  bg-[#11A64B] text-white"
