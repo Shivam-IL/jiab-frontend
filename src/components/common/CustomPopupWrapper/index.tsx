@@ -19,8 +19,14 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
   children,
   childrenPosition
 }) => {
+  console.log('open', open, onClose)
   return (
-    <CustomDialogWrapper open={open} onClose={onClose}>
+    <CustomDialogWrapper
+      open={open}
+        onClose={() => {
+          onClose()
+        }}
+    >
       <div className='w-full  h-full flex flex-col gap-[16px] items-center justify-center'>
         <div className='flex flex-col items-center justify-center w-[50px] h-[50px] rounded-full bg-[#FFE200]'>
           <SvgIcons name={icon} className='w-[25px] h-[25px]' />

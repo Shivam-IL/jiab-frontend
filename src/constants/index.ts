@@ -590,6 +590,7 @@ export const PROTECTED_ROUTES = [
   "/pick-mood",
   "/hall-of-lame",
   "/scroll-and-lol",
+  "/profile",
 ];
 
 export const LOCAL_IMAGES = {

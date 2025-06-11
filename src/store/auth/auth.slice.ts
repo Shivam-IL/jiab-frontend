@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 export interface AuthState {
   phoneNumber: string;
   loginModal: boolean;
@@ -12,6 +11,7 @@ export interface AuthState {
   crossModal: boolean;
   token: string;
   isFirstLogin: boolean;
+  surpriseMe: boolean;
 }
 
 const initialState: AuthState = {
@@ -25,6 +25,7 @@ const initialState: AuthState = {
   phoneNumber: "",
   token: "",
   isFirstLogin: false,
+  surpriseMe: true,
 };
 
 const authSlice = createSlice({
@@ -61,6 +62,9 @@ const authSlice = createSlice({
     updateIsFirstLogin: (state, action) => {
       state.isFirstLogin = action.payload.isFirstLogin;
     },
+    updateSurpriseMe: (state, action) => {
+      state.surpriseMe = action.payload.surpriseMe;
+    },
     resetAuth: (state) => {
       state.phoneNumber = "";
       state.loginModal = false;
@@ -71,6 +75,7 @@ const authSlice = createSlice({
       state.signupDone = false;
       state.crossModal = false;
       state.token = "";
+      state.surpriseMe = true;
     },
   },
 });
@@ -87,5 +92,6 @@ export const {
   updateIsFirstLogin,
   updateOtpVerified,
   resetAuth,
+  updateSurpriseMe,
 } = authSlice.actions;
 export default authSlice.reducer;

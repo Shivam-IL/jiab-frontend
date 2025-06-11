@@ -8,7 +8,6 @@ import GreenCTA from '@/components/GreenCTA'
 import EditProfileImage from '@/components/EditProfileImage'
 import useAppDispatch from '@/hooks/useDispatch'
 import {
-  
   updateIsAuthenticated,
   updateIsFirstLogin,
   updateOtpFilled,
@@ -41,6 +40,7 @@ const Signup = () => {
   const [nameError, setNameError] = useState<string>('')
   const [emailError, setEmailError] = useState<string>('')
   const [inviteCodeError, setInviteCodeError] = useState<string>('')
+  const [acceptTermsError, setAcceptTermsError] = useState<string>('')
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false)
 
   const { isFirstLogin, phoneNumber, otpVerified } = useAppSelector(
@@ -135,13 +135,16 @@ const Signup = () => {
 
   const isFormValid = () => {
     if (userData?.name === '') {
-      setNameError('Name is required')
-      return false
+      setNameError('Please enter a valid name.')
     }
     if (userData?.email === '') {
-      setEmailError('Email is required')
+      setEmailError('Please enter a valid Email ID.')
+    }
+    if (!userData?.agree) {
+      setAcceptTermsError('Please accept the terms and conditions')
       return false
     }
+
     return (
       userData.name.length > 0 &&
       userData.email.length > 0 &&
@@ -150,6 +153,12 @@ const Signup = () => {
       !inviteCodeError
     )
   }
+
+  useEffect(()=>{
+    if(userData?.agree){
+      setAcceptTermsError('')
+    }
+  },[userData?.agree])
 
   const removeAuthentication = () => {
     dispatch(updateIsFirstLogin({ isFirstLogin: false }))
@@ -166,7 +175,7 @@ const Signup = () => {
     if (isFirstLogin) {
       setUserData({
         ...userData,
-        number: phoneNumber
+        number: `+91-${phoneNumber}`
       })
     }
   }, [isFirstLogin])
@@ -184,7 +193,7 @@ const Signup = () => {
         avatar: userData.profileImage,
         email: userData.email,
         full_name: userData.name,
-        mobile_number: userData.number,
+        mobile_number: phoneNumber,
         referral_code: userData.invite_code ?? ''
       }
       signupToCoke(formData)
@@ -215,7 +224,12 @@ const Signup = () => {
   }, [signupData])
 
   return (
-    <LoginSignupWrapper open={open} setOpen={setOpen} logo={true}>
+    <LoginSignupWrapper open={open} setOpen={() => {
+      setOpen(false)
+      if (isFirstLogin) {
+        removeAuthentication()
+      }
+    }} logo={true}>
       <div
         className={`flex flex-col gap-[24px] pt-[28px]`}
         onClick={handleContainerClick}
@@ -259,7 +273,7 @@ const Signup = () => {
             required={true}
             name='name'
             value={userData.name}
-            placeholder='Full Name*'
+            placeholder='Full Name'
             onChange={handleChange}
             type='text'
             error={nameError}
@@ -277,7 +291,7 @@ const Signup = () => {
             name='email'
             required={true}
             value={userData.email}
-            placeholder='Email*'
+            placeholder='Email ID'
             onChange={handleChange}
             type='email'
             error={emailError}
@@ -285,7 +299,7 @@ const Signup = () => {
           <Input
             name='invite_code'
             value={userData.invite_code}
-            placeholder='Referral Invite Code (Optional)'
+            placeholder='Referral Invite Code'
             onChange={handleChange}
             type='text'
             error={inviteCodeError}
@@ -306,15 +320,18 @@ const Signup = () => {
               <span className='text-[#003087] font-[700] cursor-pointer'>
                 Terms and Conditions
               </span>{' '}
-              and{' '}
+              and{' '}  
               <span className='font-[700] text-[#003087] cursor-pointer'>
                 Privacy Policy
               </span>
               .
             </span>
           </div>
+        {acceptTermsError && (
+          <span className='text-[#FD0202] font-[400] text-[12px]'>{acceptTermsError}</span>
+        )}
         </div>
-        <GreenCTA
+        <GreenCTA 
           onClick={() => {
             handleSignup()
           }}

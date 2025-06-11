@@ -56,14 +56,14 @@ const AddressCard = ({
               <AktivGroteskText
                 fontSize='text-[14px] md:text-[20px]'
                 fontWeight='font-[400]'
-                text={`${address?.address1} - ${address?.pincode}`}
-              />
-            )}
-            {address?.address2 && (
-              <AktivGroteskText
-                fontSize='text-[14px] md:text-[20px]'
-                fontWeight='font-[400]'
-                text={address?.address2}
+                text={`${address?.address1 ? `${address.address1} ,` : ''} 
+                ${address?.address2 ? `${address.address2} ,` : ''} ${
+                  address?.nearest_landmark
+                    ? `${address.nearest_landmark} ,`
+                    : ''
+                } ${address?.city ? `${address.city} ,` : ''} ${
+                  address?.state ? `${address.state}` : ''
+                } ${address?.pincode ? `${address.pincode}` : ''}`}
               />
             )}
           </div>

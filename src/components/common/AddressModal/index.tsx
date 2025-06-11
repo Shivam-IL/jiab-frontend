@@ -17,50 +17,6 @@ import { AddressModalType } from '@/types'
 import { editAddress, updateAddresses } from '@/store/profile/profile.slice'
 import useAppSelector from '@/hooks/useSelector'
 
-const errorConfig: Record<
-  string,
-  {
-    minLength: number
-    maxLength?: number
-    type: 'text' | 'number'
-    errorMessage: string
-  }
-> = {
-  address_line_1: {
-    minLength: 6,
-    maxLength: 100,
-    type: 'text',
-    errorMessage: 'Address Line 1 is required'
-  },
-  nearest_landmark: {
-    minLength: 5,
-    type: 'text',
-    errorMessage: 'Nearest Landmark is required'
-  },
-  alternate_phone_number: {
-    minLength: 10,
-    maxLength: 10,
-    type: 'number',
-    errorMessage: 'Invalid Phone Number'
-  },
-  pincode: {
-    minLength: 6,
-    maxLength: 6,
-    type: 'number',
-    errorMessage: 'Invalid Pincode'
-  },
-  state: {
-    minLength: 5,
-    type: 'text',
-    errorMessage: 'State is required'
-  },
-  city: {
-    minLength: 4,
-    type: 'text',
-    errorMessage: 'City is required'
-  }
-}
-
 const AddressModal: React.FC<IAddressModal> = ({
   open,
   setOpen,
@@ -80,8 +36,6 @@ const AddressModal: React.FC<IAddressModal> = ({
 
   const [error, setError] = useState<IAddressError>({
     address_line_1: '',
-    nearest_landmark: '',
-    alternate_phone_number: '',
     pincode: '',
     state: '',
     city: ''
@@ -101,41 +55,39 @@ const AddressModal: React.FC<IAddressModal> = ({
   } = useEditAddress()
 
   const handleChange = (key: string, value: string | boolean) => {
-    setData({ ...data, [key]: value })
-    if (key in errorConfig) {
-      if (
-        value === '' &&
-        (key === 'alternate_phone_number' || key === 'pincode')
-      ) {
-        setError({ ...error, [key]: '' })
-      } else if (
-        validateInput({
-          type: errorConfig[key as keyof typeof errorConfig].type,
-          value: value as string,
-          minLength: errorConfig[key as keyof typeof errorConfig]?.minLength,
-          maxLength:
-            errorConfig[key as keyof typeof errorConfig]?.maxLength ?? Infinity
-        })
-      ) {
-        setError({ ...error, [key]: '' })
-      } else {
-        setError({
-          ...error,
-          [key]: errorConfig[key as keyof typeof errorConfig].errorMessage
-        })
-      }
+    if (key === 'pincode') {
+      const numericValue = value?.toString()?.replace(/[^0-9]/g, '')
+      const valueString = numericValue?.slice(0, 6)
+      setData({ ...data, [key]: valueString })
+    } else {
+      setData({ ...data, [key]: value })
     }
   }
 
   const submitAddress = () => {
     let errorValidation = false
-    Object.entries(errorConfig).forEach(([key, value]) => {
-      if (data[key as keyof IAddressData] === '') {
-        console.log(key, value)
-        errorValidation = true
-        setError(prev => ({ ...prev, [key]: value.errorMessage }))
-      }
-    })
+    if (data?.address_line_1==='') {
+      setError(prev=>({...prev, address_line_1: 'Address Line 1 is required'}))
+      errorValidation = true
+    }
+    if (data?.pincode?.length < 6) {
+      setError(prev=>({...prev, pincode: 'Invalid Pincode'}))
+      errorValidation = true
+    }
+    if (data?.state==='') {
+      setError(prev=>({...prev, state: 'State is required'}))
+      errorValidation = true
+    }
+    if (data?.city==='') {
+      setError(prev=>({...prev, city: 'City is required'}))
+      errorValidation = true
+    }
+
+    if(errorValidation){
+      return
+    }
+
+
     if (!errorValidation) {
       const addressData = {
         address1: data?.address_line_1 || '',
@@ -157,7 +109,6 @@ const AddressModal: React.FC<IAddressModal> = ({
     }
   }
 
-  console.log('addNewAddressData', addNewAddressData)
   useEffect(() => {
     if (!isPending && addNewAddressData?.ok) {
       const { data } = addNewAddressData ?? {}
@@ -202,6 +153,7 @@ const AddressModal: React.FC<IAddressModal> = ({
     }
   }, [addressId])
 
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className='rounded-[5px] md:max-w-[401px] flex flex-col px-0 gap-[18px] md:gap-[28px]  py-[20px] md:pt-[28px] md:pb-[20px] max-w-[358px]'>
@@ -211,7 +163,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               type === AddressModalType.ADD ? 'Add Address' : 'Edit Address'
             }
             className='leading-tight'
-            fontSize='text-[16px]'
+            fontSize='text-[16px] md:text-[20px]'
             fontWeight='font-[700]'
           />
           <button
@@ -248,7 +200,6 @@ const AddressModal: React.FC<IAddressModal> = ({
               placeholder='Nearest Landmark'
               value={data.nearest_landmark}
               onChange={handleChange}
-              error={error.nearest_landmark}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
             />
             <Input
@@ -256,7 +207,6 @@ const AddressModal: React.FC<IAddressModal> = ({
               type='text'
               placeholder='Alternate Phone Number'
               value={data.alternate_phone_number}
-              error={error.alternate_phone_number}
               onChange={handleChange}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
             />

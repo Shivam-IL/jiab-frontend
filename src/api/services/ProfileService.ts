@@ -165,16 +165,17 @@ export class ProfileService extends MainService {
 
   public async submitUserQuestions({ questions }: TSubmitQuestions) {
     try {
+      const endpoint = `${API_ROUTES.USER.QUESTIONS.POST}${questions?.[0]?.question_id}`;
       const response = await apiClient.post(
-        API_ROUTES.USER.QUESTIONS.POST,
-        { ...questions },
+        endpoint,
+        questions,
         {
           headers: this.getAuthHeaders(),
         }
       );
       const data = response.data;
       if (data?.success) {
-        return SuccessResponse(data);
+        return SuccessResponse(data?.data);
       }
       return ErrorResponse(data?.message || "Invalid Questions Data");
     } catch (error) {

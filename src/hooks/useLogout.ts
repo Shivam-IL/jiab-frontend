@@ -17,8 +17,7 @@ const useLogout = () => {
   const logoutHandler = () => {
     dispatch(resetAuth());
     dispatch(resetProfile());
-    removeLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
-    removeLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN);
+    localStorage.clear();
   };
 
   return { logoutHandler };

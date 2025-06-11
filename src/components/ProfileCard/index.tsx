@@ -49,7 +49,8 @@ const ProfileCard = () => {
       const newInfoData = USER_INFO_CARD_DATA.map(item => {
         const itemKey = item.type as keyof User
         const value = user[itemKey]
-        if (value !== undefined && value !== null) {
+        console.log('value', value)
+        if (value !== undefined && value !== null && value) {
           return {
             ...item,
             text:

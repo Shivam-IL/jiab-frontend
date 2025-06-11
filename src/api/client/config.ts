@@ -1,6 +1,5 @@
 export const API_CONFIG = {
-  baseURL:
-    process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -10,6 +9,8 @@ export const API_CONFIG = {
 export const LOCAL_STORAGE_KEYS = {
   ACCESS_TOKEN: "accessToken",
   REFRESH_TOKEN: "refreshToken",
+  USER_DETAILS: "userDetails",
+  ADDRESSES: "addressesDetails",
 };
 
 export const API_ROUTES = {
@@ -22,7 +23,7 @@ export const API_ROUTES = {
   USER: {
     PROFILE: {
       GET: "/profile/",
-      EDIT: "/profile",
+      EDIT: "/profile/",
     },
     ADDRESS: {
       GET: "/profile/address",
@@ -34,7 +35,7 @@ export const API_ROUTES = {
       GET: "/profile/balance",
     },
     QUESTIONS: {
-      POST: "/profile/questions",
+      POST: "/profile/questions/",
       GET: "/profile/questions",
     },
   },
@@ -49,5 +50,9 @@ export const API_ROUTES = {
   },
   COMIC_COINS: {
     GET_COINS: "/comic-coins",
-  }
+  },
+  JOKES: {
+    GET_JOKES: "/joke/jokes",
+    GET_SURPRISE_ME: "/joke/surprise-me",
+  },
 };

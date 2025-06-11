@@ -11,14 +11,15 @@ import UserGeneratedJokecComponent from '@/components/UserGeneratedJokecComponen
 import React, { useEffect, useState } from 'react'
 import { BreakTheIceExitPopup } from '@/components/ExitPopUps'
 import useAppSelector from '@/hooks/useSelector'
-import { useGetUserProfileDetails } from '@/api/hooks/ProfileHooks'
 import { useRouter } from 'next/navigation'
+import { updateBreakTheIceModal } from '@/store/profile/profile.slice'
+import useAppDispatch from '@/hooks/useDispatch'
 
 const ProfilePage = () => {
-  const [breakTheIce, setBreakTheIce] = useState<boolean>(true)
 
   const router = useRouter()
-  const { user } = useAppSelector(state => state.profile)
+  const dispatch = useAppDispatch()
+  const { user,breakTheIceModal } = useAppSelector(state => state.profile)
 
   return (
     <ScreenWrapper>
@@ -32,10 +33,12 @@ const ProfilePage = () => {
           <UserGeneratedJokecComponent />
         </div>
       </div>
-      {breakTheIce && (
+      {breakTheIceModal && (
         <BreakTheIceExitPopup
-          open={breakTheIce}
-          onClose={() => setBreakTheIce(false)}
+          open={breakTheIceModal}
+          onClose={() => {
+            dispatch(updateBreakTheIceModal({ breakTheIceModal: false }))
+          }}
         />
       )}
     </ScreenWrapper>
