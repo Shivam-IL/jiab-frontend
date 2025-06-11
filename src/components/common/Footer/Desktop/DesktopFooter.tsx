@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useCMSData } from "@/data";
 
 const currentYear = new Date().getFullYear();
 
 const DesktopFooter = () => {
+  const [mounted, setMounted] = useState(false);
+
+  // Use effect to handle client-side hydration
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Get mapped CMS data using our data layer
+  const cmsData = useCMSData(mounted);
+
   return (
     <footer className="bg-black w-full h-[440px] py-[60px] text-white">
       <div className="container mx-auto h-full flex flex-col">
@@ -20,19 +31,24 @@ const DesktopFooter = () => {
         <div className="w-full flex-1 border-b border-white flex items-center justify-between">
           <div className="my-[43px]">
             <span className="uppercase text-[14px] font-semibold">
-              Need Help?
+              {cmsData.webFooter.needHelpTextHeading}
             </span>
             <div className="grid grid-cols-2 grid-rows-2 gap-x-[100px] gap-y-[24px] mt-[18px]">
-              <Link href="/faqs">FAQs</Link>
-              <Link href="/terms-and-conditions">Terms & Conditions</Link>
-              <Link href="/sitemap">Sitemap</Link>
-              <Link href="/privacy-policy">Privacy Policy</Link>
+              <Link href="/faqs">{cmsData.webFooter.faqText}</Link>
+              <Link href="/terms-and-conditions">
+                {cmsData.webFooter.termsAndConditionsText}
+              </Link>
+              <Link href="/sitemap">{cmsData.webFooter.sitemapText}</Link>
+              <Link href="/privacy-policy">
+                {cmsData.webFooter.privacyPolicy}
+              </Link>
             </div>
           </div>
           <div className="my-[43px]">
             <div className="flex justify-center gap-6 pb-[16.18px]">
               {[
                 {
+                  id: 1,
                   href: "https://www.facebook.com/sprite",
                   icon: (
                     <svg
@@ -51,6 +67,7 @@ const DesktopFooter = () => {
                   label: "Facebook",
                 },
                 {
+                  id: 2,
                   href: "https://www.instagram.com/sprite",
                   icon: (
                     <svg
@@ -69,6 +86,7 @@ const DesktopFooter = () => {
                   label: "Instagram",
                 },
                 {
+                  id: 3,
                   href: "https://www.youtube.com/sprite",
                   icon: (
                     <svg
@@ -87,6 +105,7 @@ const DesktopFooter = () => {
                   label: "YouTube",
                 },
                 {
+                  id: 4,
                   href: "https://www.whatsapp.com",
                   icon: (
                     <svg
@@ -104,9 +123,9 @@ const DesktopFooter = () => {
                   ),
                   label: "WhatsApp",
                 },
-              ].map((social, index) => (
+              ].map((social) => (
                 <a
-                  key={index}
+                  key={social.id}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -120,7 +139,7 @@ const DesktopFooter = () => {
           </div>
         </div>
         <div className="w-full flex-0.5 content-end text-right mt-[41px]">
-          © {currentYear} The Coca‑Cola Company. All rights reserved.
+          {cmsData.webFooter.footerEndHeading}
         </div>
       </div>
     </footer>

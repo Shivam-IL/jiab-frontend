@@ -1,8 +1,4 @@
 "use client";
-
-// Home page client component migrated from src/app/page.tsx.
-// All existing client-side logic remains unchanged.
-
 import { useEffect, useState } from "react";
 import Login from "@/components/common/Login";
 import OtpModal from "@/components/common/OtpModal";
@@ -10,6 +6,7 @@ import Signup from "@/components/common/Signup";
 import SurpriseMeLockModal from "@/components/common/SurpriseMeLockModal";
 import SurpriseMeModal from "@/components/common/SurpriseMeModal";
 import useAppSelector from "@/hooks/useSelector";
+import { useCMSData } from "@/data";
 
 import Banner from "@/components/common/Banner/Banner";
 import bannerImage from "../../public/assets/images/banner-top.svg";
@@ -34,13 +31,24 @@ import { updateSurpriseMe } from '@/store/auth/auth.slice'
 import useAppDispatch from '@/hooks/useDispatch'
 
 export default function HomePageClient() {
-  const { otpSent, otpVerified, loginModal, signupDone, crossModal } =
+  const { otpSent, otpVerified, loginModal, crossModal } =
     useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch()
   const width = useWindowWidth();
 
   // Tour Guide State - REMOVED unused variables
   const [isClient, setIsClient] = useState(false);
+
+  const [mounted, setMounted] = useState(false);
+
+  // Use effect to handle client-side hydration
+  useEffect(() => {
+    setMounted(true);
+    setIsClient(true);
+  }, []);
+
+  // Get mapped CMS data using our data layer
+  const cmsData = useCMSData(mounted);
 
   // Path to the thumbnail image - you'll need to ensure this exists in your project
   const thumbnailPath = "/videos/thumbnail.jpg";
@@ -320,19 +328,21 @@ export default function HomePageClient() {
         />
         {/* Video Scroll */}
         <Header
-          title="SCROLL & LOL"
+          title={cmsData.homePage.scrollAndLolText}
           className="md:mt-[40px] md:mb-[24px] mt-[20px] mb-[16px]"
           viewAllUrl="/scroll-and-lol"
+          viewAllButtonText={cmsData.homePage.viewAllButtonText}
         />
         <div className="video-section">
           <VideoScroll videos={videoData} />
         </div>
         {/* Pick your mood */}
         <Header
-          title="Pick your mood"
+          title={cmsData.homePage.pickYourMoodHeading}
           className="md:mb-[24px] mb-[16px] md:mt-0 mt-[20px]"
           viewAllUrl="/pick-mood"
-          description="Pick your Delulu, Get your Solulu"
+          viewAllButtonText={cmsData.homePage.viewAllButtonText}
+          description={cmsData.homePage.pickYourMoodSubheading}
         />
         <div id={BoxIds.PICK_YOUR_MOOD} className="categories-section">
           <Carousel
@@ -397,111 +407,135 @@ export default function HomePageClient() {
           </Link>
         </div>
 
-        {/* Joke Box */}
-        <Header
-          title="Joke Box"
-          className="md:mb-[24px] mb-[16px] md:mt-0 mt-[20px]"
-          viewAllUrl="/user-generated-jokes"
-          description="Jokes For you, Created By You"
-        />
-        {isClient && (
+        {isAuthenticated && (
           <>
-            <div className="md:mx-0 mx-4 mt-[20px] mb-[20px]">
-              <div className="flex justify-center w-full">
-                <div className="flex items-center bg-white rounded-full mb-4 p-1 relative">
-                  <div
-                    className={`absolute transition-all duration-300 ease-in-out top-1 h-[calc(100%-8px)] w-[90px] rounded-full bg-green ${
-                      activeTab === "Latest" ? "left-1" : "left-[94px]"
-                    }`}
-                  />
-                  <button
-                    onClick={() => setActiveTab("Latest")}
-                    className={`w-[90px] h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
-                      activeTab === "Latest"
-                        ? "text-white"
-                        : "text-gray-600 hover:text-black"
-                    }`}
-                  >
-                    Latest
-                  </button>
-                  <button
-                    onClick={() => setActiveTab("Trending")}
-                    className={`w-[90px] h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
-                      activeTab === "Trending"
-                        ? "text-white"
-                        : "text-gray-600 hover:text-black"
-                    }`}
-                  >
-                    Trending
-                  </button>
+            {/* Joke Box */}
+            <Header
+              title={cmsData.homePage.jokeBoxHeading}
+              className="md:mb-[24px] mb-[16px] md:mt-0 mt-[20px]"
+              viewAllUrl="/user-generated-jokes"
+              viewAllButtonText={cmsData.homePage.viewAllButtonText}
+              description={cmsData.homePage.jokeBoxSubheading}
+            />
+            {isClient && (
+              <div className="md:mx-0 mx-4 mt-[20px] mb-[20px]">
+                <div className="flex justify-center w-full">
+                  <div className="flex items-center bg-white rounded-full mb-4 p-1 relative">
+                    <div
+                      className={`absolute transition-all duration-300 ease-in-out top-1 h-[calc(100%-8px)] w-[90px] rounded-full bg-green ${
+                        activeTab === "Latest" ? "left-1" : "left-[94px]"
+                      }`}
+                    />
+                    <button
+                      onClick={() => setActiveTab("Latest")}
+                      className={`w-[90px] h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
+                        activeTab === "Latest"
+                          ? "text-white"
+                          : "text-gray-600 hover:text-black"
+                      }`}
+                    >
+                      {cmsData.homePage.latestButtonText}
+                    </button>
+                    <button
+                      onClick={() => setActiveTab("Trending")}
+                      className={`w-[90px] h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
+                        activeTab === "Trending"
+                          ? "text-white"
+                          : "text-gray-600 hover:text-black"
+                      }`}
+                    >
+                      {cmsData.homePage.trendingButtonText}
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <div className="md:grid md:grid-cols-3 flex justify-start overflow-x-scroll scrollbar-hide md:gap-[8px] gap-4">
-                {width < 768 ? (
-                  <Carousel
-                    setApi={setJokeBoxApi}
-                    opts={{
-                      align: "start",
-                      loop: false,
-                      skipSnaps: true,
-                    }}
-                    className="w-full"
-                  >
-                    <CarouselContent>
-                      <CarouselItem className="basis-auto">
-                        <div className="max-w-[320px] mx-auto">
-                          <UgcCard />
-                        </div>
-                      </CarouselItem>
-                      <CarouselItem className="basis-auto">
-                        <div className="max-w-[320px] mx-auto">
-                          <UgcCard />
-                        </div>
-                      </CarouselItem>
-                      <CarouselItem className="basis-auto">
-                        <div className="max-w-[320px] mx-auto">
-                          <UgcCard />
-                        </div>
-                      </CarouselItem>
-                    </CarouselContent>
-                  </Carousel>
-                ) : (
-                  <>
-                    <UgcCard />
-                    <UgcCard />
-                    <UgcCard />
-                  </>
+                <div className="md:grid md:grid-cols-3 flex justify-start overflow-x-scroll scrollbar-hide md:gap-[8px] gap-4">
+                  {width < 768 ? (
+                    <Carousel
+                      setApi={setJokeBoxApi}
+                      opts={{
+                        align: "start",
+                        loop: false,
+                        skipSnaps: true,
+                      }}
+                      className="w-full"
+                    >
+                      <CarouselContent>
+                        <CarouselItem className="basis-auto">
+                          <div className="max-w-[320px] mx-auto">
+                            <UgcCard
+                              disclaimerText={
+                                cmsData.homePage.jokeDisclaimerText
+                              }
+                            />
+                          </div>
+                        </CarouselItem>
+                        <CarouselItem className="basis-auto">
+                          <div className="max-w-[320px] mx-auto">
+                            <UgcCard
+                              disclaimerText={
+                                cmsData.homePage.jokeDisclaimerText
+                              }
+                            />
+                          </div>
+                        </CarouselItem>
+                        <CarouselItem className="basis-auto">
+                          <div className="max-w-[320px] mx-auto">
+                            <UgcCard
+                              disclaimerText={
+                                cmsData.homePage.jokeDisclaimerText
+                              }
+                            />
+                          </div>
+                        </CarouselItem>
+                      </CarouselContent>
+                    </Carousel>
+                  ) : (
+                    <>
+                      <UgcCard
+                        disclaimerText={cmsData.homePage.jokeDisclaimerText}
+                      />
+                      <UgcCard
+                        disclaimerText={cmsData.homePage.jokeDisclaimerText}
+                      />
+                      <UgcCard
+                        disclaimerText={cmsData.homePage.jokeDisclaimerText}
+                      />
+                    </>
+                  )}
+                </div>
+                {width < 768 && (
+                  <div className="flex justify-center md:gap-2 gap-[1.77px] mt-[8px]">
+                    {Array.from({ length: jokeBoxPageCount }).map(
+                      (_, index) => (
+                        <button
+                          key={`joke-slide-${index}`}
+                          className={`h-1 rounded-full transition-all duration-300 ${
+                            index === jokeBoxCurrent
+                              ? "w-[17.73px] bg-black"
+                              : "w-[8.86px] bg-gray-300"
+                          }`}
+                          onClick={() => goToJokeBoxPage(index)}
+                          aria-label={`Go to joke page ${index + 1}`}
+                        />
+                      )
+                    )}
+                  </div>
                 )}
               </div>
-              {width < 768 && (
-                <div className="flex justify-center md:gap-2 gap-[1.77px] mt-[8px]">
-                  {Array.from({ length: jokeBoxPageCount }).map((_, index) => (
-                    <button
-                      key={index}
-                      className={`h-1 rounded-full transition-all duration-300 ${
-                        index === jokeBoxCurrent
-                          ? "w-[17.73px] bg-black"
-                          : "w-[8.86px] bg-gray-300"
-                      }`}
-                      onClick={() => goToJokeBoxPage(index)}
-                      aria-label={`Go to joke page ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
+            )}
           </>
         )}
 
         {/* Follow Sprite */}
         <div className="bg-[#121212] text-white pt-[13.19px] mx-4 rounded-lg mb-[90px] block md:hidden">
           <h2 className="text-center text-md font-medium mb-[13px]">
-            Follow Sprite<sup>®</sup>
+            {cmsData.homePage.followSprite}
           </h2>
           <div className="flex justify-center gap-6 pb-[16.18px]">
             {[
               {
+                id: 1,
                 href: "https://www.facebook.com/sprite",
                 icon: (
                   <SvgIcons name={ICONS_NAMES.FACEBOOK} className="w-5 h-5" />
@@ -509,6 +543,7 @@ export default function HomePageClient() {
                 label: "Facebook",
               },
               {
+                id: 2,
                 href: "https://www.instagram.com/sprite",
                 icon: (
                   <SvgIcons name={ICONS_NAMES.INSTAGRAM} className="w-5 h-5" />
@@ -516,6 +551,7 @@ export default function HomePageClient() {
                 label: "Instagram",
               },
               {
+                id: 3,
                 href: "https://www.youtube.com/sprite",
                 icon: (
                   <SvgIcons name={ICONS_NAMES.YOUTUBE} className="w-5 h-5" />
@@ -523,15 +559,16 @@ export default function HomePageClient() {
                 label: "YouTube",
               },
               {
+                id: 4,
                 href: "https://www.whatsapp.com",
                 icon: (
                   <SvgIcons name={ICONS_NAMES.WHATSAPP} className="w-5 h-5" />
                 ),
                 label: "WhatsApp",
               },
-            ].map((social, index) => (
+            ].map((social) => (
               <a
-                key={index}
+                key={social.id}
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"

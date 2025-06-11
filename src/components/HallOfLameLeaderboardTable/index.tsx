@@ -1,32 +1,36 @@
 import React from "react";
 import AktivGroteskText from "../common/AktivGroteskText";
-import { ICONS_NAMES, WEEKLY_TOP_JOKES } from "@/constants";
+import { ICONS_NAMES } from "@/constants";
 import SvgIcons from "../common/SvgIcons";
 import { aktivGrotesk } from "@/app/layout";
 import CalendarDialog from "../CalendarDialog";
 import { DateRange } from "react-day-picker";
 import GreenCTA from "../GreenCTA";
+import {
+  IHallOfLameDisplayTableProps,
+  IHallOfLameLeaderboardTableProps,
+} from "@/types";
 
-const DisplayTable = () => {
+const DisplayTable = ({ rank, jokes, votes }: IHallOfLameDisplayTableProps) => {
   return (
     <table className="w-full border-separate border-spacing-y-[12px] md:border-spacing-y-[20px]">
       <thead>
         <tr className="border-none bg-[#FFE200] w-full">
-          <td
+          <th
             className={`${aktivGrotesk.className} mb-[12px] text-[12px] md:text-[20px] font-[700] text-center py-[12px] md:py-[20px] pl-[12px] md:pl-[60px] rounded-l-[5px] md:rounded-l-[10px]`}
           >
-            Rank
-          </td>
-          <td
+            {rank}
+          </th>
+          <th
             className={`${aktivGrotesk.className} mb-[12px] text-[12px] md:text-[20px] font-[700]  text-start py-[12px] pl-[22px] md:py-[20px]`}
           >
-            Jokes
-          </td>
-          <td
+            {jokes}
+          </th>
+          <th
             className={`${aktivGrotesk.className} mb-[12px] text-[12px] md:text-[20px] font-[700] text-center py-[12px] md:py-[20px] pr-[12px] md:pr-[60px] rounded-r-[5px] md:rounded-r-[10px]`}
           >
-            Votes
-          </td>
+            {votes}
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -97,7 +101,14 @@ const DisplayTable = () => {
   );
 };
 
-const HallOfLameLeaderboardTable = () => {
+const HallOfLameLeaderboardTable = ({
+  weeklyTopJokes,
+  prevButtonText,
+  nextButtonText,
+  rank,
+  jokes,
+  votes,
+}: IHallOfLameLeaderboardTableProps) => {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState(false);
 
   const handleDateRangeSelect = (range: DateRange | undefined) => {
@@ -118,7 +129,7 @@ const HallOfLameLeaderboardTable = () => {
           />
         </button>
         <AktivGroteskText
-          text={WEEKLY_TOP_JOKES}
+          text={weeklyTopJokes}
           fontSize="text-[14px] md:text-[20px]"
           fontWeight="font-[500] md:font-[400]"
         />
@@ -138,7 +149,11 @@ const HallOfLameLeaderboardTable = () => {
         />
       </div>
       <div className="w-full flex flex-col gap-[28px] md:gap-[40px]">
-        <DisplayTable />
+        <DisplayTable
+          rank={rank}
+          jokes={jokes}
+          votes={votes}
+        />
         {/*  <div>
           <AktivGroteskText
             text='YOUR RANK'
@@ -150,7 +165,7 @@ const HallOfLameLeaderboardTable = () => {
       <div className="flex gap-[12px] md:gap-[24px] self-center">
         <button className="px-[36px] py-[8px] md:py-[20px] md:px-[60px] border-[1px] border-[rgba(0,0,0,0.3)] rounded-[100px]">
           <AktivGroteskText
-            text="Prev"
+            text={prevButtonText}
             className="text-[rgba(0,0,0,0.3)] leading-tight"
             fontSize="text-[14px] md:text-[20px]"
             fontWeight="font-[700]"
@@ -161,7 +176,7 @@ const HallOfLameLeaderboardTable = () => {
           fontSize="text-[14px] md:text-[20px]"
           fontWeight="font-[700]"
           paddingClass="px-[36px] py-[8px] md:py-[20px] md:px-[60px] "
-          text="Next"
+          text={nextButtonText}
           onClick={() => {}}
         />
       </div>

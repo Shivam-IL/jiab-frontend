@@ -3,19 +3,17 @@ import React, { useEffect, useState } from 'react'
 import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES, REDUX_UPDATION_TYPES } from '@/constants'
 import AktivGroteskText from '../AktivGroteskText'
-import { IAddressModal } from '@/interfaces'
 import Input from '@/components/Input'
 import GreenCTA from '@/components/GreenCTA'
 import { Checkbox } from '@/components/ui/checkbox'
 import useAppDispatch from '@/hooks/useDispatch'
-import { IAddressData, IAddressError } from '@/interfaces'
+import { IAddressData, IAddressError, IAddressModal } from '@/interfaces'
 import { validateInput } from '@/utils/inputValidation'
-import { InputType } from 'zlib'
 import { useAddNewAddress, useEditAddress } from '@/api/hooks/ProfileHooks'
-import { TAddress } from '@/api/types/ProfileTypes'
 import { AddressModalType } from '@/types'
 import { editAddress, updateAddresses } from '@/store/profile/profile.slice'
 import useAppSelector from '@/hooks/useSelector'
+import { useCMSData } from '@/data'
 
 const AddressModal: React.FC<IAddressModal> = ({
   open,
@@ -23,6 +21,14 @@ const AddressModal: React.FC<IAddressModal> = ({
   type,
   addressId
 }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const cmsData = useCMSData(mounted);
+
   const [data, setData] = useState<IAddressData>({
     address_line_1: '',
     address_line_2: '',
@@ -180,7 +186,7 @@ const AddressModal: React.FC<IAddressModal> = ({
             <Input
               name='address_line_1'
               type='text'
-              placeholder='Address Line 1*'
+              placeholder={cmsData?.plusAddInsideProfile?.addressLine1}
               value={data.address_line_1}
               onChange={handleChange}
               error={error.address_line_1}
@@ -189,7 +195,7 @@ const AddressModal: React.FC<IAddressModal> = ({
             <Input
               name='address_line_2'
               type='text'
-              placeholder='Address Line 2'
+              placeholder={cmsData?.plusAddInsideProfile?.addressLine2}
               value={data.address_line_2}
               onChange={handleChange}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
@@ -197,7 +203,7 @@ const AddressModal: React.FC<IAddressModal> = ({
             <Input
               name='nearest_landmark'
               type='text'
-              placeholder='Nearest Landmark'
+              placeholder={cmsData?.plusAddInsideProfile?.nearestLandmark}
               value={data.nearest_landmark}
               onChange={handleChange}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
@@ -205,7 +211,7 @@ const AddressModal: React.FC<IAddressModal> = ({
             <Input
               name='alternate_phone_number'
               type='text'
-              placeholder='Alternate Phone Number'
+              placeholder={cmsData?.plusAddInsideProfile?.altMobileNumber}
               value={data.alternate_phone_number}
               onChange={handleChange}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
@@ -213,7 +219,7 @@ const AddressModal: React.FC<IAddressModal> = ({
             <Input
               name='pincode'
               type='text'
-              placeholder='Pincode*'
+              placeholder={cmsData?.plusAddInsideProfile?.pincode}
               value={data.pincode}
               error={error.pincode}
               onChange={handleChange}
@@ -222,7 +228,7 @@ const AddressModal: React.FC<IAddressModal> = ({
             <Input
               name='state'
               type='text'
-              placeholder='State* '
+              placeholder={cmsData?.plusAddInsideProfile?.state}
               value={data.state}
               error={error.state}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
@@ -231,7 +237,7 @@ const AddressModal: React.FC<IAddressModal> = ({
             <Input
               name='city'
               type='text'
-              placeholder='City*'
+              placeholder={cmsData?.plusAddInsideProfile?.city}
               value={data.city}
               error={error.city}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
@@ -247,7 +253,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               }}
             />
             <AktivGroteskText
-              text='Set as Default'
+              text={cmsData?.plusAddInsideProfile?.setAsDefault}
               fontSize='text-[12px]'
               fontWeight='font-[400]'
             />
@@ -258,7 +264,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               paddingClass='py-[13px]'
               fontSize='text-[16px] md:text-[18px]'
               fontWeight='font-[700]'
-              text='Save Address'
+              text={cmsData?.plusAddInsideProfile?.saveAddress}
               className='leading-tight w-full'
               onClick={submitAddress}
             />

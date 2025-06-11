@@ -24,6 +24,7 @@ import {
   REFFERAL_STATUS_POPUP_DATA,
   INVITE_CODE_POPUP_DATA,
 } from "@/constants";
+import { useCMSData } from "@/data";
 
 const ContestPage: React.FC = () => {
   const router = useRouter();
@@ -36,11 +37,15 @@ const ContestPage: React.FC = () => {
   const [referStatus1, setReferStatus1] = useState<boolean>(false);
   const [referStatus2, setReferStatus2] = useState<boolean>(false);
   const [referStatus3, setReferStatus3] = useState<boolean>(false);
-
   // Modal states for invite code functionality
   const [invite1, setInvite1] = useState<boolean>(false);
   const [invite2, setInvite2] = useState<boolean>(false);
   const [inviteCode, setInviteCode] = useState<string>("");
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const cmsData = useCMSData(mounted);
 
   const handleChange = (key: string, value: string) => {
     setReferPhoneNumber(value);
@@ -145,7 +150,6 @@ const ContestPage: React.FC = () => {
     <>
       <ScreenWrapper className="overflow-hidden pt-20">
         {isContestOver ? (
-          <>
             <div className="md:w-full h-auto md:mt-[40px] mt-[18px] md:mx-0 -mx-5">
               <Banner
                 type="image"
@@ -154,7 +158,6 @@ const ContestPage: React.FC = () => {
                 className="rounded-lg md:mx-0 mx-5"
               />
             </div>
-          </>
         ) : (
           <>
             {/* <AnnouncingWinnerTimer /> */}
@@ -229,7 +232,7 @@ const ContestPage: React.FC = () => {
         <div className="flex justify-center md:mt-[40px] mt-[17px]">
           <Link href="/leaderboard">
             <ContentButton
-              text="Previous Winners List"
+              text={cmsData.contest.previousWinnerListButtonText}
               onClick={() => {}}
               icon="/static/sprite/icons/leaderboard.svg"
               className="md:py-[25px] py-[10.4px] md:pl-[58px] pl-[23px] md:pr-[42.4px] pr-[22.62px] bg-yellow text-black"

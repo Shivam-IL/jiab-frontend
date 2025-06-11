@@ -1,5 +1,15 @@
+import { store } from '@/store';
+
 export const API_CONFIG = {
   baseURL: process.env.NEXT_PUBLIC_API_URL,
+  timeout: 10000,
+  headers: {
+    "Content-Type": "application/json",
+  },
+};
+
+export const CMS_API_CONFIG = {
+  baseURL: process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "http://13.200.122.221:8121/api/",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -11,6 +21,12 @@ export const LOCAL_STORAGE_KEYS = {
   REFRESH_TOKEN: "refreshToken",
   USER_DETAILS: "userDetails",
   ADDRESSES: "addressesDetails",
+};
+
+// Helper function to get current locale from Redux store
+export const getCurrentLocale = (): string => {
+  const state = store.getState();
+  return state.language.selectedLanguage;
 };
 
 export const API_ROUTES = {
@@ -54,5 +70,8 @@ export const API_ROUTES = {
   JOKES: {
     GET_JOKES: "/joke/jokes",
     GET_SURPRISE_ME: "/joke/surprise-me",
+  },
+  CMS: {
+    GET_HOME_PAGE_CONTENT: () => `/site-content?populate=*&locale=${getCurrentLocale()}`,
   },
 };

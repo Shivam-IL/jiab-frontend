@@ -16,44 +16,45 @@ import InviteCodePopupWrapper from "@/components/InviteCodePopus";
 import CustomPopupWrapper from "../../CustomPopupWrapper";
 import AktivGroteskText from "../../AktivGroteskText";
 import useAppDispatch from "@/hooks/useDispatch";
-import {
-  updateIsAuthenticated,
-  updateLoginModal,
-  updateOtpFilled,
-  updateOtpStatus,
-  updateOtpVerified,
-  updateToken,
-} from "@/store/auth/auth.slice";
+import { updateLoginModal } from "@/store/auth/auth.slice";
 import SvgIcons from "../../SvgIcons";
 import useAppSelector from "@/hooks/useSelector";
-import { removeLocalStorageItem } from "@/utils";
-import { LOCAL_STORAGE_KEYS } from "@/api/client/config";
 import useLogout from "@/hooks/useLogout";
+import { useLanguage } from "@/hooks/useLanguage";
+import LanguageHydration from "../../LanguageHydration";
+import { useCMSData } from "@/data";
 
 const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
   profileImage,
 }) => {
+  const [mounted, setMounted] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const [isExploreDropdownOpen, setIsExploreDropdownOpen] = useState(false);
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
     useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState("en");
+  const { selectedLanguage, changeLanguage } = useLanguage();
   const langDropdownRef = useRef<HTMLDivElement>(null);
   const exploreDropdownRef = useRef<HTMLDivElement>(null);
   const notificationDropdownRef = useRef<HTMLDivElement>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const cmsData = useCMSData(mounted);
+
   const exploreMenuItems = [
-    { id: 1, label: "Scroll & LOL", href: "/scroll-and-lol" },
-    { id: 2, label: "PJ Challenge?", href: "/submit-your-joke" },
-    { id: 3, label: "Pick your mood", href: "/pick-mood" },
-    { id: 4, label: "Joke Box", href: "/user-generated-jokes" },
-    { id: 5, label: "HALL-OF-LAME 😜", href: "/hall-of-lame" },
-    { id: 6, label: "Refer A Friend", href: "/refer" },
-    { id: 7, label: "Have an Invite Code?", href: "/invite" },
+    { id: 1, label: cmsData.navBar.scrollAndLol, href: "/scroll-and-lol" },
+    { id: 2, label: cmsData.navBar.pjChallenge, href: "/submit-your-joke" },
+    { id: 3, label: cmsData.navBar.pickYourMood, href: "/pick-mood" },
+    { id: 4, label: cmsData.navBar.jokeBox, href: "/user-generated-jokes" },
+    { id: 5, label: cmsData.navBar.hallOfLame, href: "/hall-of-lame" },
+    { id: 6, label: cmsData.navBar.referAFriend, href: "/refer" },
+    { id: 7, label: cmsData.navBar.haveAnInviteCode, href: "/invite" },
   ];
 
   const languages = [
@@ -175,7 +176,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   }, []);
 
   const getSelectedLanguageLabel = () => {
-    const selected = languages.find((lang) => lang.value === selectedLang);
+    const selected = languages.find((lang) => lang.value === selectedLanguage);
     return selected ? selected.label : "ENGLISH";
   };
 
@@ -219,17 +220,17 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
 
           <div className="flex items-center space-x-8">
             <div className="relative" ref={exploreDropdownRef}>
-              <div
+              <button
                 className="flex items-center cursor-pointer"
                 onClick={() => setIsExploreDropdownOpen(!isExploreDropdownOpen)}
               >
-                <span className="mr-1">Explore</span>
+                <span className="mr-1">{cmsData.navBar.explore}</span>
                 {isExploreDropdownOpen ? (
                   <ChevronDown className="h-5 w-5" />
                 ) : (
                   <ChevronRight className="h-5 w-5" />
                 )}
-              </div>
+              </button>
 
               {isExploreDropdownOpen && (
                 <div className="absolute top-full left-0 mt-4 w-[300px] bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 pb-4 pt-2">
@@ -279,10 +280,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         onClick={() => setIsExploreDropdownOpen(false)}
                       >
                         <div className="text-sm font-medium">
-                          Vote for the funniest PJs
+                          {cmsData.navBar.navBarInsideExploreBannerHeading}
                         </div>
                         <div className="text-md font-bold">
-                          Collect Comic Coins!
+                          {cmsData.navBar.navBarInsideExploreBannerSubHeading}
                         </div>
                       </Link>
                     </div>
@@ -292,15 +293,15 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
             </div>
 
             <Link href="/contest" className="cursor-pointer">
-              Contest
+              {cmsData.navBar.contest}
             </Link>
           </div>
         </div>
 
         <div className="flex items-center space-x-[24px]">
-          {isLoggedIn ? (
+          {isAuthenticated ? (
             <div className="relative" ref={notificationDropdownRef}>
-              <div
+              <button
                 className="cursor-pointer"
                 onClick={() =>
                   setIsNotificationDropdownOpen(!isNotificationDropdownOpen)
@@ -310,7 +311,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                 <div className="absolute -top-0.5 right-0 bg-yellow text-black rounded-full w-[12px] h-[12px] flex items-center justify-center text-[6.86px] font-semibold">
                   10
                 </div>
-              </div>
+              </button>
 
               {isNotificationDropdownOpen && (
                 <div className="absolute top-full right-0 mt-4 w-[450px] bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 max-h-[500px] overflow-y-auto">
@@ -341,32 +342,43 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
           ) : (
             <div className="w-6 h-6" />
           )}
-          <div className="relative w-[120px]" ref={langDropdownRef}>
-            <div
-              className="border border-black rounded px-3 py-1 flex justify-between items-center cursor-pointer"
-              onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
-            >
-              <span className="mr-1">{getSelectedLanguageLabel()}</span>
-              <ChevronDown className="h-5 w-5" />
-            </div>
-
-            {isLangDropdownOpen && (
-              <div className="absolute top-full mt-1 w-auto min-w-full rounded-md shadow-md z-20 bg-white">
-                {languages.map((lang) => (
-                  <div
-                    key={lang.id}
-                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => {
-                      setSelectedLang(lang.value);
-                      setIsLangDropdownOpen(false);
-                    }}
-                  >
-                    {lang.label}
-                  </div>
-                ))}
+          <LanguageHydration
+            fallback={
+              <div className="relative w-[120px]">
+                <div className="border border-black rounded px-3 py-1 flex justify-between items-center cursor-pointer">
+                  <span className="mr-1">ENGLISH</span>
+                  <ChevronDown className="h-5 w-5" />
+                </div>
               </div>
-            )}
-          </div>
+            }
+          >
+            <div className="relative" ref={langDropdownRef}>
+              <button
+                className="w-[116.71px] border border-black rounded px-3 py-1 flex justify-between items-center cursor-pointer"
+                onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+              >
+                <span className="mr-1">{getSelectedLanguageLabel()}</span>
+                <ChevronDown className="h-5 w-5" />
+              </button>
+
+              {isLangDropdownOpen && (
+                <div className="absolute top-full mt-1 w-[116.71px] rounded-md shadow-md z-20 bg-white">
+                  {languages.map((lang) => (
+                    <div
+                      key={lang.id}
+                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                        changeLanguage(lang.value);
+                        setIsLangDropdownOpen(false);
+                      }}
+                    >
+                      {lang.label}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </LanguageHydration>
 
           <div
             className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-black cursor-pointer relative"
@@ -390,7 +402,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         href="/profile"
                         className="hover:bg-gray-50 flex justify-between items-center px-[20px] py-[10px]"
                       >
-                        My Profile
+                        {cmsData.navBar.myProfile}
                         <SvgIcons
                           name={ICONS_NAMES.PROFILE_ICON}
                           width={20}
@@ -403,7 +415,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         href="/my-wallet"
                         className="px-[20px] py-[10px] hover:bg-gray-50 flex justify-between items-center"
                       >
-                        Comic Coins
+                        {cmsData.navBar.comicCoins}
                         <SvgIcons
                           name={ICONS_NAMES.WALLET_ICON}
                           width={20}
@@ -416,7 +428,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         onClick={logoutHandler}
                         className="w-full text-left px-[20px] py-[10px] hover:bg-gray-50 text-red-500 flex items-center justify-between"
                       >
-                        <span>Logout</span>
+                        <span>{cmsData.navBar.logout}</span>
                         <SvgIcons
                           name={ICONS_NAMES.LOGOUT_ICON}
                           width={20}
@@ -429,7 +441,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         onClick={loginHandler}
                         className="w-full text-left px-[20px] py-[10px] hover:bg-gray-50 text-red-500 flex items-center justify-between"
                       >
-                        <span>Login</span>
+                        <span>{cmsData.navBar.login}</span>
                       </button>
                     )}
                   </>
@@ -441,7 +453,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                       setIsProfileDropdownOpen(false);
                     }}
                   >
-                    Login
+                    {cmsData.navBar.login}
                   </button>
                 )}
               </div>

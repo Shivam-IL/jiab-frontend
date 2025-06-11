@@ -13,7 +13,7 @@ export const DisplayTable = () => {
     if (typeof window !== 'undefined') {
       const couponImage = generateImageurl(IMAGES.COUPON)
       console.log('couponImage', couponImage)
-      setImage(couponImage as string)
+      setImage(couponImage)
     }
   }, [])
   return (

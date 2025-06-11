@@ -7,13 +7,13 @@ import Input from '@/components/Input'
 import GreenCTA from '@/components/GreenCTA'
 import EditProfileImage from '@/components/EditProfileImage'
 import useAppDispatch from '@/hooks/useDispatch'
-import {
+import useAppSelector from '@/hooks/useSelector'
+import { 
   updateIsAuthenticated,
   updateIsFirstLogin,
   updateOtpFilled,
   updateOtpStatus,
   updatePhoneNumber,
-  updateSignupDone,
   updateToken
 } from '@/store/auth/auth.slice'
 import SvgIcons from '../SvgIcons'
@@ -22,7 +22,6 @@ import { MainService } from '@/api/services/MainService'
 import { useMutateSignUp } from '@/api/hooks/LoginHooks'
 import { setLocalStorageItem } from '@/utils'
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
-import useAppSelector from '@/hooks/useSelector'
 
 interface IUserData {
   profileImage: string

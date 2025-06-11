@@ -30,3 +30,18 @@ export interface IClaimFormData {
   phoneNumber: string;
   panNumber: string;
 }
+
+export interface IHallOfLameLeaderboardTableProps {
+  weeklyTopJokes: string;
+  prevButtonText: string;
+  nextButtonText: string;
+  rank: string;
+  jokes: string;
+  votes: string;
+}
+
+export interface IHallOfLameDisplayTableProps {
+  rank: string;
+  jokes: string;
+  votes: string;
+}

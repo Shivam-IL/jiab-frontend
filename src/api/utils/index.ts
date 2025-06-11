@@ -8,6 +8,9 @@ export const keys = {
   referral: {
     getAllReferrals: () => ["get-all-referrals"],
   },
+  cms: {
+    getContent: () => ["get-cms-content"]
+  },
   joke: {
     getSurpriseMeJoke: () => ["get-surprise-me-joke"],
   },

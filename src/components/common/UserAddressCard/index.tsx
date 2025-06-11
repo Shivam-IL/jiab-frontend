@@ -5,7 +5,13 @@ import AddressCard from '@/components/AddressCard'
 import useAppSelector from '@/hooks/useSelector'
 import { AddressModalType } from '@/types'
 
-const UserAddressCard = () => {
+const UserAddressCard = ({
+  addressTextField,
+  addClickableText,
+}: {
+  addressTextField: string;
+  addClickableText: string;
+}) => {
   const [open, setOpen] = useState<boolean>(false)
 
   const { addresses } = useAppSelector(state => state.profile)
@@ -13,7 +19,7 @@ const UserAddressCard = () => {
     <div className='bg-white p-[16px] md:py-[25px] md:px-[33px] gap-[10px] flex flex-col md:gap-[32px] rounded-[5px] md:rounded-[20px]'>
       <div className='flex justify-between items-center'>
         <AktivGroteskText
-          text='Address'
+          text={addressTextField}
           fontSize='text-[16px] md:text-[28px]'
           fontWeight='font-[700]'
         />
@@ -21,7 +27,7 @@ const UserAddressCard = () => {
           onClick={() => setOpen(true)}
           className='bg-transparent shadow-none text-[#11A64B] p-0 m-0 font-[500] text-[12px] md:text-[24px]'
         >
-          +Add
+          {addClickableText}
         </button>
       </div>
       {addresses?.length > 0 && (

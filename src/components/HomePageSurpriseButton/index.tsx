@@ -1,12 +1,17 @@
-import React, { useState } from 'react'
-import SvgIcons from '../common/SvgIcons'
-import { ICONS_NAMES, LOCAL_IMAGES } from '@/constants'
+import React, { useEffect, useState } from 'react'
+import { LOCAL_IMAGES } from '@/constants'
 import AktivGroteskText from '../common/AktivGroteskText'
 import SurpriseMeModal from '../common/SurpriseMeModal'
-import surpriseMeIcon from '@/assets/images/surprise-me-icon.png'
 import { generateImageurl } from '@/utils'
+import { useCMSData } from '@/data'
 
 const HomePageSurpriseButton = () => {
+  const [mounted, setMounted] = useState(false);
+  const cmsData = useCMSData(mounted);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const [surpriseMeModal, setSurpriseMeModal] = useState<boolean>(false)
 
   return (
@@ -28,7 +33,7 @@ const HomePageSurpriseButton = () => {
         /> */}
         </div>
         <AktivGroteskText
-          text='Surprise Me'
+          text={cmsData.comic.surpriseMe}
           className='text-[#11A64B] uppercase leading-tight text-center text-[8px] md:text-[16px] font-bold'
         />
       </button>

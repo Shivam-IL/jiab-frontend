@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import apiClient from "../client";
 import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
 import { API_ROUTES, LOCAL_STORAGE_KEYS } from "../client/config";

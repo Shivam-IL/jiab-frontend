@@ -5,16 +5,14 @@ import ScreenWrapper from "@/components/common/ScreenWrapper";
 import {
   CATEGORIES_CAROUSEL_DATA,
   FIELDS_MARKED_STAR_ARE_MANDATORY,
-  FORMAT_OPTIONS,
   ICONS_NAMES,
   LANGUAGE_OPTIONS,
-  MOBILE_TEMP_NAVBAR_DATA,
   SUBMIT,
   SUBMIT_JOKES_TERMS_AND_CONDITIONS,
 } from "@/constants";
 import useWindowWidth from "@/hooks/useWindowWidth";
 import { FileType, IJokeData } from "@/types";
-import React, { forwardRef, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import Input from "@/components/Input";
 import LabeledInput from "@/components/LabeledInput";
 import ImageIconCard from "@/components/common/ImageIconCard";
@@ -30,6 +28,7 @@ import {
   JokeNotGoodEnoughPopup,
   JokeOffensivePopup,
 } from "@/components/JokeSubmissionPopup";
+import { useCMSData } from "@/data";
 
 interface FileContainerProps {
   title: string;
@@ -84,7 +83,6 @@ FileContainer.displayName = "FileContainer";
 
 const SubmitYourJoke = () => {
   const width = useWindowWidth();
-
   const [openApproveJokePopup, setOpenApproveJokePopup] =
     useState<boolean>(false);
   const [openJokeFeaturedPopup, setOpenJokeFeaturedPopup] =
@@ -96,12 +94,17 @@ const SubmitYourJoke = () => {
   const [openJokeOffensivePopup, setOpenJokeOffensivePopup] =
     useState<boolean>(false);
 
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const cmsData = useCMSData(mounted);
   const [jokeData, setJokeData] = useState<IJokeData>({
     language: "",
-    format: "Image",
+    format: cmsData.pjChallenge.image,
     fileType: FileType.IMAGE,
     acceptedFormats: ".jpg,.jpeg,.png",
-    accptedFormatText: "Accepted formats .jpg, .jpeg & .png",
+    accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading,
     jokeText: "",
     title: "",
     file: [],
@@ -120,11 +123,118 @@ const SubmitYourJoke = () => {
 
   console.log(jokeData, "jokeData");
 
+  const FORMAT_OPTIONS = [
+    {
+      id: "1",
+      icon: ICONS_NAMES.IMAGE,
+      title: cmsData.pjChallenge.imageClickableHeading,
+      label: cmsData.pjChallenge.image,
+      iconClassName: "w-[31px] h-[39px]",
+      acceptedFormats: ".jpg,.jpeg,.png",
+      accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading,
+    },
+    {
+      id: "2",
+      icon: ICONS_NAMES.TEXT,
+      title: cmsData.pjChallenge.textClickableHeading,
+      iconClassName: "w-[39px] h-[40px]",
+      label: cmsData.pjChallenge.text,
+      accptedFormatText: "",
+      acceptedFormats: ".txt",
+    },
+    {
+      id: "3",
+      icon: ICONS_NAMES.HEADPHONE,
+      title: cmsData.pjChallenge.audioClickableHeading,
+      iconClassName: "w-[41px] h-[40px]",
+      label: cmsData.pjChallenge.audio,
+      accptedFormatText: cmsData.pjChallenge.audioClickableSubheading,
+      acceptedFormats: ".mp3,.wav",
+    },
+    {
+      id: "4",
+      icon: ICONS_NAMES.VIDEO,
+      title: cmsData.pjChallenge.videoHeading,
+      iconClassName: "w-[49px] h-[39px]",
+      accptedFormatText: cmsData.pjChallenge.videoSubHeading,
+      label: cmsData.pjChallenge.video,
+      acceptedFormats: ".mp4",
+    },
+  ];
+
+  const CATEGORIES_CAROUSEL_DATA = [
+    {
+      id: 1,
+      name: "Category 1",
+      icon: ICONS_NAMES.IMAGE,
+    },
+    {
+      id: 2,
+      name: "Category 2",
+      icon: ICONS_NAMES.TEXT,
+    },
+    {
+      id: 3,
+      name: "Category 3",
+      icon: ICONS_NAMES.HEADPHONE,
+    },
+    {
+      id: 4,
+      name: "Category 4",
+      icon: ICONS_NAMES.VIDEO,
+    },
+    {
+      id: 5,
+      name: "Category 5",
+      icon: ICONS_NAMES.TEXT,
+    },
+    {
+      id: 6,
+      name: "Category 6",
+      icon: ICONS_NAMES.HEADPHONE,
+    },
+    {
+      id: 7,
+      name: "Category 7",
+      icon: ICONS_NAMES.VIDEO,
+    },
+    {
+      id: 8,
+      name: "Category 8",
+      icon: ICONS_NAMES.IMAGE,
+    },
+    {
+      id: 9,
+      name: "Category 9",
+      icon: ICONS_NAMES.IMAGE,
+    },
+    {
+      id: 10,
+      name: "Category 10",
+      icon: ICONS_NAMES.TEXT,
+    },
+    {
+      id: 11,
+      name: "Category 11",
+      icon: ICONS_NAMES.HEADPHONE,
+    },
+    {
+      id: 12,
+      name: "Category 12",
+      icon: ICONS_NAMES.VIDEO,
+    },
+    {
+      id: 13,
+      name: "Category 13",
+      icon: ICONS_NAMES.VIDEO,
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-3">
       <MobileTempNavBar
-        title={MOBILE_TEMP_NAVBAR_DATA.SUBMIT_JOKES.TITLE}
-        subtitle={MOBILE_TEMP_NAVBAR_DATA.SUBMIT_JOKES.SUB_TITLE}
+        title={cmsData.pjChallenge.submitYourJokeHeading}
+        subtitle={cmsData.pjChallenge.submitYourJokeSubheading}
       />
       <ScreenWrapper
         className={`${
@@ -133,12 +243,12 @@ const SubmitYourJoke = () => {
       >
         <div className="md:flex md:flex-col justify-center items-center md:mt-[60px] md:mb-[86px] gap-[12px] hidden">
           <AktivGroteskText
-            text={MOBILE_TEMP_NAVBAR_DATA.SUBMIT_JOKES.TITLE}
+            text={cmsData.pjChallenge.submitYourJokeHeading}
             fontSize="text-[30px]"
             fontWeight="font-[700]"
           />
           <AktivGroteskText
-            text={MOBILE_TEMP_NAVBAR_DATA.SUBMIT_JOKES.SUB_TITLE}
+            text={cmsData.pjChallenge.submitYourJokeSubheading}
             fontSize="text-[20px]"
             fontWeight="font-[400]"
           />
@@ -146,7 +256,7 @@ const SubmitYourJoke = () => {
         <div className="md:mt-0 flex flex-col md:justify-center md:items-center gap-[24px] md:gap-[32px]">
           <LabeledInput
             labelClassName="md:text-center"
-            label="Select Language*"
+            label={cmsData.pjChallenge.selectLanguage}
           >
             <Input
               bgColor="bg-white"
@@ -155,13 +265,13 @@ const SubmitYourJoke = () => {
               options={LANGUAGE_OPTIONS}
               onChange={handleChange}
               value={jokeData.language}
-              placeholder="Select Language"
+              placeholder={cmsData.pjChallenge.selectLanguageDropbox}
             />
           </LabeledInput>
           <LabeledInput
             labelClassName="md:text-center"
             width="w-full"
-            label="Select Format*"
+            label={cmsData.pjChallenge.selectFormat}
           >
             <div className="flex w-full  md:flex-row md:justify-center">
               <div className="flex w-full md:w-[600px] gap-[8px]  justify-between">
@@ -203,11 +313,16 @@ const SubmitYourJoke = () => {
                 })}
               </div>
             </div>
-            {jokeData.format.toLowerCase() !== FileType.TEXT.toLowerCase() && (
+            {jokeData.format.toLowerCase() !==
+              cmsData.pjChallenge.text.toLowerCase() && (
               <>
                 <FileContainer
                   ref={fileRef}
-                  title={`Upload Your ${jokeData.format}`}
+                  title={
+                    FORMAT_OPTIONS.find(
+                      (item) => item.label === jokeData.format
+                    )?.title ?? ""
+                  }
                   subtitle={jokeData.accptedFormatText}
                 />
                 <input
@@ -219,12 +334,13 @@ const SubmitYourJoke = () => {
                 />
               </>
             )}
-            {jokeData.format.toLowerCase() === FileType.TEXT.toLowerCase() && (
+            {jokeData.format.toLowerCase() ===
+              cmsData.pjChallenge.text.toLowerCase() && (
               <div>
                 <div className="flex flex-col gap-[8px]">
                   <AktivGroteskText
                     className="w-full md:text-center"
-                    text="Add your Joke*  👇"
+                    text={cmsData.pjChallenge.textClickableHeading}
                     fontSize="md:text-[16px] text-[14px]"
                     fontWeight="font-[700]"
                   />
@@ -239,11 +355,11 @@ const SubmitYourJoke = () => {
                     rows={6}
                     onChange={handleChange}
                     value={jokeData.jokeText}
-                    placeholder="Type your joke here..."
+                    placeholder={cmsData.pjChallenge.textClickablePlaceholder}
                   />
                 </div>
                 <AktivGroteskText
-                  text="Max. limit 200 words"
+                  text={cmsData.pjChallenge.textClickableTextLimit}
                   className="text-[rgba(0,0,0,0.5)] mt-[10px] md:mt-[12px]"
                   fontSize="text-[8px] md:text-[16px]"
                   fontWeight="font-[400]"
@@ -251,7 +367,10 @@ const SubmitYourJoke = () => {
               </div>
             )}
           </LabeledInput>
-          <LabeledInput labelClassName="md:text-center" label="Title*">
+          <LabeledInput
+            labelClassName="md:text-center"
+            label={cmsData.pjChallenge.title}
+          >
             <Input
               bgColor="bg-white"
               name="title"
@@ -259,7 +378,7 @@ const SubmitYourJoke = () => {
               onChange={handleChange}
               value={jokeData.title}
               paddingClass="md:p-[16px] py-[19px] px-[16px]"
-              placeholder="Joke Title"
+              placeholder={cmsData.pjChallenge.titleJokeTitleTextSpace}
             />
             <AktivGroteskText
               text="Max 30 character limit"
@@ -271,7 +390,7 @@ const SubmitYourJoke = () => {
           <LabeledInput
             labelClassName="md:text-center"
             width="md:max-w-[720px] lg:max-w-[920px]"
-            label="Category"
+            label={cmsData.pjChallenge.category}
           >
             <CustomCarousel>
               {CATEGORIES_CAROUSEL_DATA.map((item) => {
@@ -313,7 +432,7 @@ const SubmitYourJoke = () => {
               }
             />
             <AktivGroteskText
-              text={SUBMIT_JOKES_TERMS_AND_CONDITIONS}
+              text={cmsData.pjChallenge.termsAndConditions}
               fontSize="text-[12px] md:text-[16px]"
               fontWeight="font-[400]"
             />
@@ -326,11 +445,11 @@ const SubmitYourJoke = () => {
               className="w-full md:w-[480px]"
               fontSize="text-[16px] md:text-[32px]"
               fontWeight="font-[400]"
-              text={SUBMIT}
+              text={cmsData.pjChallenge.submitButtonText}
               paddingClass="pt-[17px] pb-[12px] md:py-[24px]"
             />
             <AktivGroteskText
-              text={FIELDS_MARKED_STAR_ARE_MANDATORY}
+              text={cmsData.pjChallenge.allFieldsAreMandatory}
               fontWeight="font-[400] md:font-[700]"
               fontSize="text-[8px] md:text-[14px]"
             />
