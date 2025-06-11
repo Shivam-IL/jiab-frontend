@@ -49,7 +49,7 @@ const ComicCoinsPage = () => {
           </div>
           <div className="md:mt-0 mt-[16px] md:mr-0 mr-[16px] md:mb-[30px] mb-[12px]">
             <GreenCTA
-              text="How To Earn?"
+              text="How To Collect?"
               onClick={() => {}}
               paddingClass="py-[8px] px-[20px] md:py-[16px] md:px-[50px]"
               fontSize="text-[12px] md:text-[28px]"
