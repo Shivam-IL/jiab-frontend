@@ -4,7 +4,7 @@ import Image from "next/image";
 import Header from "@/components/common/Header/Header";
 import ReactionEmojies from "@/components/ReactionEmojies";
 import { ICONS_NAMES } from "@/constants"; // Import ICONS_NAMES
-import CustomPopupWrapper from "@/components/common/CustomPopupWrapper";
+import { useCMSData } from "@/data";
 
 // Define a type for the values of ICONS_NAMES (if not already global or imported appropriately)
 // This might be duplicative if ReactionEmojies exports its Reaction type, consider refactoring later.
@@ -64,12 +64,15 @@ const ScrollAndLol: React.FC = () => {
     new Array(15).fill(false)
   );
   const [isMuted, setIsMuted] = useState<boolean>(true);
-  const [showEndOfFeedPopup, setShowEndOfFeedPopup] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const isDesktopRef = useRef(false);
-  const hasShownEndOfFeedPopup = useRef<boolean>(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const cmsData = useCMSData(mounted);
 
   useEffect(() => {
     const checkDesktop = () => {
@@ -118,11 +121,11 @@ const ScrollAndLol: React.FC = () => {
       container.querySelectorAll(".video-container")
     );
 
-    // Calculate the new target index
+    // Calculate the new target index (videos.length is the end page index)
     const newIndex =
       direction === "up"
         ? Math.max(0, activeVideoIndex - 1)
-        : Math.min(videoElements.length - 1, activeVideoIndex + 1);
+        : Math.min(videos.length, activeVideoIndex + 1);
 
     // Get the target element
     const targetElement = videoElements[newIndex];
@@ -149,15 +152,25 @@ const ScrollAndLol: React.FC = () => {
         );
 
         if (entry.isIntersecting) {
+          // Update active video index
+          setActiveVideoIndex(videoIndex);
+
+          // If this is the end page (index === videos.length), just pause all videos
+          if (videoIndex === videos.length) {
+            videoRefs.current.forEach((video) => {
+              if (video) {
+                video.pause();
+              }
+            });
+            return;
+          }
+
           // Pause all other videos (except current) and keep their time reset
           videoRefs.current.forEach((video, idx) => {
             if (video && idx !== videoIndex) {
               video.pause();
             }
           });
-
-          // Update active video index
-          setActiveVideoIndex(videoIndex);
 
           // Auto-play the current video only if user hasn't paused it
           const currentVideo = videoRefs.current[videoIndex];
@@ -180,15 +193,12 @@ const ScrollAndLol: React.FC = () => {
               return prevUserPaused; // Don't change user pause state
             });
           }
-
-          if (
-            videoIndex === videos.length - 1 &&
-            !hasShownEndOfFeedPopup.current
-          ) {
-            setShowEndOfFeedPopup(true);
-            hasShownEndOfFeedPopup.current = true;
-          }
         } else {
+          // Skip processing for end page when it goes out of view
+          if (videoIndex === videos.length) {
+            return;
+          }
+
           // Pause video when it goes out of view and reset play state
           const video = videoRefs.current[videoIndex];
           if (video) {
@@ -213,6 +223,7 @@ const ScrollAndLol: React.FC = () => {
       });
     }, options);
 
+    // Observe all video containers
     videoRefs.current.forEach((videoRef) => {
       if (videoRef) {
         // Find the video-container element with data-index
@@ -222,6 +233,16 @@ const ScrollAndLol: React.FC = () => {
         }
       }
     });
+
+    // Also observe the end page container
+    if (containerRef.current) {
+      const endPageContainer = containerRef.current.querySelector(
+        `.video-container[data-index="${videos.length}"]`
+      );
+      if (endPageContainer) {
+        observer.observe(endPageContainer);
+      }
+    }
 
     return () => {
       observer.disconnect();
@@ -292,182 +313,201 @@ const ScrollAndLol: React.FC = () => {
     }
   };
 
-  return (
-    <>
-      <div className="md:w-full md:h-screen md:pt-[100px] pt-0 flex flex-col justify-center items-center bg-[url('/assets/images/scroll-and-lol-bg.png')] bg-cover bg-center bg-fixed overflow-hidden">
-        {isLoading ? (
-          <></>
-        ) : (
-          <div className="w-full container md:block hidden">
-            <Header title="Scroll & LOL" />
-          </div>
-        )}
+  // Serial Chiller End of Feed Page Component
+  const SerialChillerEndPage: React.FC = () => {
+    return (
+      <div className="w-full h-screen flex flex-col justify-center items-center bg-white text-black text-center px-6">
+        <div className="w-[279px] flex flex-col items-center">
+          {/* Breaking News Header */}
+          <h1 className="font-bold text-black md:text-[25px] text-[20px] mb-[15px] max-w-[200px] text-center">
+            {cmsData?.scrollAndLol?.breakingNews}
+          </h1>
 
-        <div className="relative md:w-fit md:h-full w-full h-screen">
-          {isLoading ? (
-            <LoadingSpinner />
-          ) : (
-            <>
-              <div
-                ref={containerRef}
-                className="relative md:max-h-[calc(100vh-200px)] w-full h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth scrollbar-hide md:gap-[30px]"
-                style={{
-                  scrollSnapType: "y mandatory",
-                  scrollBehavior: "smooth",
-                }}
-              >
-                {videos.map((video, index) => (
-                  <div
-                    key={video.id}
-                    className="video-container relative md:max-h-[calc(100vh-200px)] h-screen w-full flex-shrink-0 md:mb-[100px] last:md:mb-0 md:flex md:items-center md:justify-center"
-                    data-index={index}
-                    style={{
-                      scrollSnapAlign: "start",
-                      scrollSnapStop: "always",
-                    }}
-                  >
-                    <div className="relative md:w-auto md:h-auto w-full h-full">
-                      <video
-                        ref={(el) => {
-                          videoRefs.current[index] = el;
-                        }}
-                        className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] h-full w-full md:object-contain object-cover relative"
-                        src={video.url}
-                        loop
-                        playsInline
-                        muted={isMuted}
-                        autoPlay
-                        onLoadedData={() => handleVideoLoad(index)}
-                        onCanPlay={() => handleVideoCanPlay(index)}
-                        onLoadStart={() => {
-                          console.log(`Video ${index} started loading`);
-                          if (index === 0) {
-                            // Give a small delay then hide loading as fallback
-                            setTimeout(() => setIsLoading(false), 2000);
+          {/* Main Message */}
+          <h2 className="font-bold text-black md:text-[15px] text-[13px] leading-relaxed mb-6">
+            {cmsData?.scrollAndLol?.serialChiller}
+          </h2>
+
+          {/* Subtitle */}
+          <p className="font-normal text-black md:text-[14px] text-[13px] leading-relaxed">
+            {cmsData?.scrollAndLol?.scrollAndLolLastPageContent}
+          </p>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="md:w-full md:h-screen md:pt-[100px] pt-0 flex flex-col justify-center items-center bg-[url('/assets/images/scroll-and-lol-bg.png')] bg-cover bg-center bg-fixed overflow-hidden">
+      {isLoading ? (
+        <></>
+      ) : (
+        <div className="w-full container md:block hidden">
+          <Header title={cmsData?.scrollAndLol?.scrollAndLolHeading} />
+        </div>
+      )}
+
+      <div className="relative md:w-fit md:h-full w-full h-screen">
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <div
+              ref={containerRef}
+              className="relative md:max-h-[calc(100vh-200px)] w-full h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth scrollbar-hide md:gap-[30px]"
+              style={{
+                scrollSnapType: "y mandatory",
+                scrollBehavior: "smooth",
+              }}
+            >
+              {videos.map((video, index) => (
+                <div
+                  key={video.id}
+                  className="video-container relative md:max-h-[calc(100vh-200px)] h-screen w-full flex-shrink-0 md:mb-[100px] last:md:mb-0 md:flex md:items-center md:justify-center"
+                  data-index={index}
+                  style={{
+                    scrollSnapAlign: "start",
+                    scrollSnapStop: "always",
+                  }}
+                >
+                  <div className="relative md:w-auto md:h-auto w-full h-full">
+                    <video
+                      ref={(el) => {
+                        videoRefs.current[index] = el;
+                      }}
+                      className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] h-full w-full md:object-contain object-cover relative"
+                      src={video.url}
+                      loop
+                      playsInline
+                      muted={isMuted}
+                      autoPlay
+                      onLoadedData={() => handleVideoLoad(index)}
+                      onCanPlay={() => handleVideoCanPlay(index)}
+                      onLoadStart={() => {
+                        console.log(`Video ${index} started loading`);
+                        if (index === 0) {
+                          // Give a small delay then hide loading as fallback
+                          setTimeout(() => setIsLoading(false), 2000);
+                        }
+                      }}
+                      onError={() => handleVideoError(index)}
+                      style={{
+                        aspectRatio: "9/16",
+                      }}
+                    />
+                    {/* Top controls */}
+                    <div className="absolute top-4 w-full flex justify-between px-4 z-50">
+                      <button
+                        onClick={() => togglePlay(index)}
+                        className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
+                      >
+                        <Image
+                          src={
+                            videoPlayStates[index] && index === activeVideoIndex
+                              ? "/other-svgs/pause-icon.svg"
+                              : "/other-svgs/play-icon.svg"
                           }
-                        }}
-                        onError={() => handleVideoError(index)}
-                        style={{
-                          aspectRatio: "9/16",
-                        }}
-                      />
-                        {/* Top controls */}
-                        <div className="absolute top-4 w-full flex justify-between px-4 z-50">
-                          <button
-                            onClick={() => togglePlay(index)}
-                            className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
-                          >
-                            <Image
-                              src={
-                                videoPlayStates[index] &&
-                                index === activeVideoIndex
-                                  ? "/other-svgs/pause-icon.svg"
-                                  : "/other-svgs/play-icon.svg"
-                              }
-                              alt={
-                                videoPlayStates[index] &&
-                                index === activeVideoIndex
-                                  ? "Pause"
-                                  : "Play"
-                              }
-                              width={
-                                videoPlayStates[index] &&
-                                index === activeVideoIndex
-                                  ? 12
-                                  : 20
-                              }
-                              height={
-                                videoPlayStates[index] &&
-                                index === activeVideoIndex
-                                  ? 12
-                                  : 20
-                              }
-                            />
-                          </button>
-                          <button
-                            onClick={() => toggleMute(index)}
-                            className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
-                          >
-                            <Image
-                              src={
-                                isMuted
-                                  ? "/other-svgs/mute-icon.svg"
-                                  : "/other-svgs/unmute-icon.svg"
-                              }
-                              alt={isMuted ? "Unmute" : "Mute"}
-                              width={20}
-                              height={20}
-                              className="text-white"
-                            />
-                          </button>
-                        </div>
+                          alt={
+                            videoPlayStates[index] && index === activeVideoIndex
+                              ? "Pause"
+                              : "Play"
+                          }
+                          width={
+                            videoPlayStates[index] && index === activeVideoIndex
+                              ? 12
+                              : 20
+                          }
+                          height={
+                            videoPlayStates[index] && index === activeVideoIndex
+                              ? 12
+                              : 20
+                          }
+                        />
+                      </button>
+                      <button
+                        onClick={() => toggleMute(index)}
+                        className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
+                      >
+                        <Image
+                          src={
+                            isMuted
+                              ? "/other-svgs/mute-icon.svg"
+                              : "/other-svgs/unmute-icon.svg"
+                          }
+                          alt={isMuted ? "Unmute" : "Mute"}
+                          width={20}
+                          height={20}
+                          className="text-white"
+                        />
+                      </button>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
 
-              {/* Reaction Emojis - only visible when not loading */}
+              {/* Serial Chiller End Page as part of scroll sequence */}
+              <div
+                className="video-container relative md:max-h-[calc(100vh-200px)] h-screen w-full flex-shrink-0 md:mb-[100px] last:md:mb-0 md:flex md:items-center md:justify-center"
+                data-index={videos.length}
+                style={{
+                  scrollSnapAlign: "start",
+                  scrollSnapStop: "always",
+                }}
+              >
+                <SerialChillerEndPage />
+              </div>
+            </div>
+
+            {/* Reaction Emojis - only visible when not loading and not on end page */}
+            {activeVideoIndex < videos.length && (
               <div className="absolute md:bottom-[88.82px] bottom-[135px] md:right-[-5rem] right-[10px] z-20">
                 <ReactionEmojies onEmojiSelect={handleEmojiSelect} />
               </div>
-            </>
-          )}
-        </div>
-
-        {/* Scroll buttons - only visible when not loading */}
-        {!isLoading && (
-          <div className="hidden md:flex flex-col gap-4 absolute bottom-[97.32px] right-[100px] transform z-20">
-            <button
-              onClick={() => scrollToVideo("up")}
-              className={`w-[64px] h-[64px] rounded-full border-2 border-green flex items-center justify-center transition-all duration-300 ${
-                activeVideoIndex === 0 ? "opacity-50" : ""
-              }`}
-              aria-label="Scroll up"
-              disabled={activeVideoIndex === 0}
-            >
-              <Image
-                src="/other-svgs/up-arrow.svg"
-                alt="Scroll up"
-                width={25}
-                height={25}
-                className={activeVideoIndex === 0 ? "opacity-50" : ""}
-              />
-            </button>
-            <button
-              onClick={() => scrollToVideo("down")}
-              className={`w-[64px] h-[64px] rounded-full border-2 border-green flex items-center justify-center transition-all duration-300 ${
-                activeVideoIndex === videos.length - 1 ? "opacity-50" : ""
-              }`}
-              aria-label="Scroll down"
-              disabled={activeVideoIndex === videos.length - 1}
-            >
-              <Image
-                src="/other-svgs/down-arrow.svg"
-                alt="Scroll down"
-                width={25}
-                height={25}
-                className={`${
-                  activeVideoIndex === videos.length - 1 ? "opacity-50" : ""
-                }`}
-              />
-            </button>
-          </div>
+            )}
+          </>
         )}
       </div>
-      {showEndOfFeedPopup && (
-        <CustomPopupWrapper
-          open={showEndOfFeedPopup}
-          onClose={() => {
-            setShowEndOfFeedPopup(false);
-          }}
-          icon={ICONS_NAMES.EXTREME_LAUGH}
-          title="Serial Chiller! 👀"
-          subtitle="You've exhausted your daily limit of jokes."
-        >
-          <center>Come back tomorrow for more Ha-Ha-mazing jokes.</center>
-        </CustomPopupWrapper>
+
+      {/* Scroll buttons - only visible when not loading */}
+      {!isLoading && (
+        <div className="hidden md:flex flex-col gap-4 absolute bottom-[97.32px] right-[100px] transform z-20">
+          <button
+            onClick={() => scrollToVideo("up")}
+            className={`w-[64px] h-[64px] rounded-full border-2 border-green flex items-center justify-center transition-all duration-300 ${
+              activeVideoIndex === 0 ? "opacity-50" : ""
+            }`}
+            aria-label="Scroll up"
+            disabled={activeVideoIndex === 0}
+          >
+            <Image
+              src="/other-svgs/up-arrow.svg"
+              alt="Scroll up"
+              width={25}
+              height={25}
+              className={activeVideoIndex === 0 ? "opacity-50" : ""}
+            />
+          </button>
+          <button
+            onClick={() => scrollToVideo("down")}
+            className={`w-[64px] h-[64px] rounded-full border-2 border-green flex items-center justify-center transition-all duration-300 ${
+              activeVideoIndex === videos.length ? "opacity-50" : ""
+            }`}
+            aria-label="Scroll down"
+            disabled={activeVideoIndex === videos.length}
+          >
+            <Image
+              src="/other-svgs/down-arrow.svg"
+              alt="Scroll down"
+              width={25}
+              height={25}
+              className={`${
+                activeVideoIndex === videos.length ? "opacity-50" : ""
+              }`}
+            />
+          </button>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 
