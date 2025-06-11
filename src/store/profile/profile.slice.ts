@@ -44,11 +44,13 @@ export interface UserState {
   rank: number;
   user: User;
   addresses: IUserAddressData[];
+  breakTheIceModal: boolean;
 }
 
 const initialState: UserState = {
   current_balance: 0,
   rank: 0,
+  breakTheIceModal: true,
   user: {
     alternate_mobile: "",
     avatar_id: 0,
@@ -89,7 +91,15 @@ const profileSlice = createSlice({
     },
     updateUser: (state, action) => {
       const { user } = action.payload;
-      const newUserData = { ...state.user, ...user };
+      const newUserData = {
+        ...state.user,
+        ...user,
+        gender: user?.gender
+          ? user?.gender === 1
+            ? "male"
+            : "female"
+          : "",
+      };
       state.user = newUserData;
     },
     updateAddresses: (state, action) => {
@@ -171,6 +181,9 @@ const profileSlice = createSlice({
       };
       state.addresses = [];
     },
+    updateBreakTheIceModal: (state, action) => {
+      state.breakTheIceModal = action.payload.breakTheIceModal;
+    },
   },
 });
 
@@ -182,5 +195,6 @@ export const {
   deleteAddress,
   editAddress,
   resetProfile,
+  updateBreakTheIceModal,
 } = profileSlice.actions;
 export default profileSlice.reducer;

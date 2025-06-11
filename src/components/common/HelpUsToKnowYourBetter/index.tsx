@@ -12,8 +12,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import GreenCTA from '@/components/GreenCTA'
 import SvgIcons from '../SvgIcons'
 import {
-  useGetUserProfileDetails,
-  useGetUserQuestions
+  useGetUserQuestions,
+  useSubmitUserQuestions
 } from '@/api/hooks/ProfileHooks'
 
 interface IOption {
@@ -29,6 +29,7 @@ interface IQuestion {
   isAnswered: boolean
   options: IOption[]
   ques_point: number
+  selected_option?: number
 }
 
 const HelpUsToKnowYourBetter = () => {
@@ -39,6 +40,8 @@ const HelpUsToKnowYourBetter = () => {
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState<number>(0)
 
   const { data: userProfileQuestions } = useGetUserQuestions()
+  const { mutate: submitUserQuestions, data: submitQuestionResponse } =
+    useSubmitUserQuestions()
 
   useEffect(() => {
     if (userProfileQuestions?.ok) {
@@ -48,7 +51,6 @@ const HelpUsToKnowYourBetter = () => {
     }
   }, [userProfileQuestions])
 
-  console.log('userProfileQuestions = ', userProfileQuestions)
 
   return (
     <div className='bg-white w-full rounded-[5px] md:rounded-[20px] py-[16px] md:py-[44px] px-[14px] md:px-[33px] flex flex-col gap-[8px] md:gap-[20px]'>
@@ -78,22 +80,31 @@ const HelpUsToKnowYourBetter = () => {
                 <AktivGroteskText
                   fontSize='text-[10px] md:text-[20px]'
                   fontWeight='font-[700]'
-                  text={`/${PROFILE_QUESTIONS?.length}`}
+                  text={`/${allQuestions?.length}`}
                 />
               </div>
             </div>
             <div className='pt-[24px] md:pt-[20px] pb-[34px] md:pb-[32px]'>
-              <RadioGroup className='flex flex-col gap-[16px] md:gap-[20px]'>
+              <RadioGroup
+                value={selectedQuestion?.selected_option?.toString()}
+                onValueChange={(value) => {
+                  setSelectedQuestion({
+                    ...selectedQuestion,
+                    selected_option: parseInt(value)
+                  })
+                }}
+                className='flex flex-col gap-[16px] md:gap-[20px]'
+              >
                 {selectedQuestion?.options?.map((item: IOption) => (
                   <div key={item.id} className='flex items-center space-x-2'>
                     <RadioGroupItem
                       className='w-[12px] h-[12px] md:w-[16px] md:h-[16px]'
-                      value={item?.option_text}
-                      id={item?.id.toString()}
+                      value={item.id.toString()}
+                      id={item.id.toString()}
                     />
-                    <label htmlFor={item?.id.toString()}>
+                    <label htmlFor={item.id.toString()}>
                       <AktivGroteskText
-                        text={item?.option_text}
+                        text={item.option_text}
                         fontSize='text-[12px] md:text-[20px]'
                         fontWeight='font-[400]'
                       />
@@ -105,15 +116,27 @@ const HelpUsToKnowYourBetter = () => {
             <div className='w-full flex justify-center md:justify-between flex-col md:flex-row items-center gap-[8px]'>
               <GreenCTA
                 className=''
-                paddingClass='py-[10px] px-[93px] md:px-[60px] md:py-[20px]'
+                paddingClass='py-[10px] px-[61.5px] md:px-[60px] md:py-[20px]'
                 text={
-                  currentQuestionNumber === PROFILE_QUESTIONS?.length
+                  currentQuestionNumber === allQuestions?.length
                     ? 'Save & Submit'
                     : SAVE
                 }
                 fontSize='text-[14px] md:text-[20px]'
                 fontWeight='font-[700] md:font-[600]'
-                onClick={() => {}}
+                onClick={() => {
+                  if (!selectedQuestion?.selected_option) {
+                    return
+                  }
+                  submitUserQuestions({
+                    questions: [
+                      {
+                        question_id: selectedQuestion.id,
+                        answer_id: selectedQuestion.selected_option
+                      }
+                    ]
+                  })
+                }}
               />
               <div className='relative flex gap-[12px] md:gap-[16px]'>
                 <button
@@ -124,10 +147,15 @@ const HelpUsToKnowYourBetter = () => {
                       setSelectedQuestion(allQuestions[newQuestionNumber - 1])
                     }
                   }}
-                  className='text-[rgba(0,0,0,0.5)] hover:bg-[#E0E0E0] transition-all duration-300 rounded-[100px] md:border-none border-[1px] md:p-0 border-[rgba(0,0,0,0.5)] text-[10px] font-[700] py-[6px] px-[36px]'
+                  className={`hover:bg-[#E0E0E0] transition-all duration-300 rounded-[100px] md:border-none border-[1px] md:p-0 border-[rgba(0,0,0,0.5)] text-[10px] font-[700] py-[6px] px-[36px] ${
+                    currentQuestionNumber > 1 &&
+                    currentQuestionNumber !== allQuestions?.length
+                      ? 'border-black text-black'
+                      : 'border-[rgba(0,0,0,0.5)] text-[rgba(0,0,0,0.5)]'
+                  }`}
                 >
                   <AktivGroteskText
-                    className='text-[rgba(0,0,0,0.5)] md:hidden'
+                    className='md:hidden'
                     text={PREV}
                     fontSize='text-[14px]'
                     fontWeight='font-[700]'
@@ -148,10 +176,14 @@ const HelpUsToKnowYourBetter = () => {
                       setSelectedQuestion(allQuestions[currentQuestionNumber])
                     }
                   }}
-                  className='text-[rgba(0,0,0,0.5)] hover:bg-[#E0E0E0] transition-all duration-300 rounded-[100px] border-[1px] md:border-none md:p-0 border-[#000000] text-[10px] font-[700] py-[6px] px-[36px]'
+                  className={` hover:bg-[#E0E0E0]  ${
+                    currentQuestionNumber !== allQuestions?.length
+                      ? 'border-black text-black'
+                      : 'border-[rgba(0,0,0,0.5)] text-[rgba(0,0,0,0.5)]'
+                  }  transition-all duration-300 rounded-[100px] border-[1px] md:border-none md:p-0 text-[10px] font-[700] py-[6px] px-[36px]`}
                 >
                   <AktivGroteskText
-                    className='text-[#000000] md:hidden'
+                    className='md:hidden'
                     text={NEXT}
                     fontSize='text-[14px]'
                     fontWeight='font-[700]'

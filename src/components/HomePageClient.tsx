@@ -30,10 +30,13 @@ import SvgIcons from "@/components/common/SvgIcons";
 import { ICONS_NAMES } from "@/constants";
 import UgcCard from "@/components/common/UgcCard";
 import Link from "next/link";
+import { updateSurpriseMe } from '@/store/auth/auth.slice'
+import useAppDispatch from '@/hooks/useDispatch'
 
 export default function HomePageClient() {
   const { otpSent, otpVerified, loginModal, signupDone, crossModal } =
     useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch()
   const width = useWindowWidth();
 
   // Tour Guide State - REMOVED unused variables
@@ -286,7 +289,7 @@ export default function HomePageClient() {
     // Modal trigger logic would go here
   };
 
-  const { isAuthenticated, isFirstLogin } = useAppSelector(
+  const { isAuthenticated, isFirstLogin, surpriseMe } = useAppSelector(
     (state) => state.auth
   );
 
@@ -302,7 +305,13 @@ export default function HomePageClient() {
         {!isAuthenticated && loginModal && <Login />}
         {!isAuthenticated && otpSent && <OtpModal />}
         {!isAuthenticated && otpVerified && isFirstLogin && <Signup />}
-        {isAuthenticated && !isFirstLogin && <SurpriseMeModal />}
+        {isAuthenticated && !isFirstLogin && surpriseMe && (
+          <SurpriseMeModal
+            onClose={() => {
+              dispatch(updateSurpriseMe({ surpriseMe: false }))
+            }}
+          />
+        )}
 
         <Banner
           type="image"

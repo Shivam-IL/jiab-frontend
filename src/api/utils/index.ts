@@ -7,5 +7,8 @@ export const keys = {
   },
   referral: {
     getAllReferrals: () => ["get-all-referrals"],
-  }
+  },
+  joke: {
+    getSurpriseMeJoke: () => ["get-surprise-me-joke"],
+  },
 };

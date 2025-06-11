@@ -12,6 +12,7 @@ import { updateIsAuthenticated, updateToken } from '@/store/auth/auth.slice'
 import {
   updateAddresses,
   updateBalance,
+  updateBreakTheIceModal,
   updateRank,
   updateUser
 } from '@/store/profile/profile.slice'
@@ -40,8 +41,22 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
     const refreshToken = getLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN)
     if (refreshToken) {
       mutateRefreshToken({ refresh_token: refreshToken })
-      removeLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN)
-      removeLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN)
+      const userDetails = getLocalStorageItem(LOCAL_STORAGE_KEYS.USER_DETAILS)
+      const addressesDetails = getLocalStorageItem(LOCAL_STORAGE_KEYS.ADDRESSES)
+      if (userDetails) {
+        const { rank, current_balance, user } = JSON.parse(userDetails)
+        dispatch(updateRank({ rank }))
+        dispatch(updateBalance({ current_balance }))
+        dispatch(updateUser({ user }))
+      }
+      if (addressesDetails) {
+        const data = JSON.parse(addressesDetails)
+        dispatch(updateAddresses({ addresses: data?.addresses }))
+      }
+    } else {
+      dispatch(updateIsAuthenticated({ isAuthenticated: false }))
+      dispatch(updateBreakTheIceModal({ breakTheIceModal: true }))
+      dispatch(updateToken({ token: '' }))
     }
   }, [])
 
@@ -54,6 +69,11 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, refresh_token)
       setLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, access_token)
       setTokenUpdated(true)
+    } else if (refreshTokenData?.ok === false) {
+      dispatch(updateIsAuthenticated({ isAuthenticated: false }))
+      dispatch(updateBreakTheIceModal({ breakTheIceModal: true }))
+      dispatch(updateToken({ token: '' }))
+      localStorage.clear()
     }
   }, [refreshTokenLoading, refreshTokenData])
 
@@ -66,8 +86,6 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
     }
   }, [tokenUpdated])
 
-
-
   // Handle profile data changes
   useEffect(() => {
     if (userProfileData?.ok) {
@@ -75,6 +93,15 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       dispatch(updateRank({ rank: data?.rank }))
       dispatch(updateBalance({ current_balance: data?.current_balance }))
       dispatch(updateUser({ user: { ...data?.user } }))
+      const localData = {
+        rank: data?.rank,
+        current_balance: data?.current_balance,
+        user: { ...data?.user }
+      }
+      setLocalStorageItem(
+        LOCAL_STORAGE_KEYS.USER_DETAILS,
+        JSON.stringify(localData)
+      )
     }
   }, [userProfileData])
 
@@ -86,6 +113,13 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
           type: REDUX_UPDATION_TYPES.MULTIPLE_ADDED,
           address: data
         })
+      )
+      const localData = {
+        addresses: data
+      }
+      setLocalStorageItem(
+        LOCAL_STORAGE_KEYS.ADDRESSES,
+        JSON.stringify(localData)
       )
     }
   }, [userAddressesData])

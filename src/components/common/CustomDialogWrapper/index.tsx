@@ -9,11 +9,15 @@ const CustomDialogWrapper: React.FC<ICustomDialogWrapper> = ({
   onClose,
   children
 }) => {
+  console.log('open', open, onClose)
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className='p-0 bg-white max-w-[318px] rounded-[10px]'>
         <div className='flex mb-[6px] justify-end pt-[16px] pr-[16px]'>
-          <button className='outline-none border-none' onClick={onClose}>
+          <button
+            className='outline-none border-none'
+            onClick={() => onClose && onClose()}
+          >
             <SvgIcons
               name={ICONS_NAMES.CROSS}
               className='w-[12px] h-[12px] text-black'

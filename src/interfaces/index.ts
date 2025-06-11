@@ -294,8 +294,6 @@ export interface IAddressData {
 
 export interface IAddressError {
   address_line_1: string;
-  nearest_landmark: string;
-  alternate_phone_number: string;
   pincode: string;
   state: string;
   city: string;

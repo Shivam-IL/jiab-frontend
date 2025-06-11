@@ -74,25 +74,16 @@ const OtpModal = () => {
   }, [otpSent])
 
   useEffect(() => {
-    if (!otp) {
+    if (otp?.length === 6) {
       setError('')
-      return
     }
-
-    const timeoutId = setTimeout(() => {
-      // Check if it's a valid 10-digit number
-      if (!/^\d{6}$/.test(otp)) {
-        setError('Please enter a valid OTP')
-      } else {
-        setError('')
-      }
-    }, 500)
-
-    // Cleanup timeout on component unmount or when mobileNumber changes
-    return () => clearTimeout(timeoutId)
   }, [otp])
 
   const resendOTP = () => {
+    if (otp?.length !== 6) {
+      setError('Please enter a valid OTP')
+      return
+    }
     requestOTP({ mobile_number: phoneNumber })
   }
 
@@ -128,7 +119,7 @@ const OtpModal = () => {
       const { data } = verifyOTPData
       setError(data?.message ?? 'Invalid OTP')
     }
-  }, [verifyOTPData,isPending])
+  }, [verifyOTPData, isPending])
 
   return (
     <LoginSignupWrapper open={open} setOpen={setOpen} logo={true}>
@@ -177,7 +168,9 @@ const OtpModal = () => {
               placeholder='OTP*'
               error={error}
               onChange={(key, value) => {
-                setOtp(value)
+                const numericValue = value?.replace(/[^0-9]/g, '')
+                const valueString = numericValue?.slice(0, 6)
+                setOtp(valueString)
               }}
               type='text'
             />

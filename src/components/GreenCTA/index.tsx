@@ -21,7 +21,7 @@ const GreenCTA: React.FC<IGreenCTA> = ({
       onClick={onClick}
       className={`${className} ${
         disabled
-          ? "opacity-50 cursor-not-allowed"
+          ? "cursor-not-allowed bg-[#73C392] text-white"
           : isCoinIcon
           ? "hover:bg-yellow/60  bg-yellow text-black"
           : "hover:bg-[#73C392]  bg-[#11A64B] text-white"
@@ -29,7 +29,7 @@ const GreenCTA: React.FC<IGreenCTA> = ({
         aktivGrotesk.className
       } ${isCoinIcon ? "flex items-center gap-2" : ""}`}
     >
-      {childrenPosition==='left' && children}
+      {childrenPosition === 'left' && children}
       {text}
       {isCoinIcon && (
         <Image
@@ -40,7 +40,7 @@ const GreenCTA: React.FC<IGreenCTA> = ({
           className="md:w-[50px] w-[18px] md:h-[50px] h-[19px]"
         />
       )}
-      {childrenPosition==='right' && children}
+      {childrenPosition === 'right' && children}
     </button>
   );
 };

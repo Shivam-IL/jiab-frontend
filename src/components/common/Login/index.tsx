@@ -49,6 +49,10 @@ const Login = () => {
   }, [mobileNumber])
 
   const handleGetOTP = () => {
+    if (mobileNumber?.length !== 10 || !mobileNumber?.[0] || parseInt(mobileNumber[0]) < 6) {
+      setError('Please enter a valid 10-digit mobile number')
+      return
+    }
     requestOTP({ mobile_number: mobileNumber })
   }
 

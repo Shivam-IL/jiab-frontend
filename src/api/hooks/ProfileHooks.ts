@@ -16,7 +16,7 @@ const useGetUserProfileDetails = () => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
 
   return useQuery({
-    queryKey: keys.profile.userProfileDetails(),
+    queryKey: [...keys.profile.userProfileDetails(), { isAuthenticated, token }],
     queryFn: () => profileService.getUserProfileDetails(),
     enabled: isAuthenticated && token ? true : false,
     staleTime: 60 * 60,
@@ -34,9 +34,10 @@ const useGetUserAddresses = () => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
 
   return useQuery({
-    queryKey: keys.profile.getUserAddresses(),
+    queryKey: [...keys.profile.getUserAddresses(), { isAuthenticated, token }],
     queryFn: () => profileService.getUserAddresses(),
     enabled: isAuthenticated && token ? true : false,
+    staleTime: 60 * 60,
   });
 };
 
@@ -61,20 +62,14 @@ const useDeleteAddress = () => {
   });
 };
 
-const useGetUserBalanceAndRank = () => {
+const useGetUserQuestions = () => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
 
   return useQuery({
-    queryKey: keys.profile.getUserBalanceAndRank(),
-    queryFn: () => profileService.getUserBalanceAndRank(),
-    enabled: isAuthenticated && token ? true : false,
-  });
-};
-
-const useGetUserQuestions = () => {
-  return useQuery({
     queryKey: keys.profile.getUserQuestions(),
     queryFn: () => profileService.getUserQuestions(),
+    enabled: isAuthenticated && token ? true : false,
+    staleTime: 60 * 60,
   });
 };
 
@@ -92,7 +87,6 @@ export {
   useAddNewAddress,
   useEditAddress,
   useDeleteAddress,
-  useGetUserBalanceAndRank,
   useGetUserQuestions,
   useSubmitUserQuestions,
 };

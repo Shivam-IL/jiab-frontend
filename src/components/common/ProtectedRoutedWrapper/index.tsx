@@ -1,5 +1,7 @@
+import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
 import { PROTECTED_ROUTES } from '@/constants'
 import useAppSelector from '@/hooks/useSelector'
+import { getLocalStorageItem } from '@/utils'
 import { usePathname, useRouter } from 'next/navigation'
 import { ReactNode, useEffect } from 'react'
 
@@ -10,9 +12,8 @@ const ProtectedRoutedWrapper = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (
-      !isAuthenticated &&
-      !token &&
-      !JSON.stringify(PROTECTED_ROUTES).includes(pathname)
+      !getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN) &&
+      JSON.stringify(PROTECTED_ROUTES).includes(pathname)
     ) {
       router.push('/')
     }

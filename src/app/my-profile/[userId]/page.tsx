@@ -9,10 +9,13 @@ import GreenCTA from '@/components/GreenCTA'
 import Input from '@/components/Input'
 import { Separator } from '@/components/ui/separator'
 import { MOBILE_TEMP_NAVBAR_DATA } from '@/constants'
+import { updateUser } from '@/store/profile/profile.slice'
 import useAppSelector from '@/hooks/useSelector'
 import useWindowWidth from '@/hooks/useWindowWidth'
+import { monthDayYearConvert } from '@/utils'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import useAppDispatch from '@/hooks/useDispatch'
 
 interface IUserData {
   avatar_id: number
@@ -33,8 +36,12 @@ const EditProfilePage = () => {
   const width = useWindowWidth()
   const params = useParams()
   const router = useRouter()
-
-  const { mutate: editUserProfileDetails ,isPending} = useEditUserProfileDetails()
+  const dispatch = useAppDispatch()
+  const {
+    mutate: editUserProfileDetails,
+    isPending,
+    data: editUserProfileDetailsData
+  } = useEditUserProfileDetails()
 
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false)
   const { user } = useAppSelector(state => state.profile)
@@ -73,11 +80,14 @@ const EditProfilePage = () => {
     const dobDate = new Date(dob)
     const today = new Date()
     const minAge = 0 // Minimum age requirement
-    
+
     // Calculate age
     let age = today.getFullYear() - dobDate.getFullYear()
     const monthDiff = today.getMonth() - dobDate.getMonth()
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < dobDate.getDate())
+    ) {
       age--
     }
 
@@ -99,7 +109,7 @@ const EditProfilePage = () => {
 
   const handleChange = (key: string, value: string) => {
     setUserData({ ...userData, [key]: value })
-    
+
     // Validate the changed field
     switch (key) {
       case 'name':
@@ -128,13 +138,13 @@ const EditProfilePage = () => {
 
   useEffect(() => {
     if (user?.id === params?.userId) {
-      const { profile_picture, name, email, phone_number, dob, gender } = user
+      const { name, email, phone_number, dob, gender } = user
       setUserData({
         avatar_id: 0,
         name: name,
         email: email,
         phone: phone_number,
-        dob: dob ?? '',
+        dob: dob ? monthDayYearConvert(dob) : '',
         gender
       })
     }
@@ -157,9 +167,24 @@ const EditProfilePage = () => {
   const submitHandler = () => {
     if (isFormValid()) {
       console.log('Form is valid, submitting:', userData)
-      editUserProfileDetails(userData)
+      const { name, dob, gender, avatar_id, email } = userData
+      const payload = {
+        name,
+        dob: monthDayYearConvert(dob),
+        email,
+        gender,
+        avatar_id
+      }
+      editUserProfileDetails(payload)
     }
   }
+
+  useEffect(() => {
+    if (editUserProfileDetailsData?.ok) {
+      const { data } = editUserProfileDetailsData?.data ?? {}
+      dispatch(updateUser({ user: { ...data } }))
+    }
+  }, [editUserProfileDetailsData])
 
   return (
     <div onClick={handleContainerClick} className='flex flex-col gap-3'>
@@ -218,6 +243,18 @@ const EditProfilePage = () => {
               onChange={handleChange}
               placeholder='Enter your phone number'
             />
+
+            <Input
+              fontSize='text-[14px] md:text-[18px]'
+              bgColor='bg-white'
+              paddingClass='md:py-[10px] md:px-[17px] pl-[16px] pr-[16px] py-[16px] '
+              name={'email'}
+              type='email'
+              value={userData.email}
+              onChange={handleChange}
+              placeholder='Enter your email'
+            />
+
             <Input
               fontSize='text-[14px] md:text-[18px]'
               bgColor='bg-white'
@@ -229,17 +266,7 @@ const EditProfilePage = () => {
               error={errors.dob}
               placeholder='YYYY/MM/DD'
             />
-            <Input
-              fontSize='text-[14px] md:text-[18px]'
-              bgColor='bg-white'
-              paddingClass='md:py-[10px] md:px-[17px] pl-[16px] pr-[16px] py-[16px] '
-              name={'email'}
-              type='email'
-              readonly={true}
-              value={userData.email}
-              onChange={handleChange}
-              placeholder='Enter your email'
-            />
+
             <Input
               placeholder='Select your gender'
               fontSize='text-[14px] md:text-[18px]'
