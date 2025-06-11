@@ -19,7 +19,13 @@ import { useRouter } from 'next/navigation'
 import CustomPopupWrapper from '../CustomPopupWrapper'
 import ReferNowComponent from '../ReferNowComponent'
 
-const ReferAFriend = () => {
+const ReferAFriend = ({
+  referToFriendHeader,
+  referNowButtonText,
+}: {
+  referToFriendHeader: string;
+  referNowButtonText: string;
+}) => {
   const data: number[] = []
   const [open, setOpen] = useState<boolean>(false)
 
@@ -29,7 +35,7 @@ const ReferAFriend = () => {
       {data?.length === 0 && (
         <div className='flex justify-between items-center p-[16px] bg-white rounded-[5px]'>
           <AktivGroteskText
-            text={REFER_A_FRIEND_TEXT}
+            text={referToFriendHeader}
             fontSize='text-[16px] md:text-[28px]'
             fontWeight='font-[700]'
           />
@@ -38,7 +44,7 @@ const ReferAFriend = () => {
               paddingClass='py-[10px] px-[20px]'
               className='leading-tight'
               fontSize='text-[14px] md:text-[24px]'
-              text={REFER_NOW}
+              text={referNowButtonText}
               onClick={() => {
                 setOpen(true)
               }}
@@ -49,18 +55,18 @@ const ReferAFriend = () => {
       {data?.length > 0 && (
         <div className='flex flex-col gap-[16px] md:gap-[24px]'>
           <AktivGroteskText
-            text={MY_REFERRAL}
+            text={referToFriendHeader}
             fontSize='text-[16px] md:text-[28px]'
             fontWeight='font-[700]'
           />
           <div className='flex justify-between px-[12px] py-[12px] md:px-[35px] md:py-[24px] bg-[#FFE200] rounded-[5px] md:rounded-[20px]'>
             <AktivGroteskText
-              text={USER}
+              text={referToFriendHeader}
               fontSize='text-[12px] md:text-[20px]'
               fontWeight='font-[700]'
             />
             <AktivGroteskText
-              text={STATUS}
+              text={referToFriendHeader}
               fontSize='text-[12px] md:text-[20px]'
               fontWeight='font-[700]'
             />
@@ -104,7 +110,7 @@ const ReferAFriend = () => {
               fontSize='text-[14px] md:text-[20px]'
               fontWeight='font-[700]'
               paddingClass='px-[20px] py-[8px] md:py-[20px] md:px-[60px]'
-              text={REFER_ANOTHER}
+              text={referToFriendHeader}
               onClick={() => {
                 setOpen(true)
               }}

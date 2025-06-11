@@ -1,12 +1,22 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MobileTempNavBar from "@/components/common/MobileTempNavBar";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
 import Header from "@/components/common/Header/Header";
+import { useCMSData } from "@/data";
 
 const Page: React.FC = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
+  const cmsData = useCMSData(mounted);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const faqData = [
     {
       question: "What prizes are available to be won?",
@@ -42,13 +52,13 @@ const Page: React.FC = () => {
   return (
     <>
       <MobileTempNavBar
-        title="FREQUENTLY ASKED QUESTIONS"
-        subtitle="Hello curious beings, here are all the answers!"
+        title={cmsData?.faq?.faqHeading.toUpperCase()}
+        subtitle={cmsData?.faq?.faqSubHeading}
       />
       <ScreenWrapper className="px-4 md:mt-0 mt-[-30px]">
         <Header
-          title="Frequently Asked Questions"
-          description="Hello curious beings, here are all the answers!"
+          title={cmsData?.faq?.faqHeading}
+          description={cmsData?.faq?.faqSubHeading}
           className="md:block hidden mt-[100px] max-w-4xl mx-auto px-6"
         />
 

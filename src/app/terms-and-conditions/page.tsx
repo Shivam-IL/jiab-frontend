@@ -244,10 +244,7 @@ const termsContent = [
           className="text-[#1985d3] cursor-pointer hover:underline"
           href="https://www.coca-cola.com/in/en"
           target="_blank"
-        >
-          https://www.coca-cola.com/in/en
-        </a>
-        . Any other communication or material you transmit to the Site, such as
+        >https://www.coca-cola.com/in/en</a>. Any other communication or material you transmit to the Site, such as
         questions, comments, suggestions or the like, will be treated as
         non-confidential and non-proprietary.
       </>

@@ -5,7 +5,11 @@ import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES } from '@/constants'
 import AktivGroteskText from '../AktivGroteskText'
 
-const UgcFilter = () => {
+const UgcFilter = ({
+  filter,
+}: {
+  filter: string;
+}) => {
   const [openUgcFilterModal, setOpenUgcFilterModal] = useState<boolean>(false)
   const [selectedFilters, setSelectedFilters] = useState({
     language: '',
@@ -47,7 +51,7 @@ const UgcFilter = () => {
         </div>
         <div className='flex items-center gap-[4px]'>
           <AktivGroteskText
-            text='Filter'
+            text={filter}
             fontSize='text-[14px] md:text-[16px]'
             fontWeight='font-[400]'
           />

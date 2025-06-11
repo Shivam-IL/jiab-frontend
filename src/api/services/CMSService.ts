@@ -15,7 +15,7 @@ export class CMSService {
 
   public async getHomePageContent(): Promise<any> {
     try {
-      const response = await cmsClient.get(API_ROUTES.CMS.GET_HOME_PAGE_CONTENT);
+      const response = await cmsClient.get(API_ROUTES.CMS.GET_HOME_PAGE_CONTENT());
       const data = response.data;
       
       // Strapi typically returns data in this format

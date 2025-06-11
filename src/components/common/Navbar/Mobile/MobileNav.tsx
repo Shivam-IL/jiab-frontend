@@ -9,13 +9,15 @@ import { ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE } from "../../../.
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { BoxIds } from "../../CircularBoxesModal";
+import { useLanguage } from "@/hooks/useLanguage";
+import LanguageHydration from "../../LanguageHydration";
 
 const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
   profileImage,
 }) => {
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState("en");
+  const { selectedLanguage, changeLanguage } = useLanguage();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [hideNavbar, setHideNavbar] = useState<boolean>(false);
   const isVisible = true;
@@ -70,7 +72,8 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
 
   const getSelectedLanguageLabel = () => {
     return (
-      languages.find((lang) => lang.value === selectedLang)?.label || "ENGLISH"
+      languages.find((lang) => lang.value === selectedLanguage)?.label ||
+      "ENGLISH"
     );
   };
 
@@ -154,34 +157,45 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
             )}
 
             {/* Language Selector */}
-            <div id={BoxIds.LANG} className="relative" ref={langDropdownRef}>
-              <div
-                className="w-[66px] border border-black px-1 py-0.5 flex justify-between items-center cursor-pointer rounded"
-                onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
-              >
-                <span className="mr-1 text-[10px]">
-                  {getSelectedLanguageLabel()}
-                </span>
-                <ChevronDown className="h-4 w-4" />
-              </div>
-
-              {isLangDropdownOpen && (
-                <div className="absolute top-full right-0 mt-1 w-auto min-w-full rounded-md shadow-md z-20 bg-white text-xs">
-                  {languages.map((lang) => (
-                    <div
-                      key={lang.id}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                      onClick={() => {
-                        setSelectedLang(lang.value);
-                        setIsLangDropdownOpen(false);
-                      }}
-                    >
-                      {lang.label}
-                    </div>
-                  ))}
+            <LanguageHydration
+              fallback={
+                <div id={BoxIds.LANG} className="relative">
+                  <div className="w-[66px] border border-black px-1 py-0.5 flex justify-between items-center cursor-pointer rounded">
+                    <span className="mr-1 text-[10px]">ENGLISH</span>
+                    <ChevronDown className="h-4 w-4" />
+                  </div>
                 </div>
-              )}
-            </div>
+              }
+            >
+              <div id={BoxIds.LANG} className="relative" ref={langDropdownRef}>
+                <div
+                  className="w-[66px] border border-black px-1 py-0.5 flex justify-between items-center cursor-pointer rounded"
+                  onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+                >
+                  <span className="mr-1 text-[10px]">
+                    {getSelectedLanguageLabel()}
+                  </span>
+                  <ChevronDown className="h-4 w-4" />
+                </div>
+
+                {isLangDropdownOpen && (
+                  <div className="absolute top-full right-0 mt-1 w-auto min-w-full rounded-md shadow-md z-20 bg-white text-xs">
+                    {languages.map((lang) => (
+                      <div
+                        key={lang.id}
+                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                        onClick={() => {
+                          changeLanguage(lang.value);
+                          setIsLangDropdownOpen(false);
+                        }}
+                      >
+                        {lang.label}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </LanguageHydration>
           </div>
         </div>
       </div>

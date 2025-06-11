@@ -146,6 +146,7 @@ export interface IReferNowModal {
   phoneNumber: string;
   onChange: (key: string, value: string) => void;
   onSubmit: () => void;
+  placeholder?: string;
 }
 
 export interface IInviteCodePopup {
@@ -311,4 +312,8 @@ export interface IContestActivities {
   reward: number;
   rewardText: string;
   action: () => void;
+}
+
+export interface UgcCardProps {
+  disclaimerText: string
 }

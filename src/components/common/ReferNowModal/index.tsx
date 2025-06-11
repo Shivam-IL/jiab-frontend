@@ -17,7 +17,8 @@ const ReferNowModal: React.FC<IReferNowModal> = ({
   ctaText,
   phoneNumber,
   onChange,
-  onSubmit
+  onSubmit,
+  placeholder="Enter Your Friend's Mobile No."
 }) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -55,7 +56,7 @@ const ReferNowModal: React.FC<IReferNowModal> = ({
               value={phoneNumber}
               fontSize='text-[14px] md:text-[16px]'
               onChange={onChange}
-              placeholder="Enter Your Friend's Mobile No."
+              placeholder={placeholder}
             />
             <div className='flex flex-col justify-center items-center'>
               <GreenCTA

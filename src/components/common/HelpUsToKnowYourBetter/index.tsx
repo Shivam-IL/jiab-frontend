@@ -32,7 +32,13 @@ interface IQuestion {
   selected_option?: number
 }
 
-const HelpUsToKnowYourBetter = () => {
+const HelpUsToKnowYourBetter = ({
+  prevButtonText,
+  nextButtonText,
+}: {
+  prevButtonText: string;
+  nextButtonText: string;
+}) => {
   const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
     null
   )
@@ -155,8 +161,8 @@ const HelpUsToKnowYourBetter = () => {
                   }`}
                 >
                   <AktivGroteskText
-                    className='md:hidden'
-                    text={PREV}
+                    className='text-[rgba(0,0,0,0.5)] md:hidden'
+                    text={prevButtonText}
                     fontSize='text-[14px]'
                     fontWeight='font-[700]'
                   />
@@ -183,8 +189,8 @@ const HelpUsToKnowYourBetter = () => {
                   }  transition-all duration-300 rounded-[100px] border-[1px] md:border-none md:p-0 text-[10px] font-[700] py-[6px] px-[36px]`}
                 >
                   <AktivGroteskText
-                    className='md:hidden'
-                    text={NEXT}
+                    className='text-[#000000] md:hidden'
+                    text={nextButtonText}
                     fontSize='text-[14px]'
                     fontWeight='font-[700]'
                   />

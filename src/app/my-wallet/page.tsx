@@ -1,6 +1,6 @@
 "use client";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import GreenCTA from "@/components/GreenCTA";
 import Banner from "@/components/common/Banner/Banner";
 import AktivGroteskText from "@/components/common/AktivGroteskText";
@@ -8,8 +8,18 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/common/Header/Header";
 import WalletCard from "@/components/WalletCard";
+import { useCMSData } from "@/data";
+import ReferNowComponent from "@/components/common/ReferNowComponent";
 
 const ComicCoinsPage = () => {
+  const [mounted, setMounted] = useState(false);
+  const [isReferModalOpen, setIsReferModalOpen] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const cmsData = useCMSData(mounted);
+
   return (
     <>
       <div className="bg-white -mt-5 pt-5">
@@ -18,8 +28,8 @@ const ComicCoinsPage = () => {
           {/* Comic Coins */}
           <div className="mx-4 md:mx-0">
             <AktivGroteskText
-              text="COMIC COINS"
-              fontSize="text-[14px] md:text-[30px]"
+              text={cmsData.comic.comicCoinHeader}
+              fontSize="text-[14px] md:text-[30px] text-uppercase"
               fontWeight="font-[700]"
             />
             <div className="flex items-center gap-2 md:gap-3 mt-1">
@@ -77,7 +87,7 @@ const ComicCoinsPage = () => {
                 onClick={() => {}}
                 paddingClass="py-[12px] px-[36px] md:py-[20px] md:px-[44px]"
                 fontSize="text-[12px] md:text-[20px]"
-                className="max-w-[210px]"
+                className="max-w-[250px]"
               />
             </div>
           </WalletCard>
@@ -117,14 +127,14 @@ const ComicCoinsPage = () => {
         {/* */}
         <div className="md:mt-[40px] mt-[16px] bg-[url('/other-svgs/banner-explore.svg')] bg-cover bg-center md:rounded-[20px] rounded-[10px] flex justify-between items-center p-4 md:p-6 ">
           <AktivGroteskText
-            text="PREVIOUS WINNERS"
+            text={cmsData.comic.previousWinnerBanner1Text}
             fontSize="text-[16px] md:text-[30px]"
             fontWeight="font-[700]"
             className="text-white"
           />
           <Link href="/leaderboard">
             <GreenCTA
-              text="Leaderboard"
+              text={cmsData.comic.leaderboardButtonBanner1Text}
               onClick={() => {}}
               paddingClass="py-[6px] px-[20px] md:py-[14px] md:px-[60px]"
               fontSize="text-[12px] md:text-[28px] md:font-bold"
@@ -135,11 +145,16 @@ const ComicCoinsPage = () => {
 
         {/* Promotional Banners */}
         <div className="md:my-[40px] my-[16px] flex flex-col md:gap-y-[40px] gap-y-[16px]">
-          <Banner
-            type="image"
-            src="/other-svgs/share-laugh.svg"
-            className="rounded-lg"
-          />
+          <button
+            onClick={() => setIsReferModalOpen(true)}
+            className="cursor-pointer"
+          >
+            <Banner
+              type="image"
+              src="/other-svgs/share-laugh.svg"
+              className="rounded-lg"
+            />
+          </button>
           <Link href="/submit-your-joke">
             <Banner
               type="image"
@@ -149,6 +164,12 @@ const ComicCoinsPage = () => {
           </Link>
         </div>
       </ScreenWrapper>
+
+      {/* Refer Modal */}
+      <ReferNowComponent
+        open={isReferModalOpen}
+        onClose={() => setIsReferModalOpen(false)}
+      />
     </>
   );
 };
