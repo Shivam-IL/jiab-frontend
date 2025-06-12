@@ -1,24 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import AktivGroteskText from '../AktivGroteskText'
 import {
+  GA_EVENTS,
   ICONS_NAMES,
-  MY_REFERRAL,
-  NEXT,
-  PREV,
-  REFER_A_FRIEND_TEXT,
-  REFER_ANOTHER,
-  REFER_NOW,
-  REFER_NOW_MODAL_DATA,
-  REFFERAL_STATUS_POPUP_DATA,
   SEND_REMINDER,
-  STATUS,
-  USER
 } from '@/constants'
 import GreenCTA from '@/components/GreenCTA'
 import SvgIcons from '../SvgIcons'
-import ReferNowModal from '../ReferNowModal'
 import { useRouter } from 'next/navigation'
-import CustomPopupWrapper from '../CustomPopupWrapper'
 import ReferNowComponent from '../ReferNowComponent'
 import { useGetAllReferrals } from '@/api/hooks/ReferralHooks'
 import { IInviteeData } from '@/interfaces'

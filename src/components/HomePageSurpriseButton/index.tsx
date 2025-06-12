@@ -1,26 +1,32 @@
 import React, { useEffect, useState } from 'react'
-import { LOCAL_IMAGES } from '@/constants'
+import { GA_EVENTS, LOCAL_IMAGES } from '@/constants'
 import AktivGroteskText from '../common/AktivGroteskText'
 import SurpriseMeModal from '../common/SurpriseMeModal'
 import { generateImageurl } from '@/utils'
 import useAppSelector from '@/hooks/useSelector'
 import SurpriseMeLockModal from '../common/SurpriseMeLockModal'
 import { useCMSData } from '@/data'
+import { triggerGAEvent } from '@/utils/gTagEvents'
 
 const HomePageSurpriseButton = () => {
   const { isAuthenticated, token } = useAppSelector(state => state.auth)
-  const [mounted, setMounted] = useState(false);
-  const cmsData = useCMSData(mounted);
+  const [mounted, setMounted] = useState(false)
+  const cmsData = useCMSData(mounted)
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
   const [surpriseMeModal, setSurpriseMeModal] = useState<boolean>(false)
+
+  const openSurpriseMe = () => {
+    setSurpriseMeModal(true)
+    triggerGAEvent(GA_EVENTS.SPRITE_J24_SURPRISE_ME)
+  }
 
   return (
     <>
       <button
-        onClick={() => setSurpriseMeModal(true)}
+        onClick={openSurpriseMe}
         className='fixed cursor-pointer top-[50%] right-[10px] border-[1px] border-[#11A64B] rounded-[100px] min-w-[78px] md:max-w-[185px]
     py-[8px] pl-[5px] pr-[8px] md:px-[24px] md:py-[15px] flex items-center gap-[5px] bg-yellow'
       >

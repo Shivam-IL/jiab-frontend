@@ -2,6 +2,7 @@ import localFont from 'next/font/local'
 import './globals.css'
 import LayoutClient from '@/components/LayoutClient'
 import { metadata } from './metadata'
+import LoadGAScript from '@/components/common/LoadGAScript'
 
 export const aktivGrotesk = localFont({
   src: [
@@ -71,6 +72,7 @@ export default function RootLayout ({
         <link rel='icon' href='/favicon.ico' />
         <link rel='manifest' href='/manifest.json' />
         <meta name='theme-color' content='#11A64B' />
+        <LoadGAScript />
       </head>
       <body className={`${aktivGrotesk.variable} antialiased bg-[#F2F2F2]`}>
         <LayoutClient>{children}</LayoutClient>

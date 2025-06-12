@@ -8,7 +8,7 @@ import GreenCTA from '@/components/GreenCTA'
 import EditProfileImage from '@/components/EditProfileImage'
 import useAppDispatch from '@/hooks/useDispatch'
 import useAppSelector from '@/hooks/useSelector'
-import { 
+import {
   updateIsAuthenticated,
   updateIsFirstLogin,
   updateOtpFilled,
@@ -17,14 +17,15 @@ import {
   updateToken
 } from '@/store/auth/auth.slice'
 import SvgIcons from '../SvgIcons'
-import { ICONS_NAMES, TOKEN_TYPE } from '@/constants'
+import { GA_EVENTS, ICONS_NAMES, TOKEN_TYPE } from '@/constants'
 import { MainService } from '@/api/services/MainService'
 import { useMutateSignUp } from '@/api/hooks/LoginHooks'
 import { setLocalStorageItem } from '@/utils'
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
+import { triggerGAEvent } from '@/utils/gTagEvents'
 
 interface IUserData {
-  profileImage: string
+  avatar: string
   name: string
   number: string
   email: string
@@ -52,13 +53,16 @@ const Signup = () => {
   } = useMutateSignUp()
 
   const [userData, setUserData] = useState<IUserData>({
-    profileImage: '',
+    avatar: '',
     name: '',
     number: '',
     email: '',
     invite_code: '',
     agree: false
   })
+
+  const [selectedAvatar, setSelectedAvatar] = useState<string>('')
+  const { avatarsData } = useAppSelector(state => state.profile)
 
   const dispatch = useAppDispatch()
 
@@ -112,6 +116,14 @@ const Signup = () => {
     return () => clearTimeout(timeoutId)
   }, [userData.email])
 
+  useEffect(() => {
+    if (avatarsData?.length > 0) {
+      const avatar = avatarsData.find(
+        (avatar: any) => avatar?.id?.toString() === userData?.avatar?.toString()
+      )
+      setSelectedAvatar(avatar?.image ?? '')
+    }
+  }, [userData.avatar])
 
   const isFormValid = () => {
     if (userData?.name === '') {
@@ -133,11 +145,11 @@ const Signup = () => {
     )
   }
 
-  useEffect(()=>{
-    if(userData?.agree){
+  useEffect(() => {
+    if (userData?.agree) {
       setAcceptTermsError('')
     }
-  },[userData?.agree])
+  }, [userData?.agree])
 
   const removeAuthentication = () => {
     dispatch(updateIsFirstLogin({ isFirstLogin: false }))
@@ -167,9 +179,10 @@ const Signup = () => {
 
   const handleSignup = () => {
     setEditProfileImage(false)
+    triggerGAEvent(GA_EVENTS.SPRITE_J24_SIGNUP)
     if (isFormValid()) {
       const formData = {
-        avatar: userData.profileImage,
+        avatar: userData.avatar,
         email: userData.email,
         full_name: userData.name,
         mobile_number: phoneNumber,
@@ -203,12 +216,16 @@ const Signup = () => {
   }, [signupData])
 
   return (
-    <LoginSignupWrapper open={open} setOpen={() => {
-      setOpen(false)
-      if (isFirstLogin) {
-        removeAuthentication()
-      }
-    }} logo={true}>
+    <LoginSignupWrapper
+      open={open}
+      setOpen={() => {
+        setOpen(false)
+        if (isFirstLogin) {
+          removeAuthentication()
+        }
+      }}
+      logo={true}
+    >
       <div
         className={`flex flex-col gap-[24px] pt-[28px]`}
         onClick={handleContainerClick}
@@ -236,15 +253,18 @@ const Signup = () => {
           </p>
           <div onClick={(e: React.MouseEvent) => e.stopPropagation()}>
             <EditProfileImage
-              name='profileImage'
-              image={userData.profileImage}
+              name='avatar'
+              image={selectedAvatar}
               editProfileImage={editProfileImage}
               setEditProfileImage={setEditProfileImage}
               onChange={handleChange}
             />
           </div>
         </div>
-        <div
+        <form
+          onSubmit={event => {
+            event.preventDefault()
+          }}
           className='flex flex-col gap-[20px]'
           onClick={() => setEditProfileImage(false)}
         >
@@ -299,18 +319,20 @@ const Signup = () => {
               <span className='text-[#003087] font-[700] cursor-pointer'>
                 Terms and Conditions
               </span>{' '}
-              and{' '}  
+              and{' '}
               <span className='font-[700] text-[#003087] cursor-pointer'>
                 Privacy Policy
               </span>
               .
             </span>
           </div>
-        {acceptTermsError && (
-          <span className='text-[#FD0202] font-[400] text-[12px]'>{acceptTermsError}</span>
-        )}
-        </div>
-        <GreenCTA 
+          {acceptTermsError && (
+            <span className='text-[#FD0202] font-[400] text-[12px]'>
+              {acceptTermsError}
+            </span>
+          )}
+        </form>
+        <GreenCTA
           onClick={() => {
             handleSignup()
           }}

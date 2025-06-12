@@ -49,7 +49,9 @@ const ReferNowModal: React.FC<IReferNowModal> = ({
               fontWeight='font-[400]'
             />
           </div>
-          <div className='flex flex-col gap-[28px]'>
+          <form onSubmit={(event)=>{
+            event.preventDefault()
+          }} className='flex flex-col gap-[28px]'>
             <Input
               name='referPhoneNumber'
               type='text'
@@ -69,7 +71,7 @@ const ReferNowModal: React.FC<IReferNowModal> = ({
                 }}
               />
             </div>
-          </div>
+          </form>
         </div>
       </DialogContent>
     </Dialog>

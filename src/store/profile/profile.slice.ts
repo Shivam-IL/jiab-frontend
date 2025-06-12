@@ -45,6 +45,12 @@ export interface IReferralData {
   status: string;
 }
 
+export interface IAvatarsData {
+  id: number;
+  name: string;
+  image: string;
+}
+
 export interface UserState {
   current_balance: number;
   rank: number;
@@ -52,6 +58,7 @@ export interface UserState {
   addresses: IUserAddressData[];
   referral_data: IReferralData[];
   breakTheIceModal: boolean;
+  avatarsData: IAvatarsData[];
 }
 
 const initialState: UserState = {
@@ -85,6 +92,7 @@ const initialState: UserState = {
   } as User,
   addresses: [],
   referral_data: [],
+  avatarsData: [],
 };
 
 const profileSlice = createSlice({
@@ -104,7 +112,7 @@ const profileSlice = createSlice({
         ...user,
         gender: user?.gender ? (user?.gender === 1 ? "male" : "female") : "",
       };
-      state.user = newUserData;
+      state.user = { ...newUserData };
     },
     updateAddresses: (state, action) => {
       const { type, address } = action.payload;
@@ -198,6 +206,10 @@ const profileSlice = createSlice({
       }
       state.referral_data = [...newReferralData];
     },
+    updateAvatarsData: (state, action) => {
+      const { avatarsData } = action.payload;
+      state.avatarsData = [...avatarsData];
+    },
   },
 });
 
@@ -211,5 +223,6 @@ export const {
   resetProfile,
   updateBreakTheIceModal,
   updateReferralData,
+  updateAvatarsData,
 } = profileSlice.actions;
 export default profileSlice.reducer;

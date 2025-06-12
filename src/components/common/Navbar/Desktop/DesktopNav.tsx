@@ -6,6 +6,7 @@ import { Bell, ChevronDown, ChevronRight } from 'lucide-react'
 import { ILogoAndProfileImageProps } from '@/interfaces'
 import NotificationItem from '../../NotificationItem/NotificationItem'
 import {
+  GA_EVENTS,
   ICONS_NAMES,
   INVITE_CODE_POPUP_DATA,
   REFER_NOW_MODAL_DATA,
@@ -34,6 +35,7 @@ import InviteCodeComponent from '@/components/common/InviteCodeComponent'
 import { useLanguage } from "@/hooks/useLanguage";
 import LanguageHydration from "../../LanguageHydration";
 import { useCMSData } from "@/data";
+import { triggerGAEvent } from '@/utils/gTagEvents'
 
 const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,

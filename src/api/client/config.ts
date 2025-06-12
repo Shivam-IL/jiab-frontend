@@ -1,4 +1,4 @@
-import { store } from '@/store';
+import { store } from "@/store";
 
 export const API_CONFIG = {
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -37,6 +37,7 @@ export const API_ROUTES = {
     SIGN_UP: "/auth/signup",
   },
   USER: {
+    AVATAR: "/avatars/",
     PROFILE: {
       GET: "/profile/",
       EDIT: "/profile/",
@@ -73,6 +74,10 @@ export const API_ROUTES = {
     GET_SURPRISE_ME: "/joke/surprise-me",
   },
   CMS: {
-    GET_HOME_PAGE_CONTENT: () => `/site-content?populate=*&locale=${getCurrentLocale()}`,
+    GET_HOME_PAGE_CONTENT: () =>
+      `/site-content?populate=*&locale=${getCurrentLocale()}`,
+  },
+  LEADERBOARD: {
+    GET_LEADERBOARD: "/leaderboard/",
   },
 };

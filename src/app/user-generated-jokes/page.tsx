@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { MadeYouLaughExitPopup } from "@/components/ExitPopUps";
 import UgcFilter from "@/components/common/UgcFilter";
 import { useCMSData } from "@/data";
+import { pageview } from "@/utils/gTagEvents";
 
 const UserGeneratedJokes = () => {
   const router = useRouter();

@@ -21,13 +21,13 @@ const AddressModal: React.FC<IAddressModal> = ({
   type,
   addressId
 }) => {
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
-  const cmsData = useCMSData(mounted);
+  const cmsData = useCMSData(mounted)
 
   const [data, setData] = useState<IAddressData>({
     address_line_1: '',
@@ -72,27 +72,29 @@ const AddressModal: React.FC<IAddressModal> = ({
 
   const submitAddress = () => {
     let errorValidation = false
-    if (data?.address_line_1==='') {
-      setError(prev=>({...prev, address_line_1: 'Address Line 1 is required'}))
+    if (data?.address_line_1 === '') {
+      setError(prev => ({
+        ...prev,
+        address_line_1: 'Address Line 1 is required'
+      }))
       errorValidation = true
     }
     if (data?.pincode?.length < 6) {
-      setError(prev=>({...prev, pincode: 'Invalid Pincode'}))
+      setError(prev => ({ ...prev, pincode: 'Invalid Pincode' }))
       errorValidation = true
     }
-    if (data?.state==='') {
-      setError(prev=>({...prev, state: 'State is required'}))
+    if (data?.state === '') {
+      setError(prev => ({ ...prev, state: 'State is required' }))
       errorValidation = true
     }
-    if (data?.city==='') {
-      setError(prev=>({...prev, city: 'City is required'}))
+    if (data?.city === '') {
+      setError(prev => ({ ...prev, city: 'City is required' }))
       errorValidation = true
     }
 
-    if(errorValidation){
+    if (errorValidation) {
       return
     }
-
 
     if (!errorValidation) {
       const addressData = {
@@ -159,7 +161,6 @@ const AddressModal: React.FC<IAddressModal> = ({
     }
   }, [addressId])
 
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className='rounded-[5px] md:max-w-[401px] flex flex-col px-0 gap-[18px] md:gap-[28px]  py-[20px] md:pt-[28px] md:pb-[20px] max-w-[358px]'>
@@ -181,7 +182,12 @@ const AddressModal: React.FC<IAddressModal> = ({
             <SvgIcons name={ICONS_NAMES.CROSS} className='w-[13px] h-[13px]' />
           </button>
         </div>
-        <div className='flex flex-col px-[8px] md:px-[16px] gap-[20px]'>
+        <form
+          onSubmit={event => {
+            event.preventDefault()
+          }}
+          className='flex flex-col px-[8px] md:px-[16px] gap-[20px]'
+        >
           <div className='flex flex-col gap-[24px]'>
             <Input
               name='address_line_1'
@@ -269,7 +275,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               onClick={submitAddress}
             />
           </div>
-        </div>
+        </form>
       </DialogContent>
     </Dialog>
   )

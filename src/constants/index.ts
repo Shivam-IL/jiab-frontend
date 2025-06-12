@@ -258,8 +258,6 @@ export const ICONS_NAMES = {
   STAIRS: "stairs",
 };
 
-
-
 export const INVITE_CODE_POPUP_DATA = {
   INVITE_CODE: {
     TITLE: "Have an Invite Code?",
@@ -500,7 +498,7 @@ export const USER_INFO_CARD_DATA = [
 ];
 
 export const PROTECTED_ROUTES = [
-  "/my-profile/",
+  "/my-profile",
   "/send-reminder",
   "/leaderboard",
   "/pick-mood",
@@ -648,6 +646,31 @@ export const PROFILE_QUESTIONS = [
     noofQuestion: 0,
   },
 ];
+
+export const GA_EVENTS = {
+  CLICK: "click",
+  FIRST_VISIT: "first_visit",
+  FORM_START: "form_start",
+  PAGE_VIEW: "page_view",
+  SCROLL: "scroll",
+  SESSION_START: "session_start",
+  VIEW_SEARCH_RESULTS: "view_search_results",
+  USER_ENGAGEMENT: "user_engagement",
+  SPRITE_24_REFERRAL_CODE_SUBMIT: "Sprite24_ReferralCode_Submit",
+  SPRITE_J24_COMPLETED_PROFILE_CONSUMER: "SpriteJ24_CompletedProfile_Consumer",
+  SPRITE_J24_CONTEST_BUTTON: "SpriteJ24_Contest_button",
+  SPRITE_J24_GET_OTP: "SpriteJ24_GetOTP",
+  SPRITE_J24_OTP_SUBMIT: "SpriteJ24_OTP_Submit",
+  SPRITE_J24_REFER_NOW: "SpriteJ24_ReferNow",
+  SPRITE_J24_RESEND_OTP: "SpriteJ24_ResendOTP",
+  SPRITE_J24_SIGNUP: "SpriteJ24_Signup",
+  SPRITE_J24_SURPRISE_ME: "SpriteJ24_SurpriseMe",
+  SPRITE_J24_SUBMIT_JOKE: "SpriteJ24_SubmitJoke",
+  SPRITE_J24_IMAGE_JOKE_SUBMIT: "SpriteJ24_Image_JokeSubmit",
+  SPRITE_J24_TEXT_JOKE_SUBMIT: "SpriteJ24_Text_JokeSubmit",
+  SPRITE_J24_AUDIO_JOKE_SUBMIT: "SpriteJ24_Audio_JokeSubmit",
+  SPRITE_J24_VIDEO_JOKE_SUBMIT: "SpriteJ24_Video_JokeSubmit",
+};
 
 export const ANNOUNCING_WINNER_TIMER_TEXT = "Announcing the winners in...";
 export const HELP_US_TO_KNOW_YOUR_BETTER = "Help us get to know you better!";

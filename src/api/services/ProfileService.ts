@@ -182,4 +182,19 @@ export class ProfileService extends MainService {
       throw new Error(error as string);
     }
   }
+
+  public async getAvatarsData() {
+    try {
+      const response = await apiClient.get(API_ROUTES.USER.AVATAR, {
+        headers: this.getAuthHeaders(),
+      });
+      const data = response.data;
+      if (data?.success) {
+        return SuccessResponse(data?.data?.data ?? []);
+      }
+      return ErrorResponse(data?.message || "Invalid Avatars Data");
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
 }

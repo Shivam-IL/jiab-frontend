@@ -2,6 +2,7 @@ import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
 import { useMutateRefreshToken } from '@/api/hooks/LoginHooks'
 import {
   useGetUserAddresses,
+  useGetAvatarsData,
   useGetUserProfileDetails
 } from '@/api/hooks/ProfileHooks'
 import { MainService } from '@/api/services/MainService'
@@ -10,6 +11,7 @@ import useAppDispatch from '@/hooks/useDispatch'
 import { updateIsAuthenticated, updateToken } from '@/store/auth/auth.slice'
 import {
   updateAddresses,
+  updateAvatarsData,
   updateBalance,
   updateBreakTheIceModal,
   updateRank,
@@ -19,6 +21,8 @@ import {
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils'
 import { ReactNode, useEffect, useState } from 'react'
 import { useGetAllReferrals } from '@/api/hooks/ReferralHooks'
+import { useGetLeaderBoard } from '@/api/hooks/LeaderBoardHooks'
+import { updateLeaderboard } from '@/store/leaderboard'
 
 const mainServiceInstance = MainService.getInstance()
 
@@ -26,9 +30,10 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const dispatch = useAppDispatch()
   const [tokenUpdated, setTokenUpdated] = useState(false)
   const { data: userProfileData } = useGetUserProfileDetails()
-  const { data: userBalanceAndRankData } = useGetUserAddresses()
   const { data: userAddressesData } = useGetUserAddresses()
   const { data: referralData } = useGetAllReferrals({ page: 1 })
+  const { data: avatarsData } = useGetAvatarsData()
+  const { data: leaderboardData } = useGetLeaderBoard()
 
   const {
     mutate: mutateRefreshToken,
@@ -68,11 +73,11 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, refresh_token)
       setLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, access_token)
       setTokenUpdated(true)
-    } else if (refreshTokenData?.ok === false) {
+    } else {
+      localStorage.clear()
       dispatch(updateIsAuthenticated({ isAuthenticated: false }))
       dispatch(updateBreakTheIceModal({ breakTheIceModal: true }))
       dispatch(updateToken({ token: '' }))
-      localStorage.clear()
     }
   }, [refreshTokenLoading, refreshTokenData])
 
@@ -105,8 +110,8 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   }, [userProfileData])
 
   useEffect(() => {
-    if (userBalanceAndRankData?.ok) {
-      const { data } = userBalanceAndRankData ?? {}
+    if (userAddressesData?.ok) {
+      const { data } = userAddressesData ?? {}
       dispatch(
         updateAddresses({
           type: REDUX_UPDATION_TYPES.MULTIPLE_ADDED,
@@ -121,7 +126,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         JSON.stringify(localData)
       )
     }
-  }, [userBalanceAndRankData])
+  }, [userAddressesData])
 
   useEffect(() => {
     if (referralData?.ok) {
@@ -135,6 +140,30 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       )
     }
   }, [referralData])
+
+  useEffect(() => {
+    if (avatarsData?.ok) {
+      const modifiedData = avatarsData?.data?.map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        image: item.image_url
+      }))
+      dispatch(updateAvatarsData({ avatarsData: modifiedData ?? [] }))
+    }
+  }, [avatarsData])
+
+  useEffect(() => {
+    if (leaderboardData?.ok) {
+      const { data } = leaderboardData ?? {}
+      console.log('leaderboardData', data)
+      dispatch(
+        updateLeaderboard({
+          my_rank: data?.my_rank,
+          leaderboard: data?.top_users ?? []
+        })
+      )
+    }
+  }, [leaderboardData])
 
   return <>{children}</>
 }

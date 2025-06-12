@@ -1,20 +1,38 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AktivGroteskText from '../AktivGroteskText'
 import AddressModal from '../AddressModal'
 import AddressCard from '@/components/AddressCard'
 import useAppSelector from '@/hooks/useSelector'
 import { AddressModalType } from '@/types'
+import { useGetUserProfileDetails } from '@/api/hooks/ProfileHooks'
+import useAppDispatch from '@/hooks/useDispatch'
+import { updateUser } from '@/store/profile/profile.slice'
+import { triggerGAEvent } from '@/utils/gTagEvents'
+import { GA_EVENTS } from '@/constants'
 
 const UserAddressCard = ({
   addressTextField,
-  addClickableText,
+  addClickableText
 }: {
-  addressTextField: string;
-  addClickableText: string;
+  addressTextField: string
+  addClickableText: string
 }) => {
   const [open, setOpen] = useState<boolean>(false)
 
+  const dispatch = useAppDispatch()
   const { addresses } = useAppSelector(state => state.profile)
+  const { data: userProfileData } = useGetUserProfileDetails({ open })
+
+  useEffect(() => {
+    if (userProfileData?.ok) {
+      const { data } = userProfileData?.data ?? {}
+      dispatch(updateUser({ user: { ...data?.user } }))
+      if (data?.profile_percentage === 100) {
+        triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)
+      }
+    }
+  }, [userProfileData])
+
   return (
     <div className='bg-white p-[16px] md:py-[25px] md:px-[33px] gap-[10px] flex flex-col md:gap-[32px] rounded-[5px] md:rounded-[20px]'>
       <div className='flex justify-between items-center'>

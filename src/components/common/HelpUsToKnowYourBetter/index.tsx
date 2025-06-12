@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import AktivGroteskText from '../AktivGroteskText'
 import {
+  GA_EVENTS,
   HELP_US_TO_KNOW_YOUR_BETTER,
   ICONS_NAMES,
   NEXT,
@@ -12,9 +13,13 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import GreenCTA from '@/components/GreenCTA'
 import SvgIcons from '../SvgIcons'
 import {
+  useGetUserProfileDetails,
   useGetUserQuestions,
   useSubmitUserQuestions
 } from '@/api/hooks/ProfileHooks'
+import { updateUser } from '@/store/profile/profile.slice'
+import { triggerGAEvent } from '@/utils/gTagEvents'
+import useAppDispatch from '@/hooks/useDispatch'
 
 interface IOption {
   id: number
@@ -34,16 +39,19 @@ interface IQuestion {
 
 const HelpUsToKnowYourBetter = ({
   prevButtonText,
-  nextButtonText,
+  nextButtonText
 }: {
-  prevButtonText: string;
-  nextButtonText: string;
+  prevButtonText: string
+  nextButtonText: string
 }) => {
   const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
     null
   )
   const [allQuestions, setAllQuestions] = useState<IQuestion[]>([])
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState<number>(0)
+  const [questionIdSubmitted, setQuestionIdSubmitted] = useState<number | null>(
+    null
+  )
 
   const { data: userProfileQuestions } = useGetUserQuestions()
   const { mutate: submitUserQuestions, data: submitQuestionResponse } =
@@ -57,6 +65,21 @@ const HelpUsToKnowYourBetter = ({
     }
   }, [userProfileQuestions])
 
+  const dispatch = useAppDispatch()
+  const { data: userProfileData } = useGetUserProfileDetails({
+    questionIdSubmitted
+  })
+
+  useEffect(() => {
+    if (userProfileData?.ok) {
+      const { data } = userProfileData?.data ?? {}
+      console.log(data, 'help us to know your better')
+      dispatch(updateUser({ user: { ...data?.user } }))
+      if (data?.profile_percentage === 100) {
+        triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)
+      }
+    }
+  }, [userProfileData])
 
   return (
     <div className='bg-white w-full rounded-[5px] md:rounded-[20px] py-[16px] md:py-[44px] px-[14px] md:px-[33px] flex flex-col gap-[8px] md:gap-[20px]'>
@@ -93,7 +116,7 @@ const HelpUsToKnowYourBetter = ({
             <div className='pt-[24px] md:pt-[20px] pb-[34px] md:pb-[32px]'>
               <RadioGroup
                 value={selectedQuestion?.selected_option?.toString()}
-                onValueChange={(value) => {
+                onValueChange={value => {
                   setSelectedQuestion({
                     ...selectedQuestion,
                     selected_option: parseInt(value)
@@ -134,6 +157,7 @@ const HelpUsToKnowYourBetter = ({
                   if (!selectedQuestion?.selected_option) {
                     return
                   }
+                  setQuestionIdSubmitted(selectedQuestion.id)
                   submitUserQuestions({
                     questions: [
                       {

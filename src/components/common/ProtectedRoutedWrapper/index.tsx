@@ -13,19 +13,12 @@ const ProtectedRoutedWrapper = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (
       !getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN) &&
-      JSON.stringify(PROTECTED_ROUTES).includes(pathname)
+      JSON.stringify(PROTECTED_ROUTES).startsWith(pathname)
     ) {
       router.push('/')
     }
   }, [isAuthenticated, token, pathname])
 
-  if (
-    !isAuthenticated &&
-    !token &&
-    !JSON.stringify(PROTECTED_ROUTES).includes(pathname)
-  ) {
-    return <></>
-  }
 
   return <>{children}</>
 }
