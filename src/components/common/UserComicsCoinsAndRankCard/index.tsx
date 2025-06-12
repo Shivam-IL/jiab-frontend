@@ -54,11 +54,11 @@ const UserComicsCoinsAndRankCard = ({
               image=""
               itemsGapClass="gap-[5px] md:gap-[8px]"
               icon={ICONS_NAMES.RANK}
-              iconClassName="w-[9px] h-[12px] md:w-[18px] md:h-[28px]"
+              iconClassName='w-[9px] h-[12px] md:w-[18px] md:h-[28px]'
               text={ranks}
-              fontSize="text-[12px] md:text-[20px]"
-              fontWeight="font-[700]"
-              textColor="text-black"
+              fontSize='text-[12px] md:text-[28px]'
+              fontWeight='font-[700]'
+              textColor='text-black'
             />
           </div>
         </div>

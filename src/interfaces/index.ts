@@ -47,8 +47,8 @@ export interface IGreenCTA {
   className?: string;
   disabled?: boolean;
   isCoinIcon?: boolean;
-  children?:React.ReactNode;
-  childrenPosition?:string;
+  children?: React.ReactNode;
+  childrenPosition?: string;
 }
 
 export interface IEditProfileImage {
@@ -114,8 +114,8 @@ export interface IUserInfoCard {
 export interface IAddressModal {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  type:AddressModalType,
-  addressId?:number | null
+  type: AddressModalType;
+  addressId?: number | null;
 }
 
 export interface IUserGeneratedJokeCard {
@@ -152,6 +152,7 @@ export interface IReferNowModal {
 export interface IInviteCodePopup {
   open: boolean;
   onClose: () => void;
+  onSubmit: () => void;
   title: string;
   subtitle: string;
   ctaText: string;
@@ -313,6 +314,13 @@ export interface IContestActivities {
   rewardText: string;
   action: () => void;
 }
+
+export interface IInviteeData {
+  id: number;
+  mobile_number: string;
+  status: string;
+}
+
 
 export interface UgcCardProps {
   disclaimerText: string

@@ -157,7 +157,7 @@ const HelpUsToKnowYourBetter = ({
                     currentQuestionNumber > 1 &&
                     currentQuestionNumber !== allQuestions?.length
                       ? 'border-black text-black'
-                      : 'border-[rgba(0,0,0,0.5)] text-[rgba(0,0,0,0.5)]'
+                      : 'border-[rgba(0,0,0,0.2)] text-[rgba(0,0,0,0.2)]'
                   }`}
                 >
                   <AktivGroteskText
@@ -185,7 +185,7 @@ const HelpUsToKnowYourBetter = ({
                   className={` hover:bg-[#E0E0E0]  ${
                     currentQuestionNumber !== allQuestions?.length
                       ? 'border-black text-black'
-                      : 'border-[rgba(0,0,0,0.5)] text-[rgba(0,0,0,0.5)]'
+                      : 'border-[rgba(0,0,0,0.2)] text-[rgba(0,0,0,0.2)]'
                   }  transition-all duration-300 rounded-[100px] border-[1px] md:border-none md:p-0 text-[10px] font-[700] py-[6px] px-[36px]`}
                 >
                   <AktivGroteskText

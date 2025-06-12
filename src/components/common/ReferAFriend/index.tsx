@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AktivGroteskText from '../AktivGroteskText'
 import {
   ICONS_NAMES,
   MY_REFERRAL,
+  NEXT,
+  PREV,
   REFER_A_FRIEND_TEXT,
   REFER_ANOTHER,
   REFER_NOW,
@@ -18,18 +20,39 @@ import ReferNowModal from '../ReferNowModal'
 import { useRouter } from 'next/navigation'
 import CustomPopupWrapper from '../CustomPopupWrapper'
 import ReferNowComponent from '../ReferNowComponent'
+import { useGetAllReferrals } from '@/api/hooks/ReferralHooks'
+import { IInviteeData } from '@/interfaces'
 
 const ReferAFriend = ({
   referToFriendHeader,
   referNowButtonText,
+  prevButtonText,
+  nextButtonText,
 }: {
   referToFriendHeader: string;
   referNowButtonText: string;
+  prevButtonText: string;
+  nextButtonText: string;
 }) => {
-  const data: number[] = []
+  const [page, setPage] = useState<number>(1)
+  const [pages, setPages] = useState<number>(1)
   const [open, setOpen] = useState<boolean>(false)
+  const [referralCode, setReferralCode] = useState<string>('')
+  const { data: referrals } = useGetAllReferrals({ page, referralCode })
+
+  const [data, setData] = useState<IInviteeData[]>([])
 
   const router = useRouter()
+
+  useEffect(() => {
+    if (referrals?.ok) {
+      const { data } = referrals ?? {}
+      const newPages = Math.ceil(data?.total / data?.page_size)
+      setPages(newPages)
+      const referralsData = referrals?.data?.referrals as IInviteeData[]
+      setData(referralsData)
+    }
+  }, [referrals])
   return (
     <>
       {data?.length === 0 && (
@@ -71,26 +94,82 @@ const ReferAFriend = ({
               fontWeight='font-[700]'
             />
           </div>
-          <div className='flex flex-col gap-[8px] md:gap-[20px]'>
-            <div className='bg-white flex justify-between items-center px-[8px] py-[8px] md:py-[18px] md:px-[45px] rounded-[5px] md:rounded-[20px]'>
-              <div className='flex items-center gap-[16px] md:gap-[24px]'>
-                <SvgIcons
-                  name={ICONS_NAMES.USER}
-                  className='w-[21px] h-[21px] md:w-[24px] md:h-[28px]'
-                />
+          {data?.map((item: IInviteeData) => (
+            <div
+              key={item.id}
+              className='flex flex-col gap-[8px] md:gap-[20px]'
+            >
+              <div className='bg-white flex justify-between items-center px-[8px] py-[8px] md:py-[18px] md:px-[45px] rounded-[5px] md:rounded-[20px]'>
+                <div className='flex items-center gap-[16px] md:gap-[24px]'>
+                  <SvgIcons
+                    name={ICONS_NAMES.USER}
+                    className='w-[21px] h-[21px] md:w-[24px] md:h-[28px]'
+                  />
+                  <AktivGroteskText
+                    text={`+91-XXXXXX${item.mobile_number?.slice(6)}`}
+                    fontSize='text-[12px] md:text-[20px]'
+                    fontWeight='font-[400]'
+                    className={`${
+                      item.status === 'Pending'
+                        ? 'text-[rgba(0,0,0,0.5)]'
+                        : 'text-black'
+                    }`}
+                  />
+                </div>
                 <AktivGroteskText
-                  text='+91-XXXXXX8888'
+                  text={item.status}
                   fontSize='text-[12px] md:text-[20px]'
                   fontWeight='font-[400]'
+                  className={`${
+                    item.status === 'Pending'
+                      ? 'text-[rgba(0,0,0,0.5)]'
+                      : 'text-black'
+                  }`}
                 />
               </div>
-              <AktivGroteskText
-                text='Pending'
-                fontSize='text-[12px] md:text-[20px]'
-                fontWeight='font-[400]'
-              />
+            </div>
+          ))}
+          <div className='w-full flex justify-center flex-row items-center'>
+            <div className='relative flex gap-[12px] md:gap-[16px]'>
+              {page > 1 && <button
+                onClick={() => {
+                  if (page > 1) {
+                    setPage(prev => prev - 1)
+                  }
+                }}
+                className={`hover:bg-[#E0E0E0] transition-all duration-300 rounded-[100px]  border-[1px]   text-[10px] font-[700] py-[6px] px-[36px] ${
+                  page > 1
+                    ? 'border-black text-black'
+                    : 'border-[rgba(0,0,0,0.2)] text-[rgba(0,0,0,0.2)]'
+                }`}
+              >
+                <AktivGroteskText
+                  text={prevButtonText}
+                  fontSize='text-[14px] md:text-[24px]'
+                  fontWeight='font-[700]'
+                />
+              </button>}
+              {pages>1 &&<button
+                onClick={() => {
+                  if (page < pages) {
+                    setPage(prev => prev + 1)
+                  }
+                }}
+                className={` hover:bg-[#E0E0E0]  ${
+                  pages !== page
+                    ? 'border-black text-black'
+                    : 'border-[rgba(0,0,0,0.2)] text-[rgba(0,0,0,0.2)]'
+                }  transition-all duration-300 rounded-[100px] border-[1px] text-[10px] font-[700] py-[6px] px-[36px]`}
+              >
+                <AktivGroteskText
+                  text={nextButtonText}
+                  fontSize='text-[14px] md:text-[24px]'
+                  fontWeight='font-[700]'
+                />
+              </button>}
             </div>
           </div>
+
           <div className='w-full flex justify-center gap-[12px] md:gap-[28px] md:pt-[40px]'>
             <button
               onClick={() => {
@@ -118,7 +197,12 @@ const ReferAFriend = ({
           </div>
         </div>
       )}
-      <ReferNowComponent open={open} onClose={() => setOpen(false)} />
+      <ReferNowComponent
+        setReferralCode={setReferralCode}
+        setOpen={setOpen}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
     </>
   )
 }

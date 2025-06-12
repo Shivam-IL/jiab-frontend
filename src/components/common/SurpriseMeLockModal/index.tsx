@@ -10,13 +10,16 @@ import useAppDispatch from '@/hooks/useDispatch'
 import { updateCrossModal, updateLoginModal } from '@/store/auth/auth.slice'
 import useAppSelector from '@/hooks/useSelector'
 
-const SurpriseMeLockModal = () => {
+const SurpriseMeLockModal = ({onClose}:{onClose?:()=>void}) => {
   const [open, setOpen] = useState<boolean>(true)
   const { isAuthenticated } = useAppSelector(state => state.auth)
 
   const dispatch = useAppDispatch()
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={()=>{
+      setOpen(false)
+      onClose?.()
+    }}>
       <DialogContent className='rounded-[5px] md:max-w-[239px] p-0 max-w-[277px]'>
         <div className='absolute top-[-105px] md:top-[-125px] left-0 flex justify-center items-center w-full'>
           <SvgIcons
@@ -30,6 +33,7 @@ const SurpriseMeLockModal = () => {
             onClick={() => {
               setOpen(false)
               dispatch(updateCrossModal({ crossModal: true }))
+              onClose?.()
             }}
           >
             <SvgIcons name={ICONS_NAMES.CROSS} className='w-[16px] h-[16px]' />
@@ -52,6 +56,7 @@ const SurpriseMeLockModal = () => {
                     dispatch(updateLoginModal({ loginModal: true }))
                     setOpen(false)
                   }
+                  onClose?.()
                 }}
                 className='relative'
               >

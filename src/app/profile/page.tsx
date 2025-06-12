@@ -17,7 +17,6 @@ import useAppDispatch from '@/hooks/useDispatch'
 import { useCMSData } from "@/data";
 
 const ProfilePage = () => {
-
   const router = useRouter()
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -25,7 +24,8 @@ const ProfilePage = () => {
   }, []);
   const cmsData = useCMSData(mounted);
   const dispatch = useAppDispatch()
-  const { user,breakTheIceModal } = useAppSelector(state => state.profile)
+  const { user, breakTheIceModal } = useAppSelector(state => state.profile)
+
 
   return (
     <ScreenWrapper>
@@ -44,6 +44,8 @@ const ProfilePage = () => {
           <ReferAFriend
             referToFriendHeader={cmsData?.myProfile?.referToFriendHeader}
             referNowButtonText={cmsData?.myProfile?.referNowButtonText}
+            prevButtonText={cmsData?.myProfile?.prevButtonText}
+            nextButtonText={cmsData?.myProfile?.nextButtonText}
           />
           <HelpUsToKnowYourBetter
             prevButtonText={cmsData?.myProfile?.prevButtonText}

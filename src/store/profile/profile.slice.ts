@@ -39,11 +39,18 @@ export interface User {
   registered_on: string;
 }
 
+export interface IReferralData {
+  id: number;
+  mobile_number: string;
+  status: string;
+}
+
 export interface UserState {
   current_balance: number;
   rank: number;
   user: User;
   addresses: IUserAddressData[];
+  referral_data: IReferralData[];
   breakTheIceModal: boolean;
 }
 
@@ -77,6 +84,7 @@ const initialState: UserState = {
     registered_on: "",
   } as User,
   addresses: [],
+  referral_data: [],
 };
 
 const profileSlice = createSlice({
@@ -94,11 +102,7 @@ const profileSlice = createSlice({
       const newUserData = {
         ...state.user,
         ...user,
-        gender: user?.gender
-          ? user?.gender === 1
-            ? "male"
-            : "female"
-          : "",
+        gender: user?.gender ? (user?.gender === 1 ? "male" : "female") : "",
       };
       state.user = newUserData;
     },
@@ -184,6 +188,16 @@ const profileSlice = createSlice({
     updateBreakTheIceModal: (state, action) => {
       state.breakTheIceModal = action.payload.breakTheIceModal;
     },
+    updateReferralData: (state, action) => {
+      const { referral_data, type } = action.payload;
+      const newReferralData = [...state.referral_data];
+      if (type === REDUX_UPDATION_TYPES.SINGLE_ADDED) {
+        newReferralData.push(...referral_data);
+      } else if (type === REDUX_UPDATION_TYPES.MULTIPLE_ADDED) {
+        newReferralData.push(...referral_data);
+      }
+      state.referral_data = [...newReferralData];
+    },
   },
 });
 
@@ -196,5 +210,6 @@ export const {
   editAddress,
   resetProfile,
   updateBreakTheIceModal,
+  updateReferralData,
 } = profileSlice.actions;
 export default profileSlice.reducer;

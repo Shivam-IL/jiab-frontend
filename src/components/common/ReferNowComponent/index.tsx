@@ -1,17 +1,25 @@
 import { IReferNowModal } from '@/interfaces'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomPopupWrapper from '../CustomPopupWrapper'
-import { REFER_NOW_MODAL_DATA, REFFERAL_STATUS_POPUP_DATA } from '@/constants'
+import {
+  REFER_NOW_MODAL_DATA,
+  REFERRAL_CODE,
+  REFFERAL_STATUS_POPUP_DATA
+} from '@/constants'
 import AktivGroteskText from '../AktivGroteskText'
 import ReferNowModal from '../ReferNowModal'
 import { useSendReferral } from '@/api/hooks/ReferralHooks'
 
 const ReferNowComponent = ({
   open,
-  onClose
+  onClose,
+  setOpen,
+  setReferralCode
 }: {
   open: boolean
   onClose: () => void
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setReferralCode?: React.Dispatch<React.SetStateAction<string>>
 }) => {
   const [open2, setOpen2] = useState<boolean>(false)
   const [open3, setOpen3] = useState<boolean>(false)
@@ -20,6 +28,9 @@ const ReferNowComponent = ({
   const [referStatus2, setReferStatus2] = useState<boolean>(false)
   const [referStatus3, setReferStatus3] = useState<boolean>(false)
   const [phoneNumber, setPhoneNumber] = useState<string>('')
+
+  const [referStatus, setReferStatus] = useState<string>('')
+  const [inviteCode, setInviteCode] = useState<string>('')
 
   const {
     mutate: sendReferral,
@@ -33,11 +44,57 @@ const ReferNowComponent = ({
 
   const submitReferNow = () => {
     sendReferral({
-      mobile_number: phoneNumber
+      refer_to: phoneNumber
     })
   }
 
-  console.log(sendReferralData)
+  useEffect(() => {
+    if (sendReferralData?.ok) {
+      const { status } = sendReferralData?.data as {
+        status: string
+        invite_code?: string
+      }
+      setReferStatus(status)
+      if (status === REFERRAL_CODE.SUCCESS) {
+        setReferStatus1(true)
+        setOpen2(false)
+        setOpen3(false)
+        setReferStatus3(false)
+        setInviteCode((sendReferralData?.data as any)?.invite_code || '')
+        if (setReferralCode) {
+          setReferralCode((sendReferralData?.data as any)?.invite_code || '')
+        }
+        onClose()
+      } else if (status === REFERRAL_CODE.ALREADY_REFERRED) {
+        setReferStatus2(true)
+        setOpen2(false)
+        setOpen3(false)
+        setReferStatus1(false)
+        setReferStatus3(false)
+        onClose()
+      } else if (status === REFERRAL_CODE.CANNOT_SEND_TO_SELF) {
+        setOpen3(true)
+        setOpen2(false)
+        setReferStatus3(false)
+        setReferStatus1(false)
+        setReferStatus2(false)
+        onClose()
+      } else if (status === REFERRAL_CODE.INVALID_MOBILE_NUMBER) {
+        setOpen2(true)
+        setOpen3(false)
+        setReferStatus1(false)
+        setReferStatus2(false)
+        onClose()
+        setReferStatus3(false)
+      }
+    }
+  }, [sendReferralData])
+
+  useEffect(() => {
+    return () => {
+      setPhoneNumber('')
+    }
+  }, [])
 
   return (
     <div>
@@ -54,11 +111,11 @@ const ReferNowComponent = ({
           }}
           onClose={() => {
             onClose()
-            setOpen2(true)
+            setPhoneNumber('')
           }}
         />
       )}
-      {open2 && (
+      {referStatus === REFERRAL_CODE.INVALID_MOBILE_NUMBER && open2 && (
         <ReferNowModal
           title={REFER_NOW_MODAL_DATA.PRANK_US.title}
           subtitle={REFER_NOW_MODAL_DATA.PRANK_US.subtitle}
@@ -66,40 +123,39 @@ const ReferNowComponent = ({
           phoneNumber={phoneNumber}
           onChange={handleChange}
           onSubmit={() => {
-            setOpen2(false)
-            setOpen3(true)
+            submitReferNow()
           }}
           open={open2}
           onClose={() => {
+            onClose()
+            setPhoneNumber('')
             setOpen2(false)
-            setOpen3(true)
           }}
         />
       )}
-      {open3 && (
+      {referStatus === REFERRAL_CODE.CANNOT_SEND_TO_SELF && open3 && (
         <ReferNowModal
           title={REFER_NOW_MODAL_DATA.SELF_LOVE.title}
           subtitle={REFER_NOW_MODAL_DATA.SELF_LOVE.subtitle}
           ctaText={REFER_NOW_MODAL_DATA.SELF_LOVE.ctaText}
           phoneNumber={phoneNumber}
           onSubmit={() => {
-            setOpen3(false)
-            setReferStatus1(true)
+            submitReferNow()
           }}
           onChange={handleChange}
           open={open3}
           onClose={() => {
             setOpen3(false)
-            setReferStatus1(true)
+            setPhoneNumber('')
           }}
         />
       )}
-      {referStatus1 && (
+      {referStatus === REFERRAL_CODE.SUCCESS && referStatus1 && (
         <CustomPopupWrapper
           open={referStatus1}
           onClose={() => {
             setReferStatus1(false)
-            setReferStatus2(true)
+            setPhoneNumber('')
           }}
           icon={REFFERAL_STATUS_POPUP_DATA.EASY.ICON}
           title={REFFERAL_STATUS_POPUP_DATA.EASY.TITLE}
@@ -110,7 +166,7 @@ const ReferNowComponent = ({
               fontSize='text-[16px]'
               fontWeight='font-[700]'
               className='text-[#00953B] text-center'
-              text={REFFERAL_STATUS_POPUP_DATA.EASY.SECOND_TEXT}
+              text={`"${inviteCode}"`}
             />
             <AktivGroteskText
               fontSize='text-[12px]'
@@ -120,11 +176,12 @@ const ReferNowComponent = ({
           </div>
         </CustomPopupWrapper>
       )}
-      {referStatus2 && (
+      {referStatus === REFERRAL_CODE.ALREADY_REFERRED && referStatus2 && (
         <CustomPopupWrapper
           open={referStatus2}
           onClose={() => {
             setReferStatus2(false)
+            setPhoneNumber('')
           }}
           icon={REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.ICON}
           title={REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.TITLE}
@@ -135,11 +192,11 @@ const ReferNowComponent = ({
           }
           singleButtonOnClick={() => {
             setReferStatus2(false)
-            setReferStatus3(true)
+            setOpen(true)
           }}
         />
       )}
-      {referStatus3 && (
+      {/* {referStatus3 && (
         <CustomPopupWrapper
           open={referStatus3}
           onClose={() => {
@@ -156,7 +213,7 @@ const ReferNowComponent = ({
             setReferStatus3(false)
           }}
         />
-      )}
+      )} */}
     </div>
   )
 }

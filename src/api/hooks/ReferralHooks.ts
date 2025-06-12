@@ -1,7 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ReferralService } from "../services/ReferralService";
-import { TReferral, TReferralSendAgain } from "../types/ReferralTypes";
+import {
+  TReferral,
+  TReferralSendAgain,
+  TReferralVerify,
+} from "../types/ReferralTypes";
 import { keys } from "../utils";
+import useAppSelector from "@/hooks/useSelector";
 
 const referralService = ReferralService.getInstance();
 
@@ -12,18 +17,39 @@ const useSendReferral = () => {
   });
 };
 
-const useGetAllReferrals = () => {
+const useGetAllReferrals = ({
+  page,
+  referralCode,
+}: {
+  page: number;
+  referralCode?: string;
+}) => {
+  const { isAuthenticated, token } = useAppSelector((state) => state.auth);
   return useQuery({
-    queryKey: keys.referral.getAllReferrals(),
-    queryFn: () => referralService.getAllReferrals(),
+    queryKey: [keys.referral.getAllReferrals(), { referralCode, page }],
+    queryFn: () => referralService.getAllReferrals(page),
+    enabled: isAuthenticated && token ? true : false,
+    staleTime: 0,
   });
 };
 
-const useSendAgain = () => {
+const useSendReferralAgain = () => {
   return useMutation({
     mutationFn: (referralData: TReferralSendAgain) =>
       referralService.sendAgain(referralData),
   });
 };
 
-export { useSendReferral, useGetAllReferrals, useSendAgain };
+const useVerifyReferral = () => {
+  return useMutation({
+    mutationFn: (referralData: TReferralVerify) =>
+      referralService.verifyReferral(referralData),
+  });
+};
+
+export {
+  useSendReferral,
+  useGetAllReferrals,
+  useSendReferralAgain,
+  useVerifyReferral,
+};
