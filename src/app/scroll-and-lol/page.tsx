@@ -1,10 +1,14 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import Image from "next/image";
 import Header from "@/components/common/Header/Header";
 import ReactionEmojies from "@/components/ReactionEmojies";
 import { ICONS_NAMES } from "@/constants"; // Import ICONS_NAMES
 import { useCMSData } from "@/data";
+import { useSearchParams } from "next/navigation";
+import { useGetJokes } from "@/api/hooks/JokeHooks";
+import { useLanguage } from "@/hooks/useLanguage";
+import { IUserReaction } from "@/api/types/JokeTypes";
 
 // Define a type for the values of ICONS_NAMES (if not already global or imported appropriately)
 // This might be duplicative if ReactionEmojies exports its Reaction type, consider refactoring later.
@@ -16,9 +20,12 @@ interface SelectedReactionData {
 }
 
 interface VideoData {
-  id: number;
+  id: string;
   url: string;
   title: string;
+  thumbnail?: string;
+  user_reaction: IUserReaction;
+  view_count: number;
 }
 
 // Loading Spinner Component
@@ -33,36 +40,46 @@ const LoadingSpinner: React.FC = () => {
   );
 };
 
+// Mini spinner component overlay
+const SpinnerOverlay: React.FC = () => (
+  <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-30">
+    <div className="w-12 h-12 border-4 border-[#08C270] border-t-transparent rounded-full animate-spin" />
+  </div>
+);
+
 const ScrollAndLol: React.FC = () => {
-  const [videos] = useState<VideoData[]>([
-    { id: 1, url: "/videos/dummy-video.mp4", title: "Video 1" },
-    { id: 2, url: "/videos/dummy-video-2.mp4", title: "Video 2" },
-    { id: 3, url: "/videos/dummy-video-3.mp4", title: "Video 1" },
-    { id: 4, url: "/videos/dummy-video-4.mp4", title: "Video 2" },
-    { id: 5, url: "/videos/dummy-video-5.mp4", title: "Video 1" },
-    { id: 6, url: "/videos/dummy-video-6.mp4", title: "Video 2" },
-    { id: 7, url: "/videos/dummy-video.mp4", title: "Video 1" },
-    { id: 8, url: "/videos/dummy-video-2.mp4", title: "Video 2" },
-    { id: 9, url: "/videos/dummy-video-3.mp4", title: "Video 1" },
-    { id: 10, url: "/videos/dummy-video-4.mp4", title: "Video 2" },
-    { id: 11, url: "/videos/dummy-video-5.mp4", title: "Video 1" },
-    { id: 12, url: "/videos/dummy-video-6.mp4", title: "Video 2" },
-    { id: 13, url: "/videos/dummy-video.mp4", title: "Video 1" },
-    { id: 14, url: "/videos/dummy-video-2.mp4", title: "Video 2" },
-    { id: 15, url: "/videos/dummy-video-3.mp4", title: "Video 1" },
-  ]);
+  // Get selected joke id from query params
+  const searchParams = useSearchParams();
+  const selectedJokesParam = searchParams.get("selected_joke") || undefined;
+
+  // Language for API
+  const { selectedLanguage } = useLanguage();
+
+  // Fetch jokes – ensure we always get 15 items (API default/limit)
+  const { data: jokesResponse, isLoading: jokesLoading } = useGetJokes({
+    limit: 15,
+    selected_joke: selectedJokesParam,
+    language: selectedLanguage,
+  });
+
+  // Transform API response into video objects
+  const videos: VideoData[] = useMemo(() => {
+    if (!jokesResponse?.ok) return [];
+    const jokesArr = jokesResponse.data as any[];
+    return jokesArr.map((joke) => ({
+      id: joke.id,
+      url: joke.url, // assuming backend returns direct video URL here
+      title: joke.title ?? "",
+      thumbnail: joke.thumbnail_url,
+      user_reaction: joke.user_reaction ?? { laugh: 0, neutral: 0, sad: 0 },
+      view_count: joke.view_count ?? 0,
+    }));
+  }, [jokesResponse]);
 
   const [activeVideoIndex, setActiveVideoIndex] = useState<number>(0);
-  const [videoPlayStates, setVideoPlayStates] = useState<boolean[]>(
-    (() => {
-      const arr = new Array(15).fill(false);
-      arr[0] = true; // first video will start playing automatically
-      return arr;
-    })()
-  );
-  const [userPausedVideos, setUserPausedVideos] = useState<boolean[]>(
-    new Array(15).fill(false)
-  );
+  const [videoPlayStates, setVideoPlayStates] = useState<boolean[]>([]);
+  const [userPausedVideos, setUserPausedVideos] = useState<boolean[]>([]);
+  const [videoReady, setVideoReady] = useState<boolean[]>([]);
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -85,17 +102,14 @@ const ScrollAndLol: React.FC = () => {
     };
   }, []);
 
-  // Fallback to hide loading after a timeout
+  // Hide loader once API data fetched
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (isLoading) {
-        console.log("Loading timeout reached, hiding loader");
-        setIsLoading(false);
-      }
-    }, 1000); // 3 second timeout
-
-    return () => clearTimeout(timer);
-  }, [isLoading]);
+    if (!jokesLoading) {
+      // Allow loader to disappear after small delay so first video can load
+      const timeout = setTimeout(() => setIsLoading(false), 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [jokesLoading]);
 
   // Auto-play first video when component mounts and loading is complete
   useEffect(() => {
@@ -112,6 +126,26 @@ const ScrollAndLol: React.FC = () => {
       setActiveVideoIndex(0);
     }
   }, [isLoading]);
+
+  // Initialize play/pause arrays when videos are loaded
+  useEffect(() => {
+    if (videos.length) {
+      setVideoPlayStates((prev) => {
+        if (prev.length === videos.length) return prev; // already init
+        const arr = new Array(videos.length).fill(false);
+        arr[0] = true;
+        return arr;
+      });
+      setUserPausedVideos((prev) => {
+        if (prev.length === videos.length) return prev;
+        return new Array(videos.length).fill(false);
+      });
+      setVideoReady((prev) => {
+        if (prev.length === videos.length) return prev;
+        return new Array(videos.length).fill(false);
+      });
+    }
+  }, [videos.length]);
 
   const scrollToVideo = (direction: "up" | "down") => {
     if (!containerRef.current) return;
@@ -265,6 +299,11 @@ const ScrollAndLol: React.FC = () => {
     if (index === 0) {
       setIsLoading(false);
     }
+    setVideoReady((prev) => {
+      const newArr = [...prev];
+      newArr[index] = true;
+      return newArr;
+    });
   };
 
   // Handle video error
@@ -274,6 +313,11 @@ const ScrollAndLol: React.FC = () => {
     if (index === 0) {
       setIsLoading(false);
     }
+    setVideoReady((prev) => {
+      const newArr = [...prev];
+      newArr[index] = true;
+      return newArr;
+    });
   };
 
   // Handler for when an emoji is selected
@@ -371,6 +415,22 @@ const ScrollAndLol: React.FC = () => {
                   }}
                 >
                   <div className="relative md:w-auto md:h-auto w-full h-full">
+                    {/* Thumbnail & spinner overlay */}
+                    {!videoReady[index] && (
+                      <>
+                        {video.thumbnail && (
+                          <Image
+                            src={video.thumbnail}
+                            alt={video.title}
+                            fill
+                            className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] h-full w-full md:object-contain object-cover"
+                            sizes="(max-width: 768px) 100vw, 442px"
+                            style={{ aspectRatio: "9/16" }}
+                          />
+                        )}
+                        <SpinnerOverlay />
+                      </>
+                    )}
                     <video
                       ref={(el) => {
                         videoRefs.current[index] = el;
@@ -461,7 +521,11 @@ const ScrollAndLol: React.FC = () => {
             {/* Reaction Emojis - only visible when not loading and not on end page */}
             {activeVideoIndex < videos.length && (
               <div className="absolute md:bottom-[88.82px] bottom-[135px] md:right-[-5rem] right-[10px] z-20">
-                <ReactionEmojies onEmojiSelect={handleEmojiSelect} />
+                <ReactionEmojies
+                  onEmojiSelect={handleEmojiSelect}
+                  userReaction={videos[activeVideoIndex]?.user_reaction}
+                  viewCount={videos[activeVideoIndex]?.view_count}
+                />
               </div>
             )}
           </>

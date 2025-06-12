@@ -4,7 +4,7 @@ import { CirclePlay } from "lucide-react";
 
 const VideoCard = ({ src }: { src: string }) => {
   return (
-    <div className="relative rounded-[10px] overflow-hidden group cursor-pointer">
+    <div className="relative md:aspect-[9/16] rounded-[10px] overflow-hidden group cursor-pointer">
       <div className="relative w-full h-full">
         <Image
           src={src}

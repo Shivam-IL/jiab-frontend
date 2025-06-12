@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import SvgIcons from "../common/SvgIcons";
 import { ICONS_NAMES } from "@/constants";
+import { IUserReaction } from "@/api/types/JokeTypes";
+import { formatNumberToK } from "@/utils";
 
 // Define a type for the values of ICONS_NAMES
 type IconName = (typeof ICONS_NAMES)[keyof typeof ICONS_NAMES];
@@ -12,28 +14,45 @@ interface Reaction {
 
 interface ReactionEmojiesProps {
   onEmojiSelect: (reaction: Reaction) => void;
+  /**
+   * Reaction counts coming from the API for the currently active joke/video.
+   * If undefined, we gracefully fall back to 0 counts for all reactions.
+   */
+  userReaction?: IUserReaction;
+  /**
+   * Total view count for the currently active joke/video.
+   */
+  viewCount?: number;
 }
 
-const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({ onEmojiSelect }) => {
+const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({
+  onEmojiSelect,
+  userReaction,
+  viewCount,
+}) => {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
+
+  // Safely derive counts using a helper to show numbers in a compact format (e.g. 2.3K).
+  const formatCount = (num?: number) =>
+    formatNumberToK(num ? parseInt(num.toString(), 10) : 0);
 
   const reactions: Reaction[] = [
     {
       icon: ICONS_NAMES.FUNNY,
-      count: "2.3k",
+      count: formatCount(userReaction?.laugh),
     },
     {
       icon: ICONS_NAMES.MAD,
-      count: "2.3k",
+      count: formatCount(userReaction?.neutral),
     },
     {
       icon: ICONS_NAMES.ANGRY,
-      count: "2.3k",
+      count: formatCount(userReaction?.sad),
     },
     {
       icon: ICONS_NAMES.VIEWS,
-      count: "2.3k",
+      count: formatCount(viewCount),
     },
   ];
 
@@ -45,42 +64,50 @@ const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({ onEmojiSelect }) => {
   return (
     <div className="flex flex-col items-center gap-[22.5px] cursor-pointer rounded-full py-3 px-2 md:text-black text-white hover:text-black hover:bg-white">
       {reactions.map((reaction) => {
+        const isViewIcon = reaction.icon === ICONS_NAMES.VIEWS;
         const isHovered = hoveredIcon === reaction.icon;
         const isSelected = selectedIcon === reaction.icon;
+
         let scale = 1;
         let opacity = 1;
 
-        if (selectedIcon) {
-          // An icon is selected
-          if (isSelected) {
-            scale = 1;
-            opacity = 1;
-          } else {
-            scale = 1; // Other icons smaller when one is selected
-            opacity = 0.5;
-          }
-        } else if (hoveredIcon) {
-          // No icon selected, but one is hovered
-          if (isHovered) {
-            scale = 1;
-            opacity = 1;
-          } else {
-            opacity = 0.5;
+        if (!isViewIcon) {
+          // Only apply hover/selected effects for clickable icons
+          if (selectedIcon) {
+            // An icon is selected
+            if (isSelected) {
+              scale = 1;
+              opacity = 1;
+            } else {
+              scale = 1; // Other icons smaller when one is selected
+              opacity = 0.5;
+            }
+          } else if (hoveredIcon) {
+            // No icon selected, but one is hovered
+            if (isHovered) {
+              scale = 1;
+              opacity = 1;
+            } else {
+              opacity = 0.5;
+            }
           }
         }
-        // Default state (no hover, no selection) is scale 1, opacity 1 handled by initial values
 
         return (
           <div
             key={reaction.icon}
-            className="flex flex-col items-center md:gap-[4.5px] gap-[2px] transition-all duration-300 ease-in-out "
+            className={`flex flex-col items-center md:gap-[4.5px] gap-[2px] transition-all duration-300 ease-in-out ${
+              isViewIcon ? "cursor-default" : "cursor-pointer"
+            }`}
             style={{
               transform: `scale(${scale})`,
               opacity: opacity,
             }}
-            onMouseEnter={() => setHoveredIcon(reaction.icon)}
-            onMouseLeave={() => setHoveredIcon(null)}
-            onClick={() => handleClick(reaction)}
+            onMouseEnter={() => !isViewIcon && setHoveredIcon(reaction.icon)}
+            onMouseLeave={() => !isViewIcon && setHoveredIcon(null)}
+            onClick={() => {
+              if (!isViewIcon) handleClick(reaction);
+            }}
           >
             <SvgIcons
               name={reaction.icon}
@@ -88,7 +115,7 @@ const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({ onEmojiSelect }) => {
               height={36.2}
               className="md:w-[36.2px] md:h-[36.2px] w-[32px] h-[32px]"
             />
-            <span className="md:text-[22.5px] text-[10px] md:text-shadow-none text-shadow-2xl">
+            <span className="md:text-[22.5px] text-[10px] text-shadow-4xl md:text-shadow-none">
               {reaction.count}
             </span>
           </div>
