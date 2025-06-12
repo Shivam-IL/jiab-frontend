@@ -26,9 +26,13 @@ import { IInviteeData } from '@/interfaces'
 const ReferAFriend = ({
   referToFriendHeader,
   referNowButtonText,
+  prevButtonText,
+  nextButtonText,
 }: {
   referToFriendHeader: string;
   referNowButtonText: string;
+  prevButtonText: string;
+  nextButtonText: string;
 }) => {
   const [page, setPage] = useState<number>(1)
   const [pages, setPages] = useState<number>(1)
@@ -125,7 +129,7 @@ const ReferAFriend = ({
               </div>
             </div>
           ))}
-          <div className='w-full flex justify-center md:justify-between flex-col md:flex-row items-center'>
+          <div className='w-full flex justify-center flex-row items-center'>
             <div className='relative flex gap-[12px] md:gap-[16px]'>
               {page > 1 && <button
                 onClick={() => {
@@ -133,16 +137,15 @@ const ReferAFriend = ({
                     setPage(prev => prev - 1)
                   }
                 }}
-                className={`hover:bg-[#E0E0E0] transition-all duration-300 rounded-[100px] md:border-none border-[1px] md:p-0  text-[10px] font-[700] py-[6px] px-[36px] ${
+                className={`hover:bg-[#E0E0E0] transition-all duration-300 rounded-[100px]  border-[1px]   text-[10px] font-[700] py-[6px] px-[36px] ${
                   page > 1
                     ? 'border-black text-black'
                     : 'border-[rgba(0,0,0,0.2)] text-[rgba(0,0,0,0.2)]'
                 }`}
               >
                 <AktivGroteskText
-                  className='md:hidden'
-                  text={PREV}
-                  fontSize='text-[14px]'
+                  text={prevButtonText}
+                  fontSize='text-[14px] md:text-[24px]'
                   fontWeight='font-[700]'
                 />
               </button>}
@@ -156,12 +159,11 @@ const ReferAFriend = ({
                   pages !== page
                     ? 'border-black text-black'
                     : 'border-[rgba(0,0,0,0.2)] text-[rgba(0,0,0,0.2)]'
-                }  transition-all duration-300 rounded-[100px] border-[1px] md:border-none md:p-0 text-[10px] font-[700] py-[6px] px-[36px]`}
+                }  transition-all duration-300 rounded-[100px] border-[1px] text-[10px] font-[700] py-[6px] px-[36px]`}
               >
                 <AktivGroteskText
-                  className='md:hidden'
-                  text={NEXT}
-                  fontSize='text-[14px]'
+                  text={nextButtonText}
+                  fontSize='text-[14px] md:text-[24px]'
                   fontWeight='font-[700]'
                 />
               </button>}

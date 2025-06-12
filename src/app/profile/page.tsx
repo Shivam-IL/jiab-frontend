@@ -26,14 +26,6 @@ const ProfilePage = () => {
   const dispatch = useAppDispatch()
   const { user, breakTheIceModal } = useAppSelector(state => state.profile)
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // @ts-ignore
-      window.gtag('event', 'page_view', {
-        page_path: window.location.pathname
-      })
-    }
-  }, [])
 
   return (
     <ScreenWrapper>
@@ -52,6 +44,8 @@ const ProfilePage = () => {
           <ReferAFriend
             referToFriendHeader={cmsData?.myProfile?.referToFriendHeader}
             referNowButtonText={cmsData?.myProfile?.referNowButtonText}
+            prevButtonText={cmsData?.myProfile?.prevButtonText}
+            nextButtonText={cmsData?.myProfile?.nextButtonText}
           />
           <HelpUsToKnowYourBetter
             prevButtonText={cmsData?.myProfile?.prevButtonText}
