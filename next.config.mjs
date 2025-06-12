@@ -14,6 +14,9 @@ const withPWA = nextPwa({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  images: {
+    domains: ["d35f5vastl4boc.cloudfront.net"],
+  },
 };
 
 export default withPWA(nextConfig);

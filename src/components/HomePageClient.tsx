@@ -27,13 +27,16 @@ import SvgIcons from "@/components/common/SvgIcons";
 import { ICONS_NAMES } from "@/constants";
 import UgcCard from "@/components/common/UgcCard";
 import Link from "next/link";
-import { updateSurpriseMe } from '@/store/auth/auth.slice'
-import useAppDispatch from '@/hooks/useDispatch'
+import { updateSurpriseMe } from "@/store/auth/auth.slice";
+import useAppDispatch from "@/hooks/useDispatch";
+import { useGetJokes } from "@/api/hooks/JokeHooks";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export default function HomePageClient() {
-  const { otpSent, otpVerified, loginModal, crossModal } =
-    useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch()
+  const { otpSent, otpVerified, loginModal, crossModal } = useAppSelector(
+    (state) => state.auth
+  );
+  const dispatch = useAppDispatch();
   const width = useWindowWidth();
 
   // Tour Guide State - REMOVED unused variables
@@ -50,27 +53,21 @@ export default function HomePageClient() {
   // Get mapped CMS data using our data layer
   const cmsData = useCMSData(mounted);
 
-  // Path to the thumbnail image - you'll need to ensure this exists in your project
-  const thumbnailPath = "/videos/thumbnail.jpg";
+  // Fetch jokes to populate video carousel dynamically
+  const { selectedLanguage } = useLanguage();
+  const {
+    data: jokesResponse,
+    isLoading: jokesLoading,
+    isError: jokesError,
+  } = useGetJokes({ limit: 3, language: selectedLanguage });
 
-  // Video data for the carousel
-  const videoData = [
-    {
-      id: "video1",
-      src: thumbnailPath,
-      url: "/scroll-and-lol",
-    },
-    {
-      id: "video2",
-      src: thumbnailPath,
-      url: "/scroll-and-lol",
-    },
-    {
-      id: "video3",
-      src: thumbnailPath,
-      url: "/scroll-and-lol",
-    },
-  ];
+  // Map API response to the structure expected by <VideoScroll />
+  const jokesData = jokesResponse?.ok ? (jokesResponse.data as any[]) : [];
+  const videoData = jokesData.map((joke) => ({
+    id: joke.id,
+    src: joke.thumbnail_url,
+    url: `/scroll-and-lol?selected_joke=${encodeURIComponent(joke.id)}`,
+  }));
 
   const categories: {
     id: string;
@@ -316,7 +313,7 @@ export default function HomePageClient() {
         {isAuthenticated && !isFirstLogin && surpriseMe && (
           <SurpriseMeModal
             onClose={() => {
-              dispatch(updateSurpriseMe({ surpriseMe: false }))
+              dispatch(updateSurpriseMe({ surpriseMe: false }));
             }}
           />
         )}
@@ -334,7 +331,13 @@ export default function HomePageClient() {
           viewAllButtonText={cmsData.homePage.viewAllButtonText}
         />
         <div className="video-section">
-          <VideoScroll videos={videoData} />
+          {jokesLoading ? (
+            <p className="px-4">Loading...</p>
+          ) : jokesError ? (
+            <p className="px-4 text-red-500">Failed to load videos</p>
+          ) : (
+            <VideoScroll videos={videoData} />
+          )}
         </div>
         {/* Pick your mood */}
         <Header

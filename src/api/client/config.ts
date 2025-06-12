@@ -29,6 +29,11 @@ export const getCurrentLocale = (): string => {
   return state.language.selectedLanguage;
 };
 
+export const getCurrentLanguage = (): string => {
+  const language = localStorage.getItem("selectedLanguage");
+  return language ?? "en";
+};
+
 export const API_ROUTES = {
   AUTH: {
     REQUEST_OTP: "/auth/request-otp",
@@ -70,7 +75,7 @@ export const API_ROUTES = {
     GET_COINS: "/comic-coins",
   },
   JOKES: {
-    GET_JOKES: "/joke/jokes",
+    GET_SCROLL_AND_LOL: "/joke/jokes",
     GET_SURPRISE_ME: "/joke/surprise-me",
   },
   CMS: {

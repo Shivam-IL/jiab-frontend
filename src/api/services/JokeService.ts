@@ -43,4 +43,39 @@ export class JokeService extends MainService {
       throw error;
     }
   }
+
+  /**
+   * Fetch list of jokes for Scroll & LOL screen
+   * Corresponds to GET /joke/jokes
+   */
+  public async GetJokes({
+    limit,
+    selected_joke,
+    preferredJokes,
+    language,
+  }: import("../types/JokeTypes").TGetJokesParams = {}) {
+    try {
+      const queryParams = new URLSearchParams();
+      if (limit) queryParams.append("limit", limit.toString());
+      if (selected_joke) queryParams.append("selected_joke", selected_joke);
+      if (preferredJokes) queryParams.append("preferredJokes", preferredJokes);
+      if (language) queryParams.append("language", language);
+
+      const endpoint = `${API_ROUTES.JOKES.GET_SCROLL_AND_LOL}${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+
+      const response = await apiClient.get(endpoint, {
+        headers: {
+          ...this.getAuthHeaders(),
+        },
+      });
+
+      const responseData = response.data;
+      if (responseData?.success) {
+        return SuccessResponse(responseData.data);
+      }
+      return ErrorResponse(responseData?.message ?? "Something went wrong");
+    } catch (error) {
+      throw error;
+    }
+  }
 }
