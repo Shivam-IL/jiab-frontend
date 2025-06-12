@@ -1,15 +1,16 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import QueryClientAndReduxWrapper from "@/components/QueryClientAndReduxWrapper";
 import Navbar from "@/components/common/Navbar/Navbar";
 import HomePageSurpriseButton from "@/components/HomePageSurpriseButton";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import MobileFooter from "@/components/common/Footer/Mobile/MobileFooter";
 import DesktopFooter from "@/components/common/Footer/Desktop/DesktopFooter";
 import InitialDataLoader from './common/InitialDataLoader'
 import ProtectedRoutedWrapper from "./common/ProtectedRoutedWrapper";
 import CMSWrapper from "./common/CMSWrapper";
+import { pageview } from "@/utils/gTagEvents";
 
 interface LayoutClientProps {
   children: ReactNode;
@@ -17,17 +18,20 @@ interface LayoutClientProps {
 
 export default function LayoutClient({ children }: LayoutClientProps) {
   const pathname = usePathname();
-  const isScrollAndLolPage = pathname === "/scroll-and-lol";
+
+  useEffect(() => {
+    pageview(window.location.pathname);
+  }, [pathname]);
 
   return (
     <QueryClientAndReduxWrapper>
       <CMSWrapper>
         <InitialDataLoader>
-        <ProtectedRoutedWrapper>
+          <ProtectedRoutedWrapper>
             <Navbar />
             {children}
             {/* Show Surprise button only when not on /scroll-and-lol */}
-            {!isScrollAndLolPage && <HomePageSurpriseButton />}
+            {!pathname.includes("/scroll-and-lol") && <HomePageSurpriseButton />}
 
             {/* Mobile Footer */}
             <div className="block lg:hidden">
@@ -36,10 +40,10 @@ export default function LayoutClient({ children }: LayoutClientProps) {
 
             {/* Desktop Footer - visible on screens 900px and above (lg breakpoint) */}
             <div className="hidden lg:block">
-              {!isScrollAndLolPage && <DesktopFooter />}
+              {!pathname.includes("/scroll-and-lol") && <DesktopFooter />}
             </div>
           </ProtectedRoutedWrapper>
-      </InitialDataLoader>
+        </InitialDataLoader>
       </CMSWrapper>
     </QueryClientAndReduxWrapper>
   );

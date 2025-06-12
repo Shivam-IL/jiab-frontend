@@ -10,7 +10,6 @@ import { MakeLaughExitPopup } from '@/components/ExitPopUps'
 import { useGetSurpriseMeJoke } from '@/api/hooks/JokeHooks'
 import { formatNumberToK } from '@/utils'
 import CustomPopupWrapper from '../CustomPopupWrapper'
-import { v4 as uuidv4 } from 'uuid'
 
 const SurpriseMeModal = ({ onClose }: { onClose: () => void }) => {
   const [open, setOpen] = useState<boolean>(true)
@@ -45,6 +44,10 @@ const SurpriseMeModal = ({ onClose }: { onClose: () => void }) => {
         <center>Come back tomorrow for more Ha-Ha-mazing jokes.</center>
       </CustomPopupWrapper>
     )
+  }
+
+  if (!joke) {
+    return <></>
   }
 
   return (

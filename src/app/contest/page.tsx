@@ -17,11 +17,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import InviteCodePopupWrapper from "@/components/InviteCodePopus";
 import {
+  GA_EVENTS,
   INVITE_CODE_POPUP_DATA,
 } from "@/constants";
 import ReferNowComponent from "@/components/common/ReferNowComponent";
 import InviteCodeComponent from "@/components/common/InviteCodeComponent";
 import { useCMSData } from "@/data";
+import { triggerGAEvent } from "@/utils/gTagEvents";
 
 const ContestPage: React.FC = () => {
   const router = useRouter();
@@ -82,7 +84,10 @@ const ContestPage: React.FC = () => {
       title: "Refer a Friend",
       reward: 5,
       rewardText: "Per Successful Referral",
-      action: () => setRefer1(true),
+      action: () => {
+        triggerGAEvent(GA_EVENTS.SPRITE_J24_REFER_NOW)
+        setRefer1(true)
+      },
     },
     {
       id: 5,
@@ -239,7 +244,7 @@ const ContestPage: React.FC = () => {
 
         {/* Contest Activities */}
         <div className="grid grid-cols-2 lg:grid-cols-3 md:gap-[30px] gap-x-[15px] gap-y-[10px] md:pb-[41px] pb-[28px] md:mt-[40px] mt-[16px]">
-          {contestActivities.map((activity) => (
+          {contestActivities?.map((activity) => (
             <ContestFlatCard
               key={activity.id}
               icon={activity.icon}

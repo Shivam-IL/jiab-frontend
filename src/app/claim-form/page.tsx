@@ -12,18 +12,24 @@ import {
   SUBMIT
 } from '@/constants'
 import useWindowWidth from '@/hooks/useWindowWidth'
-import { IClaimFormData } from '@/types'
+import { AddressModalType, IClaimFormData } from '@/types'
 import React, { useState } from 'react'
 import { aktivGrotesk } from '../layout'
 import AddressCard from '@/components/AddressCard'
 import AddressModal from '@/components/common/AddressModal'
-import { ClaimSuccessPopup, ClaimExpiredPopup, ClaimAlertPopup } from '@/components/ClaimPopups'
+import {
+  ClaimSuccessPopup,
+  ClaimExpiredPopup,
+  ClaimAlertPopup
+} from '@/components/ClaimPopups'
 
 const SubmitYourJoke = () => {
   const width = useWindowWidth()
 
-  const [openClaimSuccessPopup, setOpenClaimSuccessPopup] = useState<boolean>(true)
-  const [openClaimExpiredPopup, setOpenClaimExpiredPopup] = useState<boolean>(true)
+  const [openClaimSuccessPopup, setOpenClaimSuccessPopup] =
+    useState<boolean>(true)
+  const [openClaimExpiredPopup, setOpenClaimExpiredPopup] =
+    useState<boolean>(true)
   const [openClaimAlertPopup, setOpenClaimAlertPopup] = useState<boolean>(true)
 
   const [claimFormData, setClaimFormData] = useState<IClaimFormData>({
@@ -60,7 +66,12 @@ const SubmitYourJoke = () => {
             fontSize='text-[16px]'
             fontWeight='font-[700]'
           />
-          <div className='flex flex-col gap-[24px] md:gap-[16px]'>
+          <form
+            onSubmit={event => {
+              event.preventDefault()
+            }}
+            className='flex flex-col gap-[24px] md:gap-[16px]'
+          >
             <LabeledInput
               width='md:w-full'
               labelFontSize='text-[14px] md:text-[16px]'
@@ -162,10 +173,14 @@ const SubmitYourJoke = () => {
               fontSize='text-[16px] md:text-[20px]'
               fontWeight='font-[700]'
             />
-          </div>
+          </form>
         </div>
         {openAddressModal && (
-          <AddressModal open={openAddressModal} setOpen={setOpenAddressModal} />
+          <AddressModal
+            open={openAddressModal}
+            setOpen={setOpenAddressModal}
+            type={AddressModalType.ADD}
+          />
         )}
         <ClaimSuccessPopup
           open={openClaimSuccessPopup}

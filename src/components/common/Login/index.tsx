@@ -17,7 +17,8 @@ import {
 } from '@/store/auth/auth.slice'
 import { useMutateRequestOTP } from '@/api/hooks/LoginHooks'
 import SvgIcons from '../SvgIcons'
-import { ICONS_NAMES } from '@/constants'
+import { GA_EVENTS, ICONS_NAMES } from '@/constants'
+import { triggerGAEvent } from '@/utils/gTagEvents'
 
 const Login = () => {
   const {
@@ -43,13 +44,22 @@ const Login = () => {
       parseInt(mobileNumber[0]) < 6
     ) {
       setError('Please enter a valid 10-digit mobile number')
-    } else if (mobileNumber?.length === 10 && mobileNumber?.[0] && parseInt(mobileNumber[0]) >= 6) {
+    } else if (
+      mobileNumber?.length === 10 &&
+      mobileNumber?.[0] &&
+      parseInt(mobileNumber[0]) >= 6
+    ) {
       setError('')
-    } 
+    }
   }, [mobileNumber])
 
   const handleGetOTP = () => {
-    if (mobileNumber?.length !== 10 || !mobileNumber?.[0] || parseInt(mobileNumber[0]) < 6) {
+    triggerGAEvent(GA_EVENTS.SPRITE_J24_GET_OTP)
+    if (
+      mobileNumber?.length !== 10 ||
+      !mobileNumber?.[0] ||
+      parseInt(mobileNumber[0]) < 6
+    ) {
       setError('Please enter a valid 10-digit mobile number')
       return
     }
@@ -71,7 +81,6 @@ const Login = () => {
     handleDataUpdation()
   }, [isPending, handleDataUpdation])
 
-  console.log(data, isPending, isSuccess)
 
   return (
     <LoginSignupWrapper open={loginModal} setOpen={handleClose} logo={true}>
@@ -102,7 +111,12 @@ const Login = () => {
         <div className='flex flex-col justify-center items-center gap-[8px]'>
           <AuthHeading title='LOG IN' />
         </div>
-        <div className='flex flex-col gap-[28px]'>
+        <form
+          onSubmit={event => {
+            event.preventDefault()
+          }}
+          className='flex flex-col gap-[28px]'
+        >
           <Input
             required={true}
             name='mobileNumber'
@@ -125,7 +139,7 @@ const Login = () => {
             }}
             text='Get OTP'
           />
-        </div>
+        </form>
       </div>
     </LoginSignupWrapper>
   )

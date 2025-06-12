@@ -1,7 +1,8 @@
 import InviteCodePopupWrapper from '@/components/InviteCodePopus'
-import { INVITE_CODE_POPUP_DATA, INVITE_CODE_STATUS } from '@/constants/'
+import { GA_EVENTS, INVITE_CODE_POPUP_DATA, INVITE_CODE_STATUS } from '@/constants/'
 import React, { useEffect, useState } from 'react'
 import { useVerifyReferral } from '@/api/hooks/ReferralHooks'
+import { triggerGAEvent } from '@/utils/gTagEvents'
 
 const InviteCodeComponent = ({
   open,
@@ -51,6 +52,7 @@ const InviteCodeComponent = ({
           onChange={handleChangeInvite}
           open={open}
           onSubmit={() => {
+            triggerGAEvent(GA_EVENTS.SPRITE_24_REFERRAL_CODE_SUBMIT)
             handleVerifyReferral()
           }}
           onClose={() => {

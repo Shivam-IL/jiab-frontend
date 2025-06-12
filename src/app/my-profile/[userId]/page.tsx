@@ -8,7 +8,7 @@ import EditProfileImage from '@/components/EditProfileImage'
 import GreenCTA from '@/components/GreenCTA'
 import Input from '@/components/Input'
 import { Separator } from '@/components/ui/separator'
-import { MOBILE_TEMP_NAVBAR_DATA } from '@/constants'
+import { GA_EVENTS, MOBILE_TEMP_NAVBAR_DATA } from '@/constants'
 import { updateUser } from '@/store/profile/profile.slice'
 import useAppSelector from '@/hooks/useSelector'
 import useWindowWidth from '@/hooks/useWindowWidth'
@@ -16,6 +16,7 @@ import { monthDayYearConvert } from '@/utils'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import useAppDispatch from '@/hooks/useDispatch'
+import { triggerGAEvent } from '@/utils/gTagEvents'
 
 interface IUserData {
   avatar_id: number
@@ -45,6 +46,8 @@ const EditProfilePage = () => {
 
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false)
   const { user } = useAppSelector(state => state.profile)
+  const { avatarsData } = useAppSelector(state => state.profile)
+  const [currentImage, setCurrentImage] = useState<string>('')
   const [userData, setUserData] = useState<IUserData>({
     avatar_id: 0,
     name: '',
@@ -108,6 +111,7 @@ const EditProfilePage = () => {
   }
 
   const handleChange = (key: string, value: string) => {
+    console.log(key, value, 'key, value')
     setUserData({ ...userData, [key]: value })
 
     // Validate the changed field
@@ -124,6 +128,15 @@ const EditProfilePage = () => {
     }
   }
 
+  useEffect(() => {
+    console.log(userData?.avatar_id, 'userData?.avatar_id', avatarsData)
+    const currentImage = avatarsData?.find(
+      (item: any) => item?.id.toString() === userData?.avatar_id.toString()
+    )
+    console.log(currentImage, 'currentImage')
+    setCurrentImage(currentImage?.image ?? '')
+  }, [userData?.avatar_id])
+
   const handleContainerClick = () => {
     if (editProfileImage) {
       setEditProfileImage(false)
@@ -139,6 +152,11 @@ const EditProfilePage = () => {
   useEffect(() => {
     if (user?.id === params?.userId) {
       const { name, email, phone_number, dob, gender } = user
+      const currentImage = avatarsData?.find(
+        (item: any) => item?.id === user?.avatar_id
+      )
+      console.log(currentImage, 'currentImage')
+      setCurrentImage(currentImage?.image ?? '')
       setUserData({
         avatar_id: 0,
         name: name,
@@ -166,7 +184,6 @@ const EditProfilePage = () => {
 
   const submitHandler = () => {
     if (isFormValid()) {
-      console.log('Form is valid, submitting:', userData)
       const { name, dob, gender, avatar_id, email } = userData
       const payload = {
         name,
@@ -182,7 +199,11 @@ const EditProfilePage = () => {
   useEffect(() => {
     if (editUserProfileDetailsData?.ok) {
       const { data } = editUserProfileDetailsData?.data ?? {}
+      console.log(data, 'data')
       dispatch(updateUser({ user: { ...data } }))
+      if (data?.profile_percentage === 100) {
+        triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)
+      }
     }
   }, [editUserProfileDetailsData])
 
@@ -208,16 +229,21 @@ const EditProfilePage = () => {
               fontSize='text-[20px]'
             />
           </div>
-          <div className='flex flex-col pt-[23px] gap-[24px] md:gap-[16px]'>
+          <form
+            onSubmit={event => {
+              event.preventDefault()
+            }}
+            className='flex flex-col pt-[23px] gap-[24px] md:gap-[16px]'
+          >
             <div
               className='md:mb-[8px]'
               onClick={(e: React.MouseEvent) => e.stopPropagation()}
             >
               <EditProfileImage
-                name={'image'}
+                name={'avatar_id'}
                 editProfileImage={editProfileImage}
                 setEditProfileImage={setEditProfileImage}
-                image={userData.avatar_id?.toString()}
+                image={currentImage}
                 onChange={handleChange}
               />
             </div>
@@ -291,7 +317,7 @@ const EditProfilePage = () => {
               fontSize='text-[16px]'
               fontWeight='font-[700]'
             />
-          </div>
+          </form>
           <div className='md:hidden flex justify-between mt-[18px]'>
             <div className='flex items-center gap-[5px]'>
               <AktivGroteskText

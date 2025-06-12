@@ -2,6 +2,7 @@ import { IReferNowModal } from '@/interfaces'
 import React, { useEffect, useState } from 'react'
 import CustomPopupWrapper from '../CustomPopupWrapper'
 import {
+  GA_EVENTS,
   REFER_NOW_MODAL_DATA,
   REFERRAL_CODE,
   REFFERAL_STATUS_POPUP_DATA
@@ -9,6 +10,7 @@ import {
 import AktivGroteskText from '../AktivGroteskText'
 import ReferNowModal from '../ReferNowModal'
 import { useSendReferral } from '@/api/hooks/ReferralHooks'
+import { triggerGAEvent } from '@/utils/gTagEvents'
 
 const ReferNowComponent = ({
   open,
@@ -107,6 +109,7 @@ const ReferNowComponent = ({
           onChange={handleChange}
           open={open}
           onSubmit={() => {
+            triggerGAEvent(GA_EVENTS.SPRITE_J24_REFER_NOW)
             submitReferNow()
           }}
           onClose={() => {

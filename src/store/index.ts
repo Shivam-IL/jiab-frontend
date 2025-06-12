@@ -15,6 +15,7 @@ import authReducer from './auth/auth.slice';
 import profileReducer from './profile/profile.slice';
 import cmsReducer from './cms/cms.slice';
 import languageReducer from './language/language.slice';
+import leaderboardReducer from './leaderboard/index';
 
 // Configure persistence for CMS
 const cmsPersistConfig = {
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   cms: persistReducer(cmsPersistConfig, cmsReducer),
   language: languageReducer,
+  leaderboard: leaderboardReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

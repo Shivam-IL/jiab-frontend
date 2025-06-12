@@ -12,11 +12,14 @@ import useAppSelector from "@/hooks/useSelector";
 
 const profileService = ProfileService.getInstance();
 
-const useGetUserProfileDetails = () => {
+const useGetUserProfileDetails = (params?: any) => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
 
   return useQuery({
-    queryKey: [...keys.profile.userProfileDetails(), { isAuthenticated, token }],
+    queryKey: [
+      ...keys.profile.userProfileDetails(),
+      { isAuthenticated, token, ...(params ? params : {}) },
+    ],
     queryFn: () => profileService.getUserProfileDetails(),
     enabled: isAuthenticated && token ? true : false,
     staleTime: 60 * 60,
@@ -80,6 +83,14 @@ const useSubmitUserQuestions = () => {
   });
 };
 
+const useGetAvatarsData = () => {
+  return useQuery({
+    queryKey: keys.profile.getAvatarsData(),
+    queryFn: () => profileService.getAvatarsData(),
+    staleTime:0
+  });
+};
+
 export {
   useGetUserProfileDetails,
   useEditUserProfileDetails,
@@ -89,4 +100,5 @@ export {
   useDeleteAddress,
   useGetUserQuestions,
   useSubmitUserQuestions,
+  useGetAvatarsData,
 };

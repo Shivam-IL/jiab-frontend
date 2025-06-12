@@ -19,10 +19,11 @@ import {
 } from '@/store/auth/auth.slice'
 import { useMutateRequestOTP, useMutateVerifyOTP } from '@/api/hooks/LoginHooks'
 import SvgIcons from '../SvgIcons'
-import { ICONS_NAMES, TOKEN_TYPE } from '@/constants'
+import { GA_EVENTS, ICONS_NAMES, TOKEN_TYPE } from '@/constants'
 import { MainService } from '@/api/services/MainService'
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
 import { removeLocalStorageItem, setLocalStorageItem } from '@/utils'
+import { triggerGAEvent } from '@/utils/gTagEvents'
 
 const OtpModal = () => {
   const [otp, setOtp] = useState<string>('')
@@ -84,6 +85,7 @@ const OtpModal = () => {
   }
 
   const handlerSubmitOtp = () => {
+    triggerGAEvent(GA_EVENTS.SPRITE_J24_OTP_SUBMIT)
     if (otp.length !== 6) {
       setError('Please enter a valid OTP')
       return
@@ -156,7 +158,12 @@ const OtpModal = () => {
             Please enter the OTP sent to your registered mobile number
           </p>
         </div>
-        <div className='flex flex-col md:gap-[24px] gap-[28px]'>
+        <form
+          onSubmit={event => {
+            event.preventDefault()
+          }}
+          className='flex flex-col md:gap-[24px] gap-[28px]'
+        >
           <div className='flex flex-col gap-[12px]'>
             <Input
               name='otp'
@@ -180,6 +187,7 @@ const OtpModal = () => {
             {counterEnd && (
               <button
                 onClick={() => {
+                  triggerGAEvent(GA_EVENTS.SPRITE_J24_RESEND_OTP)
                   setCounterEnd(false)
                   setCounter('12')
                   resendOTP()
@@ -197,7 +205,7 @@ const OtpModal = () => {
             }}
             text='Submit'
           />
-        </div>
+        </form>
       </div>
     </LoginSignupWrapper>
   )
