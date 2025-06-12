@@ -3,9 +3,12 @@ import { LOCAL_IMAGES } from '@/constants'
 import AktivGroteskText from '../common/AktivGroteskText'
 import SurpriseMeModal from '../common/SurpriseMeModal'
 import { generateImageurl } from '@/utils'
+import useAppSelector from '@/hooks/useSelector'
+import SurpriseMeLockModal from '../common/SurpriseMeLockModal'
 import { useCMSData } from '@/data'
 
 const HomePageSurpriseButton = () => {
+  const { isAuthenticated, token } = useAppSelector(state => state.auth)
   const [mounted, setMounted] = useState(false);
   const cmsData = useCMSData(mounted);
 
@@ -37,8 +40,15 @@ const HomePageSurpriseButton = () => {
           className='text-[#11A64B] uppercase leading-tight text-center text-[8px] md:text-[16px] font-bold'
         />
       </button>
-      {surpriseMeModal && (
+      {surpriseMeModal && isAuthenticated && token && (
         <SurpriseMeModal
+          onClose={() => {
+            setSurpriseMeModal(false)
+          }}
+        />
+      )}
+      {surpriseMeModal && !isAuthenticated && !token && (
+        <SurpriseMeLockModal
           onClose={() => {
             setSurpriseMeModal(false)
           }}

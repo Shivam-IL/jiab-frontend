@@ -112,25 +112,6 @@ const Signup = () => {
     return () => clearTimeout(timeoutId)
   }, [userData.email])
 
-  // Invite code validation
-  useEffect(() => {
-    if (!userData.invite_code) {
-      setInviteCodeError('')
-      return
-    }
-
-    const timeoutId = setTimeout(() => {
-      if (!/^[A-Z0-9]{6,10}$/.test(userData.invite_code)) {
-        setInviteCodeError(
-          'Invite code should be 6-10 characters long and contain only capital letters and numbers'
-        )
-      } else {
-        setInviteCodeError('')
-      }
-    }, 500)
-
-    return () => clearTimeout(timeoutId)
-  }, [userData.invite_code])
 
   const isFormValid = () => {
     if (userData?.name === '') {
@@ -148,8 +129,7 @@ const Signup = () => {
       userData.name.length > 0 &&
       userData.email.length > 0 &&
       !nameError &&
-      !emailError &&
-      !inviteCodeError
+      !emailError
     )
   }
 

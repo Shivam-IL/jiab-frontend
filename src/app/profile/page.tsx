@@ -17,7 +17,6 @@ import useAppDispatch from '@/hooks/useDispatch'
 import { useCMSData } from "@/data";
 
 const ProfilePage = () => {
-
   const router = useRouter()
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -25,7 +24,16 @@ const ProfilePage = () => {
   }, []);
   const cmsData = useCMSData(mounted);
   const dispatch = useAppDispatch()
-  const { user,breakTheIceModal } = useAppSelector(state => state.profile)
+  const { user, breakTheIceModal } = useAppSelector(state => state.profile)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // @ts-ignore
+      window.gtag('event', 'page_view', {
+        page_path: window.location.pathname
+      })
+    }
+  }, [])
 
   return (
     <ScreenWrapper>

@@ -80,10 +80,6 @@ const OtpModal = () => {
   }, [otp])
 
   const resendOTP = () => {
-    if (otp?.length !== 6) {
-      setError('Please enter a valid OTP')
-      return
-    }
     requestOTP({ mobile_number: phoneNumber })
   }
 

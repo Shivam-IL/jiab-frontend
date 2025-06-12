@@ -438,6 +438,23 @@ export const REFFERAL_STATUS_POPUP_DATA = {
   },
 };
 
+export const REFERRAL_CODE = {
+  SUCCESS: "success",
+  ALREADY_REFERRED: "already_referred",
+  INVALID_MOBILE_NUMBER: "invalid_mobile_number",
+  CANNOT_SEND_TO_SELF: "cannot_send_to_self",
+};
+
+export const SEND_AGAIN_STATUS = {
+  SUCCESS: "success",
+  CANT_SEND_AGAIN_IN_A_WEEK: "cant_send_again_in_a_week",
+};
+
+export const INVITE_CODE_STATUS = {
+  SUCCESS: "success",
+  INVALID_REFERRAL_CODE: "invalid_referral_code",
+};
+
 export const ARE_YOU_SURE_YOU_WANT_TO_EXIT = "Are you sure you want to exit?";
 
 export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE: string[] = [

@@ -56,9 +56,10 @@ export const API_ROUTES = {
     },
   },
   REFERRAL: {
-    SEND_REFERRAL: "/referral",
+    SEND_REFERRAL: "/referral/",
     GET_INVITEES: "/referral/invitees",
     SEND_AGAIN: "/referral/send-again",
+    VERIFY_REFERRAL: "/referral/verify",
   },
   REFERENCE_DATA: {
     GET_FORMATS: "/reference-data/formats",
