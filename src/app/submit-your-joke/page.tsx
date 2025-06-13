@@ -438,7 +438,6 @@ const SubmitYourJoke = () => {
           <div className='flex flex-col justify-center items-center gap-[4px]'>
             <GreenCTA
               onClick={() => {
-                triggerGAEvent(GA_EVENTS.SPRITE_J24_SUBMIT_JOKE)
                 if (jokeData.format === cmsData.pjChallenge.image) {
                   triggerGAEvent(GA_EVENTS.SPRITE_J24_IMAGE_JOKE_SUBMIT)
                 } else if (jokeData.format === cmsData.pjChallenge.text) {
