@@ -36,6 +36,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import LanguageHydration from "../../LanguageHydration";
 import { useCMSData } from "@/data";
 import { triggerGAEvent } from '@/utils/gTagEvents'
+import { useRouter } from 'next/navigation'
 
 const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
@@ -53,7 +54,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const notificationDropdownRef = useRef<HTMLDivElement>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
-
+  const router = useRouter()  
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -251,6 +252,20 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                           <button
                             onClick={() => {
                               setInvite1(true)
+                            }}
+                            key={item.id}
+                            className='px-6 py-2 text-start hover:bg-gray-50 text-md font-normal'
+                          >
+                            {item.label}
+                          </button>
+                        )
+                      }
+                      if (item.label === cmsData.navBar.pjChallenge) {
+                        return (
+                          <button
+                            onClick={() => {
+                              triggerGAEvent(GA_EVENTS.SPRITE_J24_SUBMIT_JOKE)
+                              router.push(item.href)
                             }}
                             key={item.id}
                             className='px-6 py-2 text-start hover:bg-gray-50 text-md font-normal'
