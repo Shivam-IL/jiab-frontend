@@ -15,14 +15,15 @@ import {
   updateOtpFilled,
   updateOtpStatus,
   updateOtpVerified,
+  updateSurpriseMe,
   updateToken
 } from '@/store/auth/auth.slice'
-import { useMutateGludeinLogin, useMutateRequestOTP, useMutateVerifyOTP } from '@/api/hooks/LoginHooks'
+import { useMutateRequestOTP, useMutateVerifyOTP } from '@/api/hooks/LoginHooks'
 import SvgIcons from '../SvgIcons'
 import { GA_EVENTS, ICONS_NAMES, TOKEN_TYPE } from '@/constants'
 import { MainService } from '@/api/services/MainService'
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
-import {  removeLocalStorageItem, setLocalStorageItem } from '@/utils'
+import { removeLocalStorageItem, setLocalStorageItem } from '@/utils'
 
 import { triggerGAEvent } from '@/utils/gTagEvents'
 
@@ -41,9 +42,8 @@ const OtpModal = () => {
     isSuccess,
     data: verifyOTPData
   } = useMutateVerifyOTP()
-  const { mutate: gludeinLogin } = useMutateGludeinLogin()
 
-  const { otpSent, isAuthenticated } = useAppSelector(state => state.auth)
+  const { otpSent } = useAppSelector(state => state.auth)
 
   const [counter, setCounter] = useState<string>('12')
   const [counterEnd, setCounterEnd] = useState<boolean>(false)
@@ -113,7 +113,6 @@ const OtpModal = () => {
   // }
 
   useEffect(() => {
-    console.log('verifyOTPData', verifyOTPData)
     if (verifyOTPData?.ok) {
       const { data: verifyTokenData } = verifyOTPData
       const token = verifyTokenData?.access_token ?? ''
@@ -130,8 +129,10 @@ const OtpModal = () => {
       }
       mainServiceInstance.setAccessToken(token)
       dispatch(updateOtpFilled({ otpFilled: true }))
-      setOpen(false)  
-      gludeinLogin()
+      dispatch(updateOtpVerified({ otpVerified: true }))
+      dispatch(updateSurpriseMe({ surpriseMe: true }))
+      dispatch(updateIsAuthenticated({ isAuthenticated: true }))
+      setOpen(false)
     } else if (verifyOTPData?.ok === false) {
       const { data } = verifyOTPData
       setError(data?.message ?? 'Invalid OTP')

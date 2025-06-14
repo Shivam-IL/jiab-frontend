@@ -10,7 +10,7 @@ export const keys = {
     getAllReferrals: () => ["get-all-referrals"],
   },
   cms: {
-    getContent: () => ["get-cms-content"]
+    getContent: () => ["get-cms-content"],
   },
   joke: {
     getSurpriseMeJoke: () => ["get-surprise-me-joke"],
@@ -18,5 +18,17 @@ export const keys = {
   },
   leaderboard: {
     getLeaderboard: () => ["get-leaderboard"],
+  },
+  gluedin: {
+    getGluedinFeedList: () => ["get-gluedin-feed-list"],
+    getGluedinUserVoteList: () => ["get-gluedin-user-vote-list"],
+    getGluedinCategoryList: () => ["get-gluedin-category-list"],
+    getGluedinAssetById: () => ["get-gluedin-asset-by-id"],
+    getHallOfLame: () => ["get-hall-of-lame"],
+  },
+  reference: {
+    getGenres: () => ["get-genres"],
+    getJokesFormats: () => ["get-jokes-formats"],
+    getLanguages: () => ["get-languages"],
   },
 };

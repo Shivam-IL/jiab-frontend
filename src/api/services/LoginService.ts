@@ -9,9 +9,8 @@ import {
   TVerifyOTP,
 } from "../types/LoginTypes";
 import { MainService } from "./MainService";
-import { encryptData, getLocalStorageItem } from "@/utils";
-import gluedin from "gluedin";
-import { v4 as uuid } from "uuid";
+import { getLocalStorageItem } from "@/utils";
+import { AUTHORIZATION_TYPES } from "../client/constant";
 
 export class LoginService extends MainService {
   private static instance: LoginService;
@@ -27,7 +26,7 @@ export class LoginService extends MainService {
     const token = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
     return token
       ? {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${AUTHORIZATION_TYPES.BEARER} ${token}`,
         }
       : {};
   }
@@ -139,35 +138,6 @@ export class LoginService extends MainService {
         );
       }
       return ErrorResponse("An unexpected error occurred");
-    }
-  }
-
-  public async GludeinLogin({
-    uniqueId,
-    accessToken,
-  }: {
-    uniqueId: string;
-    accessToken: string;
-  }) {
-    try {
-      
-      const formData = {
-        email: `${uniqueId}@gmail.com`,
-        password: uniqueId,
-        autoCreate: true,
-        accessToken,
-      };
-
-      const gluedinLogin = new gluedin.GluedInAuthModule();
-      const gluedinLoginResponse = await gluedinLogin.AuthRawData(formData);
-
-      if (gluedinLoginResponse?.status !== 200) {
-        throw new Error("Failed to login with GluedIn");
-      }
-
-      return gluedinLoginResponse;
-    } catch (error: any) {
-      throw new Error(error?.message || "Failed to login with Gluedin");
     }
   }
 }

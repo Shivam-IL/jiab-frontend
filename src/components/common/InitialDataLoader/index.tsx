@@ -1,5 +1,5 @@
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
-import { useMutateGludeinLogin, useMutateRefreshToken } from '@/api/hooks/LoginHooks'
+import { useMutateRefreshToken } from '@/api/hooks/LoginHooks'
 import {
   useGetUserAddresses,
   useGetAvatarsData,
@@ -9,7 +9,12 @@ import gluedin from 'gluedin'
 import { MainService } from '@/api/services/MainService'
 import { REDUX_UPDATION_TYPES } from '@/constants'
 import useAppDispatch from '@/hooks/useDispatch'
-import { updateIsAuthenticated, updateToken } from '@/store/auth/auth.slice'
+import {
+  updateIsAuthenticated,
+  updateSurpriseMe,
+  updateToken,
+  updateGludeinIsAuthenticated
+} from '@/store/auth/auth.slice'
 import {
   updateAddresses,
   updateAvatarsData,
@@ -24,6 +29,9 @@ import { ReactNode, useEffect, useState } from 'react'
 import { useGetAllReferrals } from '@/api/hooks/ReferralHooks'
 import { useGetLeaderBoard } from '@/api/hooks/LeaderBoardHooks'
 import { updateLeaderboard } from '@/store/leaderboard'
+import { useGetHallOfLames, useMutateGludeinLogin } from '@/api/hooks/GluedinHooks'
+import { useGetGenres, useGetLanguages } from '@/api/hooks/ReferenceHooks'
+import { updateGenres, updateLanguages } from '@/store/reference'
 
 const mainServiceInstance = MainService.getInstance()
 
@@ -32,7 +40,8 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const [tokenUpdated, setTokenUpdated] = useState(false)
   const { data: userProfileData } = useGetUserProfileDetails()
   const { data: userAddressesData } = useGetUserAddresses()
-  const { mutate: mutateGludeinLogin } = useMutateGludeinLogin()
+  const { mutate: mutateGludeinLogin, data: gluedinLoginData } =
+    useMutateGludeinLogin()
 
   let gluedInSDKInitilize = new gluedin.GluedInSDKInitilize()
   gluedInSDKInitilize.initialize({
@@ -42,6 +51,8 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const { data: referralData } = useGetAllReferrals({ page: 1 })
   const { data: avatarsData } = useGetAvatarsData()
   const { data: leaderboardData } = useGetLeaderBoard()
+  const { data: genresData } = useGetGenres()
+  const { data: languagesData } = useGetLanguages()
 
   const {
     mutate: mutateRefreshToken,
@@ -80,8 +91,8 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       mainServiceInstance.setAccessToken(access_token)
       setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, refresh_token)
       setLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, access_token)
+      dispatch(updateSurpriseMe({ surpriseMe: true }))
       setTokenUpdated(true)
-      mutateGludeinLogin()
     } else {
       localStorage.clear()
       dispatch(updateIsAuthenticated({ isAuthenticated: false }))
@@ -110,6 +121,10 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         rank: data?.rank,
         current_balance: data?.current_balance,
         user: { ...data?.user }
+      }
+      if (data?.user?.id) {
+        const user_id = data.user.id
+        mutateGludeinLogin({ user_id })
       }
       setLocalStorageItem(
         LOCAL_STORAGE_KEYS.USER_DETAILS,
@@ -140,7 +155,6 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (referralData?.ok) {
       const { data } = referralData ?? {}
-      console.log('referralData', data)
       dispatch(
         updateReferralData({
           referral_data: data?.referral_data ?? [],
@@ -162,9 +176,14 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   }, [avatarsData])
 
   useEffect(() => {
+    if (gluedinLoginData?.ok) {
+      dispatch(updateGludeinIsAuthenticated({ gludeinIsAuthenticated: true }))
+    }
+  }, [gluedinLoginData])
+
+  useEffect(() => {
     if (leaderboardData?.ok) {
       const { data } = leaderboardData ?? {}
-      console.log('leaderboardData', data)
       dispatch(
         updateLeaderboard({
           my_rank: data?.my_rank,
@@ -173,6 +192,20 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       )
     }
   }, [leaderboardData])
+
+  useEffect(() => {
+    if (genresData?.ok) {
+      const { data } = genresData ?? {}
+      dispatch(updateGenres({ genres: data?.data?.genres ?? [] }))
+    }
+  }, [genresData])
+
+  useEffect(() => {
+    if (languagesData?.ok) {
+      const { data } = languagesData ?? {}
+      dispatch(updateLanguages({ languages: data?.languages ?? [] }))
+    }
+  }, [languagesData])
 
   return <>{children}</>
 }

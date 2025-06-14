@@ -36,19 +36,39 @@ export const encryptData = async (text: string, secretKey: string) => {
   return CryptoJS.AES.encrypt(text, secretKey).toString();
 };
 
-
 export const dateConvert = (date: string) => {
   const dateObj = new Date(date);
   const year = dateObj.getUTCFullYear();
-  const month = (dateObj.getUTCMonth() + 1).toString().padStart(2, '0');
-  const day = dateObj.getUTCDate().toString().padStart(2, '0');
+  const month = (dateObj.getUTCMonth() + 1).toString().padStart(2, "0");
+  const day = dateObj.getUTCDate().toString().padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
 export const monthDayYearConvert = (date: string) => {
   const dateObj = new Date(date);
-  const month = (dateObj.getUTCMonth() + 1).toString().padStart(2, '0');
-  const day = dateObj.getUTCDate().toString().padStart(2, '0');
+  const month = (dateObj.getUTCMonth() + 1).toString().padStart(2, "0");
+  const day = dateObj.getUTCDate().toString().padStart(2, "0");
   const year = dateObj.getUTCFullYear();
   return `${month}/${day}/${year}`;
 };
+
+export const getLabel = (labels: string[]) => {
+  let newLabel = ''
+  labels?.forEach((label: string, index: number) => {
+    if (index === labels?.length - 1) {
+      newLabel = newLabel + label
+    } else {
+      newLabel = newLabel + label + ', '
+    }
+  })
+  return newLabel
+}
+
+export const formatTimestampToDate = (timestamp: number): string => {
+  const date = new Date(timestamp);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+

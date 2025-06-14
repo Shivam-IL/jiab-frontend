@@ -35,9 +35,6 @@ const ProfilePage = () => {
       offset: 0,
       c_type: 'UGC'
     })
-    const curatedContentModuleObj = new gluedin.GluedInCuratedContentModule();
-    const curatedContentModuleResponse = await curatedContentModuleObj.getCuratedContentList('discover')
-    console.log('curatedContentModuleResponse', curatedContentModuleResponse)
   }
 
   useEffect(() => {

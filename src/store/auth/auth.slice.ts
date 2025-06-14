@@ -12,6 +12,7 @@ export interface AuthState {
   token: string;
   isFirstLogin: boolean;
   surpriseMe: boolean;
+  gludeinIsAuthenticated: boolean;
 }
 
 const initialState: AuthState = {
@@ -26,6 +27,7 @@ const initialState: AuthState = {
   token: "",
   isFirstLogin: false,
   surpriseMe: true,
+  gludeinIsAuthenticated: false,
 };
 
 const authSlice = createSlice({
@@ -65,6 +67,9 @@ const authSlice = createSlice({
     updateSurpriseMe: (state, action) => {
       state.surpriseMe = action.payload.surpriseMe;
     },
+    updateGludeinIsAuthenticated: (state, action) => {
+      state.gludeinIsAuthenticated = action.payload.gludeinIsAuthenticated;
+    },
     resetAuth: (state) => {
       state.phoneNumber = "";
       state.loginModal = false;
@@ -76,6 +81,7 @@ const authSlice = createSlice({
       state.crossModal = false;
       state.token = "";
       state.surpriseMe = true;
+      state.gludeinIsAuthenticated = false;
     },
   },
 });
@@ -93,5 +99,6 @@ export const {
   updateOtpVerified,
   resetAuth,
   updateSurpriseMe,
+  updateGludeinIsAuthenticated,
 } = authSlice.actions;
 export default authSlice.reducer;
