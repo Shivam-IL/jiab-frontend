@@ -11,6 +11,7 @@ export interface ComicData {
   submitToGetFeaturedButtonBanner3Text: string;
   surpriseMe: string;
   comicCoinHeader: string;
+  howToCollect: string;
 }
 
 export const mapComicData = (
@@ -38,6 +39,7 @@ export const mapComicData = (
       "Submit to Get Featured",
     surpriseMe: comicCoinsCMS?.surprise_me ?? "Surprise Me",
     comicCoinHeader: comicCoinsCMS?.comic_coin_header ?? "Comic Coins",
+    howToCollect: comicCoinsCMS?.how_to_collect ?? "How To Collect?",
   };
 };
 
@@ -53,4 +55,5 @@ export const defaultComicData: ComicData = {
   submitToGetFeaturedButtonBanner3Text: "Submit to Get Featured",
   surpriseMe: "Surprise Me",
   comicCoinHeader: "Comic Coins",
+  howToCollect: "How To Collect?",
 };

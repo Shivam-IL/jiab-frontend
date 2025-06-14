@@ -8,27 +8,13 @@ import NotificationItem from '../../NotificationItem/NotificationItem'
 import {
   GA_EVENTS,
   ICONS_NAMES,
-  INVITE_CODE_POPUP_DATA,
-  REFER_NOW_MODAL_DATA,
-  REFFERAL_STATUS_POPUP_DATA
 } from '@/constants'
-import ReferNowModal from '../../ReferNowModal'
-import InviteCodePopupWrapper from '@/components/InviteCodePopus'
-import CustomPopupWrapper from '../../CustomPopupWrapper'
-import AktivGroteskText from '../../AktivGroteskText'
 import useAppDispatch from '@/hooks/useDispatch'
 import {
-  updateIsAuthenticated,
   updateLoginModal,
-  updateOtpFilled,
-  updateOtpStatus,
-  updateOtpVerified,
-  updateToken
 } from '@/store/auth/auth.slice'
 import SvgIcons from '../../SvgIcons'
 import useAppSelector from '@/hooks/useSelector'
-import { removeLocalStorageItem } from '@/utils'
-import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
 import useLogout from '@/hooks/useLogout'
 import ReferNowComponent from '@/components/common/ReferNowComponent'
 import InviteCodeComponent from '@/components/common/InviteCodeComponent'

@@ -237,6 +237,7 @@ export type TCMSResponse = {
       publishedAt: string;
       locale: string;
       comic_coin_header: string;
+      how_to_collect: string;
     };
     logout_button_navbar_profile_dropdown: {
       id: number;

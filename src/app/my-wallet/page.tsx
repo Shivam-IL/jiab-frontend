@@ -2,7 +2,6 @@
 import ScreenWrapper from "@/components/common/ScreenWrapper";
 import React, { useState, useEffect } from "react";
 import GreenCTA from "@/components/GreenCTA";
-import Banner from "@/components/common/Banner/Banner";
 import AktivGroteskText from "@/components/common/AktivGroteskText";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,6 +9,11 @@ import Header from "@/components/common/Header/Header";
 import WalletCard from "@/components/WalletCard";
 import { useCMSData } from "@/data";
 import ReferNowComponent from "@/components/common/ReferNowComponent";
+import PJChallenge from "@/components/Banners/PJChallenge";
+import { GA_EVENTS } from "@/constants";
+import { triggerGAEvent } from "@/utils/gTagEvents";
+import { useRouter } from "next/navigation";
+import ShareLaugh from "@/components/Banners/ShareLaugh";
 
 const ComicCoinsPage = () => {
   const [mounted, setMounted] = useState(false);
@@ -19,6 +23,11 @@ const ComicCoinsPage = () => {
     setMounted(true);
   }, []);
   const cmsData = useCMSData(mounted);
+  const router = useRouter();
+  const handlePJChallengeClick = () => {
+    triggerGAEvent(GA_EVENTS.SPRITE_J24_SUBMIT_JOKE);
+    router.push("/submit-your-joke");
+  };
 
   return (
     <>
@@ -149,19 +158,20 @@ const ComicCoinsPage = () => {
             onClick={() => setIsReferModalOpen(true)}
             className="cursor-pointer"
           >
-            <Banner
-              type="image"
-              src="/other-svgs/share-laugh.svg"
-              className="rounded-lg"
+            <ShareLaugh
+              heading={cmsData.comic.shareALaughBanner2HeaderText}
+              buttonText={cmsData.comic.referNowButtonBanner2Text}
+              onClick={() => setIsReferModalOpen(true)}
             />
           </button>
-          <Link href="/submit-your-joke">
-            <Banner
-              type="image"
-              src="/home-page/banner-bottom.png"
-              className="rounded-lg"
+          <div className="challenge-section md:mt-0 mb-[20px] md:mb-[40px]">
+            <PJChallenge
+              heading={cmsData.comic.pjChallengeBanner3Heading}
+              subheading={cmsData.comic.pjChallengeBanner3SubSubHeading}
+              buttonText={cmsData.comic.submitToGetFeaturedButtonBanner3Text}
+              onClick={handlePJChallengeClick}
             />
-          </Link>
+          </div>
         </div>
       </ScreenWrapper>
 

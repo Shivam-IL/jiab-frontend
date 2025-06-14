@@ -5,7 +5,8 @@ const PJChallenge: React.FC<{
   heading: string;
   subheading: string;
   buttonText: string;
-}> = ({ heading, subheading, buttonText }) => {
+  onClick: () => void;
+}> = ({ heading, subheading, buttonText, onClick }) => {
   return (
     <div className="relative w-full">
       {/* Background Image */}
@@ -38,14 +39,14 @@ const PJChallenge: React.FC<{
           </div>
 
           {/* Subheading - "BOTTLE YOUR JOKES..." */}
-          <div className="absolute top-[35%] left-1/2 transform -translate-x-1/2 max-w-[60%]">
+          <div className="absolute top-[35%] left-1/2 transform -translate-x-1/2 -w-[60%]">
             <h2
               className="text-green font-bold italic uppercase text-center
-              text-[10px] leading-[12px] max-w-[200px]
-              sm:text-[16px] sm:leading-[20px] sm:max-w-[300px]
-              md:text-[24px] md:leading-[30px] md:max-w-[450px]
-              lg:text-[32px] lg:leading-[40px] lg:max-w-[550px]
-              xl:text-[40px] xl:leading-[48px] xl:max-w-[650px]
+              text-[14px] leading-[15px] max-w-[200px]
+              sm:text-[16px] sm:leading-[20px] sm:max-w-[200px]
+              md:text-[24px] md:leading-[30px] md:max-w-[300px]
+              lg:text-[32px] lg:leading-[40px] lg:max-w-[415px]
+              xl:text-[40px] xl:leading-[48px] xl:max-w-[500px]
               2xl:text-[48px] 2xl:leading-[56px] 2xl:max-w-[750px]"
             >
               {subheading}
@@ -53,8 +54,9 @@ const PJChallenge: React.FC<{
           </div>
 
           {/* Submit Button */}
-          <div className="absolute bottom-[20%] left-1/2 transform -translate-x-1/2">
+          <div className="absolute bottom-[20%] left-1/2 2xl:top-[69%] transform -translate-x-1/2">
             <button
+              onClick={onClick}
               className="bg-black text-white font-bold rounded-full 
               transition-all duration-200 hover:bg-gray-800 active:scale-95
               px-[12px] py-[6px] text-[8px]
