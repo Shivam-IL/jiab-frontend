@@ -4,6 +4,7 @@ import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
 import { API_ROUTES, LOCAL_STORAGE_KEYS } from "../client/config";
 import { MainService } from "./MainService";
 import { getLocalStorageItem } from "@/utils";
+import { AUTHORIZATION_TYPES } from "../client/constant";
 
 export class JokeService extends MainService {
   private static instance: JokeService;
@@ -19,7 +20,7 @@ export class JokeService extends MainService {
     const token = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
     return token
       ? {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${AUTHORIZATION_TYPES.BEARER} ${token}`,
         }
       : {};
   }
@@ -32,12 +33,12 @@ export class JokeService extends MainService {
           ...this.getAuthHeaders(),
         },
       });
-      console.log('joke response', response)
+      console.log("joke response", response);
       const responseData = response.data;
       if (responseData?.success) {
         return SuccessResponse(responseData.data);
       }
-      console.log('joke error', responseData)
+      console.log("joke error", responseData);
       return ErrorResponse(responseData?.message ?? "Something went wrong");
     } catch (error) {
       throw error;
@@ -61,7 +62,9 @@ export class JokeService extends MainService {
       if (preferredJokes) queryParams.append("preferredJokes", preferredJokes);
       if (language) queryParams.append("language", language);
 
-      const endpoint = `${API_ROUTES.JOKES.GET_SCROLL_AND_LOL}${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+      const endpoint = `${API_ROUTES.JOKES.GET_SCROLL_AND_LOL}${
+        queryParams.toString() ? `?${queryParams.toString()}` : ""
+      }`;
 
       const response = await apiClient.get(endpoint, {
         headers: {

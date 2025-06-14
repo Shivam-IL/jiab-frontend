@@ -20,6 +20,7 @@ import SvgIcons from '../SvgIcons'
 import { GA_EVENTS, ICONS_NAMES } from '@/constants'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 
+
 const Login = () => {
   const {
     mutate: requestOTP,

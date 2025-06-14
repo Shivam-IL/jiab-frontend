@@ -9,7 +9,8 @@ export const API_CONFIG = {
 };
 
 export const CMS_API_CONFIG = {
-  baseURL: process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "http://13.200.122.221:8121/api/",
+  baseURL:
+    process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "http://13.200.122.221:8121/api/",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -84,5 +85,10 @@ export const API_ROUTES = {
   },
   LEADERBOARD: {
     GET_LEADERBOARD: "/leaderboard/",
+  },
+  REFERENCE: {
+    GENRES: "/reference-data/genres",
+    JOKES_FORMATS: "/reference-data/joke-formats",
+    LANGUAGES: "/reference-data/languages",
   },
 };

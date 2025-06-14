@@ -4,6 +4,7 @@ import { keys } from "../utils";
 import useAppSelector from "@/hooks/useSelector";
 import { TGetJokesParams } from "../types/JokeTypes";
 
+
 const useGetSurpriseMeJoke = () => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
   const jokeInstance = JokeService.getInstance();
@@ -27,5 +28,7 @@ const useGetJokes = (params: TGetJokesParams = {}) => {
     staleTime: 0,
   });
 };
+
+    
 
 export { useGetSurpriseMeJoke, useGetJokes };

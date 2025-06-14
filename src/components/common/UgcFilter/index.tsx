@@ -4,26 +4,24 @@ import React, { useEffect, useState } from 'react'
 import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES } from '@/constants'
 import AktivGroteskText from '../AktivGroteskText'
+import { updateUgcFilters } from '@/store/ugc'
+import useAppDispatch from '@/hooks/useDispatch'
 
-const UgcFilter = ({
-  filter,
-}: {
-  filter: string;
-}) => {
+const UgcFilter = ({ filter }: { filter: string }) => {
   const [openUgcFilterModal, setOpenUgcFilterModal] = useState<boolean>(false)
   const [selectedFilters, setSelectedFilters] = useState({
     language: '',
     category: ''
   })
-
-  console.log(selectedFilters)
-
+  const [search, setSearch] = useState('')
+  const dispatch = useAppDispatch()
   const handleApplyFilters = (filters: {
     language: string
     category: string
   }) => {
     setSelectedFilters(filters)
     setOpenUgcFilterModal(false)
+    dispatch(updateUgcFilters({ filters }))
   }
 
   useEffect(() => {
@@ -32,8 +30,23 @@ const UgcFilter = ({
         language: '',
         category: ''
       })
+      dispatch(
+        updateUgcFilters({
+          filters: {
+            language: '',
+            category: ''
+          }
+        })
+      )
     }
   }, [])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(updateUgcFilters({ filters: { search } }))
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [search])
 
   return (
     <>
@@ -47,6 +60,7 @@ const UgcFilter = ({
             type='text'
             placeholder='Search by Name...'
             className={`w-full outline-none border-none bg-transparent ${aktivGrotesk.className} font-[400] text-[10px] md:text-[16px] text-[#383838]`}
+            onChange={e => setSearch(e.target.value)}
           />
         </div>
         <div className='flex items-center gap-[4px]'>

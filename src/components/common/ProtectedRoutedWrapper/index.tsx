@@ -6,19 +6,24 @@ import { usePathname, useRouter } from 'next/navigation'
 import { ReactNode, useEffect } from 'react'
 
 const ProtectedRoutedWrapper = ({ children }: { children: ReactNode }) => {
-  const { isAuthenticated, token } = useAppSelector(state => state.auth)
+  const { isAuthenticated } = useAppSelector(state => state.auth)
   const pathname = usePathname()
   const router = useRouter()
 
   useEffect(() => {
-    if (
-      !getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN) &&
-      JSON.stringify(PROTECTED_ROUTES).startsWith(pathname)
-    ) {
+    const accessToken = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN)
+    let protectedRoutes = false
+    for (const route of PROTECTED_ROUTES) {
+      if (pathname.startsWith(route)) {
+        protectedRoutes = true
+        break
+      }
+    }
+
+    if (!accessToken && protectedRoutes) {
       router.push('/')
     }
-  }, [isAuthenticated, token, pathname])
-
+  }, [isAuthenticated, pathname, router])
 
   return <>{children}</>
 }

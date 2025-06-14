@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 interface HeaderProps {
@@ -33,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({
         )}
       </div>
       {viewAllUrl && (
-        <a
+        <Link
           href={viewAllUrl}
           className="flex items-center md:text-[20px] text-[12px] font-medium text-gray-900 group"
         >
@@ -41,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({
           <span className="ml-1 group-hover:translate-x-1 transition-transform">
             <ChevronRight className="w-4 h-4" />
           </span>
-        </a>
+        </Link>
       )}
     </div>
   );

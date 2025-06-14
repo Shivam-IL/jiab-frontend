@@ -15,6 +15,7 @@ import {
   updateOtpFilled,
   updateOtpStatus,
   updateOtpVerified,
+  updateSurpriseMe,
   updateToken
 } from '@/store/auth/auth.slice'
 import { useMutateRequestOTP, useMutateVerifyOTP } from '@/api/hooks/LoginHooks'
@@ -23,6 +24,7 @@ import { GA_EVENTS, ICONS_NAMES, TOKEN_TYPE } from '@/constants'
 import { MainService } from '@/api/services/MainService'
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
 import { removeLocalStorageItem, setLocalStorageItem } from '@/utils'
+
 import { triggerGAEvent } from '@/utils/gTagEvents'
 
 const OtpModal = () => {
@@ -41,7 +43,7 @@ const OtpModal = () => {
     data: verifyOTPData
   } = useMutateVerifyOTP()
 
-  const { otpSent, isAuthenticated } = useAppSelector(state => state.auth)
+  const { otpSent } = useAppSelector(state => state.auth)
 
   const [counter, setCounter] = useState<string>('12')
   const [counterEnd, setCounterEnd] = useState<boolean>(false)
@@ -93,8 +95,24 @@ const OtpModal = () => {
     verifyOTP({ otp, mobile_number: phoneNumber })
   }
 
+  // const gludeinLogin = async () => {
+  //   let data = await encryptData(
+  //     window.location.origin,
+  //     process.env.NEXT_PUBLIC_SECRET_KEY || ''
+  //   )
+  //   const uniqueId = uuidv4()
+  //   const formData = {
+  //     email: `${uniqueId}@gmail.com`,
+  //     password: uniqueId,
+  //     autoCreate: true,
+  //     accessToken: data
+  //   }
+  //   const gluedinLogin = new gluedin.GluedInAuthModule()
+  //   const gluedinLoginResponse = await gluedinLogin.AuthRawData(formData)
+  //   console.log('Gludein Response = ', gluedinLoginResponse)
+  // }
+
   useEffect(() => {
-    console.log('verifyOTPData', verifyOTPData)
     if (verifyOTPData?.ok) {
       const { data: verifyTokenData } = verifyOTPData
       const token = verifyTokenData?.access_token ?? ''
@@ -107,11 +125,13 @@ const OtpModal = () => {
       } else if (tokenType === TOKEN_TYPE.BEARER) {
         const refreshToken = verifyTokenData?.refresh_token ?? ''
         dispatch(updateIsFirstLogin({ isFirstLogin: false }))
-        dispatch(updateIsAuthenticated({ isAuthenticated: true }))
         setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, refreshToken)
       }
       mainServiceInstance.setAccessToken(token)
       dispatch(updateOtpFilled({ otpFilled: true }))
+      dispatch(updateOtpVerified({ otpVerified: true }))
+      dispatch(updateSurpriseMe({ surpriseMe: true }))
+      dispatch(updateIsAuthenticated({ isAuthenticated: true }))
       setOpen(false)
     } else if (verifyOTPData?.ok === false) {
       const { data } = verifyOTPData

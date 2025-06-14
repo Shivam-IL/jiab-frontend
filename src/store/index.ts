@@ -8,27 +8,29 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import { combineReducers } from '@reduxjs/toolkit';
-import authReducer from './auth/auth.slice';
-import profileReducer from './profile/profile.slice';
-import cmsReducer from './cms/cms.slice';
-import languageReducer from './language/language.slice';
-import leaderboardReducer from './leaderboard/index';
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { combineReducers } from "@reduxjs/toolkit";
+import authReducer from "./auth/auth.slice";
+import profileReducer from "./profile/profile.slice";
+import cmsReducer from "./cms/cms.slice";
+import languageReducer from "./language/language.slice";
+import leaderboardReducer from "./leaderboard/index";
+import ugcReducer from "./ugc/index";
+import referenceReducer from "./reference";
 
 // Configure persistence for CMS
 const cmsPersistConfig = {
-  key: 'cms',
+  key: "cms",
   storage,
-  whitelist: ['homePageContent'] // Only persist homePageContent, not loading states or errors
+  whitelist: ["homePageContent"], // Only persist homePageContent, not loading states or errors
 };
 
 // Configure root persistence (if you want to persist other slices later)
 const rootPersistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: ['cms'] // Only persist the cms slice
+  whitelist: ["cms"], // Only persist the cms slice
 };
 
 const rootReducer = combineReducers({
@@ -37,6 +39,8 @@ const rootReducer = combineReducers({
   cms: persistReducer(cmsPersistConfig, cmsReducer),
   language: languageReducer,
   leaderboard: leaderboardReducer,
+  ugc: ugcReducer,
+  reference: referenceReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

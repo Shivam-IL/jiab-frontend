@@ -9,6 +9,7 @@ import {
   TSubmitQuestions,
 } from "../types/ProfileTypes";
 import { MainService } from "./MainService";
+import { AUTHORIZATION_TYPES } from "../client/constant";
 
 export class ProfileService extends MainService {
   private static instance: ProfileService;
@@ -24,7 +25,7 @@ export class ProfileService extends MainService {
     const token = localStorage.getItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
     return token
       ? {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${AUTHORIZATION_TYPES.BEARER} ${token}`,
         }
       : {};
   }

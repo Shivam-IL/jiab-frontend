@@ -10,16 +10,32 @@ import { MakeLaughExitPopup } from '@/components/ExitPopUps'
 import { useGetSurpriseMeJoke } from '@/api/hooks/JokeHooks'
 import { formatNumberToK } from '@/utils'
 import CustomPopupWrapper from '../CustomPopupWrapper'
+import {
+  useSendGluedinUserReaction,
+  useGetGluedinAssetById,
+  useViewGludeinJokes
+} from '@/api/hooks/GluedinHooks'
+import { ReactionType } from '@/types'
 
 const SurpriseMeModal = ({ onClose }: { onClose: () => void }) => {
   const [open, setOpen] = useState<boolean>(true)
   const [makeLaughExitPopup, setMakeLaughExitPopup] = useState<boolean>(false)
   const { data: jokeData } = useGetSurpriseMeJoke()
   const [joke, setJoke] = useState<any>(null)
+  const [jokeId, setJokeId] = useState<string>('')
+  const [reactionType, setReactionType] = useState<string>('')
   const [serialChill, setSerialChill] = useState<boolean>(false)
+  const {
+    mutate: mutateSendGluedinUserReaction,
+    data: gluedinUserReactionData
+  } = useSendGluedinUserReaction()
+  const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
+    useViewGludeinJokes()
+  const { data: gluedinAssetData } = useGetGluedinAssetById(jokeId)
 
   useEffect(() => {
     if (jokeData?.ok) {
+      viewGludeinJokes({ assetIds: [jokeData?.data?.id] })
       setJoke(jokeData?.data ?? {})
       setSerialChill(false)
     } else if (jokeData?.ok === false) {
@@ -27,6 +43,60 @@ const SurpriseMeModal = ({ onClose }: { onClose: () => void }) => {
       setSerialChill(true)
     }
   }, [jokeData])
+
+  useEffect(() => {
+    if (gluedinAssetData?.ok) {
+      const { isLiked, reactionType } = gluedinAssetData?.data as {
+        isLiked: boolean
+        reactionType: string
+      }
+      setJoke((prev: any) => ({
+        ...prev,
+        isLiked: isLiked,
+        reactionType: reactionType
+      }))
+    }
+  }, [gluedinAssetData])
+
+  const handleSendGluedinUserReaction = (
+    reactionType: string,
+    assetId: string
+  ) => {
+    setReactionType(reactionType)
+    mutateSendGluedinUserReaction({
+      assetId: assetId,
+      reactionType: reactionType
+    })
+  }
+
+  useEffect(() => {
+    if (viewGludeinJokesData?.ok) {
+      setJoke((prev: any) => ({
+        ...prev,
+        view_count: prev?.view_count + 1
+      }))
+    }
+  }, [viewGludeinJokesData])
+
+  useEffect(() => {
+    if (gluedinUserReactionData?.ok) {
+      setJoke((prev: any) => ({
+        ...prev,
+        isReacted: true,
+        reactionType: reactionType,
+        user_reaction: {
+          ...prev?.user_reaction,
+          [reactionType]: (prev?.user_reaction?.[reactionType] ?? 0) + 1
+        }
+      }))
+    }
+  }, [gluedinUserReactionData])
+
+  useEffect(() => {
+    return () => {
+      setJoke(null)
+    }
+  }, [])
 
   if (serialChill) {
     return (
@@ -112,24 +182,48 @@ const SurpriseMeModal = ({ onClose }: { onClose: () => void }) => {
           <div className='flex gap-[24px] md:gap-[14px] pl-[10px]'>
             <SurpriseMeCTA
               name={ICONS_NAMES.FUNNY}
+              isReacted={joke?.isReacted ?? false}
+              disabled={
+                joke?.reactionType
+                  ? joke?.reactionType !== ReactionType.LAUGH
+                  : false
+              }
               text={formatNumberToK(
                 parseInt(joke?.user_reaction?.laugh, 10) ?? 0
               )}
-              onClick={() => {}}
+              onClick={() => {
+                handleSendGluedinUserReaction(ReactionType.LAUGH, joke?.id)
+              }}
             />
             <SurpriseMeCTA
               name={ICONS_NAMES.MAD}
+              isReacted={joke?.isReacted ?? false}
+              disabled={
+                joke?.reactionType
+                  ? joke?.reactionType !== ReactionType.NEUTRAL
+                  : false
+              }
               text={formatNumberToK(
                 parseInt(joke?.user_reaction?.neutral, 10) ?? 0
               )}
-              onClick={() => {}}
+              onClick={() => {
+                handleSendGluedinUserReaction(ReactionType.NEUTRAL, joke?.id)
+              }}
             />
             <SurpriseMeCTA
               name={ICONS_NAMES.ANGRY}
+              isReacted={joke?.isReacted ?? false}
+              disabled={
+                joke?.reactionType
+                  ? joke?.reactionType !== ReactionType.SAD
+                  : false
+              }
               text={formatNumberToK(
                 parseInt(joke?.user_reaction?.sad, 10) ?? 0
               )}
-              onClick={() => {}}
+              onClick={() => {
+                handleSendGluedinUserReaction(ReactionType.SAD, joke?.id)
+              }}
             />
           </div>
           <div className='pr-[10px]'>

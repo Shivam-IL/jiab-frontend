@@ -4,6 +4,7 @@ import { API_ROUTES, LOCAL_STORAGE_KEYS } from "../client/config";
 
 import { MainService } from "./MainService";
 import { getLocalStorageItem } from "@/utils";
+import { AUTHORIZATION_TYPES } from "../client/constant";
 
 export class LeaderBoardService extends MainService {
   private static instance: LeaderBoardService;
@@ -19,7 +20,7 @@ export class LeaderBoardService extends MainService {
     const token = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
     return token
       ? {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${AUTHORIZATION_TYPES.BEARER} ${token}`,
         }
       : {};
   }

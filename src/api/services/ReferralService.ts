@@ -13,6 +13,7 @@ import {
   REFERRAL_CODE,
   SEND_AGAIN_STATUS,
 } from "@/constants";
+import { AUTHORIZATION_TYPES } from "../client/constant";
 
 export class ReferralService extends MainService {
   private static instance: ReferralService;
@@ -28,7 +29,7 @@ export class ReferralService extends MainService {
     const token = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
     return token
       ? {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${AUTHORIZATION_TYPES.BEARER} ${token}`,
         }
       : {};
   }

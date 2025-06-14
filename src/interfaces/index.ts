@@ -1,4 +1,5 @@
-import { AddressModalType } from "@/types";
+import { AddressModalType, ReactionType } from "@/types";
+import { TModifiedUGCContent } from "@/api/types/GluedinTypes";
 
 export interface IQueryClientAndReduxWrapper {
   children: React.ReactNode;
@@ -71,6 +72,8 @@ export interface ISurpriseMeCTA {
   onClick: () => void;
   name: string;
   text: string;
+  disabled?: boolean;
+  isReacted?: boolean;
 }
 
 export interface IAktivGroteskText {
@@ -281,6 +284,7 @@ export interface IUgcComponent {
     category: string;
   };
   isUnmounting?: boolean;
+  jokesData?: TModifiedUGCContent[];
 }
 
 export interface IAddressData {
@@ -323,5 +327,6 @@ export interface IInviteeData {
 
 
 export interface UgcCardProps {
-  disclaimerText: string
+  disclaimerText?: string
+  item?: TModifiedUGCContent
 }

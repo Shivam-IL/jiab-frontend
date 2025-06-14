@@ -10,6 +10,7 @@ import {
 } from "../types/LoginTypes";
 import { MainService } from "./MainService";
 import { getLocalStorageItem } from "@/utils";
+import { AUTHORIZATION_TYPES } from "../client/constant";
 
 export class LoginService extends MainService {
   private static instance: LoginService;
@@ -22,10 +23,10 @@ export class LoginService extends MainService {
   }
 
   private getAuthHeaders() {
-    const token = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN)
+    const token = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
     return token
       ? {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${AUTHORIZATION_TYPES.BEARER} ${token}`,
         }
       : {};
   }
@@ -124,9 +125,9 @@ export class LoginService extends MainService {
         }
       );
       const responseData = response.data;
-      console.log('responseData', responseData)
+      console.log("responseData", responseData);
       if (responseData?.success) {
-        console.log('responseData', responseData.data)
+        console.log("responseData", responseData.data);
         return SuccessResponse(responseData.data);
       }
       return ErrorResponse(responseData?.message ?? "Something went wrong");

@@ -11,6 +11,12 @@ export enum AddressModalType {
   EDIT = "edit",
 }
 
+export enum ReactionType {
+  LAUGH = "laugh",
+  SAD = "sad",
+  NEUTRAL = "neutral",
+}
+
 export interface IJokeData {
   language: string;
   format: string;
@@ -31,6 +37,22 @@ export interface IClaimFormData {
   panNumber: string;
 }
 
+export interface IHallOfLameData {
+  id: string
+  voteCount: number
+  updatedTimestamp: number
+  weekNumber: number
+  title: string
+  jokeOwnerName: string
+  labels: string[]
+  thumbnailUrl: string
+  videoId: string
+  ownerId: string
+  projectId: string
+  businessId: string
+  rank: number
+}
+
 export interface IHallOfLameLeaderboardTableProps {
   weeklyTopJokes: string;
   prevButtonText: string;
@@ -38,10 +60,18 @@ export interface IHallOfLameLeaderboardTableProps {
   rank: string;
   jokes: string;
   votes: string;
+  data: IHallOfLameData[];
+  setOffset: React.Dispatch<React.SetStateAction<number>>;
+  totalPages: number;
+  offset: number;
 }
 
+
+
 export interface IHallOfLameDisplayTableProps {
+  data: IHallOfLameData[];
   rank: string;
   jokes: string;
   votes: string;
-}
+  offset: number;
+    }

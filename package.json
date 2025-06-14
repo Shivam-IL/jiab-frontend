@@ -26,8 +26,10 @@
     "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "crypto-js": "^4.2.0",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
+    "gluedin": "file:gluedin",
     "lucide-react": "^0.511.0",
     "motion": "^12.12.1",
     "next": "14.2.29",
@@ -40,7 +42,8 @@
     "sharp": "^0.34.2",
     "svg-sprite": "^2.0.4",
     "tailwind-merge": "^3.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",

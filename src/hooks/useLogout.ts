@@ -5,10 +5,7 @@ import {
   updateIsFirstLogin,
   resetAuth,
 } from "@/store/auth/auth.slice";
-import { LOCAL_STORAGE_KEYS } from "@/api/client/config";
-import { updateToken } from "@/store/auth/auth.slice";
 import useAppDispatch from "./useDispatch";
-import { removeLocalStorageItem } from "@/utils/index";
 import { resetProfile } from "@/store/profile/profile.slice";
 
 const useLogout = () => {

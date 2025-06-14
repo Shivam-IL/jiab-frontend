@@ -505,7 +505,9 @@ export const PROTECTED_ROUTES = [
   "/hall-of-lame",
   "/scroll-and-lol",
   "/profile",
+  "/user-generated-jokes",
 ];
+
 
 export const LOCAL_IMAGES = {
   SPRITE_GOLD: "sprite-gold.png",
@@ -522,6 +524,8 @@ export const TOKEN_TYPE = {
 export const REDUX_UPDATION_TYPES = {
   SINGLE_ADDED: "single_added",
   MULTIPLE_ADDED: "multiple_added",
+  APPENDED: "appended",
+  REPLACED: "replaced",
 };
 
 export const IMAGES_LINK = {
