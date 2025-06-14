@@ -25,7 +25,6 @@ import CircularBoxesModal, {
 import useWindowWidth from '@/hooks/useWindowWidth'
 import SvgIcons from '@/components/common/SvgIcons'
 import { GA_EVENTS, ICONS_NAMES } from '@/constants'
-import UgcCard from '@/components/common/UgcCard'
 import Link from 'next/link'
 import { updateSurpriseMe } from '@/store/auth/auth.slice'
 import useAppDispatch from '@/hooks/useDispatch'
@@ -33,6 +32,7 @@ import { useGetJokes } from '@/api/hooks/JokeHooks'
 import { useLanguage } from '@/hooks/useLanguage'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import HomePageJokeSection from './common/HomePageJokeSection'
+import { PJChallenge } from "./Banners";
 
 export default function HomePageClient () {
   const {
@@ -61,12 +61,11 @@ export default function HomePageClient () {
   const cmsData = useCMSData(mounted)
 
   // Fetch jokes to populate video carousel dynamically
-  const { selectedLanguage } = useLanguage()
-  const {
-    data: jokesResponse,
-    isLoading: jokesLoading,
-    isError: jokesError
-  } = useGetJokes({ limit: 3, language: selectedLanguage })
+  const { selectedLanguage } = useLanguage();
+  const { data: jokesResponse } = useGetJokes({
+    limit: 3,
+    language: selectedLanguage,
+  });
 
   // Map API response to the structure expected by <VideoScroll />
   const jokesData = jokesResponse?.ok ? (jokesResponse.data as any[]) : []
@@ -337,14 +336,8 @@ export default function HomePageClient () {
           viewAllUrl='/scroll-and-lol'
           viewAllButtonText={cmsData.homePage.viewAllButtonText}
         />
-        <div className='video-section'>
-          {jokesLoading ? (
-            <p className='px-4'>Loading...</p>
-          ) : jokesError ? (
-            <p className='px-4 text-red-500'>Failed to load videos</p>
-          ) : (
-            <VideoScroll videos={videoData} />
-          )}
+        <div className="video-section">
+          <VideoScroll videos={videoData} />
         </div>
         {/* Pick your mood */}
         <Header
@@ -414,11 +407,11 @@ export default function HomePageClient () {
             }}
             href='/submit-your-joke'
           >
-            <Banner
-              type='image'
-              src={pjChallengeImage.src}
-              className='rounded-lg md:mb-[40px] mx-5 md:mx-0 cursor-pointer'
-            />
+            <PJChallenge
+            heading={cmsData.homePage.pjChallengeHeading}
+            subheading={cmsData.homePage.pjChallengeSubheading}
+            buttonText={cmsData.homePage.pjBannerSubmitButtonText}
+          />
           </Link>
         </div>
 
