@@ -37,6 +37,7 @@ export interface User {
   refresh_token: string;
   refresh_token_expiry_time: string;
   registered_on: string;
+  userImage?: string;
 }
 
 export interface IReferralData {
@@ -107,10 +108,21 @@ const profileSlice = createSlice({
     },
     updateUser: (state, action) => {
       const { user } = action.payload;
+
+      let userImage = "";
+      if (user?.avatar_id) {
+        const imageData = state.avatarsData?.find(
+          (avatar) => avatar.id === user?.avatar_id
+        );
+        if (imageData) {
+          userImage = imageData?.image;
+        }
+      }
       const newUserData = {
         ...state.user,
         ...user,
         gender: user?.gender ? (user?.gender === 1 ? "male" : "female") : "",
+        userImage,
       };
       state.user = { ...newUserData };
     },
