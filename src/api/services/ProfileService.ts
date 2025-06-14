@@ -47,11 +47,29 @@ export class ProfileService extends MainService {
 
   public async editUserProfileDetails(userData: TEditProfile) {
     try {
+      const formData = new FormData();
+      formData.append("name", userData.name);
+      if (userData?.dob) {
+        formData.append("dob", userData.dob);
+      }
+      formData.append("email", userData.email);
+      if (userData?.gender) {
+        formData.append("gender", userData.gender);
+      }
+      if (userData?.avatar_id) {
+        formData.append("avatar_id", userData.avatar_id.toString());
+      }
+      if (userData?.avatar_id) {
+        formData.append("is_avatar", "true");
+      }
       const response = await apiClient.patch(
         API_ROUTES.USER.PROFILE.EDIT,
-        { ...userData },
+        formData,
         {
-          headers: this.getAuthHeaders(),
+          headers: {
+            ...this.getAuthHeaders(),
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
       const data = response.data;
@@ -167,13 +185,9 @@ export class ProfileService extends MainService {
   public async submitUserQuestions({ questions }: TSubmitQuestions) {
     try {
       const endpoint = `${API_ROUTES.USER.QUESTIONS.POST}${questions?.[0]?.question_id}`;
-      const response = await apiClient.post(
-        endpoint,
-        questions,
-        {
-          headers: this.getAuthHeaders(),
-        }
-      );
+      const response = await apiClient.post(endpoint, questions, {
+        headers: this.getAuthHeaders(),
+      });
       const data = response.data;
       if (data?.success) {
         return SuccessResponse(data?.data);

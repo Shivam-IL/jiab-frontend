@@ -1,9 +1,10 @@
 export type TEditProfile = {
-  avatar_id: number;
-  dob: string;
+  avatar_id?: number;
+  dob?: string;
   email: string;
-  gender: string;
+  gender?: string;
   name: string;
+  is_avatar?: boolean;
 };
 
 export type TAddress = {

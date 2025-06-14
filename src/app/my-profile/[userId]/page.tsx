@@ -29,8 +29,6 @@ interface IUserData {
 
 interface IErrors {
   name: string
-  dob: string
-  gender: string
 }
 
 const EditProfilePage = () => {
@@ -58,9 +56,7 @@ const EditProfilePage = () => {
   })
 
   const [errors, setErrors] = useState<IErrors>({
-    name: '',
-    dob: '',
-    gender: ''
+    name: ''
   })
 
   const validateName = (name: string) => {
@@ -170,16 +166,12 @@ const EditProfilePage = () => {
 
   const isFormValid = () => {
     const nameError = validateName(userData.name)
-    const dobError = validateDOB(userData.dob)
-    const genderError = validateGender(userData.gender)
 
     setErrors({
-      name: nameError,
-      dob: dobError,
-      gender: genderError
+      name: nameError
     })
 
-    return !nameError && !dobError && !genderError
+    return !nameError
   }
 
   const submitHandler = () => {
@@ -187,7 +179,7 @@ const EditProfilePage = () => {
       const { name, dob, gender, avatar_id, email } = userData
       const payload = {
         name,
-        dob: monthDayYearConvert(dob),
+        dob: dob ? monthDayYearConvert(dob) : '',
         email,
         gender,
         avatar_id
@@ -221,6 +213,7 @@ const EditProfilePage = () => {
           <div className='hidden text-center md:flex md:flex-col justify-center items-center pt-[30px] pb-[24px]'>
             <AktivGroteskText
               text={MOBILE_TEMP_NAVBAR_DATA.EDIT_PROFILE.TITLE}
+              className='uppercase'
               fontSize='text-[30px]'
             />
             <AktivGroteskText
@@ -289,7 +282,6 @@ const EditProfilePage = () => {
               type='date'
               value={userData.dob}
               onChange={handleChange}
-              error={errors.dob}
               placeholder='YYYY/MM/DD'
             />
 
@@ -305,7 +297,6 @@ const EditProfilePage = () => {
                 { value: 'female', label: 'Female' }
               ]}
               value={userData.gender}
-              error={errors.gender}
               onChange={handleChange}
             />
             <GreenCTA
