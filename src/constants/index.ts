@@ -256,6 +256,7 @@ export const ICONS_NAMES = {
   PROFILE: "profile",
   LEADERBOARD: "leaderboard",
   STAIRS: "stairs",
+  REFRESH_RINGS: "refresh-rings",
 };
 
 export const INVITE_CODE_POPUP_DATA = {

@@ -41,7 +41,9 @@ const ReferNowComponent = ({
   } = useSendReferral()
 
   const handleChange = (key: string, value: string) => {
-    setPhoneNumber(value)
+    const numericValue = value?.replace(/[^0-9]/g, '')
+    const valueString = numericValue?.slice(0, 10)
+    setPhoneNumber(valueString)
   }
 
   const submitReferNow = () => {

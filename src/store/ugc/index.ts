@@ -80,6 +80,17 @@ const ugcSlice = createSlice({
     updateUgcLoadMore: (state) => {
       state.loadMore = true;
     },
+    resetUgcData: (state) => {
+      state.ugcData = [];
+      state.offset = 1;
+      state.loadMore = false;
+      state.filterChnageId = "";
+      state.ugcFilters = {
+        search: "",
+        language: "",
+        category: "",
+      };
+    },
   },
 });
 
@@ -90,5 +101,6 @@ export const {
   updateUgcViewData,
   updateUgcFilters,
   updateUgcLoadMore,
+  resetUgcData,
 } = ugcSlice.actions;
 export default ugcSlice.reducer;

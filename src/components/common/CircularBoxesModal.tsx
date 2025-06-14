@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import SvgIcons from './SvgIcons'
 import { ICONS_NAMES } from '@/constants'
 import { aktivGrotesk } from '@/app/layout'
+import { updateEnableCoachMarks } from '@/store/auth/auth.slice'
+import useAppDispatch from '@/hooks/useDispatch'
 
 // Export box IDs for reuse in other components
 export const BoxIds = {
@@ -43,7 +45,7 @@ interface CircularBoxesModalProps {
 
 const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
   const [currentBox, setCurrentBox] = useState(0)
-  const [hasViewedTutorial, setHasViewedTutorial] = useState(false)
+  const dispatch = useAppDispatch()
   const [coordinates, setCoordinates] = useState<CoordinatesState>({
     home: { x: 0, y: 0, width: 0, height: 0 },
     contest: { x: 0, y: 0, width: 0, height: 0 },
@@ -57,23 +59,9 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
     windowHeight: 0
   })
 
-  // Check local storage on component mount with browser check
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const hasViewed = localStorage.getItem('hasViewedCircularBoxModal')
-      if (hasViewed === 'true') {
-        setHasViewedTutorial(true)
-        onClose()
-      }
-    }
-  }, [onClose])
 
-  // Save to local storage when modal is closed with browser check
   const handleClose = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('hasViewedCircularBoxModal', 'true')
-    }
-    setHasViewedTutorial(true)
+    dispatch(updateEnableCoachMarks({ enableCoachMarks: false }))
     onClose()
   }
 
@@ -146,7 +134,6 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
     }
   }, [coordinates])
 
-  if (!isOpen || hasViewedTutorial) return null
 
   return (
     <div className='fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center'>
@@ -346,14 +333,16 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
           >
             <div className='flex w-full text-center h-full flex-col justify-center items-center gap-[9px]'>
               <div className='w-[100px] text-[12px]'>
-                Win exciting rewards now!
+                Track your collection here
               </div>
-              <div className='w-[64px] h-[64px] bg-white rounded-full flex flex-col items-center justify-center'>
+              <div className='w-[87px] h-[87px] bg-white rounded-full flex flex-col items-center justify-center'>
                 <SvgIcons
-                  name={ICONS_NAMES.UNIQUE_CODE}
-                  className='w-[22px] h-[30px]'
+                  name={ICONS_NAMES.COMIC_COINS}
+                  className='w-[22px] h-[22px]'
                 />
-                <p className='text-[9px] text-center uppercase w-[80%]'>Unique code</p>
+                <p className='text-[9px] text-center uppercase text-[#11A64B]'>
+                  Comic Coins
+                </p>
               </div>
             </div>
           </div>

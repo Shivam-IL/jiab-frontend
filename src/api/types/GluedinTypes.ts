@@ -9,6 +9,7 @@ export type TGludeinFeedList = {
   language?: string;
   category?: string;
   filterChnageId?: string;
+  sortBy?: string;
 };
 
 export interface TUGCContent {

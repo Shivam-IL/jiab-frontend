@@ -32,11 +32,17 @@ import useAppDispatch from '@/hooks/useDispatch'
 import { useGetJokes } from '@/api/hooks/JokeHooks'
 import { useLanguage } from '@/hooks/useLanguage'
 import { triggerGAEvent } from '@/utils/gTagEvents'
+import HomePageJokeSection from './common/HomePageJokeSection'
 
 export default function HomePageClient () {
-  const { otpSent, otpVerified, loginModal, crossModal } = useAppSelector(
-    state => state.auth
-  )
+  const {
+    otpSent,
+    otpVerified,
+    loginModal,
+    crossModal,
+    enableCoachMarks,
+    refreshTokenNotVerified
+  } = useAppSelector(state => state.auth)
   const dispatch = useAppDispatch()
   const width = useWindowWidth()
 
@@ -307,11 +313,11 @@ export default function HomePageClient () {
     <div className='bg-lightGray min-h-screen'>
       <div className='container mx-auto md:pt-24 pt-20'>
         {/* Modals */}
-        {!isAuthenticated && <SurpriseMeLockModal />}
+        {!isAuthenticated && refreshTokenNotVerified && <SurpriseMeLockModal />}
         {!isAuthenticated && loginModal && <Login />}
         {!isAuthenticated && otpSent && <OtpModal />}
         {isAuthenticated && otpVerified && isFirstLogin && <Signup />}
-        {isAuthenticated && !isFirstLogin && surpriseMe && (
+        {isAuthenticated && !isFirstLogin && surpriseMe && !enableCoachMarks && (
           <SurpriseMeModal
             onClose={() => {
               dispatch(updateSurpriseMe({ surpriseMe: false }))
@@ -417,123 +423,124 @@ export default function HomePageClient () {
         </div>
 
         {isAuthenticated && (
-          <>
-            {/* Joke Box */}
-            <Header
-              title={cmsData.homePage.jokeBoxHeading}
-              className='md:mb-[24px] mb-[16px] md:mt-0 mt-[20px]'
-              viewAllUrl='/user-generated-jokes'
-              viewAllButtonText={cmsData.homePage.viewAllButtonText}
-              description={cmsData.homePage.jokeBoxSubheading}
-            />
-            {isClient && (
-              <div className='md:mx-0 mx-4 mt-[20px] mb-[20px]'>
-                <div className='flex justify-center w-full'>
-                  <div className='flex items-center bg-white rounded-full mb-4 p-1 relative'>
-                    <div
-                      className={`absolute transition-all duration-300 ease-in-out top-1 h-[calc(100%-8px)] w-[90px] rounded-full bg-green ${
-                        activeTab === 'Latest' ? 'left-1' : 'left-[94px]'
-                      }`}
-                    />
-                    <button
-                      onClick={() => setActiveTab('Latest')}
-                      className={`w-[90px] h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
-                        activeTab === 'Latest'
-                          ? 'text-white'
-                          : 'text-gray-600 hover:text-black'
-                      }`}
-                    >
-                      {cmsData.homePage.latestButtonText}
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('Trending')}
-                      className={`w-[90px] h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
-                        activeTab === 'Trending'
-                          ? 'text-white'
-                          : 'text-gray-600 hover:text-black'
-                      }`}
-                    >
-                      {cmsData.homePage.trendingButtonText}
-                    </button>
-                  </div>
-                </div>
+          // <>
+          //   {/* Joke Box */}
+          //   <Header
+          //     title={cmsData.homePage.jokeBoxHeading}
+          //     className='md:mb-[24px] mb-[16px] md:mt-0 mt-[20px]'
+          //     viewAllUrl='/user-generated-jokes'
+          //     viewAllButtonText={cmsData.homePage.viewAllButtonText}
+          //     description={cmsData.homePage.jokeBoxSubheading}
+          //   />
+          //   {isClient && (
+          //     <div className='md:mx-0 mx-4 mt-[20px] mb-[20px]'>
+          //       <div className='flex justify-center w-full'>
+          //         <div className='flex items-center bg-white rounded-full mb-4 p-1 relative'>
+          //           <div
+          //             className={`absolute transition-all duration-300 ease-in-out top-1 h-[calc(100%-8px)] w-[90px] rounded-full bg-green ${
+          //               activeTab === 'Latest' ? 'left-1' : 'left-[94px]'
+          //             }`}
+          //           />
+          //           <button
+          //             onClick={() => setActiveTab('Latest')}
+          //             className={`w-[90px] h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
+          //               activeTab === 'Latest'
+          //                 ? 'text-white'
+          //                 : 'text-gray-600 hover:text-black'
+          //             }`}
+          //           >
+          //             {cmsData.homePage.latestButtonText}
+          //           </button>
+          //           <button
+          //             onClick={() => setActiveTab('Trending')}
+          //             className={`w-[90px] h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
+          //               activeTab === 'Trending'
+          //                 ? 'text-white'
+          //                 : 'text-gray-600 hover:text-black'
+          //             }`}
+          //           >
+          //             {cmsData.homePage.trendingButtonText}
+          //           </button>
+          //         </div>
+          //       </div>
 
-                <div className='md:grid md:grid-cols-3 flex justify-start overflow-x-scroll scrollbar-hide md:gap-[8px] gap-4'>
-                  {width < 768 ? (
-                    <Carousel
-                      setApi={setJokeBoxApi}
-                      opts={{
-                        align: 'start',
-                        loop: false,
-                        skipSnaps: true
-                      }}
-                      className='w-full'
-                    >
-                      <CarouselContent>
-                        <CarouselItem className='basis-auto'>
-                          <div className='max-w-[320px] mx-auto'>
-                            <UgcCard
-                              disclaimerText={
-                                cmsData.homePage.jokeDisclaimerText
-                              }
-                            />
-                          </div>
-                        </CarouselItem>
-                        <CarouselItem className='basis-auto'>
-                          <div className='max-w-[320px] mx-auto'>
-                            <UgcCard
-                              disclaimerText={
-                                cmsData.homePage.jokeDisclaimerText
-                              }
-                            />
-                          </div>
-                        </CarouselItem>
-                        <CarouselItem className='basis-auto'>
-                          <div className='max-w-[320px] mx-auto'>
-                            <UgcCard
-                              disclaimerText={
-                                cmsData.homePage.jokeDisclaimerText
-                              }
-                            />
-                          </div>
-                        </CarouselItem>
-                      </CarouselContent>
-                    </Carousel>
-                  ) : (
-                    <>
-                      <UgcCard
-                        disclaimerText={cmsData.homePage.jokeDisclaimerText}
-                      />
-                      <UgcCard
-                        disclaimerText={cmsData.homePage.jokeDisclaimerText}
-                      />
-                      <UgcCard
-                        disclaimerText={cmsData.homePage.jokeDisclaimerText}
-                      />
-                    </>
-                  )}
-                </div>
-                {width < 768 && (
-                  <div className='flex justify-center md:gap-2 gap-[1.77px] mt-[8px]'>
-                    {Array.from({ length: jokeBoxPageCount }).map(
-                      (_, index) => (
-                        <button
-                          key={`joke-slide-${index}`}
-                          className={`h-1 rounded-full transition-all duration-300 ${
-                            index === jokeBoxCurrent
-                              ? 'w-[17.73px] bg-black'
-                              : 'w-[8.86px] bg-gray-300'
-                          }`}
-                          onClick={() => goToJokeBoxPage(index)}
-                          aria-label={`Go to joke page ${index + 1}`}
-                        />
-                      )
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-          </>
+          //       <div className='md:grid md:grid-cols-3 flex justify-start overflow-x-scroll scrollbar-hide md:gap-[8px] gap-4'>
+          //         {width < 768 ? (
+          //           <Carousel
+          //             setApi={setJokeBoxApi}
+          //             opts={{
+          //               align: 'start',
+          //               loop: false,
+          //               skipSnaps: true
+          //             }}
+          //             className='w-full'
+          //           >
+          //             <CarouselContent>
+          //               <CarouselItem className='basis-auto'>
+          //                 <div className='max-w-[320px] mx-auto'>
+          //                   <UgcCard
+          //                     disclaimerText={
+          //                       cmsData.homePage.jokeDisclaimerText
+          //                     }
+          //                   />
+          //                 </div>
+          //               </CarouselItem>
+          //               <CarouselItem className='basis-auto'>
+          //                 <div className='max-w-[320px] mx-auto'>
+          //                   <UgcCard
+          //                     disclaimerText={
+          //                       cmsData.homePage.jokeDisclaimerText
+          //                     }
+          //                   />
+          //                 </div>
+          //               </CarouselItem>
+          //               <CarouselItem className='basis-auto'>
+          //                 <div className='max-w-[320px] mx-auto'>
+          //                   <UgcCard
+          //                     disclaimerText={
+          //                       cmsData.homePage.jokeDisclaimerText
+          //                     }
+          //                   />
+          //                 </div>
+          //               </CarouselItem>
+          //             </CarouselContent>
+          //           </Carousel>
+          //         ) : (
+          //           <>
+          //             <UgcCard
+          //               disclaimerText={cmsData.homePage.jokeDisclaimerText}
+          //             />
+          //             <UgcCard
+          //               disclaimerText={cmsData.homePage.jokeDisclaimerText}
+          //             />
+          //             <UgcCard
+          //               disclaimerText={cmsData.homePage.jokeDisclaimerText}
+          //             />
+          //           </>
+          //         )}
+          //       </div>
+          //       {width < 768 && (
+          //         <div className='flex justify-center md:gap-2 gap-[1.77px] mt-[8px]'>
+          //           {Array.from({ length: jokeBoxPageCount }).map(
+          //             (_, index) => (
+          //               <button
+          //                 key={`joke-slide-${index}`}
+          //                 className={`h-1 rounded-full transition-all duration-300 ${
+          //                   index === jokeBoxCurrent
+          //                     ? 'w-[17.73px] bg-black'
+          //                     : 'w-[8.86px] bg-gray-300'
+          //                 }`}
+          //                 onClick={() => goToJokeBoxPage(index)}
+          //                 aria-label={`Go to joke page ${index + 1}`}
+          //               />
+          //             )
+          //           )}
+          //         </div>
+          //       )}
+          //     </div>
+          //   )}
+          // </>
+          <HomePageJokeSection isClient={isClient} />
         )}
 
         {/* Follow Sprite */}
@@ -576,21 +583,23 @@ export default function HomePageClient () {
                 label: 'WhatsApp'
               }
             ].map(social => (
-              <a
+              <button
                 key={social.id}
-                href={social.href}
-                target='_blank'
+                onClick={() => {
+                  triggerGAEvent(GA_EVENTS.CLICK)
+                  window.open(social.href, '_blank')
+                }}
                 rel='noopener noreferrer'
-                className='bg-white rounded-full w-[31px] h-[31px] flex items-center justify-center'
+                className='bg-white border-none outline-none rounded-full w-[31px] h-[31px] flex items-center justify-center'
                 aria-label={`Follow on ${social.label}`}
               >
                 {social.icon}
-              </a>
+              </button>
             ))}
           </div>
         </div>
       </div>
-      {isClient && width < 768 && crossModal && (
+      {isClient && width < 768 && enableCoachMarks && (
         <CircularBoxesModal
           isOpen={isModalOpen}
           onClose={() => {

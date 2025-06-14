@@ -13,6 +13,8 @@ export interface AuthState {
   isFirstLogin: boolean;
   surpriseMe: boolean;
   gludeinIsAuthenticated: boolean;
+  enableCoachMarks: boolean;
+  refreshTokenNotVerified: boolean;
 }
 
 const initialState: AuthState = {
@@ -28,6 +30,8 @@ const initialState: AuthState = {
   isFirstLogin: false,
   surpriseMe: true,
   gludeinIsAuthenticated: false,
+  enableCoachMarks: false,
+  refreshTokenNotVerified: false,
 };
 
 const authSlice = createSlice({
@@ -70,6 +74,12 @@ const authSlice = createSlice({
     updateGludeinIsAuthenticated: (state, action) => {
       state.gludeinIsAuthenticated = action.payload.gludeinIsAuthenticated;
     },
+    updateEnableCoachMarks: (state, action) => {
+      state.enableCoachMarks = action.payload.enableCoachMarks;
+    },
+    updateRefreshTokenNotVerified: (state, action) => {
+      state.refreshTokenNotVerified = action.payload.refreshTokenNotVerified;
+    },
     resetAuth: (state) => {
       state.phoneNumber = "";
       state.loginModal = false;
@@ -82,6 +92,8 @@ const authSlice = createSlice({
       state.token = "";
       state.surpriseMe = true;
       state.gludeinIsAuthenticated = false;
+      state.enableCoachMarks = false;
+      state.refreshTokenNotVerified = false;
     },
   },
 });
@@ -100,5 +112,7 @@ export const {
   resetAuth,
   updateSurpriseMe,
   updateGludeinIsAuthenticated,
+  updateEnableCoachMarks,
+  updateRefreshTokenNotVerified,
 } = authSlice.actions;
 export default authSlice.reducer;

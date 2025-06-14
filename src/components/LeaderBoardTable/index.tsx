@@ -3,11 +3,10 @@ import AktivGroteskText from '../common/AktivGroteskText'
 import { DAILY_WINNERS, ICONS_NAMES, IMAGES } from '@/constants'
 import SvgIcons from '../common/SvgIcons'
 import { aktivGrotesk } from '@/app/layout'
-import CalendarDialog from '../CalendarDialog'
-import { DateRange } from 'react-day-picker'
 import { generateImageurl } from '@/utils'
-import { ILeaderboardData, ISingleLeaderboardData } from '@/store/leaderboard'
+import {  ISingleLeaderboardData } from '@/store/leaderboard'
 import useAppSelector from '@/hooks/useSelector'
+import SingleDateSelector from '../common/SingleDateSelector'
 
 export const DisplayTable = ({
   data,
@@ -152,8 +151,8 @@ const LeaderBoardTable = () => {
   console.log('my_rank', my_rank)
   console.log('leaderboard', leaderboard)
 
-  const handleDateRangeSelect = (range: DateRange | undefined) => {
-    console.log('Selected date range:', range)
+  const handleDateSelect = (date: Date | undefined) => {
+    console.log('Selected date:', date)
   }
 
   return (
@@ -182,10 +181,10 @@ const LeaderBoardTable = () => {
             className='w-[18px] h-[18px]'
           />
         </button>
-        <CalendarDialog
+        <SingleDateSelector 
           open={isCalendarOpen}
           setOpen={setIsCalendarOpen}
-          onDateSelect={handleDateRangeSelect}
+          onDateSelect={handleDateSelect}
         />
       </div>
       <div className='w-full flex flex-col gap-[28px] md:gap-[40px]'>

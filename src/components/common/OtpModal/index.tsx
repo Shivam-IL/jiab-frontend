@@ -126,11 +126,11 @@ const OtpModal = () => {
         const refreshToken = verifyTokenData?.refresh_token ?? ''
         dispatch(updateIsFirstLogin({ isFirstLogin: false }))
         setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, refreshToken)
+        dispatch(updateSurpriseMe({ surpriseMe: true }))
       }
       mainServiceInstance.setAccessToken(token)
       dispatch(updateOtpFilled({ otpFilled: true }))
       dispatch(updateOtpVerified({ otpVerified: true }))
-      dispatch(updateSurpriseMe({ surpriseMe: true }))
       dispatch(updateIsAuthenticated({ isAuthenticated: true }))
       setOpen(false)
     } else if (verifyOTPData?.ok === false) {
