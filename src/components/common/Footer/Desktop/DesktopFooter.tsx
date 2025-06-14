@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCMSData } from "@/data";
+import { triggerGAEvent } from "@/utils/gTagEvents";
+import { GA_EVENTS } from "@/constants";
 
 const currentYear = new Date().getFullYear();
 
@@ -124,16 +126,18 @@ const DesktopFooter = () => {
                   label: "WhatsApp",
                 },
               ].map((social) => (
-                <a
+                <button
                   key={social.id}
-                  href={social.href}
-                  target="_blank"
+                  onClick={() => {
+                    triggerGAEvent(GA_EVENTS.CLICK)
+                    window.open(social.href, '_blank')
+                  }}
                   rel="noopener noreferrer"
-                  className="bg-white rounded-full w-[41px] h-[41px] flex items-center justify-center"
+                  className="bg-white outline-none border-none rounded-full w-[41px] h-[41px] flex items-center justify-center"
                   aria-label={`Follow on ${social.label}`}
                 >
                   {social.icon}
-                </a>
+                </button>
               ))}
             </div>
           </div>

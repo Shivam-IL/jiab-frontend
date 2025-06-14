@@ -9,7 +9,7 @@ import { useCMSData } from '@/data'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 
 const HomePageSurpriseButton = () => {
-  const { isAuthenticated, token } = useAppSelector(state => state.auth)
+  const { isAuthenticated, token, enableCoachMarks } = useAppSelector(state => state.auth)
   const [mounted, setMounted] = useState(false)
   const cmsData = useCMSData(mounted)
 
@@ -46,7 +46,7 @@ const HomePageSurpriseButton = () => {
           className='text-[#11A64B] uppercase leading-tight text-center text-[8px] md:text-[16px] font-bold'
         />
       </button>
-      {surpriseMeModal && isAuthenticated && token && (
+      {surpriseMeModal && isAuthenticated && token && !enableCoachMarks && (
         <SurpriseMeModal
           onClose={() => {
             setSurpriseMeModal(false)

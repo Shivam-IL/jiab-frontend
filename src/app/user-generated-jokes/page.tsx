@@ -12,7 +12,7 @@ import {
   useGetGluedinFeedList,
   useViewGludeinJokes
 } from '@/api/hooks/GluedinHooks'
-import { updateUgcData, updateUgcViewData } from '@/store/ugc'
+import { resetUgcData, updateUgcData, updateUgcViewData } from '@/store/ugc'
 import { REDUX_UPDATION_TYPES } from '@/constants'
 import useAppDispatch from '@/hooks/useDispatch'
 import useAppSelector from '@/hooks/useSelector'
@@ -44,12 +44,14 @@ const UserGeneratedJokes = () => {
   useEffect(() => {
     return () => {
       setIsUnmounting(true)
+      dispatch(resetUgcData())
     }
   }, [])
 
   useEffect(() => {
     if (gluedinFeedList?.ok) {
       const assetIds = gluedinFeedList?.data?.map((item: any) => item?.videoId)
+      console.log('assetIds', assetIds, filterChnageId, loadMore)
       viewGludeinJokes({ assetIds })
       dispatch(
         updateUgcData({

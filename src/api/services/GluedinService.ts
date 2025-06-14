@@ -60,6 +60,7 @@ export class GluedinService extends MainService {
     limit = 6,
     language,
     category,
+    sortBy,
   }: TGludeinFeedList) {
     const feedModule = new gluedin.GluedInFeedModule();
     const labels = [];
@@ -76,11 +77,11 @@ export class GluedinService extends MainService {
         limit: limit,
         ...(labels.length > 0 && { labels }),
         ...(search && { search }),
-        ugc: true,
+        ...(sortBy && { sortBy }),
       };
 
       let gluedinFeedList;
-      if (language || category || search) {
+      if (language || category || search || sortBy) {
         gluedinFeedList = await feedModule.filterVideos(payload);
       } else {
         gluedinFeedList = await feedModule.getFeedList(payload);

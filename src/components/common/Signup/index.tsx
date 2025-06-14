@@ -14,7 +14,9 @@ import {
   updateOtpFilled,
   updateOtpStatus,
   updatePhoneNumber,
-  updateToken
+  updateToken,
+  updateEnableCoachMarks,
+  updateCrossModal
 } from '@/store/auth/auth.slice'
 import SvgIcons from '../SvgIcons'
 import { GA_EVENTS, ICONS_NAMES, TOKEN_TYPE } from '@/constants'
@@ -210,6 +212,7 @@ const Signup = () => {
         mainServiceInstance.setAccessToken(data?.access_token)
         dispatch(updateIsAuthenticated({ isAuthenticated: true }))
         dispatch(updateIsFirstLogin({ isFirstLogin: false }))
+        dispatch(updateEnableCoachMarks({ enableCoachMarks: true }))
         setOpen(false)
       }
     }

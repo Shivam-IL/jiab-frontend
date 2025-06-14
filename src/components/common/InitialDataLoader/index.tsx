@@ -13,7 +13,8 @@ import {
   updateIsAuthenticated,
   updateSurpriseMe,
   updateToken,
-  updateGludeinIsAuthenticated
+  updateGludeinIsAuthenticated,
+  updateRefreshTokenNotVerified
 } from '@/store/auth/auth.slice'
 import {
   updateAddresses,
@@ -29,7 +30,7 @@ import { ReactNode, useEffect, useState } from 'react'
 import { useGetAllReferrals } from '@/api/hooks/ReferralHooks'
 import { useGetLeaderBoard } from '@/api/hooks/LeaderBoardHooks'
 import { updateLeaderboard } from '@/store/leaderboard'
-import { useGetHallOfLames, useMutateGludeinLogin } from '@/api/hooks/GluedinHooks'
+import { useMutateGludeinLogin } from '@/api/hooks/GluedinHooks'
 import { useGetGenres, useGetLanguages } from '@/api/hooks/ReferenceHooks'
 import { updateGenres, updateLanguages } from '@/store/reference'
 
@@ -80,6 +81,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       dispatch(updateIsAuthenticated({ isAuthenticated: false }))
       dispatch(updateBreakTheIceModal({ breakTheIceModal: true }))
       dispatch(updateToken({ token: '' }))
+      dispatch(updateRefreshTokenNotVerified({ refreshTokenNotVerified: true }))
     }
   }, [])
 
