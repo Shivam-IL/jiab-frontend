@@ -38,7 +38,7 @@ export class LeaderBoardService extends MainService {
         return SuccessResponse(data?.data);
       }
       return ErrorResponse(data?.message);
-    } catch (error) {
+    } catch (error: unknown) {
       throw error;
     }
   }

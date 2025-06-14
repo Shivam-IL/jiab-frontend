@@ -410,6 +410,22 @@ export default function HomePageClient() {
         <HomePageDesktopOnboarding
           isOpen={isModalOpen}
           onClose={() => {
+            setIsModalOpen(false)
+          }}
+        />
+      )}
+      {isClient && enableCoachMarks && width > 768 && (
+        <HomePageDesktopOnboarding
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+        />
+      )}
+      {isClient && enableCoachMarks && width > 768 && (
+        <HomePageDesktopOnboarding
+          isOpen={isModalOpen}
+          onClose={() => {
             setIsModalOpen(false);
           }}
         />
