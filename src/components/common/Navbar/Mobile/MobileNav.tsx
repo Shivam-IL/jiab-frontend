@@ -1,17 +1,20 @@
-'use client'
-import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { ILogoAndProfileImageProps } from '@/interfaces'
-import Image from 'next/image'
-import { Bell, ChevronDown } from 'lucide-react'
-import hamburgerMenu from '../../../../../public/other-svgs/hamburger-menu.svg'
-import Sidebar from './Sidebar'
-import { ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE } from '../../../../constants/index'
-import { usePathname } from 'next/navigation'
-import Link from 'next/link'
-import { BoxIds } from '../../CircularBoxesModal'
-import { useLanguage } from '@/hooks/useLanguage'
-import LanguageHydration from '../../LanguageHydration'
-import useAppSelector from '@/hooks/useSelector'
+"use client";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { ILogoAndProfileImageProps } from "@/interfaces";
+import Image from "next/image";
+import { Bell, ChevronDown } from "lucide-react";
+import hamburgerMenu from "../../../../../public/other-svgs/hamburger-menu.svg";
+import Sidebar from "./Sidebar";
+import {
+  ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE,
+  LANGUAGE_MNEMONICS,
+} from "../../../../constants/index";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { BoxIds } from "../../CircularBoxesModal";
+import { useLanguage } from "@/hooks/useLanguage";
+import LanguageHydration from "../../LanguageHydration";
+import useAppSelector from "@/hooks/useSelector";
 
 const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
@@ -59,19 +62,18 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   }, [isSidebarOpen])
 
   const languages = [
-    { value: 'en', id: '1', label: 'ENGLISH' },
-    { value: 'hi', id: '2', label: 'हिन्दी' },
-    { value: 'te', id: '3', label: 'తెలుగు' },
-    { value: 'or', id: '4', label: 'ଓରିୟା' },
-    { value: 'ba', id: '5', label: 'বাংলা' },
-    { value: 'mr', id: '6', label: 'मराठी' },
-    { value: 'kn', id: '7', label: 'ಕನ್ನಡ' },
-    { value: 'bho', id: '9', label: 'भोজपुरी' },
-    { value: 'mai', id: '10', label: 'मैथिली' },
-    { value: 'ta', id: '11', label: 'தமிழ்' },
-    { value: 'tu', id: '12', label: 'ತುಳು' }
-  ]
-
+    { value: LANGUAGE_MNEMONICS.ENGLISH, id: "1", label: "ENGLISH" },
+    { value: LANGUAGE_MNEMONICS.HINDI, id: "2", label: "हिन्दी" },
+    { value: LANGUAGE_MNEMONICS.TELUGU, id: "3", label: "తెలుగు" },
+    { value: LANGUAGE_MNEMONICS.ORIYA, id: "4", label: "ଓରିୟା" },
+    { value: LANGUAGE_MNEMONICS.BENGALI, id: "5", label: "বাংলা" },
+    { value: LANGUAGE_MNEMONICS.MARATHI, id: "6", label: "मराठी" },
+    { value: LANGUAGE_MNEMONICS.KANNADA, id: "7", label: "ಕನ್ನಡ" },
+    { value: LANGUAGE_MNEMONICS.BHOJPURI, id: "8", label: "भोजपुरी" },
+    { value: LANGUAGE_MNEMONICS.MAITHILI, id: "9", label: "मैथिली" },
+    { value: LANGUAGE_MNEMONICS.TAMIL, id: "10", label: "தமிழ்" },
+    { value: LANGUAGE_MNEMONICS.TULU, id: "11", label: "ತುಳು" },
+  ];
 
   const getSelectedLanguageLabel = () => {
     return (

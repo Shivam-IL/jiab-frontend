@@ -125,3 +125,9 @@
 .container {
   @apply max-w-[1200px];
 }
+
+@media (max-width: 1200px) {
+  .container {
+    @apply max-w-[1024px];
+  }
+}

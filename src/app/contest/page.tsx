@@ -41,6 +41,10 @@ const steps: Step[] = [
     disableBeacon: true
   }
 ]
+import {
+  CoinAnimation,
+  useCoinAnimation,
+} from "@/components/common/CoinAnimation";
 
 interface IRewardPool {
   id: number
@@ -75,9 +79,12 @@ const ContestPage: React.FC = () => {
 
   const [mounted, setMounted] = useState(false)
   useEffect(() => {
-    setMounted(true)
-  }, [])
-  const cmsData = useCMSData(mounted)
+    setMounted(true);
+  }, []);
+  const cmsData = useCMSData(mounted);
+
+  // Coin animation hook
+  const { isAnimating, triggerAnimation } = useCoinAnimation();
 
   const rewardPool = [
     {
@@ -88,11 +95,11 @@ const ContestPage: React.FC = () => {
     },
     {
       id: 2,
-      imageUrl: '/assets/images/reward-2.png',
-      imageAlt: 'reward-2',
-      textContent: 'Cashback worth Rs.10'
-    }
-  ]
+      imageUrl: "/assets/images/reward-2.svg",
+      imageAlt: "reward-2",
+      textContent: "Cashback worth Rs.10",
+    },
+  ];
 
   // Helper function to extract reward number and text from banner content
   const parseRewardContent = (content: string) => {
@@ -115,21 +122,30 @@ const ContestPage: React.FC = () => {
       icon: '/other-svgs/unique.svg',
       title: cmsData.contest.banner1Header,
       ...parseRewardContent(cmsData.contest.banner1Content),
-      action: () => setUniqueCodeModalOpen(true)
+      action: () => {
+        setUniqueCodeModalOpen(true);
+        triggerAnimation();
+      },
     },
     {
       id: 2,
       icon: '/other-svgs/haha.svg',
       title: cmsData.contest.banner2Header,
       ...parseRewardContent(cmsData.contest.banner2Content),
-      action: () => router.push('/scroll-and-lol')
+      action: () => {
+        triggerAnimation();
+        setTimeout(() => router.push("/scroll-and-lol"), 500);
+      },
     },
     {
       id: 3,
       icon: '/other-svgs/vote.svg',
       title: cmsData.contest.banner3Header,
       ...parseRewardContent(cmsData.contest.banner3Content),
-      action: () => router.push('/user-generated-jokes')
+      action: () => {
+        triggerAnimation();
+        setTimeout(() => router.push("/user-generated-jokes"), 500);
+      },
     },
     {
       id: 4,
@@ -137,32 +153,42 @@ const ContestPage: React.FC = () => {
       title: cmsData.contest.banner4Header,
       ...parseRewardContent(cmsData.contest.banner4Content),
       action: () => {
-        triggerGAEvent(GA_EVENTS.SPRITE_J24_REFER_NOW)
-        setRefer1(true)
-      }
+        triggerGAEvent(GA_EVENTS.SPRITE_J24_REFER_NOW);
+        setRefer1(true);
+        triggerAnimation();
+      },
     },
     {
       id: 5,
       icon: '/other-svgs/invite.svg',
       title: cmsData.contest.banner5Header,
       ...parseRewardContent(cmsData.contest.banner5Content),
-      action: () => setInvite1(true)
+      action: () => {
+        setInvite1(true);
+        triggerAnimation();
+      },
     },
     {
       id: 6,
       icon: '/other-svgs/project.svg',
       title: cmsData.contest.banner6Header,
       ...parseRewardContent(cmsData.contest.banner6Content),
-      action: () => router.push('/profile')
+      action: () => {
+        triggerAnimation();
+        setTimeout(() => router.push("/profile"), 500);
+      },
     },
     {
       id: 7,
       icon: '/other-svgs/qna.svg',
       title: cmsData.contest.banner7Header,
       ...parseRewardContent(cmsData.contest.banner7Content),
-      action: () => router.push('/profile#qna')
-    }
-  ]
+      action: () => {
+        triggerAnimation();
+        setTimeout(() => router.push("/profile#qna"), 500);
+      },
+    },
+  ];
 
   // Carousel state management
   const [api, setApi] = useState<CarouselApi>()
@@ -218,7 +244,7 @@ const ContestPage: React.FC = () => {
         {isContestOver ? (
           <div className='md:w-full h-auto md:mt-[40px] mt-[18px] '>
             <ComingSoon
-              topText={cmsData.contest.excitingNewRewardsText}
+              topText={cmsData.contest.giftBoxTheContestIsOver}
               mainText={cmsData.contest.comingSoon}
             />
           </div>
@@ -354,6 +380,9 @@ const ContestPage: React.FC = () => {
           setUniqueCodeModalOpen(false)
         }}
       />
+
+      {/* Coin Animation */}
+      <CoinAnimation isVisible={isAnimating} />
     </>
   )
 }

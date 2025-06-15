@@ -59,7 +59,7 @@ const ComicCoinsPage = () => {
           </div>
           <div className="md:mt-0 mt-[16px] md:mr-0 mr-[16px] md:mb-[30px] mb-[12px]">
             <GreenCTA
-              text="How To Collect?"
+              text={cmsData.comic.howToCollect}
               onClick={() => {
                 router.push("/contest#how-to-gather");
               }}

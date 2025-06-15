@@ -1,4 +1,5 @@
 import { store } from "@/store";
+import { LANGUAGE_MNEMONICS } from "@/constants";
 
 export const API_CONFIG = {
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -32,7 +33,7 @@ export const getCurrentLocale = (): string => {
 
 export const getCurrentLanguage = (): string => {
   const language = localStorage.getItem("selectedLanguage");
-  return language ?? "en";
+  return language ?? LANGUAGE_MNEMONICS.ENGLISH;
 };
 
 export const API_ROUTES = {

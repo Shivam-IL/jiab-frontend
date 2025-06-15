@@ -192,7 +192,7 @@ export type TCMSResponse = {
       documentId: string;
       text_below_gift_box: string;
       previous_winner_list_button_text: string;
-      exciting_new_rewards_text: string;
+      exciting_new_rewards_coming_soon_text: string;
       coming_soon: string;
       surprise_me: string;
       createdAt: string;

@@ -23,7 +23,7 @@ const ComingSoon: React.FC<{
       {/* Content Overlay */}
       <div className="absolute inset-0 flex flex-col justify-center pl-4 md:pl-8 lg:pl-12 xl:pl-16 2xl:pl-20">
         {/* Left Side Content Container */}
-        <div className="flex flex-col gap-2 md:gap-4 lg:gap-6 max-w-[60%] sm:max-w-[55%] md:max-w-[50%] lg:max-w-[45%]">
+        <div className="flex flex-col gap-2 md:gap-4 lg:gap-6 max-w-[43%] sm:max-w-[55%] md:max-w-[50%] lg:max-w-[45%]">
           {/* Top Text - "THE CONTEST IS OVER NOW." */}
           <div>
             <p
