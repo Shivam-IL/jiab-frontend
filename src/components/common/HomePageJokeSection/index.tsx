@@ -19,13 +19,13 @@ import { updateUgcData } from '@/store/ugc'
 import { REDUX_UPDATION_TYPES } from '@/constants'
 import useAppDispatch from '@/hooks/useDispatch'
 import useAppSelector from '@/hooks/useSelector'
+import { BoxIds } from '../CircularBoxesModal'
 
 const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
   const cmsData = useCMSData()
   const width = useWindowWidth()
 
-
-  const { ugcData } = useAppSelector((state) => state.ugc)
+  const { ugcData } = useAppSelector(state => state.ugc)
   const [jokeBoxApi, setJokeBoxApi] = useState<CarouselApi>()
   const [activeTab, setActiveTab] = useState<'Latest' | 'Trending'>('Latest')
   const [jokeBoxCurrent, setJokeBoxCurrent] = useState(0)
@@ -73,8 +73,7 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
         })
       )
     }
-  }, [jokeBoxData,isJokeBoxFetched])
-
+  }, [jokeBoxData, isJokeBoxFetched])
 
   useEffect(() => {
     if (viewGludeinJokesData?.ok) {
@@ -100,7 +99,7 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
         description={cmsData.homePage.jokeBoxSubheading}
       />
       {isClient && (
-        <div className='md:mx-0 mx-4 mt-[20px] mb-[20px]'>
+        <div id={BoxIds.JOKE_BOX} className='md:mx-0 mx-4 mt-[20px] mb-[20px]'>
           <div className='flex justify-center w-full'>
             <div className='flex items-center bg-white rounded-full mb-4 p-1 relative'>
               <div
@@ -142,11 +141,11 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
                 }}
                 className='w-full'
               >
-                <CarouselContent>
+                <CarouselContent className='w-full'>
                   {ugcData?.length > 0 &&
                     ugcData?.map((item: TModifiedUGCContent, index: number) => (
                       <CarouselItem key={item._id} className='basis-auto'>
-                        <div className='max-w-[320px] mx-auto'>
+                        <div className='max-w-[320px] flex mx-auto h-full'>
                           <UgcCard
                             disclaimerText={cmsData.homePage.jokeDisclaimerText}
                             item={item}

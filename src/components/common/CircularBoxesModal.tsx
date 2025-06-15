@@ -11,6 +11,7 @@ export const BoxIds = {
   NOTIFICATIONS: 'notifications-element',
   LANG: 'lang-element',
   PICK_YOUR_MOOD: 'pick-your-mood-element',
+  JOKE_BOX: 'joke-box-element',
   HOME: 'home-element',
   PROFILE: 'profile-element',
   COMIC_COINS: 'comic-coins-element',
@@ -35,6 +36,7 @@ interface CoordinatesState {
   notifications: Coordinates
   lang: Coordinates
   pickYourMovie: Coordinates
+  jokeBox: Coordinates
   windowHeight: number
 }
 
@@ -56,9 +58,9 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
     notifications: { x: 0, y: 0, width: 0, height: 0 },
     lang: { x: 0, y: 0, width: 0, height: 0 },
     pickYourMovie: { x: 0, y: 0, width: 0, height: 0 },
+    jokeBox: { x: 0, y: 0, width: 0, height: 0 },
     windowHeight: 0
   })
-
 
   const handleClose = () => {
     dispatch(updateEnableCoachMarks({ enableCoachMarks: false }))
@@ -90,7 +92,8 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
         menuBar: document.getElementById(BoxIds.MENU_BAR),
         notifications: document.getElementById(BoxIds.NOTIFICATIONS),
         lang: document.getElementById(BoxIds.LANG),
-        pickYourMovie: document.getElementById(BoxIds.PICK_YOUR_MOOD)
+        pickYourMovie: document.getElementById(BoxIds.PICK_YOUR_MOOD),
+        jokeBox: document.getElementById(BoxIds.JOKE_BOX)
       }
 
       const newCoords: CoordinatesState = {
@@ -103,6 +106,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
         notifications: { x: 0, y: 0, width: 0, height: 0 },
         lang: { x: 0, y: 0, width: 0, height: 0 },
         pickYourMovie: { x: 0, y: 0, width: 0, height: 0 },
+        jokeBox: { x: 0, y: 0, width: 0, height: 0 },
         windowHeight: window.innerHeight
       }
 
@@ -134,7 +138,6 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
     }
   }, [coordinates])
 
-
   return (
     <div className='fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center'>
       <style jsx>{`
@@ -153,13 +156,16 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
           transition: opacity 0.3s ease-in-out;
         }
       `}</style>
-      <div onClick={() => {
-        if (currentBox === 8) {
-          handleClose()
-        } else {
-          setCurrentBox(prev => (prev + 1) % 9)
-        }
-      }} className='relative w-full h-full'>
+      <div
+        onClick={() => {
+          if (currentBox === 9) {
+            handleClose()
+          } else {
+            setCurrentBox(prev => (prev + 1) % 10)
+          }
+        }}
+        className='relative w-full h-full'
+      >
         {/* Menu Bar Box */}
         {currentBox === 0 && coordinates.menuBar.y !== 0 && (
           <div
@@ -242,7 +248,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
           </div>
         )}
 
-        {/* Pick Your Movie Box */}
+        {/* Pick Your Mood Box */}
         {currentBox === 3 && coordinates.pickYourMovie.y !== 0 && (
           <div
             className='circle-box bg-[#FFE200] rounded-full'
@@ -256,10 +262,14 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
           >
             <div className='flex w-full text-center h-full flex-col justify-center items-center gap-[9px]'>
               <div className='flex flex-col items-center absolute bottom-12 left-[20px]'>
-                <div className={`w-[80%] text-[16px] ${aktivGrotesk.className} font-[700]`}>
+                <div
+                  className={`w-[80%] text-[16px] ${aktivGrotesk.className} font-[700]`}
+                >
                   Pick your Mood
                 </div>
-                <div className={`text-start relative w-[70%] text-[12px] ${aktivGrotesk.className} font-[400]`}>
+                <div
+                  className={`text-start relative w-[70%] text-[12px] ${aktivGrotesk.className} font-[400]`}
+                >
                   Tell us what&apos;s annoying you today! 😎🌡️
                 </div>
               </div>
@@ -267,8 +277,36 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
           </div>
         )}
 
+        {currentBox === 4 && coordinates.jokeBox.y !== 0 && (
+          <div
+            className='circle-box bg-[#FFE200] rounded-full'
+            style={{
+              left: `${coordinates.jokeBox.x - 30.5}px`,
+              top: `${coordinates.jokeBox.y - 168.5}px`,
+              width: '177px',
+              height: '177px',
+              position: 'fixed'
+            }}
+          >
+            <div className='flex w-full text-center h-full flex-col justify-center items-center gap-[9px]'>
+              <div className='flex flex-col items-center absolute bottom-12 left-[20px]'>
+                <div
+                  className={`w-[80%] text-[16px] ${aktivGrotesk.className} font-[700]`}
+                >
+                  Joke Box
+                </div>
+                <div
+                  className={`text-start relative w-[70%] text-[12px] ${aktivGrotesk.className} font-[400]`}
+                >
+                  All your jokes bottled here!
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Home Box */}
-        {currentBox === 4 && coordinates.home.y !== 0 && (
+        {currentBox === 5 && coordinates.home.y !== 0 && (
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
@@ -283,8 +321,8 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
               <div className='w-[100px] text-[12px]'>Back to Base</div>
               <div className='w-[50px] h-[50px] text-[#11A64B] bg-white rounded-full flex flex-col items-center justify-center'>
                 <SvgIcons
-                  name={ICONS_NAMES.HOME}
-                  className='w-[20px] h-[20px] stroke-2 stroke-[#11A64B]'
+                  name={ICONS_NAMES.NEW_HOME}
+                  className='w-[20px] h-[20px] stroke-2 fill-[#11A64B]'
                 />
                 <p className='text-[9px] uppercase text-[#11A64B]'>Home</p>
               </div>
@@ -293,7 +331,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
         )}
 
         {/* Contest Box */}
-        {currentBox === 5 && coordinates.contest.y !== 0 && (
+        {currentBox === 6 && coordinates.contest.y !== 0 && (
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
@@ -310,17 +348,19 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
               </div>
               <div className='w-[56px] h-[56px] bg-white rounded-full flex flex-col items-center justify-center'>
                 <SvgIcons
-                  name={ICONS_NAMES.CUP}
-                  className='w-[20px] h-[20px]'
+                  name={ICONS_NAMES.NEW_CUP}
+                  className='w-[24px] h-[24px] fill-[#11A64B]'
                 />
-                <p className='text-[9px] text-center uppercase text-[#11A64B]'>Contest</p>
+                <p className='text-[9px] text-center uppercase  text-[#11A64B]'>
+                  Contest
+                </p>
               </div>
             </div>
           </div>
         )}
 
         {/* Comic Coins Box */}
-        {currentBox === 6 && coordinates.comicCoins.y !== 0 && (
+        {currentBox === 7 && coordinates.comicCoins.y !== 0 && (
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
@@ -337,7 +377,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
               </div>
               <div className='w-[87px] h-[87px] bg-white rounded-full flex flex-col items-center justify-center'>
                 <SvgIcons
-                  name={ICONS_NAMES.COMIC_COINS}
+                  name={ICONS_NAMES.NEW_COMIC_COINS}
                   className='w-[22px] h-[22px]'
                 />
                 <p className='text-[9px] text-center uppercase text-[#11A64B]'>
@@ -349,7 +389,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
         )}
 
         {/* Refresh Box */}
-        {currentBox === 7 && coordinates.refresh.y !== 0 && (
+        {currentBox === 8 && coordinates.refresh.y !== 0 && (
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
@@ -362,15 +402,15 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
           >
             <div className='flex w-full text-center h-full flex-col justify-center items-center gap-[9px]'>
               <div className='w-[100px] text-[12px]'>
-                Track your collection here
+                Refresh Ring to Unlock Exclusive Content
               </div>
               <div className='w-[87px] h-[87px] bg-white rounded-full flex flex-col items-center justify-center'>
                 <SvgIcons
-                  name={ICONS_NAMES.COMIC_COINS}
-                  className='w-[22px] h-[22px]'
+                  name={ICONS_NAMES.NEW_REFRESH_RING}
+                  className='w-[22px] h-[22px] fill-[#11A64B]'
                 />
                 <p className='text-[9px] text-center uppercase text-[#11A64B]'>
-                  Comic Coins
+                  REFRESH RINGS
                 </p>
               </div>
             </div>
@@ -378,7 +418,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
         )}
 
         {/* Profile Box */}
-        {currentBox === 8 && coordinates.profile.y !== 0 && (
+        {currentBox === 9 && coordinates.profile.y !== 0 && (
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
@@ -398,7 +438,9 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
                   name={ICONS_NAMES.NEW_USER}
                   className='w-[20px] h-[20px] stroke-10 fill-[#11A64B]'
                 />
-                <p className='text-[9px] text-center uppercase text-[#11A64B]'>Profile</p>
+                <p className='text-[9px] text-center uppercase text-[#11A64B]'>
+                  Profile
+                </p>
               </div>
             </div>
           </div>

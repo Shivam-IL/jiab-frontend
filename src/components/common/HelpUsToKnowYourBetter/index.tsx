@@ -49,11 +49,13 @@ const HelpUsToKnowYourBetter = ({
   const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
     null
   )
+  const [submittedCheck, setSubmittedCheck] = useState<boolean>(false)
   const [allQuestions, setAllQuestions] = useState<IQuestion[]>([])
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState<number>(0)
   const [questionIdSubmitted, setQuestionIdSubmitted] = useState<number | null>(
     null
   )
+  const [savedCheck, setSavedCheck] = useState<boolean>(false)
 
   const { data: userProfileQuestions } = useGetUserQuestions()
   const { mutate: submitUserQuestions, data: submitQuestionResponse } =
@@ -64,8 +66,22 @@ const HelpUsToKnowYourBetter = ({
       setAllQuestions(userProfileQuestions?.data)
       setSelectedQuestion(userProfileQuestions?.data[0])
       setCurrentQuestionNumber(1)
+
+      let isSubmitted = true
+      userProfileQuestions?.data?.forEach((question: IQuestion) => {
+        if (!question.selected_option) {
+          isSubmitted = false
+        }
+      })
+      setSubmittedCheck(isSubmitted)
     }
   }, [userProfileQuestions])
+
+  useEffect(() => {
+    if (selectedQuestion?.selected_option) {
+      setSavedCheck(true)
+    }
+  }, [selectedQuestion])
 
   const dispatch = useAppDispatch()
   const { data: userProfileData } = useGetUserProfileDetails({
@@ -75,7 +91,6 @@ const HelpUsToKnowYourBetter = ({
   useEffect(() => {
     if (userProfileData?.ok) {
       const { data } = userProfileData?.data ?? {}
-      console.log(data, 'help us to know your better')
       dispatch(updateUser({ user: { ...data?.user } }))
       if (data?.profile_percentage === 100) {
         triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)
@@ -83,8 +98,21 @@ const HelpUsToKnowYourBetter = ({
     }
   }, [userProfileData])
 
+  useEffect(() => {
+    if (submitQuestionResponse?.ok) {
+      if (currentQuestionNumber === allQuestions?.length) {
+        setSubmittedCheck(true)
+      } else {
+        setSavedCheck(true)
+      }
+    }
+  }, [submitQuestionResponse])
+
   return (
-    <div className='bg-white w-full rounded-[5px] md:rounded-[20px] py-[16px] md:py-[44px] px-[14px] md:px-[33px] flex flex-col gap-[8px] md:gap-[20px]' id={id}>
+    <div
+      className='bg-white w-full rounded-[5px] md:rounded-[20px] py-[16px] md:py-[44px] px-[14px] md:px-[33px] flex flex-col gap-[8px] md:gap-[20px]'
+      id={id}
+    >
       <AktivGroteskText
         text={HELP_US_TO_KNOW_YOUR_BETTER}
         fontSize='text-[16px] md:text-[28px]'
@@ -119,6 +147,8 @@ const HelpUsToKnowYourBetter = ({
               <RadioGroup
                 value={selectedQuestion?.selected_option?.toString()}
                 onValueChange={value => {
+                  setSavedCheck(false)
+                  setSubmittedCheck(false)
                   setSelectedQuestion({
                     ...selectedQuestion,
                     selected_option: parseInt(value)
@@ -146,11 +176,16 @@ const HelpUsToKnowYourBetter = ({
             </div>
             <div className='w-full flex justify-center md:justify-between flex-col md:flex-row items-center gap-[8px]'>
               <GreenCTA
+                disabled={submittedCheck}
                 className=''
                 paddingClass='py-[10px] px-[61.5px] md:px-[60px] md:py-[20px]'
                 text={
                   currentQuestionNumber === allQuestions?.length
-                    ? 'Save & Submit'
+                    ? submittedCheck
+                      ? 'Submitted'
+                      : 'Save & Submit'
+                    : savedCheck
+                    ? 'Saved'
                     : SAVE
                 }
                 fontSize='text-[14px] md:text-[20px]'
@@ -187,7 +222,11 @@ const HelpUsToKnowYourBetter = ({
                   }`}
                 >
                   <AktivGroteskText
-                    className='text-[rgba(0,0,0,0.5)] md:hidden'
+                    className={`${
+                      currentQuestionNumber === 1
+                        ? 'text-[rgba(0,0,0,0.2)]'
+                        : 'text-black'
+                    } md:hidden`}
                     text={prevButtonText}
                     fontSize='text-[14px]'
                     fontWeight='font-[700]'
@@ -215,7 +254,11 @@ const HelpUsToKnowYourBetter = ({
                   }  transition-all duration-300 rounded-[100px] border-[1px] md:border-none md:p-0 text-[10px] font-[700] py-[6px] px-[36px]`}
                 >
                   <AktivGroteskText
-                    className='text-[#000000] md:hidden'
+                    className={`${
+                      currentQuestionNumber === allQuestions?.length
+                        ? 'text-[rgba(0,0,0,0.2)]'
+                        : 'text-black'
+                    } md:hidden`}
                     text={nextButtonText}
                     fontSize='text-[14px]'
                     fontWeight='font-[700]'

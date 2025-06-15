@@ -37,6 +37,7 @@ export interface User {
   refresh_token: string;
   refresh_token_expiry_time: string;
   registered_on: string;
+  profile_image?: string;
   userImage?: string;
 }
 
@@ -76,7 +77,7 @@ export interface UserState {
 const initialState: UserState = {
   current_balance: 0,
   rank: 0,
-  breakTheIceModal: true,
+  breakTheIceModal: false,
   user: {
     alternate_mobile: "",
     avatar_id: 0,
@@ -129,6 +130,9 @@ const profileSlice = createSlice({
         if (imageData) {
           userImage = imageData?.image;
         }
+      }
+      if (user?.profile_picture) {
+        userImage = user?.profile_picture;
       }
       const newUserData = {
         ...state.user,

@@ -5,22 +5,17 @@ import Link from 'next/link'
 import { Bell, ChevronDown, ChevronRight } from 'lucide-react'
 import { ILogoAndProfileImageProps } from '@/interfaces'
 import NotificationItem from '../../NotificationItem/NotificationItem'
-import {
-  GA_EVENTS,
-  ICONS_NAMES,
-} from '@/constants'
+import { GA_EVENTS, ICONS_NAMES } from '@/constants'
 import useAppDispatch from '@/hooks/useDispatch'
-import {
-  updateLoginModal,
-} from '@/store/auth/auth.slice'
+import { updateLoginModal } from '@/store/auth/auth.slice'
 import SvgIcons from '../../SvgIcons'
 import useAppSelector from '@/hooks/useSelector'
 import useLogout from '@/hooks/useLogout'
 import ReferNowComponent from '@/components/common/ReferNowComponent'
 import InviteCodeComponent from '@/components/common/InviteCodeComponent'
-import { useLanguage } from "@/hooks/useLanguage";
-import LanguageHydration from "../../LanguageHydration";
-import { useCMSData } from "@/data";
+import { useLanguage } from '@/hooks/useLanguage'
+import LanguageHydration from '../../LanguageHydration'
+import { useCMSData } from '@/data'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import { useRouter } from 'next/navigation'
 
@@ -28,34 +23,34 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
   profileImage
 }) => {
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false)
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false)
   const [isExploreDropdownOpen, setIsExploreDropdownOpen] = useState(false)
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
-    useState(false);
-  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  const { selectedLanguage, changeLanguage } = useLanguage();
-  const langDropdownRef = useRef<HTMLDivElement>(null);
-  const exploreDropdownRef = useRef<HTMLDivElement>(null);
-  const notificationDropdownRef = useRef<HTMLDivElement>(null);
-  const profileDropdownRef = useRef<HTMLDivElement>(null);
-  const dispatch = useAppDispatch();
-  const router = useRouter()  
+    useState(false)
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false)
+  const { selectedLanguage, changeLanguage } = useLanguage()
+  const langDropdownRef = useRef<HTMLDivElement>(null)
+  const exploreDropdownRef = useRef<HTMLDivElement>(null)
+  const notificationDropdownRef = useRef<HTMLDivElement>(null)
+  const profileDropdownRef = useRef<HTMLDivElement>(null)
+  const dispatch = useAppDispatch()
+  const router = useRouter()
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
-  const cmsData = useCMSData(mounted);
+  const cmsData = useCMSData(mounted)
 
   const exploreMenuItems = [
-    { id: 1, label: cmsData.navBar.scrollAndLol, href: "/scroll-and-lol" },
-    { id: 2, label: cmsData.navBar.pjChallenge, href: "/submit-your-joke" },
-    { id: 3, label: cmsData.navBar.pickYourMood, href: "/pick-mood" },
-    { id: 4, label: cmsData.navBar.jokeBox, href: "/user-generated-jokes" },
-    { id: 5, label: cmsData.navBar.hallOfLame, href: "/hall-of-lame" },
-    { id: 6, label: cmsData.navBar.referAFriend, href: "/refer" },
-    { id: 7, label: cmsData.navBar.haveAnInviteCode, href: "/invite" },
-  ];
+    { id: 1, label: cmsData.navBar.scrollAndLol, href: '/scroll-and-lol' },
+    { id: 2, label: cmsData.navBar.pjChallenge, href: '/submit-your-joke' },
+    { id: 3, label: cmsData.navBar.pickYourMood, href: '/pick-mood' },
+    { id: 4, label: cmsData.navBar.jokeBox, href: '/user-generated-jokes' },
+    { id: 5, label: cmsData.navBar.hallOfLame, href: '/hall-of-lame' },
+    { id: 6, label: cmsData.navBar.referAFriend, href: '/refer' },
+    { id: 7, label: cmsData.navBar.haveAnInviteCode, href: '/invite' }
+  ]
 
   const languages = [
     { value: 'en', id: '1', label: 'ENGLISH' },
@@ -176,19 +171,18 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   }, [])
 
   const getSelectedLanguageLabel = () => {
-    const selected = languages.find((lang) => lang.value === selectedLanguage);
-    return selected ? selected.label : "ENGLISH";
-  };
+    const selected = languages.find(lang => lang.value === selectedLanguage)
+    return selected ? selected.label : 'ENGLISH'
+  }
 
-  const [refer1, setRefer1] = useState<boolean>(false);
+  const [refer1, setRefer1] = useState<boolean>(false)
 
   const { logoutHandler } = useLogout()
 
   const [invite1, setInvite1] = useState<boolean>(false)
 
   const { isAuthenticated } = useAppSelector(state => state.auth)
-
-  const isLoggedIn: boolean = true
+  const { user } = useAppSelector(state => state.profile)
 
   const loginHandler = () => {
     dispatch(updateLoginModal({ loginModal: true }))
@@ -202,13 +196,13 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
             <Image src={spriteLogo} alt='Sprite Logo' width={110} />
           </Link>
 
-          <div className="flex items-center space-x-8">
-            <div className="relative" ref={exploreDropdownRef}>
+          <div className='flex items-center space-x-8'>
+            <div className='relative' ref={exploreDropdownRef}>
               <button
-                className="flex items-center cursor-pointer"
+                className='flex items-center cursor-pointer'
                 onClick={() => setIsExploreDropdownOpen(!isExploreDropdownOpen)}
               >
-                <span className="mr-1">{cmsData.navBar.explore}</span>
+                <span className='mr-1'>{cmsData.navBar.explore}</span>
                 {isExploreDropdownOpen ? (
                   <ChevronDown className='h-5 w-5' />
                 ) : (
@@ -251,6 +245,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                           <button
                             onClick={() => {
                               triggerGAEvent(GA_EVENTS.SPRITE_J24_SUBMIT_JOKE)
+                              setIsExploreDropdownOpen(false)
                               router.push(item.href)
                             }}
                             key={item.id}
@@ -277,10 +272,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         className='block bg-green text-white rounded-lg p-3'
                         onClick={() => setIsExploreDropdownOpen(false)}
                       >
-                        <div className="text-sm font-medium">
+                        <div className='text-sm font-medium'>
                           {cmsData.navBar.navBarInsideExploreBannerHeading}
                         </div>
-                        <div className="text-md font-bold">
+                        <div className='text-md font-bold'>
                           {cmsData.navBar.navBarInsideExploreBannerSubHeading}
                         </div>
                       </Link>
@@ -290,17 +285,17 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
               )}
             </div>
 
-            <Link href="/contest" className="cursor-pointer">
+            <Link href='/contest' className='cursor-pointer'>
               {cmsData.navBar.contest}
             </Link>
           </div>
         </div>
 
-        <div className="flex items-center space-x-[24px]">
+        <div className='flex items-center space-x-[24px]'>
           {isAuthenticated ? (
-            <div className="relative" ref={notificationDropdownRef}>
+            <div className='relative' ref={notificationDropdownRef}>
               <button
-                className="cursor-pointer"
+                className='cursor-pointer'
                 onClick={() =>
                   setIsNotificationDropdownOpen(!isNotificationDropdownOpen)
                 }
@@ -342,32 +337,32 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
           )}
           <LanguageHydration
             fallback={
-              <div className="relative w-[120px]">
-                <div className="border border-black rounded px-3 py-1 flex justify-between items-center cursor-pointer">
-                  <span className="mr-1">ENGLISH</span>
-                  <ChevronDown className="h-5 w-5" />
+              <div className='relative w-[120px]'>
+                <div className='border border-black rounded px-3 py-1 flex justify-between items-center cursor-pointer'>
+                  <span className='mr-1'>ENGLISH</span>
+                  <ChevronDown className='h-5 w-5' />
                 </div>
               </div>
             }
           >
-            <div className="relative" ref={langDropdownRef}>
+            <div className='relative' ref={langDropdownRef}>
               <button
-                className="w-[116.71px] border border-black rounded px-3 py-1 flex justify-between items-center cursor-pointer"
+                className='w-[116.71px] border border-black rounded px-3 py-1 flex justify-between items-center cursor-pointer'
                 onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
               >
-                <span className="mr-1">{getSelectedLanguageLabel()}</span>
-                <ChevronDown className="h-5 w-5" />
+                <span className='mr-1'>{getSelectedLanguageLabel()}</span>
+                <ChevronDown className='h-5 w-5' />
               </button>
 
               {isLangDropdownOpen && (
-                <div className="absolute top-full mt-1 w-[116.71px] rounded-md shadow-md z-20 bg-white">
-                  {languages.map((lang) => (
+                <div className='absolute top-full mt-1 w-[116.71px] rounded-md shadow-md z-20 bg-white'>
+                  {languages.map(lang => (
                     <div
                       key={lang.id}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                      className='px-3 py-2 hover:bg-gray-100 cursor-pointer'
                       onClick={() => {
-                        changeLanguage(lang.value);
-                        setIsLangDropdownOpen(false);
+                        changeLanguage(lang.value)
+                        setIsLangDropdownOpen(false)
                       }}
                     >
                       {lang.label}
@@ -383,17 +378,35 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
             ref={profileDropdownRef}
             onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
           >
-            {isLoggedIn ? (
-              <Image src={profileImage} alt='Profile Image' width={40} />
+            {isAuthenticated ? (
+              user?.userImage ? (
+                <img
+                  src={user?.userImage ?? ''}
+                  className='rounded-full w-[40px] h-[40px]'
+                  alt='Profile Image'
+                />
+              ) : (
+                <Image
+                  src={profileImage}
+                  className='rounded-full w-[40px] h-[40px]'
+                  alt='Profile Image'
+                  width={40}
+                />
+              )
             ) : (
               <div className='w-full h-full flex items-center justify-center text-xl font-bold'>
-                ?
+                <Image
+                  src={profileImage}
+                  className='rounded-full w-[40px] h-[40px]'
+                  alt='Profile Image'
+                  width={40}
+                />
               </div>
             )}
 
             {isProfileDropdownOpen && (
               <div className='absolute top-full right-0 mt-2 bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 text-[18px] min-w-[183px]'>
-                {isLoggedIn ? (
+                {isAuthenticated ? (
                   <>
                     {isAuthenticated && (
                       <Link

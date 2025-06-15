@@ -32,6 +32,10 @@ interface ReactionEmojiesProps {
    * Whether the user has reacted to the currently active joke/video.
    */
   isReacted?: boolean
+  /**
+   * Whether the user has reacted to the currently active joke/video.
+   */
+  videoId?: string
 }
 
 const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({
@@ -39,7 +43,8 @@ const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({
   userReaction,
   viewCount,
   isReacted,
-  reactionType
+  reactionType,
+  videoId
 }) => {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null)
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null)
@@ -76,6 +81,16 @@ const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({
     onEmojiSelect(reaction)
   }
 
+  const getClassName = (reactionType: string, isReacted: boolean | undefined, reactionName: string) => {
+    console.log(reactionName, reactionType, isReacted)
+    if(reactionName === 'views') return ''
+    if(isReacted){
+      if(reactionType === reactionName) return 'opacity-100'
+      return 'opacity-50'
+    }
+    return ''
+  }
+
   return (
     <div className='flex flex-col items-center gap-[22.5px] cursor-pointer rounded-full py-3 px-2 md:text-black text-white hover:text-black hover:bg-white'>
       {reactions.map(reaction => {
@@ -110,16 +125,8 @@ const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({
 
         return (
           <div
-            key={reaction.icon}
-            className={`flex flex-col ${
-              reaction.name !== 'views'
-                ? isReacted
-                  ? reactionType === reaction.name
-                    ? 'opacity-100'
-                    : 'opacity-50'
-                  : ''
-                : ''
-            } items-center md:gap-[4.5px] gap-[2px] transition-all duration-300 ease-in-out ${
+            key={`${reaction.icon}-${videoId}`}
+            className={`flex flex-col  items-center md:gap-[4.5px] gap-[2px] transition-all duration-300 ease-in-out ${
               isViewIcon ? 'cursor-default' : 'cursor-pointer'
             }`}
             style={{
@@ -136,7 +143,7 @@ const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({
               name={reaction.icon}
               width={36.2}
               height={36.2}
-              className='md:w-[36.2px] md:h-[36.2px] w-[32px] h-[32px]'
+              className={`md:w-[36.2px] ${getClassName(reaction.name, isReacted, reactionType ?? '')} md:h-[36.2px] w-[32px] h-[32px]`}
             />
             <span className='md:text-[22.5px] text-[10px] text-shadow-4xl md:text-shadow-none'>
               {reaction.count}

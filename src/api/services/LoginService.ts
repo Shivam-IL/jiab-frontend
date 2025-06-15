@@ -85,10 +85,27 @@ export class LoginService extends MainService {
   public async SignUp(data: TSignUp) {
     try {
       console.log("data", this.getAuthHeaders());
+      const formData:any = {} 
+     if(data?.avatar){
+      formData['avatar_id'] = data.avatar;
+      formData['is_avatar'] = "true";
+     }
+      if(data?.referral_code){
+        formData['referral_code'] = data.referral_code;
+      }
+      if(data?.full_name){
+        formData['full_name'] = data.full_name;
+      }
+      if(data?.mobile_number){
+        formData['mobile_number'] = data.mobile_number;
+      }
+      if(data?.email){
+        formData['email'] = data.email;
+      }
       const response = await apiClient.post(
         API_ROUTES.AUTH.SIGN_UP,
         {
-          ...data,
+          ...formData
         },
         {
           headers: {

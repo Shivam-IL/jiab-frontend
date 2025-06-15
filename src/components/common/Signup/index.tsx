@@ -19,7 +19,7 @@ import {
   updateCrossModal
 } from '@/store/auth/auth.slice'
 import SvgIcons from '../SvgIcons'
-import { GA_EVENTS, ICONS_NAMES, TOKEN_TYPE } from '@/constants'
+import { GA_EVENTS, ICONS_NAMES, LOCAL_KEYS, TOKEN_TYPE } from '@/constants'
 import { MainService } from '@/api/services/MainService'
 import { useMutateSignUp } from '@/api/hooks/LoginHooks'
 import { setLocalStorageItem } from '@/utils'
@@ -213,6 +213,7 @@ const Signup = () => {
         dispatch(updateIsAuthenticated({ isAuthenticated: true }))
         dispatch(updateIsFirstLogin({ isFirstLogin: false }))
         dispatch(updateEnableCoachMarks({ enableCoachMarks: true }))
+        setLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR, 'true')
         setOpen(false)
       }
     }

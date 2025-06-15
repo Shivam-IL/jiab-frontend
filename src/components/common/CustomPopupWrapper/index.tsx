@@ -5,6 +5,7 @@ import SvgIcons from '../SvgIcons'
 import AktivGroteskText from '../AktivGroteskText'
 import GreenCTA from '@/components/GreenCTA'
 import { aktivGrotesk } from '@/app/layout'
+import { on } from 'events'
 
 const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
   open,
@@ -17,7 +18,8 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
   singleButtonOnClick,
   doubleButton,
   children,
-  childrenPosition
+  childrenPosition,
+  setOpen
 }) => {
   console.log('open', open, onClose)
   return (
@@ -53,7 +55,9 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
         {doubleButton && (
           <div className='flex pb-[16px] gap-[14px]'>
             <button
-              onClick={onClose}
+              onClick={() => {
+                onClose()
+              }}
               className={`py-[10px] ${aktivGrotesk.className} leading-tight px-[28px] bg-white border-[1px] border-black rounded-[100px] text-[14px] md:text-[18px] font-[700]`}
             >
               Yes
@@ -63,7 +67,9 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
               fontSize='text-[14px] md:text-[18px]'
               paddingClass='py-[10px] px-[28px]'
               text='No'
-              onClick={onClose}
+              onClick={() => {
+                setOpen?.(false)
+              }}
             />
           </div>
         )}

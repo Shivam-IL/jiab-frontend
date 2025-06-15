@@ -331,6 +331,7 @@ const SubmitYourJoke = () => {
     }
   }, [jokesFormats])
 
+
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -347,13 +348,24 @@ const SubmitYourJoke = () => {
     agreeToTerms: false
   })
 
+  console.log(jokeData, 'jokeData',cmsData.pjChallenge.text)
+
+
   const fileRef = useRef<HTMLInputElement>(null)
 
   const handleChange = (
     key: string,
     value: string | boolean | FileList | null
   ) => {
-    setJokeData(prev => ({ ...prev, [key]: value }))
+    if (key === 'title') {
+      const valueString = value?.toString()?.slice(0, 30)
+      setJokeData(prev => ({ ...prev, [key]: valueString ?? '' }))
+    } else if (key === 'jokeText') {
+      const valueString = value?.toString()?.slice(0, 200)
+      setJokeData(prev => ({ ...prev, [key]: valueString ?? '' }))
+    } else {
+      setJokeData(prev => ({ ...prev, [key]: value ?? '' }))
+    }
   }
 
   useEffect(() => {

@@ -54,6 +54,7 @@ const EditProfilePage = () => {
     dob: '',
     gender: ''
   })
+  const [pfImage, setPfImage] = useState<File | null>(null)
 
   const [errors, setErrors] = useState<IErrors>({
     name: ''
@@ -182,7 +183,8 @@ const EditProfilePage = () => {
         dob: dob ? monthDayYearConvert(dob) : '',
         email,
         gender,
-        avatar_id
+        avatar_id,
+        pfImage: pfImage ? pfImage : undefined
       }
       editUserProfileDetails(payload)
     }
@@ -238,6 +240,8 @@ const EditProfilePage = () => {
                 setEditProfileImage={setEditProfileImage}
                 image={currentImage}
                 onChange={handleChange}
+                editProfile={true}
+                setPfImage={setPfImage}
               />
             </div>
             <Input
@@ -293,8 +297,8 @@ const EditProfilePage = () => {
               name={'gender'}
               type='select'
               options={[
-                { value: 'male', label: 'Male' },
-                { value: 'female', label: 'Female' }
+                { id: 1, name: 'male', value: 'male', label: 'Male' },
+                { id: 2, name: 'female', value: 'female', label: 'Female' }
               ]}
               value={userData.gender}
               onChange={handleChange}

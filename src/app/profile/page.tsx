@@ -1,6 +1,5 @@
 'use client'
 
-import AnnouncingWinnerTimer from '@/components/AnnouncingWinnerTimer'
 import HelpUsToKnowYourBetter from '@/components/common/HelpUsToKnowYourBetter'
 import ReferAFriend from '@/components/common/ReferAFriend'
 import ScreenWrapper from '@/components/common/ScreenWrapper'
@@ -11,35 +10,20 @@ import UserGeneratedJokecComponent from '@/components/UserGeneratedJokecComponen
 import React, { useEffect, useState } from 'react'
 import { BreakTheIceExitPopup } from '@/components/ExitPopUps'
 import useAppSelector from '@/hooks/useSelector'
-import { useRouter } from 'next/navigation'
-import gluedin from 'gluedin'
-import { updateBreakTheIceModal } from '@/store/profile/profile.slice'
+import { useRouter, usePathname } from 'next/navigation'
 import useAppDispatch from '@/hooks/useDispatch'
 import { useCMSData } from '@/data'
 
 const ProfilePage = () => {
-  const router = useRouter()
   const [mounted, setMounted] = useState(false)
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const [showExitPopup, setShowExitPopup] = useState(false)
+
+  
   const cmsData = useCMSData(mounted)
-  const dispatch = useAppDispatch()
-  const { user, breakTheIceModal } = useAppSelector(state => state.profile)
+  const { user } = useAppSelector(state => state.profile)
 
-  const fetchUGC = async () => {
-    var feedModuleObj = new gluedin.GluedInFeedModule()
-    var limit = 10
-    var feedModuleResponse = await feedModuleObj.getFeedList({
-      limit: limit,
-      offset: 0,
-      c_type: 'UGC'
-    })
-  }
+ 
 
-  useEffect(() => {
-    fetchUGC()
-  }, [])
 
   return (
     <ScreenWrapper>
@@ -69,14 +53,12 @@ const ProfilePage = () => {
           <UserGeneratedJokecComponent />
         </div>
       </div>
-      {breakTheIceModal && (
+      {/* {showExitPopup && (
         <BreakTheIceExitPopup
-          open={breakTheIceModal}
-          onClose={() => {
-            dispatch(updateBreakTheIceModal({ breakTheIceModal: false }))
-          }}
+          open={showExitPopup}
+          onClose={handleStayOnPage}
         />
-      )}
+      )} */}
     </ScreenWrapper>
   )
 }

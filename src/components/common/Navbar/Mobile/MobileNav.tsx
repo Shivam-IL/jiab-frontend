@@ -22,6 +22,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [hideNavbar, setHideNavbar] = useState<boolean>(false);
   const isVisible = true;
+  const { user } = useAppSelector((state) => state.profile);
   const langDropdownRef = useRef<HTMLDivElement>(null);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 
