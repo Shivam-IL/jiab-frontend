@@ -65,6 +65,10 @@ const AddressModal: React.FC<IAddressModal> = ({
       const numericValue = value?.toString()?.replace(/[^0-9]/g, '')
       const valueString = numericValue?.slice(0, 6)
       setData({ ...data, [key]: valueString })
+    } else if (key === 'alternate_phone_number') {
+      const numericValue = value?.toString()?.replace(/[^0-9]/g, '')
+      const valueString = numericValue?.slice(0, 10)
+      setData({ ...data, [key]: valueString ?? '' })
     } else {
       setData({ ...data, [key]: value })
     }

@@ -29,7 +29,7 @@ export interface IInput {
   fontSize?: string;
   bgColor?: string;
   options?: Array<{
-    id: number;
+    id?: number;
     name: string;
     value: string;
     icon?: string;
@@ -53,6 +53,7 @@ export interface IGreenCTA {
   isCoinIcon?: boolean;
   children?: React.ReactNode;
   childrenPosition?: string;
+  editProfile?: boolean;
 }
 
 export interface IEditProfileImage {
@@ -61,6 +62,8 @@ export interface IEditProfileImage {
   image: string;
   name: string;
   onChange: (key: string, value: string) => void;
+  editProfile?: boolean;
+  setPfImage?: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
 export interface ISvgIcons {
@@ -208,7 +211,7 @@ export interface IInput {
 }
 
 export interface IGreenCTA {
-  onClick: () => void;
+  onClick?: () => void;
   text: string;
 }
 
@@ -259,6 +262,7 @@ export interface IContentButton {
   onClick?: () => void;
   icon?: string;
   className?: string;
+  id?: string;
 }
 
 export interface ICustomDialogWrapper {
@@ -278,6 +282,7 @@ export interface IExitPopupWrapper {
   singleButtonText?: string;
   singleButtonOnClick?: () => void;
   doubleButton?: boolean;
+  setOpen?: (open: boolean) => void;
   childrenPosition?: string;
 }
 

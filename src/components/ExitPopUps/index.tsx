@@ -24,10 +24,12 @@ const DonTstealThunderExitPopup = ({
 
 const MakeLaughExitPopup = ({
   open,
-  onClose
+  onClose,
+  setOpen
 }: {
   open: boolean
   onClose: () => void
+  setOpen?: (open: boolean) => void
 }) => {
   return (
     <CustomPopupWrapper
@@ -36,9 +38,10 @@ const MakeLaughExitPopup = ({
       icon={EXIT_POPUP_DATA.MAKE_LAUGH.ICON}
       title={EXIT_POPUP_DATA.MAKE_LAUGH.TITLE}
       subtitle={EXIT_POPUP_DATA.MAKE_LAUGH.SUB_TITLE}
-        doubleButton={true}
+      doubleButton={true}
+      setOpen={setOpen}
     />
-  ) 
+  )
 }
 
 const FOMOExitPopup = ({

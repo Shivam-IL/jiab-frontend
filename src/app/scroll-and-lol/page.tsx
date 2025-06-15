@@ -98,6 +98,9 @@ const ScrollAndLol: React.FC = () => {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
   const containerRef = useRef<HTMLDivElement>(null)
   const isDesktopRef = useRef(false)
+  const [currentVideoData, setCurrentVideoData] = useState<VideoData | null>(
+    null
+  )
   const { mutate: sendGluedinUserReaction, data: sendGluedinUserReactionData } =
     useSendGluedinUserReaction()
   const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
@@ -302,17 +305,14 @@ const ScrollAndLol: React.FC = () => {
 
   // Handle video load to hide loading spinner
   const handleVideoLoad = (index: number) => {
-    console.log(`Video ${index} loaded`)
     // Hide loading when first video is loaded
     if (index === 0) {
-      console.log('First video loaded, hiding loader')
       setIsLoading(false)
     }
   }
 
   // Handle video ready to play
   const handleVideoCanPlay = (index: number) => {
-    console.log(`Video ${index} can play`)
     if (index === 0) {
       setIsLoading(false)
     }
@@ -325,7 +325,6 @@ const ScrollAndLol: React.FC = () => {
 
   // Handle video error
   const handleVideoError = (index: number) => {
-    console.error(`Error loading video ${index}`)
     // Still mark as "loaded" to prevent infinite loading
     if (index === 0) {
       setIsLoading(false)
@@ -369,6 +368,7 @@ const ScrollAndLol: React.FC = () => {
                 ] ?? 0) + 1
             }
           }
+          setCurrentVideoData(newArr[currentVideoIndexData])
           return newArr
         }
         return newArr
@@ -460,6 +460,19 @@ const ScrollAndLol: React.FC = () => {
     }
   }, [viewGludeinJokesData])
 
+  useEffect(() => {
+    if (videos.length > 0) {
+      const currentVideoId = videos[activeVideoIndex]?.id ?? ''
+      const currentVideoData = videos.find(
+        (video: VideoData) => video.id === currentVideoId
+      )
+      if (currentVideoData) {
+        setCurrentVideoData(currentVideoData)
+      }
+    }
+  }, [activeVideoIndex])
+
+
   return (
     <div className="md:w-full md:h-screen md:pt-[100px] pt-0 flex flex-col justify-center items-center bg-[url('/assets/images/scroll-and-lol-bg.png')] bg-cover bg-center bg-fixed overflow-hidden">
       {isLoading ? (
@@ -523,7 +536,6 @@ const ScrollAndLol: React.FC = () => {
                       onLoadedData={() => handleVideoLoad(index)}
                       onCanPlay={() => handleVideoCanPlay(index)}
                       onLoadStart={() => {
-                        console.log(`Video ${index} started loading`)
                         if (index === 0) {
                           // Give a small delay then hide loading as fallback
                           setTimeout(() => setIsLoading(false), 2000)
@@ -598,14 +610,16 @@ const ScrollAndLol: React.FC = () => {
             </div>
 
             {/* Reaction Emojis - only visible when not loading and not on end page */}
-            {activeVideoIndex < videos.length && (
+            {currentVideoData && (
               <div className='absolute md:bottom-[88.82px] bottom-[135px] md:right-[-5rem] right-[10px] z-20'>
                 <ReactionEmojies
+                  key={currentVideoData?.id}
+                  videoId={currentVideoData?.id}
                   onEmojiSelect={handleEmojiSelect}
-                  userReaction={videos[activeVideoIndex]?.user_reaction}
-                  reactionType={videos[activeVideoIndex]?.reactionType}
-                  isReacted={videos[activeVideoIndex]?.isReacted}
-                  viewCount={videos[activeVideoIndex]?.view_count}
+                  userReaction={currentVideoData?.user_reaction}
+                  reactionType={currentVideoData?.reactionType}
+                  isReacted={currentVideoData?.isReacted}
+                  viewCount={currentVideoData?.view_count}
                 />
               </div>
             )}

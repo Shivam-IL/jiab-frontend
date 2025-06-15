@@ -167,4 +167,5 @@ export class JokeService extends MainService {
       throw error;
     }
   }
+
 }

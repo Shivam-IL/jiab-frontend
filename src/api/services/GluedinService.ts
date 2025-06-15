@@ -114,7 +114,6 @@ export class GluedinService extends MainService {
         }
       );
       const contentResponse = getContentByIds?.data ?? {};
-      console.log("contentResponse", contentResponse);
 
       const getData = await feedModule.Reactions(videoIds);
       const gluedinUserReactionList = getData?.data;
@@ -210,6 +209,17 @@ export class GluedinService extends MainService {
           reactionType: reactionType,
         });
       const response = gluedinUserReactionList?.data ?? {};
+      await apiClient.post(
+        API_ROUTES.JOKES.INCREASE_COMIC_COINS,
+        {
+          comicCoin: 1,
+        },
+        {
+          headers: {
+            ...this.getAuthHeaders(),
+          },
+        }
+      );
       if (response?.success) {
         return SuccessResponse(response?.result);
       }

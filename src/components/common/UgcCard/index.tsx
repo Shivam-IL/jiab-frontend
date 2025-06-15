@@ -81,7 +81,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
   }, [gluedinUserVoteData])
 
   return (
-    <div className='relative w-full p-[16px] md:px-[12px] flex flex-col gap-[10px] rounded-[5px] bg-[#FFFFFF]'>
+    <div className='relative w-full flex-grow-1 p-[16px] md:px-[12px] flex flex-col justify-between gap-[10px] rounded-[5px] bg-[#FFFFFF]'>
       <div className='flex justify-between items-center md:items-start'>
         <div className='flex w-full items-start gap-[12px]'>
           <div className='min-w-[30px] md:min-w-[28px] min-h-[30px] md:min-h-[28px] flex items-end justify-center rounded-full border-[1px] border-black'>
@@ -127,7 +127,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
           </div>
         </div>
       </div>
-      <div>
+      <div className=''>
         <div className='relative w-full h-[278px] md:h-[330px] bg-[#00953B] px-[19px] flex items-center py-[10px] gap-[34px] rounded-t-[5px]'>
           <SvgIcons
             name={ICONS_NAMES.SPRITE_WITH_BUBBLE}
@@ -151,14 +151,13 @@ const UgcCard: React.FC<UgcCardProps> = ({
               className='text-white'
             />
           </div> */}
-          <div>
             <AktivGroteskText
               text={item?.content ?? ''}  
               fontSize='text-[12px]'
               fontWeight='font-[400]'
-              className='text-white text-center'
+              className='text-white  text-center w-[50%] absolute right-[20px] top-[45%]'
             />
-          </div>
+          
         </div>
         <div className='bg-white border-x-[1px] border-b-[1px] border-[#D9D9D9] rounded-b-[5px] p-[8px] flex justify-between'>
           <div className='flex gap-[10px] md:gap-[20px] pl-[10px]'>

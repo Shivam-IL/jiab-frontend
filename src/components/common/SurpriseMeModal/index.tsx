@@ -155,7 +155,7 @@ const SurpriseMeModal = ({ onClose }: { onClose: () => void }) => {
             </div>
           </div>
           <button
-            className='flex justify-center items-center'
+            className='flex justify-center items-center cursor-pointer border-none outline-none'
             onClick={() => {
               setMakeLaughExitPopup(true)
             }}
@@ -243,6 +243,7 @@ const SurpriseMeModal = ({ onClose }: { onClose: () => void }) => {
             setOpen(false)
             onClose()
           }}
+          setOpen={setMakeLaughExitPopup}
         />
       )}
     </Dialog>

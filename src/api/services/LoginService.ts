@@ -85,14 +85,21 @@ export class LoginService extends MainService {
   public async SignUp(data: TSignUp) {
     try {
       console.log("data", this.getAuthHeaders());
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      if (data?.avatar) {
+        formData.append("avatar_id", data.avatar);
+        formData.append("is_avatar", "true");
+      }
       const response = await apiClient.post(
         API_ROUTES.AUTH.SIGN_UP,
-        {
-          ...data,
-        },
+        formData,
         {
           headers: {
             ...this.getAuthHeaders(),
+            "Content-Type": "multipart/form-data",
           },
         }
       );

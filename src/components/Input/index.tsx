@@ -3,14 +3,8 @@
 import { aktivGrotesk } from '@/app/layout'
 import { IInput } from '@/interfaces'
 import React, { useState, useRef, useEffect } from 'react'
-import { ChevronDown, Calendar as CalendarIcon } from 'lucide-react'
-import { Calendar } from '@/components/ui/calendar'
-import { format } from 'date-fns'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from '@/components/ui/popover'
+import { ChevronDown } from 'lucide-react'
+import Calendar from '@/components/Calendar'
 
 const Input: React.FC<IInput> = ({
   type,
@@ -53,55 +47,17 @@ const Input: React.FC<IInput> = ({
   )
 
   if (type === 'date') {
-    const parseDate = (dateString: string) => {
-      const [year, month, day] = dateString.split('/')
-      return new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
-    }
-
     return (
-      <div className='flex flex-col gap-[6px] w-full'>
-        <Popover>
-          <PopoverTrigger asChild>
-            <div
-              className={`w-full cursor-pointer flex items-center justify-between ${
-                error !== '' ? 'border-[#FD0202] border-[1px]' : ''
-              } outline-none ${fontSize} font-[400] ${
-                aktivGrotesk.className
-              } ${paddingClass} ${bgColor} rounded-[100px] border border-transparent transition-all duration-200 hover:border-gray-200 data-[state=open]:border-[#11A64B] focus-visible:border-[#11A64B]`}
-            >
-              <span className={!value ? 'text-[rgba(0,0,0,0.3)]' : ''}>
-                {value || placeholder}
-              </span>
-              <CalendarIcon className='h-5 w-5' />
-            </div>
-          </PopoverTrigger>
-          <PopoverContent className='w-auto p-0' align='start'>
-            <Calendar
-              mode='single'
-              selected={value ? parseDate(value) : undefined}
-              onSelect={date => {
-                if (date) {
-                  const formattedDate = format(date, 'yyyy/MM/dd')
-                  onChange(name, formattedDate)
-                }
-              }}
-              initialFocus
-              className='rounded-md border'
-              classNames={{
-                day_selected:
-                  'bg-[#11A64B] text-white hover:bg-[#11A64B] hover:text-white focus:bg-[#11A64B] focus:text-white',
-                day_today: 'bg-accent text-accent-foreground',
-                day_range_middle: 'bg-[#11A64B] text-white',
-                day_range_end: 'bg-[#11A64B] text-white',
-                day_range_start: 'bg-[#11A64B] text-white'
-              }}
-            />
-          </PopoverContent>
-        </Popover>
-        {error !== '' && (
-          <span className='text-[#FD0202] font-[400] text-[12px]'>{error}</span>
-        )}
-      </div>
+      <Calendar
+        value={value}
+        placeholder={placeholder}
+        onChange={onChange}
+        name={name}
+        error={error}
+        fontSize={fontSize}
+        paddingClass={paddingClass}
+        bgColor={bgColor}
+      />
     )
   }
 

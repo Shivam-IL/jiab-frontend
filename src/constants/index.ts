@@ -257,6 +257,10 @@ export const ICONS_NAMES = {
   LEADERBOARD: "leaderboard",
   STAIRS: "stairs",
   REFRESH_RINGS: "refresh-rings",
+  NEW_HOME: "new-home",
+  NEW_CUP: "new-cup",
+  NEW_COMIC_COINS: "new-comic",
+  NEW_REFRESH_RING: "new-refresh-ring",
 };
 
 export const INVITE_CODE_POPUP_DATA = {
@@ -507,11 +511,9 @@ export const PROTECTED_ROUTES = [
   "/scroll-and-lol",
   "/profile",
   "/user-generated-jokes",
-  "/my-wallet", 
+  "/my-wallet",
   "/submit-your-joke",
-  
 ];
-
 
 export const LOCAL_IMAGES = {
   SPRITE_GOLD: "sprite-gold.png",
@@ -524,6 +526,10 @@ export const LOCAL_IMAGES = {
 export const TOKEN_TYPE = {
   BEARER: "Bearer",
   TEMPORARY: "temp",
+};
+
+export const LOCAL_KEYS = {
+  CONTEST_TOUR: "contest_tour",
 };
 
 export const REDUX_UPDATION_TYPES = {

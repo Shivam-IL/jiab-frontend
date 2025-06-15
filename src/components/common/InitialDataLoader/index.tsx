@@ -91,7 +91,6 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       }
     } else {
       dispatch(updateIsAuthenticated({ isAuthenticated: false }))
-      dispatch(updateBreakTheIceModal({ breakTheIceModal: true }))
       dispatch(updateToken({ token: '' }))
       dispatch(updateRefreshTokenNotVerified({ refreshTokenNotVerified: true }))
     }
@@ -110,7 +109,6 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
     } else {
       localStorage.clear()
       dispatch(updateIsAuthenticated({ isAuthenticated: false }))
-      dispatch(updateBreakTheIceModal({ breakTheIceModal: true }))
       dispatch(updateToken({ token: '' }))
     }
   }, [refreshTokenLoading, refreshTokenData])

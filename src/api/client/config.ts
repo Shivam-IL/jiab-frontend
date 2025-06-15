@@ -81,6 +81,7 @@ export const API_ROUTES = {
     SUBMIT_JOKE: "/joke/ugc/submit",
     GET_USER_SUBMITTED_JOKES: "/joke/ugc/profile-content",
     GET_CONTENT_BY_IDS: "/joke/ugc/content-by-ids",
+    INCREASE_COMIC_COINS: "/comic-coin/increment",
   },
   CMS: {
     GET_HOME_PAGE_CONTENT: () =>

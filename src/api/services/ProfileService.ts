@@ -59,7 +59,13 @@ export class ProfileService extends MainService {
       if (userData?.avatar_id) {
         formData.append("avatar_id", userData.avatar_id.toString());
       }
-      if (userData?.avatar_id) {
+
+
+      if (userData?.pfImage) {
+        formData.append("profile_image", userData.pfImage);
+        formData.append("is_profile", "true");
+      }
+      else if (userData?.avatar_id) {
         formData.append("is_avatar", "true");
       }
       const response = await apiClient.patch(

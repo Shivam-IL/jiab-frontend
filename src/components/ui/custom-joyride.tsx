@@ -1,16 +1,26 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect } from "react";
-import Joyride, { Step, CallBackProps, STATUS, EVENTS, ACTIONS } from "react-joyride";
+import useWindowWidth from '@/hooks/useWindowWidth'
+import React, { useState, useEffect } from 'react'
+import Joyride, {
+  Step,
+  CallBackProps,
+  STATUS,
+  EVENTS,
+  ACTIONS
+} from 'react-joyride'
 
 interface CustomJoyrideProps {
-  steps: Step[];
-  run: boolean;
-  onComplete: () => void;
-  onSkip: () => void;
-  showProgress?: boolean;
-  showSkipButton?: boolean;
-  spotlightClicks?: boolean;
+  steps: Step[]
+  run: boolean
+  onComplete: () => void
+  onSkip: () => void
+  showProgress?: boolean
+  showSkipButton?: boolean
+  spotlightClicks?: boolean
+  continuous?: boolean
+  disableOverlayClose?: boolean
+  disableScrolling?: boolean
 }
 
 const CustomJoyride: React.FC<CustomJoyrideProps> = ({
@@ -21,43 +31,60 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
   showProgress = false,
   showSkipButton = false,
   spotlightClicks = false,
+  continuous = false,
+  disableOverlayClose = false,
+  disableScrolling = false
 }) => {
-  const [stepIndex, setStepIndex] = useState(0);
+  const [stepIndex, setStepIndex] = useState(0)
+
+  const width = useWindowWidth()
+  const [fontSize, setFontSize] = useState(32)
+  const [contenFontSize, setContenFontSize] = useState(28)
+
+  useEffect(() => {
+    if (width < 768) {
+      setFontSize(16)
+      setContenFontSize(12)
+    } else {
+      setFontSize(32)
+      setContenFontSize(28)
+    }
+  }, [width])
 
   // Reset step index when tour is restarted
   useEffect(() => {
     if (!run) {
-      setStepIndex(0);
+      setStepIndex(0)
     }
-  }, [run]);
+  }, [run])
 
   const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status, type, index, action } = data;
+    const { status, type, index, action } = data
 
     // Handle tour completion
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
       if (status === STATUS.FINISHED) {
-        onComplete();
+        onComplete()
       } else {
-        onSkip();
+        onSkip()
       }
-      setStepIndex(0);
-      return;
+      setStepIndex(0)
+      return
     }
 
     // Handle step changes
     if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
-      const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
-      
+      const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
+
       // Check if we've reached the end
       if (nextStepIndex >= steps.length) {
-        onComplete();
-        setStepIndex(0);
+        onComplete()
+        setStepIndex(0)
       } else {
-        setStepIndex(nextStepIndex);
+        setStepIndex(nextStepIndex)
       }
     }
-  };
+  }
 
   // Custom styles for yellow circular background with no buttons
   const customStyles = {
@@ -70,9 +97,10 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
       arrowColor: '#FFE200',
       beaconSize: 0, // Hide beacon
       spotlightShadow: '0 0 15px rgba(255, 226, 0, 0.8)',
+      spotlightPadding: 0
     },
     overlay: {
-      cursor: 'pointer',
+      cursor: 'pointer'
     },
     tooltip: {
       backgroundColor: '#FFE200',
@@ -80,9 +108,9 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
       border: 'none',
       fontSize: '16px',
       fontFamily: 'inherit',
-      padding: '40px',
-      width: '300px',
-      height: '300px',
+      padding: '0px',
+      width: '139px',
+      height: '139px',
       display: 'flex',
       flexDirection: 'column' as const,
       alignItems: 'center',
@@ -90,6 +118,10 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
       textAlign: 'center' as const,
       boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
       position: 'relative' as const,
+      '@media (min-width: 768px)': {
+        width: '325px',
+        height: '325px'
+      }
     },
     tooltipContainer: {
       textAlign: 'center' as const,
@@ -98,53 +130,60 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
       alignItems: 'center',
       justifyContent: 'center',
       height: '100%',
+      padding: '85px 12px',
+      '@media (min-width: 768px)': {
+        padding: '85px 24px'
+      }
     },
     tooltipTitle: {
       color: '#000000',
-      fontSize: '18px',
+      fontSize: fontSize + 'px',
       fontWeight: '700',
-      marginBottom: '12px',
-      lineHeight: '1.4',
+      marginBottom: '10px',
+      lineHeight: '1.2'
     },
     tooltipContent: {
       color: '#000000',
-      fontSize: '14px',
-      lineHeight: '1.5',
-      marginBottom: '0',
+      fontSize: contenFontSize + 'px',
+      lineHeight: '1.2',
+      padding: '0',
+      marginBottom: '0'
     },
     // Hide all buttons
     buttonNext: {
-      display: 'none',
+      display: 'none'
     },
     buttonBack: {
-      display: 'none',
+      display: 'none'
     },
     buttonSkip: {
-      display: 'none',
+      display: 'none'
     },
     buttonClose: {
-      display: 'none',
+      display: 'none'
     },
     spotlight: {
       borderRadius: '12px',
-    },
-  };
+      backgroundColor: 'transparent',
+      boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.6)'
+    }
+  }
 
   // Custom locale for button text
   const locale = {
     back: 'Back',
-    close: '×',
+    close: 'x',
     last: 'Finish',
     next: 'Next',
     open: 'Open the dialog',
-    skip: 'Skip tour',
-  };
+    skip: 'Skip tour'
+  }
 
   return (
     <>
       <Joyride
         callback={handleJoyrideCallback}
-        continuous={false}
+        continuous={continuous}
         run={run}
         stepIndex={stepIndex}
         steps={steps}
@@ -153,8 +192,8 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
         showProgress={showProgress}
         showSkipButton={showSkipButton}
         spotlightClicks={spotlightClicks}
-        disableOverlayClose={false}
-        disableScrolling={false}
+        disableOverlayClose={disableOverlayClose}
+        disableScrolling={disableScrolling}
         styles={customStyles}
         locale={locale}
         floaterProps={{
@@ -162,22 +201,30 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
           placement: 'bottom',
         }}
       />
-      
+
       {/* Custom CSS for circular tooltip styling */}
       <style jsx global>{`
         /* Hide all buttons completely */
         .react-joyride__tooltip button {
           display: none !important;
         }
-        
+
         /* Ensure circular tooltip maintains shape and fixed bottom placement */
         .react-joyride__tooltip {
           border-radius: 50% !important;
-          width: 300px !important;
-          height: 300px !important;
+          width: 139px !important;
+          height: 139px !important;
           animation: fadeInScale 0.3s ease-out;
+          overflow: hidden !important;
         }
-        
+
+        @media (min-width: 768px) {
+          .react-joyride__tooltip {
+            width: 325px !important;
+            height: 325px !important;
+          }
+        }
+
         /* Force tooltip to always appear at bottom */
         .react-joyride__floater {
           position: fixed !important;
@@ -185,7 +232,7 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
           left: 50% !important;
           transform: translateX(-50%) !important;
         }
-        
+
         /* Center content in circular tooltip */
         .react-joyride__tooltip__content {
           display: flex !important;
@@ -196,22 +243,36 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
           text-align: center !important;
           padding: 0 !important;
         }
-        
+
         /* Custom arrow styling for circular tooltip - always pointing up from bottom */
         .react-joyride__tooltip .react-joyride__tooltip-arrow {
-          border-color: #FFE200 !important;
+          border-color: #ffe200 !important;
           top: -16px !important;
           transform: translateX(-50%) !important;
         }
-        
+
         /* Force arrow to point upward */
         .react-joyride__tooltip .react-joyride__tooltip-arrow {
-          border-bottom-color: #FFE200 !important;
+          border-bottom-color: #ffe200 !important;
           border-top-color: transparent !important;
           border-left-color: transparent !important;
           border-right-color: transparent !important;
         }
-        
+
+        /* Ensure spotlight is visible and properly highlights elements */
+        .react-joyride__spotlight {
+          background-color: transparent !important;
+          box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6) !important;
+          border-radius: 12px !important;
+          z-index: 10000 !important;
+        }
+
+        /* Make overlay clickable cursor */
+        .react-joyride__overlay {
+          cursor: pointer !important;
+          background-color: transparent !important;
+        }
+
         @keyframes fadeInScale {
           from {
             opacity: 0;
@@ -222,29 +283,61 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
             transform: scale(1);
           }
         }
-        
-        /* Custom spotlight animation */
-        .react-joyride__spotlight {
-          animation: spotlightPulse 2s ease-in-out infinite;
-          border-radius: 12px !important;
-        }
-        
+
         @keyframes spotlightPulse {
-          0%, 100% {
+          0%,
+          100% {
             box-shadow: 0 0 0 0 rgba(255, 226, 0, 0.4);
           }
           50% {
             box-shadow: 0 0 0 10px rgba(255, 226, 0, 0.1);
           }
         }
-        
-        /* Make overlay clickable cursor */
-        .react-joyride__overlay {
-          cursor: pointer !important;
+
+        /* Title and content font sizes */
+        .react-joyride__tooltip__title {
+          font-size: 44px !important;
+          font-weight: 700 !important;
+          margin-bottom: 3px !important;
+          line-height: 1.2 !important;
+          max-width: 100% !important;
+        }
+
+        .react-joyride__tooltip__content {
+          font-size: 28px !important;
+          line-height: 0.5 !important;
+          max-width: 100% !important;
+        }
+
+        @media (min-width: 768px) {
+          .react-joyride__tooltip__title {
+            margin-bottom: 10px !important;
+          }
+
+          .react-joyride__tooltip__content {
+            font-size: 12px !important;
+          }
+        }
+
+        /* Ensure content stays within circle */
+        .react-joyride__tooltip__container {
+          padding: 85px 12px !important;
+          width: 100% !important;
+          height: 100% !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+
+        @media (min-width: 768px) {
+          .react-joyride__tooltip__container {
+            padding: 85px 24px !important;
+          }
         }
       `}</style>
     </>
-  );
-};
+  )
+}
 
-export default CustomJoyride; 
+export default CustomJoyride

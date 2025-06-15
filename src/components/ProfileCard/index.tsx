@@ -77,6 +77,7 @@ const ProfileCard = () => {
     }
   }
 
+  console.log('userImage', userImage)
   return (
     <div className='relative w-full rounded-[10px]  bg-white md:rounded-[20px]'>
       <div
@@ -92,7 +93,7 @@ const ProfileCard = () => {
             <CircularProgress value={profile_percentage}>
               <div className='text-sm w-[90%] h-[90%] flex items-center justify-center rounded-full font-medium bg-[#11A64B] text-gray-700'>
                 <img
-                  className='w-[80%] h-[80%]'
+                  className='w-[80%] rounded-full h-[80%]'
                   src={userImage ? userImage : PROFILE_IMAGES?.[0]?.imageURL}
                   alt='profile-badge'
                   width={32}
@@ -105,7 +106,7 @@ const ProfileCard = () => {
             <CircularProgress size={148} value={profile_percentage}>
               <div className='text-sm w-[90%] flex items-center justify-center h-[90%] rounded-full font-medium bg-[#11A64B] text-gray-700'>
                 <img
-                  className='w-[80%] h-[80%]'
+                  className='w-[80%] rounded-full h-[80%]'
                   src={userImage ? userImage : PROFILE_IMAGES?.[0]?.imageURL}
                   alt='profile-badge'
                     
