@@ -4,9 +4,11 @@ import { DAILY_WINNERS, ICONS_NAMES, IMAGES } from '@/constants'
 import SvgIcons from '../common/SvgIcons'
 import { aktivGrotesk } from '@/app/layout'
 import { generateImageurl } from '@/utils'
-import {  ISingleLeaderboardData } from '@/store/leaderboard'
+import { ISingleLeaderboardData, updateLeaderboard } from '@/store/leaderboard'
 import useAppSelector from '@/hooks/useSelector'
 import SingleDateSelector from '../common/SingleDateSelector'
+import useAppDispatch from '@/hooks/useDispatch'
+import { useGetLeaderBoard } from '@/api/hooks/LeaderBoardHooks'
 
 export const DisplayTable = ({
   data,
@@ -21,7 +23,6 @@ export const DisplayTable = ({
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const couponImage = generateImageurl(IMAGES.COUPON)
-      console.log('couponImage', couponImage)
       setImage(couponImage)
     }
   }, [])
@@ -148,12 +149,34 @@ export const DisplayTable = ({
 const LeaderBoardTable = () => {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState(false)
   const { my_rank, leaderboard } = useAppSelector(state => state.leaderboard)
-  console.log('my_rank', my_rank)
-  console.log('leaderboard', leaderboard)
+  const [date, setSelectedDate] = useState<string>('')
+
+  const dispatch = useAppDispatch()
+  const { data: leaderboardData } = useGetLeaderBoard({ date })
+
+  useEffect(() => {
+    if (leaderboardData?.ok) {
+      const { data } = leaderboardData ?? {}
+      dispatch(
+        updateLeaderboard({
+          my_rank: data?.my_rank,
+          leaderboard: data?.top_users ?? []
+        })
+      )
+    }
+  }, [leaderboardData])
 
   const handleDateSelect = (date: Date | undefined) => {
-    console.log('Selected date:', date)
+    if (date) {
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const year = date.getFullYear()
+      const formattedDate = `${month}/${day}/${year}`
+      setSelectedDate(formattedDate)
+    }
   }
+
+  console.log('selectedDate', date)
 
   return (
     <div className='flex flex-col gap-[20px]'>
@@ -181,7 +204,7 @@ const LeaderBoardTable = () => {
             className='w-[18px] h-[18px]'
           />
         </button>
-        <SingleDateSelector 
+        <SingleDateSelector
           open={isCalendarOpen}
           setOpen={setIsCalendarOpen}
           onDateSelect={handleDateSelect}

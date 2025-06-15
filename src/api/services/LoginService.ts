@@ -84,7 +84,6 @@ export class LoginService extends MainService {
 
   public async SignUp(data: TSignUp) {
     try {
-      console.log("data", this.getAuthHeaders());
       const formData:any = {} 
      if(data?.avatar){
       formData['avatar_id'] = data.avatar;
@@ -142,9 +141,7 @@ export class LoginService extends MainService {
         }
       );
       const responseData = response.data;
-      console.log("responseData", responseData);
       if (responseData?.success) {
-        console.log("responseData", responseData.data);
         return SuccessResponse(responseData.data);
       }
       return ErrorResponse(responseData?.message ?? "Something went wrong");

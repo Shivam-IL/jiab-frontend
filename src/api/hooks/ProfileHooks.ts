@@ -87,7 +87,13 @@ const useGetAvatarsData = () => {
   return useQuery({
     queryKey: keys.profile.getAvatarsData(),
     queryFn: () => profileService.getAvatarsData(),
-    staleTime:0
+    staleTime: 0,
+  });
+};
+
+const useGetPincodeData = () => {
+  return useMutation({
+    mutationFn: (pincode: string) => profileService.getPincodeData(pincode),
   });
 };
 
@@ -101,4 +107,5 @@ export {
   useGetUserQuestions,
   useSubmitUserQuestions,
   useGetAvatarsData,
+  useGetPincodeData,
 };

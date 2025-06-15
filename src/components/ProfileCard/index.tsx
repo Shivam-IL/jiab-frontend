@@ -77,7 +77,6 @@ const ProfileCard = () => {
     }
   }
 
-  console.log('userImage', userImage)
   return (
     <div className='relative w-full rounded-[10px]  bg-white md:rounded-[20px]'>
       <div

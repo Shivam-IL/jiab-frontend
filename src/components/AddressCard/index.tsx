@@ -36,9 +36,7 @@ const AddressCard = ({
     deleteAddess({ address_id: id })
   }
   useEffect(() => {
-    console.log('deleteAddressData', deleteAddressData)
     if (deleteAddressData?.ok && address?.id) {
-      console.log('Enter', address)
       dispatch(deleteAddress({ addressId: address?.id }))
     }
   }, [deleteAddressData])

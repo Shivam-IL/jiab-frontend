@@ -1,49 +1,19 @@
 'use client'
 
+import { useGetLeaderBoard } from '@/api/hooks/LeaderBoardHooks'
 import AktivGroteskText from '@/components/common/AktivGroteskText'
 import MobileTempNavBar from '@/components/common/MobileTempNavBar'
 import ScreenWrapper from '@/components/common/ScreenWrapper'
 import LeaderBoardTable from '@/components/LeaderBoardTable'
 import { MOBILE_TEMP_NAVBAR_DATA } from '@/constants'
 import useWindowWidth from '@/hooks/useWindowWidth'
-import React, { useState } from 'react'
-
-import ReactJoyride, { Step, CallBackProps } from 'react-joyride'
+import React from 'react'
 
 const Leaderboard = () => {
   const width = useWindowWidth()
-  const [run, setRun] = useState(true)
-
-  const steps: Step[] = [
-    {
-      target: '.test',
-      content: 'Welcome! This is the banner section.'
-    }
-  ]
-
-  const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status } = data
-    if (status === 'finished' || status === 'skipped') {
-      setRun(false)
-    }
-  }
 
   return (
     <div className='flex flex-col gap-3'>
-      {/* <ReactJoyride
-        steps={steps}
-        run={run}
-        continuous
-        showProgress
-        showSkipButton
-        callback={handleJoyrideCallback}
-        styles={{
-          options: {
-            zIndex: 10000,
-          },
-        }}
-      /> */}
-
       <MobileTempNavBar
         title={MOBILE_TEMP_NAVBAR_DATA.LEADERBOARD.TITLE}
         subtitle={MOBILE_TEMP_NAVBAR_DATA.LEADERBOARD.SUB_TITLE}

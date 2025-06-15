@@ -25,14 +25,14 @@ export class LeaderBoardService extends MainService {
       : {};
   }
 
-  public async getLeaderBoard() {
+  public async getLeaderBoard(date?: string) {
     try {
-      const response = await apiClient.get(
-        API_ROUTES.LEADERBOARD.GET_LEADERBOARD,
-        {
-          headers: this.getAuthHeaders(),
-        }
-      );
+      const endpoint = date
+        ? `${API_ROUTES.LEADERBOARD.GET_LEADERBOARD}?date=${date}`
+        : API_ROUTES.LEADERBOARD.GET_LEADERBOARD;
+      const response = await apiClient.get(endpoint, {
+        headers: this.getAuthHeaders(),
+      });
       const data = response.data;
       if (data?.success) {
         return SuccessResponse(data?.data);

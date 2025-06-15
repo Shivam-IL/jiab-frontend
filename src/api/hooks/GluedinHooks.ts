@@ -93,11 +93,6 @@ const useGetGluedinAssetById = (assetIds: string) => {
   const { isAuthenticated, token, gludeinIsAuthenticated } = useAppSelector(
     (state) => state.auth
   );
-  console.log(
-    "assetIds",
-    assetIds,
-    isAuthenticated && token && gludeinIsAuthenticated
-  );
   return useQuery({
     queryKey: [...keys.gluedin.getGluedinAssetById(), { assetIds }],
     queryFn: () => gluedinInstance.getGluedinAssetById(assetIds),

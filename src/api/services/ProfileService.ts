@@ -60,12 +60,10 @@ export class ProfileService extends MainService {
         formData.append("avatar_id", userData.avatar_id.toString());
       }
 
-
       if (userData?.pfImage) {
         formData.append("profile_image", userData.pfImage);
         formData.append("is_profile", "true");
-      }
-      else if (userData?.avatar_id) {
+      } else if (userData?.avatar_id) {
         formData.append("is_avatar", "true");
       }
       const response = await apiClient.patch(
@@ -214,6 +212,24 @@ export class ProfileService extends MainService {
         return SuccessResponse(data?.data?.data ?? []);
       }
       return ErrorResponse(data?.message || "Invalid Avatars Data");
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  public async getPincodeData(pincode: string) {
+    try {
+      const response = await apiClient.get(
+        API_ROUTES.USER.ADDRESS.PINCODE_AUTOFILL + pincode,
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
+      const data = response.data;
+      if (data?.success) {
+        return SuccessResponse(data?.data);
+      }
+      return ErrorResponse(data?.message || "Invalid Pincode Data");
     } catch (error) {
       throw new Error(error as string);
     }

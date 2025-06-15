@@ -74,7 +74,6 @@ const ScrollAndLol: React.FC = () => {
   useEffect(() => {
     if (jokesResponse?.ok) {
       const jokesArr = jokesResponse.data as any[]
-      console.log(jokesArr, 'jokesArr')
       const newData = jokesArr.map(joke => ({
         id: joke.id,
         url: joke.url, // assuming backend returns direct video URL here

@@ -100,7 +100,7 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
       />
       {isClient && (
         <div id={BoxIds.JOKE_BOX} className='md:mx-0 mx-4 mt-[20px] mb-[20px]'>
-          <div className='flex justify-center w-full'>
+          <div  className='flex justify-center w-full'>
             <div className='flex items-center bg-white rounded-full mb-4 p-1 relative'>
               <div
                 className={`absolute transition-all duration-300 ease-in-out top-1 h-[calc(100%-8px)] w-[90px] rounded-full bg-green ${

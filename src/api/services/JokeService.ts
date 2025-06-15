@@ -35,12 +35,10 @@ export class JokeService extends MainService {
           ...this.getAuthHeaders(),
         },
       });
-      console.log("joke response", response);
       const responseData = response.data;
       if (responseData?.success) {
         return SuccessResponse(responseData.data);
       }
-      console.log("joke error", responseData);
       return ErrorResponse(responseData?.message ?? "Something went wrong");
     } catch (error) {
       throw error;

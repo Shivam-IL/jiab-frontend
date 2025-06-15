@@ -21,7 +21,6 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
   childrenPosition,
   setOpen
 }) => {
-  console.log('open', open, onClose)
   return (
     <CustomDialogWrapper
       open={open}

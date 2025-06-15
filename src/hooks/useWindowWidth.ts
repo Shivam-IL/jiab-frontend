@@ -4,7 +4,6 @@ const useWindowWidth = () => {
   // Lazily initialize the state so that we only touch `window` on the client.
   const [windowWidth, setWindowWidth] = useState<number>(() => {
     if (typeof window !== "undefined") {
-      console.log("window.innerWidth", window.innerWidth);
       return window.innerWidth;
     }
     // Fallback value during server-side rendering
