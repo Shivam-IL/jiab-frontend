@@ -20,11 +20,13 @@ const EditProfileImage: React.FC<IEditProfileImage> = ({
   const modalRef = useRef<HTMLDivElement>(null)
 
   const inputRef = useRef<HTMLInputElement>(null)
-  
+  const [fileImage, setFileImage] = useState<File | null>(null)
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       setPfImage?.(file)
+      setFileImage(file)
       setEditProfileChoose(false)
     }
   }
@@ -55,7 +57,10 @@ const EditProfileImage: React.FC<IEditProfileImage> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         setEditProfileImage(false)
         setEditProfileChoose(false)
       }
@@ -71,10 +76,12 @@ const EditProfileImage: React.FC<IEditProfileImage> = ({
     <div className='relative flex flex-col items-center justify-center'>
       <div onClick={handleProfileClick} className='relative flex'>
         <div className='w-[53px] h-[53px] rounded-full bg-[#11A64B] flex items-center justify-center'>
-          {image !== '' ? (
+          {image !== '' || fileImage ? (
             <img
-              className='w-[53px] h-[53px]'
-              src={image}
+              className='w-[53px] h-[53px] rounded-full'
+              src={
+                fileImage ? URL.createObjectURL(fileImage) : image
+              }
               alt='profile-image'
             />
           ) : (
@@ -87,7 +94,10 @@ const EditProfileImage: React.FC<IEditProfileImage> = ({
       </div>
 
       {editProfileChoose && (
-        <div ref={modalRef} className='border-[1px] gap-[10px] h-fit absolute top-[60px] w-[196px] flex flex-wrap rounded-[5px] bg-white'>
+        <div
+          ref={modalRef}
+          className='border-[1px] gap-[10px] h-fit absolute top-[60px] w-[196px] flex flex-wrap rounded-[5px] bg-white'
+        >
           <div
             className='border-b-[1px] p-[11px] w-full border-[#EBEBEB80] border-none cursor-pointer'
             onClick={handleChooseAvatar}
@@ -111,13 +121,16 @@ const EditProfileImage: React.FC<IEditProfileImage> = ({
       )}
 
       {!editProfileChoose && editProfileImage && (
-        <div ref={modalRef} className='border-[1px] gap-[10px] border-[#EBEBEB80] absolute top-[60px] w-[196px] flex flex-wrap rounded-[5px] p-[12px] bg-white'>
+        <div
+          ref={modalRef}
+          className='border-[1px] gap-[10px] border-[#EBEBEB80] absolute top-[60px] w-[196px] flex flex-wrap rounded-[5px] p-[12px] bg-white'
+        >
           {avatarsData?.length > 0 &&
             avatarsData?.map((item: any) => (
               <div
                 key={item?.id}
                 onClick={() => handleAvatarSelect(item.id.toString())}
-                className="cursor-pointer"
+                className='cursor-pointer'
               >
                 <img
                   src={item?.image}

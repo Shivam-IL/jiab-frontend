@@ -18,6 +18,7 @@ import LanguageHydration from '../../LanguageHydration'
 import { useCMSData } from '@/data'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import { useRouter } from 'next/navigation'
+import { DesktopBoxIds } from '../../HomePageDesktopOnboarding'
 
 const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
@@ -199,6 +200,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
           <div className='flex items-center space-x-8'>
             <div className='relative' ref={exploreDropdownRef}>
               <button
+                id={DesktopBoxIds.EXPLORE}
                 className='flex items-center cursor-pointer'
                 onClick={() => setIsExploreDropdownOpen(!isExploreDropdownOpen)}
               >
@@ -285,7 +287,11 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
               )}
             </div>
 
-            <Link href='/contest' className='cursor-pointer'>
+            <Link
+              id={DesktopBoxIds.CONTEST}
+              href='/contest'
+              className='cursor-pointer'
+            >
               {cmsData.navBar.contest}
             </Link>
           </div>
@@ -350,7 +356,9 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                 className='w-[116.71px] border border-black rounded px-3 py-1 flex justify-between items-center cursor-pointer'
                 onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
               >
-                <span className='mr-1'>{getSelectedLanguageLabel()}</span>
+                <span id={DesktopBoxIds.LANGUAGE} className='mr-1'>
+                  {getSelectedLanguageLabel()}
+                </span>
                 <ChevronDown className='h-5 w-5' />
               </button>
 
@@ -378,31 +386,33 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
             ref={profileDropdownRef}
             onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
           >
-            {isAuthenticated ? (
-              user?.userImage ? (
-                <img
-                  src={user?.userImage ?? ''}
-                  className='rounded-full w-[40px] h-[40px]'
-                  alt='Profile Image'
-                />
+            <div id={DesktopBoxIds.PROFILE_ELEMENT}>
+              {isAuthenticated ? (
+                user?.userImage ? (
+                  <img
+                    src={user?.userImage ?? ''}
+                    className='rounded-full w-[40px] h-[40px]'
+                    alt='Profile Image'
+                  />
+                ) : (
+                  <Image
+                    src={profileImage}
+                    className='rounded-full w-[40px] h-[40px]'
+                    alt='Profile Image'
+                    width={40}
+                  />
+                )
               ) : (
-                <Image
-                  src={profileImage}
-                  className='rounded-full w-[40px] h-[40px]'
-                  alt='Profile Image'
-                  width={40}
-                />
-              )
-            ) : (
-              <div className='w-full h-full flex items-center justify-center text-xl font-bold'>
-                <Image
-                  src={profileImage}
-                  className='rounded-full w-[40px] h-[40px]'
-                  alt='Profile Image'
-                  width={40}
-                />
-              </div>
-            )}
+                <div className='w-full h-full flex items-center justify-center text-xl font-bold'>
+                  <Image
+                    src={profileImage}
+                    className='rounded-full w-[40px] h-[40px]'
+                    alt='Profile Image'
+                    width={40}
+                  />
+                </div>
+              )}
+            </div>
 
             {isProfileDropdownOpen && (
               <div className='absolute top-full right-0 mt-2 bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 text-[18px] min-w-[183px]'>

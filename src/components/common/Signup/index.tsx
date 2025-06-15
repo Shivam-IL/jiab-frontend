@@ -63,6 +63,8 @@ const Signup = () => {
     agree: false
   })
 
+  const [error, setError] = useState<string>('')
+
   const [selectedAvatar, setSelectedAvatar] = useState<string>('')
   const { avatarsData } = useAppSelector(state => state.profile)
 
@@ -180,6 +182,7 @@ const Signup = () => {
   }, [otpVerified])
 
   const handleSignup = () => {
+    setError('')
     setEditProfileImage(false)
     triggerGAEvent(GA_EVENTS.SPRITE_J24_SIGNUP)
     if (isFormValid()) {
@@ -216,6 +219,9 @@ const Signup = () => {
         setLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR, 'true')
         setOpen(false)
       }
+    } else if (signupData?.ok === false) {
+      const { message } = signupData as any
+      setError(message)
     }
   }, [signupData])
 
@@ -333,6 +339,11 @@ const Signup = () => {
           {acceptTermsError && (
             <span className='text-[#FD0202] font-[400] text-[12px]'>
               {acceptTermsError}
+            </span>
+          )}
+           {error && (
+            <span className='text-[#FD0202] font-[400] text-[12px]'>
+              {error}
             </span>
           )}
         </form>

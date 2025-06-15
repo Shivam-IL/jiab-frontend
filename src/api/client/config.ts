@@ -53,6 +53,7 @@ export const API_ROUTES = {
       ADD: "/profile/address",
       EDIT: "/profile/address/",
       DELETE: "/profile/address/",
+      PINCODE_AUTOFILL: "/location/pincode?pincode=",
     },
     BALANCE: {
       GET: "/profile/balance",
@@ -88,7 +89,7 @@ export const API_ROUTES = {
       `/site-content?populate=*&locale=${getCurrentLocale()}`,
   },
   LEADERBOARD: {
-    GET_LEADERBOARD: "/leaderboard/",
+    GET_LEADERBOARD: "/leaderboard",
   },
   REFERENCE: {
     GENRES: "/reference-data/genres",

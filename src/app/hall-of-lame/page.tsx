@@ -22,11 +22,9 @@ const HallOfLameLeaderboard = () => {
     limit: 5
   })
 
-  console.log('offset', offset)
 
   useEffect(() => {
     if (hallOfLameData?.ok) {
-      console.log('hallOfLameData', hallOfLameData)
       const { data, totalPages } = hallOfLameData?.data as unknown as {
         data: IHallOfLameData[]
         totalPages: number

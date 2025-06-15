@@ -318,7 +318,7 @@ const SubmitYourJoke = () => {
     if (jokesFormats?.length > 0) {
       const modifiedJokesFormats = FORMAT_OPTIONS?.map(item => {
         const filterItem = jokesFormats?.find(
-          format => format.title === item.name
+          (format: IJokeFormat) => format.title === item.name
         )
         return {
           ...item,
@@ -347,9 +347,6 @@ const SubmitYourJoke = () => {
     category: '',
     agreeToTerms: false
   })
-
-  console.log(jokeData, 'jokeData',cmsData.pjChallenge.text)
-
 
   const fileRef = useRef<HTMLInputElement>(null)
 

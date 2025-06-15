@@ -61,7 +61,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   })
   const { data: referralData } = useGetAllReferrals({ page: 1 })
   const { data: avatarsData } = useGetAvatarsData()
-  const { data: leaderboardData } = useGetLeaderBoard()
+  const { data: leaderboardData } = useGetLeaderBoard({ })
   const { data: genresData } = useGetGenres()
   const { data: languagesData } = useGetLanguages()
   const { data: jokesFormatsData } = useGetJokesFormats()

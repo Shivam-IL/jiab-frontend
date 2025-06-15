@@ -50,7 +50,6 @@ const ArtistDetailsPage = () => {
 
   const filterUserData = (id: string) => {
     const user = ARTIST_DATA.filter((item: Artist) => item.id === id);
-    console.log(user);
     setUserData(user[0]);
   };
 

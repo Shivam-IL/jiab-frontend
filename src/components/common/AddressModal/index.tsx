@@ -9,7 +9,11 @@ import { Checkbox } from '@/components/ui/checkbox'
 import useAppDispatch from '@/hooks/useDispatch'
 import { IAddressData, IAddressError, IAddressModal } from '@/interfaces'
 import { validateInput } from '@/utils/inputValidation'
-import { useAddNewAddress, useEditAddress } from '@/api/hooks/ProfileHooks'
+import {
+  useAddNewAddress,
+  useEditAddress,
+  useGetPincodeData
+} from '@/api/hooks/ProfileHooks'
 import { AddressModalType } from '@/types'
 import { editAddress, updateAddresses } from '@/store/profile/profile.slice'
 import useAppSelector from '@/hooks/useSelector'
@@ -59,6 +63,12 @@ const AddressModal: React.FC<IAddressModal> = ({
     isPending: isEditAddressPending,
     data: editNewAddressData
   } = useEditAddress()
+
+  const {
+    mutate: getPincodeData,
+    isPending: isGetPincodePending,
+    data: pincodeData
+  } = useGetPincodeData()
 
   const handleChange = (key: string, value: string | boolean) => {
     if (key === 'pincode') {
@@ -121,6 +131,8 @@ const AddressModal: React.FC<IAddressModal> = ({
     }
   }
 
+  console.log('pincodeData', pincodeData)
+
   useEffect(() => {
     if (!isPending && addNewAddressData?.ok) {
       const { data } = addNewAddressData ?? {}
@@ -164,6 +176,38 @@ const AddressModal: React.FC<IAddressModal> = ({
       }
     }
   }, [addressId])
+
+  useEffect(() => {
+    if (data?.pincode?.length===6) {
+      setData({
+        ...data,
+        state: '',
+        city: ''
+      })
+      setError(prev => ({
+        ...prev,
+        pincode: ''
+      }))
+      getPincodeData(data?.pincode)
+    }
+  }, [data?.pincode])
+
+  useEffect(() => {
+    if (pincodeData?.ok) {
+      const { data } = pincodeData ?? {}
+      setData({
+        ...data,
+        state: data?.state,
+        city: data?.city
+      })
+    } else if (pincodeData?.ok === false) {
+      const { message } = pincodeData as any ?? {}
+      setError(prev => ({
+        ...prev,
+        pincode: "Pincode not found"
+      }))
+    }
+  }, [pincodeData])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -243,6 +287,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               error={error.state}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
               onChange={handleChange}
+              readonly={true}
             />
             <Input
               name='city'
@@ -252,6 +297,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               error={error.city}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
               onChange={handleChange}
+              readonly={true}
             />
           </div>
           <div className='px-[8px] flex gap-3'>

@@ -9,7 +9,6 @@ const CustomDialogWrapper: React.FC<ICustomDialogWrapper> = ({
   onClose,
   children
 }) => {
-  console.log('open', open, onClose)
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className='p-0 bg-white max-w-[318px] rounded-[10px]'>

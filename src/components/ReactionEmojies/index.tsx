@@ -82,7 +82,6 @@ const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({
   }
 
   const getClassName = (reactionType: string, isReacted: boolean | undefined, reactionName: string) => {
-    console.log(reactionName, reactionType, isReacted)
     if(reactionName === 'views') return ''
     if(isReacted){
       if(reactionType === reactionName) return 'opacity-100'

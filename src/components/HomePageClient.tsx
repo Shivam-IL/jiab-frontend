@@ -30,6 +30,7 @@ import { triggerGAEvent } from "@/utils/gTagEvents";
 import HomePageJokeSection from "./common/HomePageJokeSection";
 import { PJChallenge, ChillGuyBanner } from "./Banners";
 import { useRouter } from "next/navigation";
+import HomePageDesktopOnboarding, { DesktopBoxIds } from "./common/HomePageDesktopOnboarding";
 
 export default function HomePageClient() {
   const {
@@ -453,8 +454,16 @@ export default function HomePageClient() {
           </div>
         </div>
       </div>
-      {isClient && width < 768 && enableCoachMarks && (
-        <CircularBoxesModal
+      {isClient && enableCoachMarks && (
+        width < 768 && <CircularBoxesModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+        />
+      )}
+      {isClient && enableCoachMarks && width > 768 && (
+        <HomePageDesktopOnboarding
           isOpen={isModalOpen}
           onClose={() => {
             setIsModalOpen(false);

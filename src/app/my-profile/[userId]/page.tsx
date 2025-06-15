@@ -108,7 +108,6 @@ const EditProfilePage = () => {
   }
 
   const handleChange = (key: string, value: string) => {
-    console.log(key, value, 'key, value')
     setUserData({ ...userData, [key]: value })
 
     // Validate the changed field
@@ -126,11 +125,9 @@ const EditProfilePage = () => {
   }
 
   useEffect(() => {
-    console.log(userData?.avatar_id, 'userData?.avatar_id', avatarsData)
     const currentImage = avatarsData?.find(
       (item: any) => item?.id.toString() === userData?.avatar_id.toString()
     )
-    console.log(currentImage, 'currentImage')
     setCurrentImage(currentImage?.image ?? '')
   }, [userData?.avatar_id])
 
@@ -152,7 +149,6 @@ const EditProfilePage = () => {
       const currentImage = avatarsData?.find(
         (item: any) => item?.id === user?.avatar_id
       )
-      console.log(currentImage, 'currentImage')
       setCurrentImage(currentImage?.image ?? '')
       setUserData({
         avatar_id: 0,
@@ -193,7 +189,6 @@ const EditProfilePage = () => {
   useEffect(() => {
     if (editUserProfileDetailsData?.ok) {
       const { data } = editUserProfileDetailsData?.data ?? {}
-      console.log(data, 'data')
       dispatch(updateUser({ user: { ...data } }))
       if (data?.profile_percentage === 100) {
         triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)

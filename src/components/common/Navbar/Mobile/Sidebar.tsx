@@ -141,13 +141,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                 <div className='flex items-center'>
                   <div className='w-12 h-12 bg-green-500 rounded-full flex items-center justify-center'>
                     <span className='text-white font-bold text-lg'>
-                      <Image
-                        src='/profile-images/profile-image-guest.svg'
-                        alt='Sprite'
-                        className='h-[35px] w-[35px] ml-[11px] my-[11px]'
-                        width={35}
-                        height={35}
-                      />
+                      {user?.userImage ? (
+                        <img
+                          src={user?.userImage}
+                          alt='Sprite'
+                          className='h-[35px] rounded-full w-[35px] ml-[11px] my-[11px]'
+                        />
+                      ) : (
+                        <Image
+                          src='/profile-images/profile-image-guest.svg'
+                          alt='Sprite'
+                          className='h-[35px] w-[35px] ml-[11px] my-[11px]'
+                          width={35}
+                          height={35}
+                        />
+                      )}
                     </span>
                   </div>
                   <div className='ml-3 mt-[10px] mb-[7px]'>

@@ -25,7 +25,6 @@ export class MainService {
   }
 
   protected getAccessToken() {
-    console.log('Getting token:', this.accessToken);
     return this.accessToken;
   }
 

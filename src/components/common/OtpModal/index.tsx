@@ -95,22 +95,6 @@ const OtpModal = () => {
     verifyOTP({ otp, mobile_number: phoneNumber })
   }
 
-  // const gludeinLogin = async () => {
-  //   let data = await encryptData(
-  //     window.location.origin,
-  //     process.env.NEXT_PUBLIC_SECRET_KEY || ''
-  //   )
-  //   const uniqueId = uuidv4()
-  //   const formData = {
-  //     email: `${uniqueId}@gmail.com`,
-  //     password: uniqueId,
-  //     autoCreate: true,
-  //     accessToken: data
-  //   }
-  //   const gluedinLogin = new gluedin.GluedInAuthModule()
-  //   const gluedinLoginResponse = await gluedinLogin.AuthRawData(formData)
-  //   console.log('Gludein Response = ', gluedinLoginResponse)
-  // }
 
   useEffect(() => {
     if (verifyOTPData?.ok) {

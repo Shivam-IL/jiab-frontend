@@ -28,7 +28,6 @@ const UgcCard: React.FC<UgcCardProps> = ({
     if (item?.isReacted) {
       return
     }
-    console.log('reactionType', reactionType, videoId)
     sendGluedinUserReaction({
       assetId: videoId ?? '',
       reactionType: reactionType
