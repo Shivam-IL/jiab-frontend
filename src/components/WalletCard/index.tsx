@@ -45,6 +45,7 @@ const WalletCard = ({
         width={1000}
         height={1000}
         className={imageClassName}
+        priority
       />
 
       <div className="flex items-center gap-[4px] md:gap-[10.68px] justify-center">

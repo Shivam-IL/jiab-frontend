@@ -39,10 +39,12 @@ interface IQuestion {
 
 const HelpUsToKnowYourBetter = ({
   prevButtonText,
-  nextButtonText
+  nextButtonText,
+  id
 }: {
   prevButtonText: string
   nextButtonText: string
+  id: string
 }) => {
   const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
     null
@@ -82,7 +84,7 @@ const HelpUsToKnowYourBetter = ({
   }, [userProfileData])
 
   return (
-    <div className='bg-white w-full rounded-[5px] md:rounded-[20px] py-[16px] md:py-[44px] px-[14px] md:px-[33px] flex flex-col gap-[8px] md:gap-[20px]'>
+    <div className='bg-white w-full rounded-[5px] md:rounded-[20px] py-[16px] md:py-[44px] px-[14px] md:px-[33px] flex flex-col gap-[8px] md:gap-[20px]' id={id}>
       <AktivGroteskText
         text={HELP_US_TO_KNOW_YOUR_BETTER}
         fontSize='text-[16px] md:text-[28px]'

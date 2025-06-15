@@ -11,6 +11,7 @@ import Link from "next/link";
 import { BoxIds } from "../../CircularBoxesModal";
 import { useLanguage } from "@/hooks/useLanguage";
 import LanguageHydration from "../../LanguageHydration";
+import useAppSelector from "@/hooks/useSelector";
 
 const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
@@ -22,7 +23,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   const [hideNavbar, setHideNavbar] = useState<boolean>(false);
   const isVisible = true;
   const langDropdownRef = useRef<HTMLDivElement>(null);
-  const isLoggedIn = true; // This should come from your auth state management
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   console.log(profileImage);
 
@@ -72,7 +73,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
 
   const getSelectedLanguageLabel = () => {
     return (
-      languages.find((lang) => lang.value === selectedLanguage)?.label ||
+      languages.find((lang) => lang.value === selectedLanguage)?.label ??
       "ENGLISH"
     );
   };
@@ -141,7 +142,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
 
           <div className="flex items-center gap-4 absolute right-[17px]">
             {/* Bell Icon Conditional Rendering */}
-            {isLoggedIn ? (
+            {isAuthenticated ? (
               <Link
                 id={BoxIds.NOTIFICATIONS}
                 className="relative"

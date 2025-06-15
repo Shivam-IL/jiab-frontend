@@ -62,6 +62,7 @@ const ProfilePage = () => {
             nextButtonText={cmsData?.myProfile?.nextButtonText}
           />
           <HelpUsToKnowYourBetter
+            id={"qna"}
             prevButtonText={cmsData?.myProfile?.prevButtonText}
             nextButtonText={cmsData?.myProfile?.nextButtonText}
           />

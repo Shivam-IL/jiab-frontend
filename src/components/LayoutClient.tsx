@@ -7,9 +7,10 @@ import HomePageSurpriseButton from "@/components/HomePageSurpriseButton";
 import { usePathname, useSearchParams } from "next/navigation";
 import MobileFooter from "@/components/common/Footer/Mobile/MobileFooter";
 import DesktopFooter from "@/components/common/Footer/Desktop/DesktopFooter";
-import InitialDataLoader from './common/InitialDataLoader'
+import InitialDataLoader from "./common/InitialDataLoader";
 import ProtectedRoutedWrapper from "./common/ProtectedRoutedWrapper";
 import CMSWrapper from "./common/CMSWrapper";
+import GlobalLoader from "./common/GlobalLoader";
 import { pageview } from "@/utils/gTagEvents";
 
 interface LayoutClientProps {
@@ -31,7 +32,9 @@ export default function LayoutClient({ children }: LayoutClientProps) {
             <Navbar />
             {children}
             {/* Show Surprise button only when not on /scroll-and-lol */}
-            {!pathname.includes("/scroll-and-lol") && <HomePageSurpriseButton />}
+            {!pathname.includes("/scroll-and-lol") && (
+              <HomePageSurpriseButton />
+            )}
 
             {/* Mobile Footer */}
             <div className="block lg:hidden">
@@ -45,6 +48,8 @@ export default function LayoutClient({ children }: LayoutClientProps) {
           </ProtectedRoutedWrapper>
         </InitialDataLoader>
       </CMSWrapper>
+      {/* Global Loading Component */}
+      <GlobalLoader />
     </QueryClientAndReduxWrapper>
   );
 }

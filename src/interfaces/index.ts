@@ -40,7 +40,7 @@ export interface IInput {
 }
 
 export interface IGreenCTA {
-  onClick: () => void;
+  onClick?: () => void;
   text: string;
   paddingClass?: string;
   fontSize?: string;

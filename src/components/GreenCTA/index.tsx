@@ -8,12 +8,12 @@ const GreenCTA: React.FC<IGreenCTA> = ({
   text,
   fontWeight = "font-[700]",
   isCoinIcon = false,
-  paddingClass = 'px-[24px] py-[12px] md:py-[14px]',
-  fontSize = 'text-[16px] md:text-[20px]',
-  className = 'w-full',
+  paddingClass = "px-[24px] py-[12px] md:py-[14px]",
+  fontSize = "text-[16px] md:text-[20px]",
+  className = "w-full",
   disabled = false,
   children,
-  childrenPosition
+  childrenPosition,
 }) => {
   return (
     <button
@@ -29,7 +29,7 @@ const GreenCTA: React.FC<IGreenCTA> = ({
         aktivGrotesk.className
       } ${isCoinIcon ? "flex items-center gap-2" : ""}`}
     >
-      {childrenPosition === 'left' && children}
+      {childrenPosition === "left" && children}
       {text}
       {isCoinIcon && (
         <Image
@@ -40,7 +40,7 @@ const GreenCTA: React.FC<IGreenCTA> = ({
           className="md:w-[50px] w-[18px] md:h-[50px] h-[19px]"
         />
       )}
-      {childrenPosition === 'right' && children}
+      {childrenPosition === "right" && children}
     </button>
   );
 };

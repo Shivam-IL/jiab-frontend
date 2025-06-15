@@ -10,6 +10,7 @@ interface HeaderProps {
   viewAllUrl?: string;
   viewAllButtonText?: string;
   className?: string;
+  id?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -18,10 +19,12 @@ const Header: React.FC<HeaderProps> = ({
   viewAllUrl,
   viewAllButtonText,
   className = "",
+  id,
 }) => {
   return (
     <div
       className={`flex items-center justify-between w-full px-5 sm:px-0 ${className}`}
+      id={id}
     >
       <div>
         <h2 className="md:text-[30px] text-[16px] font-bold text-gray-900 uppercase">
