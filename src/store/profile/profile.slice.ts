@@ -52,6 +52,16 @@ export interface IAvatarsData {
   image: string;
 }
 
+export interface IUserSubmittedJoke {
+  content_url: string;
+  date: string;
+  format: string;
+  id: string;
+  status: string;
+  thumbnail_url: string;
+  title: string;
+}
+
 export interface UserState {
   current_balance: number;
   rank: number;
@@ -60,6 +70,7 @@ export interface UserState {
   referral_data: IReferralData[];
   breakTheIceModal: boolean;
   avatarsData: IAvatarsData[];
+  userSubmittedJokes: IUserSubmittedJoke[];
 }
 
 const initialState: UserState = {
@@ -94,6 +105,7 @@ const initialState: UserState = {
   addresses: [],
   referral_data: [],
   avatarsData: [],
+  userSubmittedJokes: [],
 };
 
 const profileSlice = createSlice({
@@ -222,6 +234,10 @@ const profileSlice = createSlice({
       const { avatarsData } = action.payload;
       state.avatarsData = [...avatarsData];
     },
+    updateUserSubmittedJokes: (state, action) => {
+      const { userSubmittedJokes } = action.payload;
+      state.userSubmittedJokes = [...userSubmittedJokes];
+    },
   },
 });
 
@@ -236,5 +252,6 @@ export const {
   updateBreakTheIceModal,
   updateReferralData,
   updateAvatarsData,
+  updateUserSubmittedJokes,
 } = profileSlice.actions;
 export default profileSlice.reducer;

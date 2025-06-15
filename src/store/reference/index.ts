@@ -11,8 +11,11 @@ export interface IGenre {
 }
 
 export interface IJokeFormat {
+  icon_url: string;
   id: number;
-  name: string;
+  is_active: boolean;
+  title: string;
+  value: string;
 }
 
 export interface ILanguage {

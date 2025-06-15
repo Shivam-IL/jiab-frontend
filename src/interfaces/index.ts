@@ -29,7 +29,10 @@ export interface IInput {
   fontSize?: string;
   bgColor?: string;
   options?: Array<{
+    id: number;
+    name: string;
     value: string;
+    icon?: string;
     label: string;
   }>;
   isSearchable?: boolean;

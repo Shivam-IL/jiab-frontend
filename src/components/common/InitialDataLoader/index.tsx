@@ -23,7 +23,8 @@ import {
   updateBreakTheIceModal,
   updateRank,
   updateReferralData,
-  updateUser
+  updateUser,
+  updateUserSubmittedJokes
 } from '@/store/profile/profile.slice'
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils'
 import { ReactNode, useEffect, useState } from 'react'
@@ -31,8 +32,17 @@ import { useGetAllReferrals } from '@/api/hooks/ReferralHooks'
 import { useGetLeaderBoard } from '@/api/hooks/LeaderBoardHooks'
 import { updateLeaderboard } from '@/store/leaderboard'
 import { useMutateGludeinLogin } from '@/api/hooks/GluedinHooks'
-import { useGetGenres, useGetLanguages } from '@/api/hooks/ReferenceHooks'
-import { updateGenres, updateLanguages } from '@/store/reference'
+import {
+  useGetGenres,
+  useGetJokesFormats,
+  useGetLanguages
+} from '@/api/hooks/ReferenceHooks'
+import {
+  updateGenres,
+  updateJokesFormats,
+  updateLanguages
+} from '@/store/reference'
+import { useGetUserSubmittedJokes } from '@/api/hooks/JokeHooks'
 
 const mainServiceInstance = MainService.getInstance()
 
@@ -54,6 +64,8 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const { data: leaderboardData } = useGetLeaderBoard()
   const { data: genresData } = useGetGenres()
   const { data: languagesData } = useGetLanguages()
+  const { data: jokesFormatsData } = useGetJokesFormats()
+  const { data: userSubmittedJokesData } = useGetUserSubmittedJokes()
 
   const {
     mutate: mutateRefreshToken,
@@ -208,6 +220,22 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       dispatch(updateLanguages({ languages: data?.languages ?? [] }))
     }
   }, [languagesData])
+
+  useEffect(() => {
+    if (userSubmittedJokesData?.ok) {
+      const { data } = userSubmittedJokesData ?? {}
+      dispatch(
+        updateUserSubmittedJokes({ userSubmittedJokes: data ?? [] })
+      )
+    }
+  }, [userSubmittedJokesData])
+
+  useEffect(() => {
+    if (jokesFormatsData?.ok) {
+      const { data } = jokesFormatsData ?? {}
+      dispatch(updateJokesFormats({ jokesFormats: data?.formats ?? [] }))
+    }
+  }, [jokesFormatsData])
 
   return <>{children}</>
 }

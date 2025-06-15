@@ -5,7 +5,7 @@ import ScreenWrapper from '@/components/common/ScreenWrapper'
 import { GA_EVENTS, ICONS_NAMES, LANGUAGE_OPTIONS } from '@/constants'
 import useWindowWidth from '@/hooks/useWindowWidth'
 import { FileType, IJokeData } from '@/types'
-import React, { forwardRef, useEffect, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import Input from '@/components/Input'
 import LabeledInput from '@/components/LabeledInput'
 import ImageIconCard from '@/components/common/ImageIconCard'
@@ -23,6 +23,10 @@ import {
 } from '@/components/JokeSubmissionPopup'
 import { useCMSData } from '@/data'
 import { triggerGAEvent } from '@/utils/gTagEvents'
+import useAppSelector from '@/hooks/useSelector'
+import { IGenre, IJokeFormat, ILanguage } from '@/store/reference'
+import { useSubmitJoke } from '@/api/hooks/JokeHooks'
+import { TSubmitJokeParams } from '@/api/types/JokeTypes'
 
 interface FileContainerProps {
   title: string
@@ -76,6 +80,8 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
 FileContainer.displayName = 'FileContainer'
 
 const SubmitYourJoke = () => {
+  const [mounted, setMounted] = useState(false)
+  const cmsData = useCMSData(mounted)
   const width = useWindowWidth()
   const [openApproveJokePopup, setOpenApproveJokePopup] =
     useState<boolean>(false)
@@ -88,20 +94,255 @@ const SubmitYourJoke = () => {
   const [openJokeOffensivePopup, setOpenJokeOffensivePopup] =
     useState<boolean>(false)
 
-  const [mounted, setMounted] = useState(false)
+  const [languageData, setLanguageData] = useState<
+    {
+      id: number
+      name: string
+      value: string
+      label: string
+    }[]
+  >([])
+  const [formatData, setFormatData] = useState<
+    {
+      id: number
+      name: string
+      value: string
+      title: string
+      acceptedFormats: string
+      accptedFormatText: string
+      icon: string
+      label: string
+    }[]
+  >([])
+  const [categoryData, setCategoryData] = useState<
+    {
+      id: number
+      name: string
+      value: string
+      image: string
+    }[]
+  >([])
+
+  const { languages, genres, jokesFormats } = useAppSelector(
+    state => state.reference
+  )
+
+  const {
+    mutate: submitJoke,
+    isPending,
+    isSuccess,
+    data: submitJokeData
+  } = useSubmitJoke()
+  const [formError, setFormError] = useState<{
+    format: string
+    language: string
+    title: string
+    joke: string
+    agreeToTerms: string
+  }>({
+    format: '',
+    language: '',
+    title: '',
+    joke: '',
+    agreeToTerms: ''
+  })
+
+  const FORMAT_OPTIONS = [
+    {
+      icon: ICONS_NAMES.IMAGE,
+      title: cmsData.pjChallenge.imageClickableHeading,
+      label: cmsData.pjChallenge.image,
+      iconClassName: 'w-[31px] h-[39px]',
+      acceptedFormats: '.jpg,.jpeg,.png',
+      accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading,
+      name: 'Image'
+    },
+    {
+      icon: ICONS_NAMES.TEXT,
+      title: cmsData.pjChallenge.textClickableHeading,
+      iconClassName: 'w-[39px] h-[40px]',
+      label: cmsData.pjChallenge.text,
+      accptedFormatText: '',
+      acceptedFormats: '.txt',
+      name: 'Text'
+    },
+    {
+      icon: ICONS_NAMES.HEADPHONE,
+      title: cmsData.pjChallenge.audioClickableHeading,
+      iconClassName: 'w-[41px] h-[40px]',
+      label: cmsData.pjChallenge.audio,
+      accptedFormatText: cmsData.pjChallenge.audioClickableSubheading,
+      acceptedFormats: '.mp3,.wav',
+      name: 'Audio'
+    },
+    {
+      icon: ICONS_NAMES.VIDEO,
+      title: cmsData.pjChallenge.videoHeading,
+      iconClassName: 'w-[49px] h-[39px]',
+      accptedFormatText: cmsData.pjChallenge.videoSubHeading,
+      label: cmsData.pjChallenge.video,
+      acceptedFormats: '.mp4',
+      name: 'Video'
+    }
+  ]
+
+  const isFormValid = () => {
+    let formValid = true
+    if (!jokeData.format) {
+      setFormError(prev => ({ ...prev, format: 'Format is required' }))
+      formValid = false
+    }
+    if (!jokeData.language) {
+      setFormError(prev => ({ ...prev, language: 'Language is required' }))
+      formValid = false
+    }
+    if (!jokeData.title) {
+      setFormError(prev => ({ ...prev, title: 'Title is required' }))
+      formValid = false
+    }
+    if (!jokeData.agreeToTerms) {
+      setFormError(prev => ({
+        ...prev,
+        agreeToTerms: 'You must agree to the terms and conditions'
+      }))
+      formValid = false
+    }
+    if (
+      jokeData.format.toLowerCase() !== FileType.TEXT.toLowerCase() &&
+      !jokeData.file
+    ) {
+      setFormError(prev => ({ ...prev, joke: 'File is required' }))
+      formValid = false
+      return false
+    }
+    if (
+      jokeData.format.toLowerCase() === FileType.TEXT.toLowerCase() &&
+      jokeData.jokeText === ''
+    ) {
+      setFormError(prev => ({ ...prev, joke: 'Joke is required' }))
+      formValid = false
+    }
+
+    return formValid
+  }
+
+  const handleSubmitJoke = () => {
+    if (!isFormValid()) {
+      console.log('form is not valid')
+      return
+    } else {
+      setFormError(prev => ({
+        ...prev,
+        format: '',
+        language: '',
+        title: '',
+        joke: '',
+        agreeToTerms: ''
+      }))
+    }
+    const genreId =
+      categoryData.find(item => item.name === jokeData.category)?.id ?? 0
+
+    const languageId =
+      languageData.find(item => item.value === jokeData.language)?.id ?? 0
+
+    const format =
+      formatData.find(item => item.label === jokeData.format)?.title ?? ''
+
+    const payload: TSubmitJokeParams = {
+      format: format,
+      joke_genre_id: genreId,
+      language_id: languageId,
+      title: jokeData.title,
+      file: jokeData.file as unknown as FileList,
+      jokeText: jokeData.jokeText
+    }
+    submitJoke(payload)
+  }
+
+  useEffect(() => {
+    if (submitJokeData?.ok) {
+      if (
+        jokeData.format.toLowerCase() ===
+        cmsData.pjChallenge.image.toLowerCase()
+      ) {
+        triggerGAEvent(GA_EVENTS.SPRITE_J24_IMAGE_JOKE_SUBMIT)
+      } else if (
+        jokeData.format.toLowerCase() === cmsData.pjChallenge.text.toLowerCase()
+      ) {
+        triggerGAEvent(GA_EVENTS.SPRITE_J24_TEXT_JOKE_SUBMIT)
+      } else if (
+        jokeData.format.toLowerCase() ===
+        cmsData.pjChallenge.audio.toLowerCase()
+      ) {
+        triggerGAEvent(GA_EVENTS.SPRITE_J24_AUDIO_JOKE_SUBMIT)
+      } else if (
+        jokeData.format.toLowerCase() ===
+        cmsData.pjChallenge.video.toLowerCase()
+      ) {
+        triggerGAEvent(GA_EVENTS.SPRITE_J24_VIDEO_JOKE_SUBMIT)
+      }
+      setOpenApproveJokePopup(true)
+    }
+  }, [submitJokeData])
+
+  useEffect(() => {
+    if (genres?.length > 0) {
+      const modifiedGenres = genres?.map((item: IGenre) => {
+        return {
+          id: item.id,
+          name: item.genre,
+          value: item.genre,
+          image: item.image_url
+        }
+      })
+      setCategoryData(modifiedGenres)
+    }
+  }, [genres])
+
+  useEffect(() => {
+    if (languages?.length > 0) {
+      const modifiedLanguages = languages?.map((item: ILanguage) => {
+        return {
+          id: item.id,
+          name: item.name,
+          value: item.language_key,
+          label: item.name
+        }
+      })
+      setLanguageData(modifiedLanguages)
+    }
+  }, [languages])
+
+  useEffect(() => {
+    if (jokesFormats?.length > 0) {
+      const modifiedJokesFormats = FORMAT_OPTIONS?.map(item => {
+        const filterItem = jokesFormats?.find(
+          format => format.title === item.name
+        )
+        return {
+          ...item,
+          id: filterItem?.id ?? 0,
+          title: filterItem?.title ?? '',
+          value: filterItem?.value ?? ''
+        }
+      })
+      setFormatData(modifiedJokesFormats)
+    }
+  }, [jokesFormats])
+
   useEffect(() => {
     setMounted(true)
   }, [])
-  const cmsData = useCMSData(mounted)
   const [jokeData, setJokeData] = useState<IJokeData>({
     language: '',
-    format: cmsData.pjChallenge.image,
+    format: cmsData.pjChallenge.image.toLowerCase(),
     fileType: FileType.IMAGE,
     acceptedFormats: '.jpg,.jpeg,.png',
     accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading,
     jokeText: '',
     title: '',
-    file: [],
+    file: null,
     category: '',
     agreeToTerms: false
   })
@@ -115,114 +356,14 @@ const SubmitYourJoke = () => {
     setJokeData(prev => ({ ...prev, [key]: value }))
   }
 
-  console.log(jokeData, 'jokeData')
-
-  const FORMAT_OPTIONS = [
-    {
-      id: '1',
-      icon: ICONS_NAMES.IMAGE,
-      title: cmsData.pjChallenge.imageClickableHeading,
-      label: cmsData.pjChallenge.image,
-      iconClassName: 'w-[31px] h-[39px]',
-      acceptedFormats: '.jpg,.jpeg,.png',
-      accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading
-    },
-    {
-      id: '2',
-      icon: ICONS_NAMES.TEXT,
-      title: cmsData.pjChallenge.textClickableHeading,
-      iconClassName: 'w-[39px] h-[40px]',
-      label: cmsData.pjChallenge.text,
-      accptedFormatText: '',
-      acceptedFormats: '.txt'
-    },
-    {
-      id: '3',
-      icon: ICONS_NAMES.HEADPHONE,
-      title: cmsData.pjChallenge.audioClickableHeading,
-      iconClassName: 'w-[41px] h-[40px]',
-      label: cmsData.pjChallenge.audio,
-      accptedFormatText: cmsData.pjChallenge.audioClickableSubheading,
-      acceptedFormats: '.mp3,.wav'
-    },
-    {
-      id: '4',
-      icon: ICONS_NAMES.VIDEO,
-      title: cmsData.pjChallenge.videoHeading,
-      iconClassName: 'w-[49px] h-[39px]',
-      accptedFormatText: cmsData.pjChallenge.videoSubHeading,
-      label: cmsData.pjChallenge.video,
-      acceptedFormats: '.mp4'
-    }
-  ]
-
-  const CATEGORIES_CAROUSEL_DATA = [
-    {
-      id: 1,
-      name: 'Category 1',
-      icon: ICONS_NAMES.IMAGE
-    },
-    {
-      id: 2,
-      name: 'Category 2',
-      icon: ICONS_NAMES.TEXT
-    },
-    {
-      id: 3,
-      name: 'Category 3',
-      icon: ICONS_NAMES.HEADPHONE
-    },
-    {
-      id: 4,
-      name: 'Category 4',
-      icon: ICONS_NAMES.VIDEO
-    },
-    {
-      id: 5,
-      name: 'Category 5',
-      icon: ICONS_NAMES.TEXT
-    },
-    {
-      id: 6,
-      name: 'Category 6',
-      icon: ICONS_NAMES.HEADPHONE
-    },
-    {
-      id: 7,
-      name: 'Category 7',
-      icon: ICONS_NAMES.VIDEO
-    },
-    {
-      id: 8,
-      name: 'Category 8',
-      icon: ICONS_NAMES.IMAGE
-    },
-    {
-      id: 9,
-      name: 'Category 9',
-      icon: ICONS_NAMES.IMAGE
-    },
-    {
-      id: 10,
-      name: 'Category 10',
-      icon: ICONS_NAMES.TEXT
-    },
-    {
-      id: 11,
-      name: 'Category 11',
-      icon: ICONS_NAMES.HEADPHONE
-    },
-    {
-      id: 12,
-      name: 'Category 12',
-      icon: ICONS_NAMES.VIDEO
-    },
-    {
-      id: 13,
-      name: 'Category 13',
-      icon: ICONS_NAMES.VIDEO
-    }
-  ]
+  useEffect(() => {
+    setJokeData(prev => ({
+      ...prev,
+      format: formatData?.[0]?.label.toLowerCase() ?? '',
+      acceptedFormats: formatData?.[0]?.acceptedFormats ?? '',
+      accptedFormatText: formatData?.[0]?.accptedFormatText ?? ''
+    }))
+  }, [cmsData, formatData])
 
   return (
     <div className='flex flex-col gap-3'>
@@ -260,8 +401,9 @@ const SubmitYourJoke = () => {
             <Input
               bgColor='bg-white'
               name='language'
+              error={formError.language}
               type='select'
-              options={LANGUAGE_OPTIONS}
+              options={languageData}
               onChange={handleChange}
               value={jokeData.language}
               placeholder={cmsData.pjChallenge.selectLanguageDropbox}
@@ -274,43 +416,50 @@ const SubmitYourJoke = () => {
           >
             <div className='flex w-full  md:flex-row md:justify-center'>
               <div className='flex w-full md:w-[600px] gap-[8px]  justify-between'>
-                {FORMAT_OPTIONS.map(item => {
-                  return (
-                    <button
-                      key={item.id}
-                      type='button'
-                      className='w-1/4'
-                      onClick={() => {
-                        handleChange('format', item.label)
-                        handleChange('acceptedFormats', item.acceptedFormats)
-                        handleChange(
-                          'accptedFormatText',
-                          item.accptedFormatText
-                        )
-                      }}
-                    >
-                      <ImageIconCard
-                        key={item.label}
-                        boxWidth=''
-                        itemsGapClass='gap-[8px]'
-                        fontSize='text-[12px] md:text-[14px]'
-                        fontWeight='font-[400]'
-                        iconClassName={
-                          'w-[31px] h-[39px] md:w-[43px] md:h-[56px]'
-                        }
-                        className={`${
-                          item.label.toLowerCase() ===
-                          jokeData.format.toLowerCase()
-                            ? 'border-[1px] border-[#11A64B]'
-                            : ''
-                        } max-w-[80px] box-border min-h-[80px] md:min-w-[120px] md:min-h-[120px] flex flex-col justify-center items-center bg-white px-[24px] py-[9px] rounded-[10px]`}
-                        icon={item.icon}
-                        text={item.label}
-                      />
-                    </button>
-                  )
-                })}
+                {formatData?.length > 0 &&
+                  formatData?.map(item => {
+                    return (
+                      <button
+                        key={item.id}
+                        type='button'
+                        className='w-1/4'
+                        onClick={() => {
+                          handleChange('format', item.label)
+                          handleChange('acceptedFormats', item.acceptedFormats)
+                          handleChange(
+                            'accptedFormatText',
+                            item.accptedFormatText
+                          )
+                        }}
+                      >
+                        <ImageIconCard
+                          key={item.label}
+                          boxWidth=''
+                          image={''}
+                          itemsGapClass='gap-[8px]'
+                          fontSize='text-[12px] md:text-[14px]'
+                          fontWeight='font-[400]'
+                          iconClassName={
+                            'w-[31px] h-[39px] md:w-[43px] md:h-[56px]'
+                          }
+                          className={`${
+                            item.label.toLowerCase() ===
+                            jokeData.format.toLowerCase()
+                              ? 'border-[1px] border-[#11A64B]'
+                              : ''
+                          } max-w-[80px] box-border min-h-[80px] md:min-w-[120px] md:min-h-[120px] flex flex-col justify-center items-center bg-white px-[24px] py-[9px] rounded-[10px]`}
+                          icon={item.icon}
+                          text={item.label}
+                        />
+                      </button>
+                    )
+                  })}
               </div>
+              {formError.format !== '' && (
+                <span className='text-[#FD0202] font-[400] text-[12px]'>
+                  {formError.format}
+                </span>
+              )}
             </div>
             {jokeData.format.toLowerCase() !==
               cmsData.pjChallenge.text.toLowerCase() && (
@@ -364,6 +513,11 @@ const SubmitYourJoke = () => {
                 />
               </div>
             )}
+            {formError.joke !== '' && (
+              <span className='text-[#FD0202] font-[400] text-[12px]'>
+                {formError.joke}
+              </span>
+            )}
           </LabeledInput>
           <LabeledInput
             labelClassName='md:text-center'
@@ -375,6 +529,7 @@ const SubmitYourJoke = () => {
               type='text'
               onChange={handleChange}
               value={jokeData.title}
+              error={formError.title}
               paddingClass='md:p-[16px] py-[19px] px-[16px]'
               placeholder={cmsData.pjChallenge.titleJokeTitleTextSpace}
             />
@@ -391,7 +546,7 @@ const SubmitYourJoke = () => {
             label={cmsData.pjChallenge.category}
           >
             <CustomCarousel>
-              {CATEGORIES_CAROUSEL_DATA.map(item => {
+              {categoryData?.map(item => {
                 return (
                   <div
                     onClick={() => handleChange('category', item.name)}
@@ -400,6 +555,7 @@ const SubmitYourJoke = () => {
                     <ImageIconCard
                       key={item.name}
                       boxWidth=''
+                      image={item.image}
                       itemsGapClass='gap-[8px]'
                       fontSize='text-[12px] md:text-[14px]'
                       fontWeight='font-[400]'
@@ -412,7 +568,6 @@ const SubmitYourJoke = () => {
                           ? 'border-[1px] border-[#11A64B]'
                           : ''
                       } text-center max-w-[80px] min-h-[80px] box-border md:max-w-[120px] md:min-h-[120px] flex-col justify-center items-center bg-white px-[24px] py-[9px] rounded-[10px]`}
-                      icon={item.icon}
                       text={item.name}
                     />
                   </div>
@@ -435,19 +590,15 @@ const SubmitYourJoke = () => {
               fontWeight='font-[400]'
             />
           </div>
+          {formError.agreeToTerms !== '' && (
+            <span className='text-[#FD0202] font-[400] text-start text-[12px]'>
+              {formError.agreeToTerms}
+            </span>
+          )}
           <div className='flex flex-col justify-center items-center gap-[4px]'>
             <GreenCTA
               onClick={() => {
-                if (jokeData.format === cmsData.pjChallenge.image) {
-                  triggerGAEvent(GA_EVENTS.SPRITE_J24_IMAGE_JOKE_SUBMIT)
-                } else if (jokeData.format === cmsData.pjChallenge.text) {
-                  triggerGAEvent(GA_EVENTS.SPRITE_J24_TEXT_JOKE_SUBMIT)
-                } else if (jokeData.format === cmsData.pjChallenge.audio) {
-                  triggerGAEvent(GA_EVENTS.SPRITE_J24_AUDIO_JOKE_SUBMIT)
-                } else if (jokeData.format === cmsData.pjChallenge.video) {
-                  triggerGAEvent(GA_EVENTS.SPRITE_J24_VIDEO_JOKE_SUBMIT)
-                }
-                setOpenApproveJokePopup(true)
+                handleSubmitJoke()
               }}
               className='w-full md:w-[480px]'
               fontSize='text-[16px] md:text-[32px]'
@@ -468,7 +619,18 @@ const SubmitYourJoke = () => {
           open={openApproveJokePopup}
           onClose={() => {
             setOpenApproveJokePopup(false)
-            setOpenJokeFeaturedPopup(true)
+            setJokeData({
+              format: cmsData.pjChallenge.image,
+              fileType: FileType.IMAGE,
+              acceptedFormats: '.jpg,.jpeg,.png',
+              accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading,
+              file: null,
+              jokeText: '',
+              title: '',
+              category: '',
+              agreeToTerms: false,
+              language: ''
+            })
           }}
         />
       )}
