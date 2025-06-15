@@ -78,6 +78,9 @@ export const API_ROUTES = {
   JOKES: {
     GET_SCROLL_AND_LOL: "/joke/jokes",
     GET_SURPRISE_ME: "/joke/surprise-me",
+    SUBMIT_JOKE: "/joke/ugc/submit",
+    GET_USER_SUBMITTED_JOKES: "/joke/ugc/profile-content",
+    GET_CONTENT_BY_IDS: "/joke/ugc/content-by-ids",
   },
   CMS: {
     GET_HOME_PAGE_CONTENT: () =>
@@ -88,7 +91,7 @@ export const API_ROUTES = {
   },
   REFERENCE: {
     GENRES: "/reference-data/genres",
-    JOKES_FORMATS: "/reference-data/joke-formats",
+    JOKES_FORMATS: "/reference-data/formats",
     LANGUAGES: "/reference-data/languages",
   },
 };

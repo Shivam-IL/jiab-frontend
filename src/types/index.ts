@@ -26,7 +26,7 @@ export interface IJokeData {
   acceptedFormats: string;
   title: string;
   category: string;
-  file: [];
+  file:File | null;
   agreeToTerms: boolean;
 }
 

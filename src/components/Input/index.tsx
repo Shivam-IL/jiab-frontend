@@ -193,7 +193,6 @@ const Input: React.FC<IInput> = ({
     )
   }
 
-  console.log(error)
   return (
     <div className='flex flex-col gap-[6px] w-full'>
       {type !== 'textarea' && (

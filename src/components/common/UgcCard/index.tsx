@@ -151,7 +151,14 @@ const UgcCard: React.FC<UgcCardProps> = ({
               className='text-white'
             />
           </div> */}
-          <div></div>
+          <div>
+            <AktivGroteskText
+              text={item?.content ?? ''}  
+              fontSize='text-[12px]'
+              fontWeight='font-[400]'
+              className='text-white text-center'
+            />
+          </div>
         </div>
         <div className='bg-white border-x-[1px] border-b-[1px] border-[#D9D9D9] rounded-b-[5px] p-[8px] flex justify-between'>
           <div className='flex gap-[10px] md:gap-[20px] pl-[10px]'>

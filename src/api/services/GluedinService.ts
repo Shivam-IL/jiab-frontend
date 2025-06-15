@@ -1,3 +1,6 @@
+import { getLocalStorageItem } from "@/utils";
+import apiClient from "../client";
+import { API_ROUTES, LOCAL_STORAGE_KEYS } from "../client/config";
 import {
   gluedinAssetByIdTransformer,
   gluedinFeedListTransformer,
@@ -21,6 +24,13 @@ export class GluedinService extends MainService {
       GluedinService.instance = new GluedinService();
     }
     return GluedinService.instance;
+  }
+
+  public getAuthHeaders() {
+    const token = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
+    return {
+      Authorization: `Bearer ${token}`,
+    };
   }
 
   public async GludeinLogin({
@@ -92,6 +102,20 @@ export class GluedinService extends MainService {
       const gluedinUserVoteList = await feedModule.Like(videoIds);
       const gluedinUserVoteListResponse = gluedinUserVoteList?.data ?? {};
 
+      const getContentByIds = await apiClient.post(
+        API_ROUTES.JOKES.GET_CONTENT_BY_IDS,
+        {
+          ids: videoIds ?? [],
+        },
+        {
+          headers: {
+            ...this.getAuthHeaders(),
+          },
+        }
+      );
+      const contentResponse = getContentByIds?.data ?? {};
+      console.log("contentResponse", contentResponse);
+
       const getData = await feedModule.Reactions(videoIds);
       const gluedinUserReactionList = getData?.data;
 
@@ -100,7 +124,8 @@ export class GluedinService extends MainService {
           gluedinFeedListTransformer(
             response?.result,
             gluedinUserVoteListResponse?.result,
-            gluedinUserReactionList?.result
+            gluedinUserReactionList?.result,
+            contentResponse?.data ?? []
           );
         return SuccessResponse(modifiedFeedData);
       }

@@ -4,7 +4,11 @@ import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
 const gluedinFeedListTransformer = (
   feedData: TUGCContent[],
   voteData: any[],
-  reactionData: { reaction: string; videoId: string }[]
+  reactionData: { reaction: string; videoId: string }[],
+  contentData: {
+    content: string;
+    id: string;
+  }[]
 ) => {
   const newFeedData: TModifiedUGCContent[] = [];
   if (feedData?.length > 0) {
@@ -28,12 +32,16 @@ const gluedinFeedListTransformer = (
         isReacted = true;
       }
 
+      const getContent = contentData?.find(
+        (content) => content?.id === item?.videoId
+      );
       const modifiedItem: TModifiedUGCContent = {
         ...item,
         isLiked: isLiked ? true : false,
         reactions,
         isReacted: isReacted,
         reactionType: reactionType,
+        content: getContent?.content ?? "Some Dummy Joke",
       };
       newFeedData.push(modifiedItem);
     });
@@ -70,4 +78,8 @@ const gluedinViewTransformer = (data: any) => {
   return ErrorResponse("Failed to view Gluedin jokes");
 };
 
-export { gluedinFeedListTransformer, gluedinAssetByIdTransformer, gluedinViewTransformer };
+export {
+  gluedinFeedListTransformer,
+  gluedinAssetByIdTransformer,
+  gluedinViewTransformer,
+};

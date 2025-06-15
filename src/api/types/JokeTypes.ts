@@ -25,4 +25,13 @@ export interface TGetJokesParams {
   selected_joke?: string; // comma separated IDs
   preferredJokes?: string; // comma separated IDs
   language?: string; // e.g. "en", "hi"
-} 
+}
+
+export type TSubmitJokeParams = {
+  format: string;
+  joke_genre_id: number;
+  language_id: number;
+  title: string;
+  file: FileList;
+  jokeText?: string;
+};
