@@ -469,8 +469,7 @@ const ScrollAndLol: React.FC = () => {
         setCurrentVideoData(currentVideoData)
       }
     }
-  }, [activeVideoIndex])
-
+  }, [activeVideoIndex,videos])
 
   return (
     <div className="md:w-full md:h-screen md:pt-[100px] pt-0 flex flex-col justify-center items-center bg-[url('/assets/images/scroll-and-lol-bg.png')] bg-cover bg-center bg-fixed overflow-hidden">
@@ -609,19 +608,21 @@ const ScrollAndLol: React.FC = () => {
             </div>
 
             {/* Reaction Emojis - only visible when not loading and not on end page */}
-            {currentVideoData && (
-              <div className='absolute md:bottom-[88.82px] bottom-[135px] md:right-[-5rem] right-[10px] z-20'>
-                <ReactionEmojies
-                  key={currentVideoData?.id}
-                  videoId={currentVideoData?.id}
-                  onEmojiSelect={handleEmojiSelect}
-                  userReaction={currentVideoData?.user_reaction}
-                  reactionType={currentVideoData?.reactionType}
-                  isReacted={currentVideoData?.isReacted}
-                  viewCount={currentVideoData?.view_count}
-                />
-              </div>
-            )}
+            {activeVideoIndex !== undefined &&
+              activeVideoIndex !== null &&
+              activeVideoIndex < videos.length && (
+                  <div className='absolute md:bottom-[88.82px] bottom-[135px] md:right-[-5rem] right-[10px] z-20'>
+                    <ReactionEmojies
+                      key={currentVideoData?.id}
+                      videoId={currentVideoData?.id}
+                      onEmojiSelect={handleEmojiSelect}
+                      userReaction={currentVideoData?.user_reaction}
+                      reactionType={currentVideoData?.reactionType}
+                      isReacted={currentVideoData?.isReacted}
+                      viewCount={currentVideoData?.view_count}
+                    />
+                  </div>
+                )}
           </>
         )}
       </div>
