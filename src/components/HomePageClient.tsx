@@ -30,6 +30,7 @@ import { triggerGAEvent } from "@/utils/gTagEvents";
 import HomePageJokeSection from "./common/HomePageJokeSection";
 import { PJChallenge, ChillGuyBanner } from "./Banners";
 import { useRouter } from "next/navigation";
+import { useGlobalLoader } from "@/hooks/useGlobalLoader";
 import HomePageDesktopOnboarding, { DesktopBoxIds } from "./common/HomePageDesktopOnboarding";
 
 export default function HomePageClient() {
@@ -276,6 +277,7 @@ export default function HomePageClient() {
   const { isAuthenticated, isFirstLogin, surpriseMe } = useAppSelector(
     (state) => state.auth
   );
+  const { forceHideLoader } = useGlobalLoader();
 
   const router = useRouter();
 
@@ -302,12 +304,14 @@ export default function HomePageClient() {
           !enableCoachMarks && (
             <SurpriseMeModal
               onClose={() => {
+                forceHideLoader(); // Ensure any loading states are cleared
                 dispatch(updateSurpriseMe({ surpriseMe: false }));
               }}
             />
           )}
 
         <ChillGuyBanner />
+
         {/* Video Scroll */}
         <Header
           title={cmsData.homePage.scrollAndLolText}

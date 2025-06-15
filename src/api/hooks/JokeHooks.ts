@@ -17,12 +17,10 @@ const useGetSurpriseMeJoke = () => {
 
 // Hook to fetch list of jokes for Scroll & LOL screen
 const useGetJokes = (params: TGetJokesParams = {}) => {
-  const { isAuthenticated, token } = useAppSelector((state) => state.auth);
 
   return useQuery({
     queryKey: [...keys.joke.getJokes(), params],
     queryFn: () => jokeInstance.GetJokes(params),
-    enabled: isAuthenticated && token ? true : false,
     staleTime: 0,
   });
 };

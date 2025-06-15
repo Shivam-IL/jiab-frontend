@@ -34,8 +34,8 @@ export const mapContestData = (
     previousWinnerListButtonText:
       contestCMS?.previous_winner_list_button_text ?? "Previous Winner List",
     excitingNewRewardsText:
-      contestCMS?.exciting_new_rewards_text ?? "Exciting New Rewards",
-    comingSoon: contestCMS?.coming_soon ?? "Coming Soon",
+      contestCMS?.exciting_new_rewards_coming_soon_text ?? "Exciting New Rewards",
+    comingSoon: contestCMS?.exciting_new_rewards_coming_soon_text ?? "Coming Soon",
     surpriseMe: contestCMS?.surprise_me ?? "Surprise Me",
     giftBoxTheContestIsOver:
       contestCMS?.gift_box_the_contest_is_over ?? "The contest is over",

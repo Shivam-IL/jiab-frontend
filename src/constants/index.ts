@@ -329,7 +329,7 @@ export const EXIT_POPUP_DATA = {
   BREAK_THE_ICE: {
     ICON: ICONS_NAMES.USER_CHECK,
     TITLE: "Break the ice, maybe?",
-    SUB_TITLE: "Earn 5 Comic Coins by completing your profile",
+    SUB_TITLE: "Earn 10 Comic Coins by completing your profile",
   },
   DONT_MISS_OUT: {
     ICON: ICONS_NAMES.COUPON,
