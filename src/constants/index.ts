@@ -86,49 +86,68 @@ if (typeof window !== "undefined") {
   CLIENT_URL = process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000";
 }
 
+// Language mnemonics constant
+export const LANGUAGE_MNEMONICS = {
+  ENGLISH: "en",
+  HINDI: "hi",
+  MALAYALAM: "ml",
+  TELUGU: "te",
+  MARATHI: "mr",
+  ORIYA: "or",
+  BENGALI: "bn",
+  KANNADA: "kn",
+  TAMIL: "ta",
+  GUJARATI: "gu",
+  PUNJABI: "pa",
+  BHOJPURI: "bho",
+  MAITHILI: "mai",
+  TULU: "tu",
+} as const;
+
+// Language options for dropdowns and UI
 export const LANGUAGE_OPTIONS = [
   {
-    value: "en",
+    value: LANGUAGE_MNEMONICS.ENGLISH,
     label: "English",
   },
   {
-    value: "hi",
+    value: LANGUAGE_MNEMONICS.HINDI,
     label: "हिंदी",
   },
   {
-    value: "ta",
-    label: "தமிழ்", // Tamil
-  },
-  {
-    value: "te",
-    label: "తెలుగు", // Telugu
-  },
-  {
-    value: "bn",
-    label: "বাংলা", // Bengali
-  },
-  {
-    value: "mr",
-    label: "मराठी", // Marathi
-  },
-  {
-    value: "gu",
-    label: "ગુજરાતી", // Gujarati
-  },
-  {
-    value: "kn",
-    label: "ಕನ್ನಡ", // Kannada
-  },
-  {
-    value: "ml",
+    value: LANGUAGE_MNEMONICS.MALAYALAM,
     label: "മലയാളം", // Malayalam
   },
   {
-    value: "or",
+    value: LANGUAGE_MNEMONICS.TELUGU,
+    label: "తెలుగు", // Telugu
+  },
+  {
+    value: LANGUAGE_MNEMONICS.MARATHI,
+    label: "मराठी", // Marathi
+  },
+  {
+    value: LANGUAGE_MNEMONICS.ORIYA,
     label: "ଓଡ଼ିଆ", // Odia
   },
   {
-    value: "pa",
+    value: LANGUAGE_MNEMONICS.BENGALI,
+    label: "বাংলা", // Bengali
+  },
+  {
+    value: LANGUAGE_MNEMONICS.KANNADA,
+    label: "ಕನ್ನಡ", // Kannada
+  },
+  {
+    value: LANGUAGE_MNEMONICS.TAMIL,
+    label: "தமிழ்", // Tamil
+  },
+  {
+    value: LANGUAGE_MNEMONICS.GUJARATI,
+    label: "ગુજરાતી", // Gujarati
+  },
+  {
+    value: LANGUAGE_MNEMONICS.PUNJABI,
     label: "ਪੰਜਾਬੀ", // Punjabi
   },
 ];

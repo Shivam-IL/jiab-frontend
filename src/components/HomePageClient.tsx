@@ -311,6 +311,7 @@ export default function HomePageClient() {
           )}
 
         <ChillGuyBanner />
+        
 
         {/* Video Scroll */}
         <Header

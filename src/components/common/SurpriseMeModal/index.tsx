@@ -17,8 +17,10 @@ import {
 } from "@/api/hooks/GluedinHooks";
 import { ReactionType } from "@/types";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
+import { useSessionModal } from "@/hooks/useSessionModal";
 
 const SurpriseMeModal = ({ onClose }: { onClose: () => void }) => {
+  const { shouldShow, hasChecked } = useSessionModal("hasShownSurpriseMe");
   const [open, setOpen] = useState<boolean>(false);
   const [makeLaughExitPopup, setMakeLaughExitPopup] = useState<boolean>(false);
   const { data: jokeData, isLoading: jokeLoading } = useGetSurpriseMeJoke();
@@ -37,17 +39,16 @@ const SurpriseMeModal = ({ onClose }: { onClose: () => void }) => {
     useViewGludeinJokes();
   const { data: gluedinAssetData } = useGetGluedinAssetById(jokeId);
 
-  // Check if modal has been shown in this session
+  // Set open state based on session check
   useEffect(() => {
-    const hasShownSurpriseMe = sessionStorage.getItem("hasShownSurpriseMe");
-    if (!hasShownSurpriseMe) {
-      setOpen(true);
-      sessionStorage.setItem("hasShownSurpriseMe", "true");
-    } else {
-      // If already shown this session, close immediately
-      onClose();
+    if (hasChecked) {
+      if (shouldShow) {
+        setOpen(true);
+      } else {
+        onClose();
+      }
     }
-  }, [onClose]);
+  }, [shouldShow, hasChecked, onClose]);
 
   useEffect(() => {
     if (jokeData?.ok) {
@@ -176,7 +177,7 @@ const SurpriseMeModal = ({ onClose }: { onClose: () => void }) => {
             </div>
           </div>
           <button
-            className='flex justify-center items-center cursor-pointer border-none outline-none'
+            className="flex justify-center items-center cursor-pointer border-none outline-none"
             onClick={() => {
               setMakeLaughExitPopup(true);
             }}

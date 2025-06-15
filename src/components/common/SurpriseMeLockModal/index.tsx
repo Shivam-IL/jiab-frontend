@@ -8,15 +8,26 @@ import SvgIcons from "../SvgIcons";
 import { ICONS_NAMES } from "@/constants";
 import useAppDispatch from "@/hooks/useDispatch";
 import { updateCrossModal, updateLoginModal } from "@/store/auth/auth.slice";
-import useAppSelector from "@/hooks/useSelector";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
+import { useSessionModal } from "@/hooks/useSessionModal";
 
 const SurpriseMeLockModal = ({ onClose }: { onClose?: () => void }) => {
-  const [open, setOpen] = useState<boolean>(true);
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { shouldShow, hasChecked } = useSessionModal("hasShownSurpriseMeLock");
+  const [open, setOpen] = useState<boolean>(false);
   const { forceHideLoader } = useGlobalLoader();
 
   const dispatch = useAppDispatch();
+
+  // Set open state based on session check
+  useEffect(() => {
+    if (hasChecked) {
+      if (shouldShow) {
+        setOpen(true);
+      } else {
+        onClose?.();
+      }
+    }
+  }, [shouldShow, hasChecked, onClose]);
 
   // Handle modal close with proper cleanup
   const handleClose = () => {
@@ -61,13 +72,8 @@ const SurpriseMeLockModal = ({ onClose }: { onClose?: () => void }) => {
             <div className="self-center z-10 absolute top-[204px] md:top-[182px] left-[99px] md:left-[78px]">
               <button
                 onClick={() => {
-                  if (isAuthenticated) {
-                    dispatch(updateLoginModal({ loginModal: true }));
-                    handleClose();
-                  } else {
-                    dispatch(updateLoginModal({ loginModal: true }));
-                    handleClose();
-                  }
+                  dispatch(updateLoginModal({ loginModal: true }));
+                  handleClose();
                 }}
                 className="relative"
               >
