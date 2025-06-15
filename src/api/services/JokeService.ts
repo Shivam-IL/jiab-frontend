@@ -138,7 +138,12 @@ export class JokeService extends MainService {
         };
         return data;
       }
-      return ErrorResponse(responseData?.message ?? "Something went wrong");
+      const keysArr: string[] = []
+       Object.entries(responseData?.details?.validation_errors ?? {}).map(([key, value]) => {
+        keysArr.push(key)
+      })
+      const message = `Invalid ${keysArr?.[0]}`
+      return ErrorResponse(message ?? "Something went wrong");
     } catch (error) {
       throw error;
     }
