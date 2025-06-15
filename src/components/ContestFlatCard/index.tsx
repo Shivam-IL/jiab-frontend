@@ -20,13 +20,13 @@ const ContestFlatCard: React.FC<ContestFlatCardProps> = ({
 }) => {
   return (
     <div
-      className={`bg-white rounded-[8px] md:p-4 p-[6px] flex items-center md:gap-4 gap-[10px] shadow-sm ${
+      className={`bg-white rounded-[8px] md:p-[15px] p-[6px] flex items-center md:gap-[10px] gap-[10px] shadow-sm ${
         onClick ? "cursor-pointer hover:shadow-md transition-shadow" : ""
       } ${className}`}
       onClick={onClick}
     >
       {/* Icon Container */}
-      <div className="bg-green rounded-[8px] flex-shrink-0 flex items-center justify-center md:h-[104.8px] h-[48px] md:w-[86.75px] w-[40px]">
+      <div className="bg-green rounded-[5px] flex-shrink-0 flex items-center justify-center md:h-[117px] h-[57px] md:w-[107.19px] w-[51px]">
         <Image
           src={icon}
           alt={title}
@@ -34,15 +34,15 @@ const ContestFlatCard: React.FC<ContestFlatCardProps> = ({
           height={40}
           className={
             icon.includes("unique.svg")
-              ? "md:w-[56px] w-[26.44px] md:h-[56px] h-[23px] md:px-0 md:py-0 md:mx-[6.78px] mx-2 md:my-[12px] my-3 filter brightness-0 invert"
-              : "md:w-[52.05px] w-[23.04px] md:h-[52.4px] h-[24px] filter brightness-0 invert m-3"
+              ? "md:w-[85.38px] w-[41px] md:h-[77px] h-[32px]"
+              : "md:w-[75.17px] w-[35.13px] md:h-[80.47px] h-[36px]"
           }
         />
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex flex-col md:gap-[22px] gap-[0px]">
-        <h3 className="text-black md:text-[20px] text-[12px] font-bold mb-2">
+      <div className="flex-1 flex flex-col md:gap-[16px] gap-[8px]">
+        <h3 className="text-black md:text-[20px] md:leading-[24px] text-[10px] leading-[14px] font-bold">
           {title}
         </h3>
         <div className="flex items-center gap-1">
@@ -55,8 +55,8 @@ const ContestFlatCard: React.FC<ContestFlatCardProps> = ({
               className="md:w-[25px] md:h-[25px] w-[14px] h-[14px]"
             />
           </div>
-          <span className="text-[#666666] md:text-[16px] text-[7px] font-medium">
-            {reward} {rewardText}
+          <span className="text-[#313131] md:text-[16px] text-[7px] font-medium">
+            <span className="font-bold text-black">{reward}</span> {rewardText}
           </span>
         </div>
       </div>

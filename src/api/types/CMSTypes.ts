@@ -199,6 +199,22 @@ export type TCMSResponse = {
       updatedAt: string;
       publishedAt: string;
       locale: string;
+      gift_box_the_contest_is_over: string;
+      how_to_gather_comic_coins: string;
+      banner_1_header: string;
+      banner_1_content: string;
+      banner_2_header: string;
+      banner_2_content: string;
+      banner_3_header: string;
+      banner_3_content: string;
+      banner_4_header: string;
+      banner_4_content: string;
+      banner_5_header: string;
+      banner_5_content: string;
+      banner_6_header: string;
+      banner_6_content: string;
+      banner_7_header: string;
+      banner_7_content: string;
     };
     notification_text_after_click: string | null;
     my_profile: {

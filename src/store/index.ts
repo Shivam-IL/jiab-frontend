@@ -18,6 +18,7 @@ import languageReducer from "./language/language.slice";
 import leaderboardReducer from "./leaderboard/index";
 import ugcReducer from "./ugc/index";
 import referenceReducer from "./reference";
+import globalLoadingReducer from "./global/loading.slice";
 
 // Configure persistence for CMS
 const cmsPersistConfig = {
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   leaderboard: leaderboardReducer,
   ugc: ugcReducer,
   reference: referenceReducer,
+  globalLoading: globalLoadingReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

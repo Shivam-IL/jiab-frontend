@@ -5,7 +5,6 @@ import HowToParticipate from "@/components/HowToParticipate";
 import Header from "@/components/common/Header/Header";
 import WalletCard from "@/components/WalletCard";
 import ContentButton from "@/components/common/ContentButton";
-import Banner from "@/components/common/Banner/Banner";
 import ContestFlatCard from "@/components/ContestFlatCard";
 import {
   Carousel,
@@ -15,15 +14,29 @@ import {
 } from "@/components/ui/carousel";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import InviteCodePopupWrapper from "@/components/InviteCodePopus";
-import {
-  GA_EVENTS,
-  INVITE_CODE_POPUP_DATA,
-} from "@/constants";
+import { GA_EVENTS } from "@/constants";
 import ReferNowComponent from "@/components/common/ReferNowComponent";
 import InviteCodeComponent from "@/components/common/InviteCodeComponent";
+import UniqueCodeModal from "@/components/UniqueCodeModal";
 import { useCMSData } from "@/data";
 import { triggerGAEvent } from "@/utils/gTagEvents";
+import ComingSoon from "@/components/Banners/ComingSoon";
+
+interface IRewardPool {
+  id: number;
+  imageUrl: string;
+  imageAlt: string;
+  textContent: string;
+}
+
+interface IContestActivity {
+  id: number;
+  icon: string;
+  title: string;
+  reward: number;
+  rewardText: string;
+  action?: () => void;
+}
 
 const ContestPage: React.FC = () => {
   const router = useRouter();
@@ -33,77 +46,99 @@ const ContestPage: React.FC = () => {
 
   // Modal states for invite code functionality
   const [invite1, setInvite1] = useState<boolean>(false);
+
+  // Modal state for unique code functionality
+  const [uniqueCodeModalOpen, setUniqueCodeModalOpen] =
+    useState<boolean>(false);
+
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
   const cmsData = useCMSData(mounted);
 
-
-
   const rewardPool = [
     {
+      id: 1,
       imageUrl: "/assets/images/reward-1.png",
       imageAlt: "reward-1",
       textContent: "Reward worth Rs.25,000",
     },
     {
+      id: 2,
       imageUrl: "/assets/images/reward-2.png",
       imageAlt: "reward-2",
       textContent: "Cashback worth Rs.10",
     },
   ];
 
-  const contestActivities = [
+  // Helper function to extract reward number and text from banner content
+  const parseRewardContent = (content: string) => {
+    const match = RegExp(/^(\d+)\s+(.+)$/).exec(content);
+    if (match) {
+      return {
+        reward: parseInt(match[1], 10),
+        rewardText: match[2],
+      };
+    }
+    return {
+      reward: 0,
+      rewardText: content || "",
+    };
+  };
+
+  const contestActivities: IContestActivity[] = [
     {
       id: 1,
       icon: "/other-svgs/unique.svg",
-      title: "Enter Unique Code",
-      reward: 20,
-      rewardText: "For Using Unique Code",
+      title: cmsData.contest.banner1Header,
+      ...parseRewardContent(cmsData.contest.banner1Content),
+      action: () => setUniqueCodeModalOpen(true),
     },
     {
       id: 2,
       icon: "/other-svgs/haha.svg",
-      title: "React to a Joke",
-      reward: 1,
-      rewardText: "Per Joke",
+      title: cmsData.contest.banner2Header,
+      ...parseRewardContent(cmsData.contest.banner2Content),
       action: () => router.push("/scroll-and-lol"),
     },
     {
       id: 3,
       icon: "/other-svgs/vote.svg",
-      title: "Vote for Favorite Joke",
-      reward: 1,
-      rewardText: "Per Language Weekly",
+      title: cmsData.contest.banner3Header,
+      ...parseRewardContent(cmsData.contest.banner3Content),
       action: () => router.push("/user-generated-jokes"),
     },
     {
       id: 4,
       icon: "/other-svgs/referral.svg",
-      title: "Refer a Friend",
-      reward: 5,
-      rewardText: "Per Successful Referral",
+      title: cmsData.contest.banner4Header,
+      ...parseRewardContent(cmsData.contest.banner4Content),
       action: () => {
-        triggerGAEvent(GA_EVENTS.SPRITE_J24_REFER_NOW)
-        setRefer1(true)
+        triggerGAEvent(GA_EVENTS.SPRITE_J24_REFER_NOW);
+        setRefer1(true);
       },
     },
     {
       id: 5,
       icon: "/other-svgs/invite.svg",
-      title: "Use Invite Code",
-      reward: 1,
-      rewardText: "For Using Invite Code",
+      title: cmsData.contest.banner5Header,
+      ...parseRewardContent(cmsData.contest.banner5Content),
       action: () => setInvite1(true),
     },
     {
       id: 6,
       icon: "/other-svgs/project.svg",
-      title: "Complete Your Profile",
-      reward: 10,
-      rewardText: "On Completion",
+      title: cmsData.contest.banner6Header,
+      ...parseRewardContent(cmsData.contest.banner6Content),
       action: () => router.push("/profile"),
+    },
+    {
+      id: 7,
+      icon: "/other-svgs/qna.svg",
+      title: cmsData.contest.banner7Header,
+      ...parseRewardContent(cmsData.contest.banner7Content),
+      action: () => router.push("/profile#qna"),
     },
   ];
 
@@ -139,14 +174,12 @@ const ContestPage: React.FC = () => {
     <>
       <ScreenWrapper className="overflow-hidden pt-20">
         {isContestOver ? (
-            <div className="md:w-full h-auto md:mt-[40px] mt-[18px] md:mx-0 -mx-5">
-              <Banner
-                type="image"
-                msrc="other-svgs/contest-over-new.svg"
-                src="other-svgs/contest-over-new-mobile.svg"
-                className="rounded-lg md:mx-0 mx-5"
-              />
-            </div>
+          <div className="md:w-full h-auto md:mt-[40px] mt-[18px] ">
+            <ComingSoon
+              topText={cmsData.contest.excitingNewRewardsText}
+              mainText={cmsData.contest.comingSoon}
+            />
+          </div>
         ) : (
           <>
             {/* <AnnouncingWinnerTimer /> */}
@@ -162,9 +195,9 @@ const ContestPage: React.FC = () => {
 
             {/* Desktop Layout */}
             <div className="hidden md:flex md:gap-[88px] justify-center">
-              {rewardPool.map((item, index) => (
+              {rewardPool.map((item: IRewardPool) => (
                 <WalletCard
-                  key={index}
+                  key={item.id}
                   imageUrl={item.imageUrl}
                   imageAlt={item.imageAlt}
                   textContent={item.textContent}
@@ -184,8 +217,8 @@ const ContestPage: React.FC = () => {
                 }}
               >
                 <CarouselContent>
-                  {rewardPool.map((item, index) => (
-                    <CarouselItem key={index} className="basis-4/5">
+                  {rewardPool.map((item) => (
+                    <CarouselItem key={item.id} className="basis-4/5">
                       <div className="flex justify-center">
                         <WalletCard
                           imageUrl={item.imageUrl}
@@ -202,7 +235,7 @@ const ContestPage: React.FC = () => {
               <div className="flex justify-center gap-2 mt-4">
                 {Array.from({ length: pageCount }).map((_, index) => (
                   <button
-                    key={index}
+                    key={index + 1}
                     className={`h-1 rounded-full transition-all duration-300 ${
                       index === current
                         ? "md:w-8 w-[17.73px] bg-black"
@@ -218,7 +251,7 @@ const ContestPage: React.FC = () => {
         )}
 
         {/* Buttons */}
-        <div className="flex justify-center md:mt-[40px] mt-[17px]">
+        <div className="flex justify-center md:mt-[40px] mt-[24px]">
           <Link href="/leaderboard">
             <ContentButton
               text={cmsData.contest.previousWinnerListButtonText}
@@ -230,20 +263,14 @@ const ContestPage: React.FC = () => {
         </div>
 
         {/* How to Gather */}
-        {/* <Header
-          title="How to Gather Comic Coins"
-          className="md:mt-[40px] mt-[16px] md:ml-0 -ml-[16px] mx-5"
+        <Header
+          title={cmsData.contest.howToGatherComicCoins}
+          id="how-to-gather"
+          className="md:mt-[40px] mt-[24px] md:ml-0 -ml-[16px] mx-5"
         />
-        <div className="md:w-full h-auto md:mt-[28px] mt-[12px] md:mx-0 -mx-5">
-          <Banner
-            type="image"
-            src="/assets/images/banner-contest.png"
-            className="rounded-lg md:mx-0 mx-5"
-          />
-        </div> */}
 
         {/* Contest Activities */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 md:gap-[30px] gap-x-[15px] gap-y-[10px] md:pb-[41px] pb-[28px] md:mt-[40px] mt-[16px]">
+        <div className="grid grid-cols-2 lg:grid-cols-3 md:gap-x-[17px] md:gap-y-[28px] gap-x-[13px] gap-y-[12px] md:pb-[41px] pb-[28px] md:mt-[24px] mt-[16px]">
           {contestActivities?.map((activity) => (
             <ContestFlatCard
               key={activity.id}
@@ -251,7 +278,7 @@ const ContestPage: React.FC = () => {
               title={activity.title}
               reward={activity.reward}
               rewardText={activity.rewardText}
-              onClick={activity.action}
+              onClick={activity.action || (() => {})}
             />
           ))}
         </div>
@@ -262,7 +289,7 @@ const ContestPage: React.FC = () => {
         setOpen={setRefer1}
         open={refer1}
         onClose={() => {
-          setRefer1(false)
+          setRefer1(false);
         }}
       />
 
@@ -271,10 +298,17 @@ const ContestPage: React.FC = () => {
         setOpen={setInvite1}
         open={invite1}
         onClose={() => {
-          setInvite1(false)
+          setInvite1(false);
         }}
       />
-     
+
+      {/* Unique Code Modal */}
+      <UniqueCodeModal
+        open={uniqueCodeModalOpen}
+        onClose={() => {
+          setUniqueCodeModalOpen(false);
+        }}
+      />
     </>
   );
 };

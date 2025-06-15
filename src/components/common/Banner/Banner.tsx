@@ -32,14 +32,16 @@ const Banner: React.FC<IBannerProps> = ({
             className="w-full h-full object-cover object-center hidden md:block"
             width={1000}
             height={1000}
+            priority
           />
           {/* Mobile Image - uses msrc if provided, otherwise falls back to src */}
           <Image
-            src={msrc || src}
+            src={msrc ?? src}
             alt={alt}
             className="w-full h-full object-cover object-center block md:hidden"
             width={1000}
             height={1000}
+            priority
           />
         </>
       )}

@@ -507,6 +507,9 @@ export const PROTECTED_ROUTES = [
   "/scroll-and-lol",
   "/profile",
   "/user-generated-jokes",
+  "/my-wallet", 
+  "/submit-your-joke",
+  
 ];
 
 

@@ -8,8 +8,6 @@ import SurpriseMeModal from "@/components/common/SurpriseMeModal";
 import useAppSelector from "@/hooks/useSelector";
 import { useCMSData } from "@/data";
 
-import Banner from "@/components/common/Banner/Banner";
-import bannerImage from "../../public/assets/images/banner-top.svg";
 import Header from "@/components/common/Header/Header";
 import VideoScroll from "@/components/video-carousel/VideoScroll";
 import {
@@ -30,7 +28,7 @@ import { useGetJokes } from "@/api/hooks/JokeHooks";
 import { useLanguage } from "@/hooks/useLanguage";
 import { triggerGAEvent } from "@/utils/gTagEvents";
 import HomePageJokeSection from "./common/HomePageJokeSection";
-import { PJChallenge } from "./Banners";
+import { PJChallenge, ChillGuyBanner } from "./Banners";
 import { useRouter } from "next/navigation";
 
 export default function HomePageClient() {
@@ -308,11 +306,7 @@ export default function HomePageClient() {
             />
           )}
 
-        <Banner
-          type="image"
-          src={bannerImage.src}
-          className="rounded-lg banner-section mx-5 md:mx-0"
-        />
+        <ChillGuyBanner />
         {/* Video Scroll */}
         <Header
           title={cmsData.homePage.scrollAndLolText}

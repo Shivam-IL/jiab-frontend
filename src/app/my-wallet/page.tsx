@@ -18,6 +18,7 @@ import ShareLaugh from "@/components/Banners/ShareLaugh";
 const ComicCoinsPage = () => {
   const [mounted, setMounted] = useState(false);
   const [isReferModalOpen, setIsReferModalOpen] = useState(false);
+  const [isRedeemed, setIsRedeemed] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -59,7 +60,9 @@ const ComicCoinsPage = () => {
           <div className="md:mt-0 mt-[16px] md:mr-0 mr-[16px] md:mb-[30px] mb-[12px]">
             <GreenCTA
               text="How To Collect?"
-              onClick={() => {}}
+              onClick={() => {
+                router.push("/contest#how-to-gather");
+              }}
               paddingClass="py-[8px] px-[20px] md:py-[16px] md:px-[50px]"
               fontSize="text-[12px] md:text-[28px]"
               isCoinIcon={true}
@@ -75,7 +78,7 @@ const ComicCoinsPage = () => {
         <Header title="My Wins" className="md:mt-8 mt-0 mx-[-19px] md:mx-0" />
         <div className="mt-4 w-full">
           <WalletCard
-            imageUrl="/other-svgs/my-win.svg"
+            imageUrl="/other-svgs/phone-pe.svg"
             imageClassName="w-full h-auto"
             imageAlt="my-win"
             containerClassName="bg-white rounded-[10.68px] px-[13px] py-[14.57px] md:pt-[16px] md:pb-[35px] md:px-[33.5px] flex flex-col md:gap-[18.5px] gap-[8px] w-full"
@@ -83,22 +86,45 @@ const ComicCoinsPage = () => {
             <div className="flex flex-col items-center gap-[24px] md:gap-[36px]">
               <div className="flex flex-col items-center gap-[0px] md:gap-[20px]">
                 <AktivGroteskText
-                  text="The Ultimate Retreat"
+                  text="Cashback worth Rs.10"
                   fontSize="text-[20px] md:text-[28px]"
                   fontWeight="font-[700]"
                 />
-                <p className="text-[#313131] md:text-[20px] text-[16px] text-center max-w-[291px]">
-                  Participate & win* MakeMyTrip voucher worth Rs.25,000 ✈️
+                <p className="text-[#313131] md:text-[20px] text-[16px] text-center max-w-[355px]">
+                  Here's a pocket-sized perk just for you. Grab this Rs.10
+                  PhonePe voucher now!
                 </p>
               </div>
-              <GreenCTA
-                text="Collect More"
-                onClick={() => {}}
-                paddingClass="py-[12px] px-[36px] md:py-[20px] md:px-[44px]"
-                fontSize="text-[12px] md:text-[20px]"
-                className="max-w-[250px]"
-              />
+              {isRedeemed ? (
+                <GreenCTA
+                  text="Collect More"
+                  onClick={() => {
+                    setIsRedeemed(false);
+                  }}
+                  paddingClass="py-[12px] px-[36px] md:py-[20px] md:px-[44px]"
+                  fontSize="text-[12px] md:text-[20px]"
+                  className="max-w-[250px]"
+                />
+              ) : (
+                <GreenCTA
+                  text="Expired"
+                  paddingClass="py-[12px] px-[36px] md:py-[20px] md:px-[44px]"
+                  fontSize="text-[12px] md:text-[20px]"
+                  className="text-[#E1E1E3] bg-[#C4C5C6]"
+                  disabled={true}
+                />
+              )}
             </div>
+            {isRedeemed ? (
+              <span className="text-[#313131] font-medium text-center md:text-[20px] text-[12px] md:mt-[24px] mt-[8px]">
+                Last day to redeem:{" "}
+                <span className="text-green">31st Dec 2025</span>
+              </span>
+            ) : (
+              <span className="text-[#C4C5C6] font-medium text-center md:text-[20px] text-[12px] md:mt-[24px] mt-[8px]">
+                Last day to redeem: 31st Dec 2025
+              </span>
+            )}
           </WalletCard>
         </div>
 
