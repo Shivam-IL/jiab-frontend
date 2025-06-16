@@ -108,12 +108,17 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
   // Success State
   if (isSuccess) {
     return (
-      <Dialog open={open} onOpenChange={handleClose}>
+      <Dialog open={open} onOpenChange={handleGotIt}>
         <DialogContent className="max-w-[343px] md:max-w-[401px] gap-0 rounded-[10px] p-0">
           <div className="flex justify-end pt-[12px] pr-[16px] md:pr-[18px]">
             <button
-              onClick={handleClose}
-              className="p-0 self-end cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleGotIt();
+              }}
+              className="p-2 cursor-pointer bg-transparent rounded-full border-none outline-none"
+              type="button"
             >
               <SvgIcons
                 name={ICONS_NAMES.CROSS}
@@ -167,8 +172,14 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
         <DialogContent className="max-w-[343px] gap-0 rounded-[10px] p-0">
           <div className="flex justify-end pt-[12px] pr-[16px] md:pr-[18px]">
             <button
-              onClick={handleClose}
-              className="p-0 self-end cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log("Close button clicked"); // Debug log
+                handleClose();
+              }}
+              className="p-2 cursor-pointer bg-transparent hover:bg-gray-100 rounded-full border-none outline-none"
+              type="button"
             >
               <SvgIcons
                 name={ICONS_NAMES.CROSS}
@@ -246,7 +257,16 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-[343px] rounded-[10px] p-0 flex flex-col gap-[16px]">
         <div className="flex justify-end pt-[12px]  pr-[16px] md:pr-[18px]">
-          <button onClick={handleClose} className="p-0 self-end cursor-pointer">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log("Close button clicked"); // Debug log
+              handleClose();
+            }}
+            className="p-2 cursor-pointer bg-transparent hover:bg-gray-100 rounded-full border-none outline-none"
+            type="button"
+          >
             <SvgIcons name={ICONS_NAMES.CROSS} className="w-[14px] h-[14px]" />
           </button>
         </div>

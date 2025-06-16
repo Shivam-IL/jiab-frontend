@@ -38,6 +38,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
     "react-joyride": "^2.9.3",
+    "react-markdown": "^10.1.0",
     "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0",
     "sharp": "^0.34.2",
