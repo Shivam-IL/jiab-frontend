@@ -1,3 +1,4 @@
+import { LANG_VERNICULAR_MAP } from "@/constants";
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface IGenre {
@@ -23,6 +24,7 @@ export interface ILanguage {
   is_active: boolean;
   language_key: string;
   name: string;
+  vernacual_name: string;
 }
 
 export interface IReferenceState {
@@ -51,7 +53,15 @@ const referenceSlice = createSlice({
     },
     updateLanguages: (state, action) => {
       const { languages } = action.payload;
-      state.languages = [...languages];
+      const modifiedLanguages = languages.map((language: ILanguage) => ({
+        ...language,
+        vernacual_name:
+          LANG_VERNICULAR_MAP[
+            language.name as keyof typeof LANG_VERNICULAR_MAP
+          ],
+      }));
+      console.log('modifiedLanguages', modifiedLanguages)
+      state.languages = [...modifiedLanguages];
     },
   },
 });

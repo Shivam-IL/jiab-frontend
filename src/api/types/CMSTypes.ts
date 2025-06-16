@@ -277,6 +277,61 @@ export type TCMSResponse = {
       publishedAt: string;
       locale: string;
     };
+    vote_is_in_pop_up: {
+      id: number;
+      documentId: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+      vote_is_in_heading: string;
+      vote_is_in_sub_heading: string;
+      vote_is_in_button_text: string;
+    };
+    serial_chiller_pop_up: {
+      id: number;
+      documentId: string;
+      serial_chiller_heading: string;
+      serial_chiller_sub_heading_1: string;
+      serial_chiller_sub_heading_2: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
+    easy_me_pop_up: {
+      id: number;
+      documentId: string;
+      easy_me_pop_up_heading: string;
+      easy_me_pop_up_sub_heading_1: string;
+      easy_me_pop_up_sub_heading: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
+    trying_to_prank_us_pop_up: {
+      id: number;
+      documentId: string;
+      prank_us_heading: string;
+      prank_us_sub_heading: string;
+      prank_us_button_text: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
+    ahem_ahem_pop_up: {
+      id: number;
+      documentId: string;
+      pop_up_heading: string;
+      pop_up_sub_heading: string;
+      pop_up_button_text: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
     surprise_me_pop_up: {
       id: number;
       documentId: string;
@@ -285,6 +340,19 @@ export type TCMSResponse = {
       surprise_me_pop_up_sub_heading_2: string;
       surprise_me_pop_up_yes_button: string;
       surprise_me_pop_up_no_button: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
+    made_you_lol_pop_up: {
+      id: number;
+      documentId: string;
+      made_you_lol_heading: string;
+      made_you_lol_sub_heading: string;
+      made_you_lol_sub_heading_2: string;
+      made_you_lol_yes_button_text: string;
+      made_you_lol_no_button_text: string;
       createdAt: string;
       updatedAt: string;
       publishedAt: string;

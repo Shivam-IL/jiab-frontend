@@ -159,6 +159,7 @@ export interface IReferNowModal {
   onChange: (key: string, value: string) => void;
   onSubmit: () => void;
   placeholder?: string;
+  
 }
 
 export interface IInviteCodePopup {
@@ -347,4 +348,5 @@ export interface UgcCardProps {
   disclaimerText?: string
   item?: TModifiedUGCContent
   onVoteSuccess?: () => void
+  home?: boolean
 }

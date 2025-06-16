@@ -16,6 +16,9 @@ export * from './logout-button'
 export * from './faq'
 export * from './contact-us'
 export * from './plus-add-inside-profile'
+export * from './break_the_ice'
+export * from './vote_is_in'
+export * from './serial_chiller'
 
 // Import all the mapping functions
 import {
@@ -101,6 +104,16 @@ import {
   DidThatMakeYouLaughData,
   mapDidThatMakeYouLaughData
 } from './did_that_make_you_laugh'
+import { defaultVoteIsInData, mapVoteIsInData, type VoteIsInData } from './vote_is_in'
+import {
+  defaultSerialChillerData,
+  mapSerialChillerData,
+  type SerialChillerData
+} from './serial_chiller'
+import { defaultMadeYouLolPopupData, MadeYouLolPopupData, mapMadeYouLolPopupData } from './made_you_lol'
+import { defaultTryingToPrankUsPopupData, mapTryingToPrankUsPopupData, TryingToPrankUsPopupData } from './trying_to_prank_us'
+import { AhemAhemPopupData, defaultAhemAhemPopupData, mapAhemAhemPopupData } from './ahem_ahem_popup'
+import { defaultEasyPeasyPopupData, EasyPeasyPopupData, mapEasyPeasyPopupData } from './easy_peasy'
 
 // Combined interface for all CMS data
 export interface AllCMSData {
@@ -123,6 +136,12 @@ export interface AllCMSData {
   plusAddInsideProfile: PlusAddInsideProfileData
   breakTheIce: BreakTheIceData
   didThatMakeYouLaugh: DidThatMakeYouLaughData
+  voteIsIn: VoteIsInData
+  serialChiller: SerialChillerData
+  madeYouLoL: MadeYouLolPopupData
+  tryingToPrankUs: TryingToPrankUsPopupData
+  ahemAhem: AhemAhemPopupData
+  easyPeasy: EasyPeasyPopupData
 }
 
 // Hook to get all mapped CMS data
@@ -151,7 +170,13 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
         contactUs: defaultContactUsData,
         plusAddInsideProfile: defaultPlusAddInsideProfileData,
         breakTheIce: defaultBreakTheIceData,
-        didThatMakeYouLaugh: defaultDidThatMakeYouLaughData
+        didThatMakeYouLaugh: defaultDidThatMakeYouLaughData,
+        voteIsIn: defaultVoteIsInData,
+        serialChiller: defaultSerialChillerData,
+        madeYouLoL: defaultMadeYouLolPopupData,
+        tryingToPrankUs: defaultTryingToPrankUsPopupData,
+        ahemAhem: defaultAhemAhemPopupData,
+        easyPeasy: defaultEasyPeasyPopupData
       }
     }
 
@@ -175,7 +200,13 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
       contactUs: mapContactUsData(homePageContent),
       plusAddInsideProfile: mapPlusAddInsideProfileData(homePageContent),
       breakTheIce: mapBreakTheIceData(homePageContent),
-      didThatMakeYouLaugh: mapDidThatMakeYouLaughData(homePageContent)
+      didThatMakeYouLaugh: mapDidThatMakeYouLaughData(homePageContent),
+      voteIsIn: mapVoteIsInData(homePageContent),
+      serialChiller: mapSerialChillerData(homePageContent),
+      madeYouLoL: mapMadeYouLolPopupData(homePageContent),
+      tryingToPrankUs: mapTryingToPrankUsPopupData(homePageContent),
+      ahemAhem: mapAhemAhemPopupData(homePageContent),
+      easyPeasy: mapEasyPeasyPopupData(homePageContent)
     }
   }, [homePageContent, mounted])
 }
@@ -203,6 +234,12 @@ export const mapAllCMSData = (
     contactUs: mapContactUsData(cmsData),
     plusAddInsideProfile: mapPlusAddInsideProfileData(cmsData),
     breakTheIce: mapBreakTheIceData(cmsData),
-    didThatMakeYouLaugh: mapDidThatMakeYouLaughData(cmsData)
+    didThatMakeYouLaugh: mapDidThatMakeYouLaughData(cmsData),
+    voteIsIn: mapVoteIsInData(cmsData),
+    serialChiller: mapSerialChillerData(cmsData),
+    madeYouLoL: mapMadeYouLolPopupData(cmsData),
+    tryingToPrankUs: mapTryingToPrankUsPopupData(cmsData),
+    ahemAhem: mapAhemAhemPopupData(cmsData),
+    easyPeasy: mapEasyPeasyPopupData(cmsData)
   }
 }
