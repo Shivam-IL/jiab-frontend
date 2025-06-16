@@ -169,7 +169,7 @@ const AddressModal: React.FC<IAddressModal> = ({
   useEffect(() => {
     if (addressId && type === AddressModalType.EDIT) {
       console.log('addressId', addressId)
-      const address = addresses?.find(address => address.id === addressId)
+      const address = addresses?.find((address: any) => address.id === addressId)
       if (address) {
         setData({
           address_line_1: address?.address1 || '',

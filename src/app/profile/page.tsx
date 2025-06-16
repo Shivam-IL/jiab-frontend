@@ -16,10 +16,8 @@ import { useCMSData } from "@/data";
 
 const ProfilePage = () => {
   const [mounted, setMounted] = useState(false);
-  const [showExitPopup, setShowExitPopup] = useState(false);
 
   const cmsData = useCMSData(mounted);
-  const { user } = useAppSelector((state) => state.profile);
 
   useEffect(() => {
     setMounted(true);
@@ -76,19 +74,13 @@ const ProfilePage = () => {
             nextButtonText={cmsData?.myProfile?.nextButtonText}
           />
           <HelpUsToKnowYourBetter
-            id={"qna"}
+            id={'qna'}
             prevButtonText={cmsData?.myProfile?.prevButtonText}
             nextButtonText={cmsData?.myProfile?.nextButtonText}
           />
           <UserGeneratedJokecComponent />
         </div>
       </div>
-      {/* {showExitPopup && (
-        <BreakTheIceExitPopup
-          open={showExitPopup}
-          onClose={handleStayOnPage}
-        />
-      )} */}
     </ScreenWrapper>
   );
 };

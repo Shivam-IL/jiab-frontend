@@ -276,17 +276,22 @@ export interface ICustomDialogWrapper {
 
 export interface IExitPopupWrapper {
   open: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   icon: string;
   title: string;
   subtitle: string;
   children?: React.ReactNode;
   singleButton?: boolean;
   singleButtonText?: string;
+  sureToExitText?: string;
   singleButtonOnClick?: () => void;
   doubleButton?: boolean;
   setOpen?: (open: boolean) => void;
   childrenPosition?: string;
+  yesButtonClick?: () => void;
+  noButtonClick?: () => void;
+  yesButtonText?: string;
+  noButtonText?: string;
 }
 
 export interface IUgcComponent {

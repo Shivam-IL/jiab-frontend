@@ -1,5 +1,6 @@
 import { EXIT_POPUP_DATA } from '@/constants'
 import CustomPopupWrapper from '../common/CustomPopupWrapper'
+import { useCMSData } from '@/data'
 
 const DonTstealThunderExitPopup = ({
   open,
@@ -31,13 +32,17 @@ const MakeLaughExitPopup = ({
   onClose: () => void
   setOpen?: (open: boolean) => void
 }) => {
+  const { didThatMakeYouLaugh } = useCMSData()
   return (
     <CustomPopupWrapper
       open={open}
       onClose={onClose}
       icon={EXIT_POPUP_DATA.MAKE_LAUGH.ICON}
-      title={EXIT_POPUP_DATA.MAKE_LAUGH.TITLE}
-      subtitle={EXIT_POPUP_DATA.MAKE_LAUGH.SUB_TITLE}
+      title={didThatMakeYouLaugh?.didThatMakeYouLaughHeading}
+      subtitle={didThatMakeYouLaugh?.didThatMakeYouLaughSubHeading1}
+      sureToExitText={didThatMakeYouLaugh?.didThatMakeYouLaughSubHeading2}
+      yesButtonText={didThatMakeYouLaugh?.didThatMakeYouLaughYesButton}
+      noButtonText={didThatMakeYouLaugh?.didThatMakeYouLaughNoButton}
       doubleButton={true}
       setOpen={setOpen}
     />
@@ -65,18 +70,26 @@ const FOMOExitPopup = ({
 
 const BreakTheIceExitPopup = ({
   open,
-  onClose
+  yesButtonClick,
+  noButtonClick
 }: {
   open: boolean
-  onClose: () => void
+  yesButtonClick: () => void
+  noButtonClick: () => void
 }) => {
+  const { breakTheIce } = useCMSData()
+  console.log('breakTheIce', breakTheIce)
   return (
     <CustomPopupWrapper
       open={open}
-      onClose={onClose}
+      yesButtonClick={yesButtonClick}
+      noButtonClick={noButtonClick}
       icon={EXIT_POPUP_DATA.BREAK_THE_ICE.ICON}
-      title={EXIT_POPUP_DATA.BREAK_THE_ICE.TITLE}
-      subtitle={EXIT_POPUP_DATA.BREAK_THE_ICE.SUB_TITLE}
+      title={breakTheIce?.breakTheIceHeading}
+      subtitle={breakTheIce?.breakTheIceSubHeading1}
+      sureToExitText={breakTheIce?.breakTheIceSubHeading2}
+      yesButtonText={breakTheIce?.breakTheIceYesButton}
+      noButtonText={breakTheIce?.breakTheIceNoButton}
       doubleButton={true}
     />
   )

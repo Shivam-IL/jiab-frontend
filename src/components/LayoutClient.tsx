@@ -1,28 +1,33 @@
-"use client";
+'use client'
 
-import { ReactNode, useEffect } from "react";
-import QueryClientAndReduxWrapper from "@/components/QueryClientAndReduxWrapper";
-import Navbar from "@/components/common/Navbar/Navbar";
-import HomePageSurpriseButton from "@/components/HomePageSurpriseButton";
-import { usePathname, useSearchParams } from "next/navigation";
-import MobileFooter from "@/components/common/Footer/Mobile/MobileFooter";
-import DesktopFooter from "@/components/common/Footer/Desktop/DesktopFooter";
-import InitialDataLoader from "./common/InitialDataLoader";
-import ProtectedRoutedWrapper from "./common/ProtectedRoutedWrapper";
-import CMSWrapper from "./common/CMSWrapper";
-import GlobalLoader from "./common/GlobalLoader";
-import { pageview } from "@/utils/gTagEvents";
+import { ReactNode, useEffect } from 'react'
+import QueryClientAndReduxWrapper from '@/components/QueryClientAndReduxWrapper'
+import Navbar from '@/components/common/Navbar/Navbar'
+import HomePageSurpriseButton from '@/components/HomePageSurpriseButton'
+import { usePathname, useSearchParams } from 'next/navigation'
+import MobileFooter from '@/components/common/Footer/Mobile/MobileFooter'
+import DesktopFooter from '@/components/common/Footer/Desktop/DesktopFooter'
+import InitialDataLoader from './common/InitialDataLoader'
+import ProtectedRoutedWrapper from './common/ProtectedRoutedWrapper'
+import CMSWrapper from './common/CMSWrapper'
+import GlobalLoader from './common/GlobalLoader'
+import { pageview } from '@/utils/gTagEvents'
+import { SESSION_STORAGE_KEYS } from '@/constants'
+import BreakTheIceComponent from './BreakTheIceComponent'
 
 interface LayoutClientProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
-export default function LayoutClient({ children }: LayoutClientProps) {
-  const pathname = usePathname();
+export default function LayoutClient ({ children }: LayoutClientProps) {
+  const pathname = usePathname()
 
   useEffect(() => {
-    pageview(window.location.pathname);
-  }, [pathname]);
+    pageview(window.location.pathname)
+  }, [pathname])
+
+
+
 
   return (
     <QueryClientAndReduxWrapper>
@@ -32,24 +37,25 @@ export default function LayoutClient({ children }: LayoutClientProps) {
             <Navbar />
             {children}
             {/* Show Surprise button only when not on /scroll-and-lol */}
-            {!pathname.includes("/scroll-and-lol") && (
+            {!pathname.includes('/scroll-and-lol') && (
               <HomePageSurpriseButton />
             )}
 
             {/* Mobile Footer */}
-            <div className="block lg:hidden">
+            <div className='block lg:hidden'>
               <MobileFooter />
             </div>
 
             {/* Desktop Footer - visible on screens 900px and above (lg breakpoint) */}
-            <div className="hidden lg:block">
-              {!pathname.includes("/scroll-and-lol") && <DesktopFooter />}
+            <div className='hidden lg:block'>
+              {!pathname.includes('/scroll-and-lol') && <DesktopFooter />}
             </div>
           </ProtectedRoutedWrapper>
         </InitialDataLoader>
+        <BreakTheIceComponent />
       </CMSWrapper>
       {/* Global Loading Component */}
       <GlobalLoader />
     </QueryClientAndReduxWrapper>
-  );
+  )
 }

@@ -534,6 +534,11 @@ export const PROTECTED_ROUTES = [
   "/submit-your-joke",
 ];
 
+export const SESSION_STORAGE_KEYS = {
+  CURRENT_PATH: "currentPath",
+  PREVIOUS_PATH: "previousPath",
+};
+
 export const LOCAL_IMAGES = {
   SPRITE_GOLD: "sprite-gold.png",
   PROFILE_BG: "profile-bg.png",

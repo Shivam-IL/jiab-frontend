@@ -282,7 +282,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
               left: `${coordinates.jokeBox.x - 30.5}px`,
-              top: `${coordinates.jokeBox.y - 168.5}px`,
+              top: `${coordinates.jokeBox.y - 388.5}px`,
               width: '177px',
               height: '177px',
               position: 'fixed'
