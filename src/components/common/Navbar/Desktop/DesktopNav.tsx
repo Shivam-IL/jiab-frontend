@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Bell, ChevronDown, ChevronRight } from "lucide-react";
 import { ILogoAndProfileImageProps } from "@/interfaces";
 import NotificationItem from "../../NotificationItem/NotificationItem";
-import { GA_EVENTS, ICONS_NAMES } from "@/constants";
+import { GA_EVENTS, ICONS_NAMES, LANGUAGE_MNEMONICS } from "@/constants";
 import useAppDispatch from "@/hooks/useDispatch";
 import { updateLoginModal } from "@/store/auth/auth.slice";
 import SvgIcons from "../../SvgIcons";
@@ -19,7 +19,6 @@ import { useCMSData } from "@/data";
 import { triggerGAEvent } from "@/utils/gTagEvents";
 import { useRouter } from "next/navigation";
 import { DesktopBoxIds } from "../../HomePageDesktopOnboarding";
-import { LANGUAGE_MNEMONICS } from "@/constants";
 
 const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
@@ -202,7 +201,9 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
             <div className="relative" ref={exploreDropdownRef}>
               <button
                 id={DesktopBoxIds.EXPLORE}
-                className="flex items-center cursor-pointer"
+                className={`flex items-center cursor-pointer ${
+                  isExploreDropdownOpen ? "explore-button-with-arrow" : ""
+                }`}
                 onClick={() => setIsExploreDropdownOpen(!isExploreDropdownOpen)}
               >
                 <span className="mr-1">{cmsData.navBar.explore}</span>
@@ -214,8 +215,8 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
               </button>
 
               {isExploreDropdownOpen && (
-                <div className="absolute top-full left-0 mt-4 w-[300px] bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 pb-4 pt-2">
-                  <div className="flex flex-col space-y-1">
+                <div className="absolute top-full left-0 mt-4 w-[380px] bg-white border border-[#ebebeb] rounded-[5px] shadow-lg z-30 font-medium">
+                  <div className="flex flex-col">
                     {exploreMenuItems.map((item) => {
                       if (item.label === "Refer A Friend") {
                         return (
@@ -224,7 +225,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                               setRefer1(true);
                             }}
                             key={item.id}
-                            className="px-6 py-2 hover:bg-gray-50 text-start text-md font-normal"
+                            className="px-[20px] py-[10px] hover:bg-gray-50 text-start text-[18px] font-normal leading-tight"
                           >
                             {item.label}
                           </button>
@@ -237,7 +238,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                               setInvite1(true);
                             }}
                             key={item.id}
-                            className="px-6 py-2 text-start hover:bg-gray-50 text-md font-normal"
+                            className="px-[20px] py-[10px] text-start hover:bg-gray-50 text-[18px] font-normal leading-tight"
                           >
                             {item.label}
                           </button>
@@ -252,7 +253,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                               router.push(item.href);
                             }}
                             key={item.id}
-                            className="px-6 py-2 text-start hover:bg-gray-50 text-md font-normal"
+                            className="px-[20px] py-[10px] text-start hover:bg-gray-50 text-[18px] font-normal leading-tight"
                           >
                             {item.label}
                           </button>
@@ -262,20 +263,20 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         <Link
                           key={item.id}
                           href={item.href}
-                          className="px-6 py-2 hover:bg-gray-50 text-md font-normal"
+                          className="px-[20px] py-[10px] hover:bg-gray-50 text-[18px] font-normal leading-tight"
                           onClick={() => setIsExploreDropdownOpen(false)}
                         >
                           {item.label}
                         </Link>
                       );
                     })}
-                    <div className="px-6 pt-2">
+                    <div className="px-[20px] py-[10px]">
                       <Link
                         href="/user-generated-jokes"
                         className="block bg-green text-white rounded-lg p-3"
                         onClick={() => setIsExploreDropdownOpen(false)}
                       >
-                        <div className="text-sm font-medium">
+                        <div className="text-sm font-bold">
                           {cmsData.navBar.navBarInsideExploreBannerHeading}
                         </div>
                         <div className="text-md font-bold">
@@ -383,7 +384,9 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
           </LanguageHydration>
 
           <div
-            className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-black cursor-pointer relative"
+            className={`w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-black cursor-pointer relative ${
+              isProfileDropdownOpen ? "profile-button-with-arrow" : ""
+            }`}
             ref={profileDropdownRef}
             onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
           >
@@ -416,7 +419,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
             </div>
 
             {isProfileDropdownOpen && (
-              <div className="absolute top-full right-0 mt-2 bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 text-[18px] min-w-[183px]">
+              <div className="absolute top-full right-0 mt-[20px] bg-white border border-[#CDCDCD] rounded-lg shadow-lg z-30 text-[18px] min-w-[183px]">
                 {isAuthenticated ? (
                   <>
                     {isAuthenticated && (

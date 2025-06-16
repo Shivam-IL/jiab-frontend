@@ -17,7 +17,7 @@ export type TCMSResponse = {
       scroll_and_lol_text: string;
       view_all_button_text: string;
       pick_your_mood_heading: string;
-      pick_your_modd_subheading: string;
+      pick_your_mood_subheading: string;
       pj_challenge_heading: string;
       pj_challenge_subheading: string;
       pj_banner_submit_button_text: string;

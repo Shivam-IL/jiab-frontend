@@ -184,7 +184,10 @@ const ContestPage: React.FC = () => {
       title: cmsData.contest.banner7Header,
       ...parseRewardContent(cmsData.contest.banner7Content),
       action: () => {
-        setTimeout(() => router.push("/profile#qna"), 500);
+        // Navigate to profile page with QNA section - works on both desktop and mobile
+        setTimeout(() => {
+          router.push("/profile#qna");
+        }, 500);
       },
     },
   ];
@@ -224,6 +227,36 @@ const ContestPage: React.FC = () => {
       removeLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR);
     }
   }, []);
+
+  // Handle fragment scrolling when page loads
+  useEffect(() => {
+    const handleFragmentScroll = () => {
+      const hash = window.location.hash;
+      if (hash) {
+        const element = document.getElementById(hash.slice(1)); // Remove the '#'
+        if (element) {
+          // Add a small delay to ensure all components are rendered
+          setTimeout(() => {
+            element.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+              inline: "nearest",
+            });
+          }, 300);
+        }
+      }
+    };
+
+    // Check for fragment on initial load
+    handleFragmentScroll();
+
+    // Also listen for hash changes (in case user navigates back/forward)
+    window.addEventListener("hashchange", handleFragmentScroll);
+
+    return () => {
+      window.removeEventListener("hashchange", handleFragmentScroll);
+    };
+  }, [mounted]); // Depend on mounted to ensure DOM is ready
 
   return (
     <>
