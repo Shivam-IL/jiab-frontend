@@ -45,7 +45,7 @@ const UserAddressCard = ({
           onClick={() => setOpen(true)}
           className='bg-transparent shadow-none text-[#11A64B] p-0 m-0 font-[500] text-[12px] md:text-[24px]'
         >
-          +{addClickableText}
+          {addClickableText}
         </button>
       </div>
       {addresses?.length > 0 && (
