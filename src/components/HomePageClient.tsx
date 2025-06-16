@@ -262,7 +262,7 @@ export default function HomePageClient() {
                     className="flex flex-col items-center cursor-pointer"
                     onClick={() => handleCategoryClick(category)}
                   >
-                    <div className="rounded-full bg-white w-[70px] h-[70px] md:w-[140px] md:h-[140px] flex items-center justify-center md:hover:border-2 hover:border hover:border-green transition-all duration-900 md:hover:shadow-lg overflow-hidden">
+                    <div className="rounded-full bg-white w-[60px] h-[60px] md:w-[140px] md:h-[140px] flex items-center justify-center md:hover:border-2 hover:border hover:border-green transition-all duration-900 md:hover:shadow-lg overflow-hidden">
                       <Image
                         src={category.image_url}
                         alt={category.name}

@@ -24,6 +24,57 @@
   .animate-slideUp {
     animation: slideUp 0.3s ease-out forwards;
   }
+
+  /* Explore button arrow */
+  .explore-button-with-arrow::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 24px;
+    width: 20px;
+    height: 20px;
+    background-image: url('/other-svgs/navbar-arrow.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    z-index: 60;
+  }
+
+  /* Language dropdown arrow */
+  .language-button-with-arrow::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 32px;
+    width: 20px;
+    height: 20px;
+    background-image: url('/other-svgs/navbar-arrow.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    z-index: 60;
+  }
+
+  /* Profile dropdown arrow */
+  .profile-button-with-arrow::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 45px;
+    width: 20px;
+    height: 20px;
+    background-image: url('/other-svgs/navbar-arrow.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    z-index: 60;
+  }
 }
 
 @keyframes slideDown {
@@ -115,6 +166,10 @@
   * {
     @apply border-border;
     font-family: var(--font-aktiv-grotesk);
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {

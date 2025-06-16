@@ -29,7 +29,7 @@ export const mapHomePageData = (
     pickYourMoodHeading:
       homePageCMS?.pick_your_mood_heading ?? "Pick your mood",
     pickYourMoodSubheading:
-      homePageCMS?.pick_your_modd_subheading ??
+      homePageCMS?.pick_your_mood_subheading ??
       "Pick your Delulu, Get your Solulu",
     pjChallengeHeading: homePageCMS?.pj_challenge_heading ?? "PJ Challenge",
     pjChallengeSubheading:

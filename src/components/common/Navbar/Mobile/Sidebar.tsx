@@ -5,9 +5,7 @@ import { ChevronRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import useAppDispatch from "@/hooks/useDispatch";
 import { updateLoginModal } from "@/store/auth/auth.slice";
-import {
-  GA_EVENTS,
-} from "@/constants";
+import { GA_EVENTS } from "@/constants";
 import useAppSelector from "@/hooks/useSelector";
 import useLogout from "@/hooks/useLogout";
 import { useCMSData } from "@/data";
@@ -369,12 +367,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                         : "0ms",
                     }}
                   >
-                    <div className="mt-4">
+                    <div className="mt-4 ml-[24px]">
                       <Link href="/user-generated-jokes" onClick={onClose}>
-                        <button className="w-full bg-green text-white font-medium text-xs py-3 px-4 rounded-xl transition-colors duration-200 text-left">
+                        <button className="w-full bg-green text-white text-[10px] py-3 px-4 transition-colors duration-200 text-left rounded-[5px] font-[700] ">
                           {cmsData.navBar.navBarInsideExploreBannerHeading}
                           <br />
-                          <span className="font-[700]">
+                          <span className="font-[700] text-[12px]">
                             {cmsData.navBar.navBarInsideExploreBannerSubHeading}
                           </span>
                         </button>
