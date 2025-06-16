@@ -1,36 +1,96 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/common/Header/Header";
 import MobileTempNavBar from "@/components/common/MobileTempNavBar";
 import NotificationItem from "@/components/common/NotificationItem/NotificationItem";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
 import { MOBILE_TEMP_NAVBAR_DATA } from "@/constants";
 import useWindowWidth from "@/hooks/useWindowWidth";
-import { useGetNotifications } from "@/api/hooks/NotificationHooks";
+import {
+  useGetNotifications,
+  useMarkAsRead,
+} from "@/api/hooks/NotificationHooks";
 import { INotification } from "@/api/types/NotificationTypes";
+import { useQueryClient } from "@tanstack/react-query";
+import { keys } from "@/api/utils";
 
 const NotificationsPage: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(20); // Default page size
+  const queryClient = useQueryClient();
 
   const {
     data: notificationsResponse,
     isLoading,
-    error,
     isError,
-  } = useGetNotifications({
-    page_number: currentPage,
-    page_size: pageSize,
-  });
+  } = useGetNotifications({});
 
+  const markAsReadMutation = useMarkAsRead();
   const width = useWindowWidth();
 
+  // Auto mark as read when page loads on mobile (width < 768)
+  useEffect(() => {
+    if (width > 0 && width < 768) {
+      // Only for mobile
+      markAsReadMutation.mutate(undefined, {
+        onSuccess: () => {
+          // Invalidate and refetch notifications to update the UI
+          queryClient.invalidateQueries({
+            queryKey: [...keys.notifications.getNotifications()],
+          });
+
+          // Also invalidate notification count
+          queryClient.invalidateQueries({
+            queryKey: [...keys.notifications.getNotificationCount()],
+          });
+        },
+        onError: (error) => {
+          console.error("Failed to mark notifications as read:", error);
+        },
+      });
+    }
+  }, [width, markAsReadMutation, queryClient]);
+
   // Extract notifications data from the response
-  const notifications = notificationsResponse?.data?.notifications || [];
-  const totalCount = notificationsResponse?.data?.total_count || 0;
-  const hasNextPage = currentPage * pageSize < totalCount;
-  const hasPreviousPage = currentPage > 1;
+  const notifications = notificationsResponse?.data?.notifications ?? [];
+
+  // Function to calculate time difference for timestamps
+  const getTimeAgo = (launchDate: string | null): string => {
+    if (!launchDate) return "Recently";
+
+    const now = new Date();
+    const launch = new Date(launchDate);
+    const diffInMs = now.getTime() - launch.getTime();
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInDays > 0) {
+      return `${diffInDays}d`;
+    } else if (diffInHours > 0) {
+      return `${diffInHours}h`;
+    } else {
+      const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+      return diffInMinutes > 0 ? `${diffInMinutes}m` : "Now";
+    }
+  };
+
+  // Handle notification click to mark as read
+  const handleNotificationClick = async () => {
+    try {
+      await markAsReadMutation.mutateAsync();
+
+      // Invalidate and refetch notifications to update the UI
+      queryClient.invalidateQueries({
+        queryKey: [...keys.notifications.getNotifications()],
+      });
+
+      // Also invalidate notification count
+      queryClient.invalidateQueries({
+        queryKey: [...keys.notifications.getNotificationCount()],
+      });
+    } catch (error) {
+      console.error("Failed to mark notification as read:", error);
+    }
+  };
 
   // Handle loading state
   if (isLoading) {
@@ -160,51 +220,14 @@ const NotificationsPage: React.FC = () => {
               key={index}
               title={notification.notification_title}
               description={notification.notification_text}
-              timestamp="2 h" // You may want to calculate this from a timestamp field if available
+              timestamp={getTimeAgo(notification.launch_date)}
               iconBg={notification.is_new ? "bg-primary" : "bg-gray-400"}
-              // You can add more props based on the notification data
-              // isRead={notification.is_read}
-              // iconUrl={notification.icon_url}
+              iconUrl={notification.icon_url}
+              isRead={notification.is_read}
+              isNew={notification.is_new}
+              onClick={handleNotificationClick}
             />
           ))}
-        </div>
-
-        {/* Pagination Controls */}
-        {totalCount > pageSize && (
-          <div className="flex justify-between items-center mt-8 px-4">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-              disabled={!hasPreviousPage}
-              className={`px-4 py-2 rounded transition-colors ${
-                hasPreviousPage
-                  ? "bg-primary text-white hover:bg-primary-dark"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
-            >
-              Previous
-            </button>
-
-            <span className="text-gray-600">
-              Page {currentPage} of {Math.ceil(totalCount / pageSize)}
-            </span>
-
-            <button
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-              disabled={!hasNextPage}
-              className={`px-4 py-2 rounded transition-colors ${
-                hasNextPage
-                  ? "bg-primary text-white hover:bg-primary-dark"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
-            >
-              Next
-            </button>
-          </div>
-        )}
-
-        {/* Total notifications count */}
-        <div className="text-center mt-4 text-gray-600 text-sm">
-          Showing {notifications.length} of {totalCount} notifications
         </div>
       </ScreenWrapper>
     </div>

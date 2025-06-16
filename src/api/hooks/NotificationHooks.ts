@@ -40,4 +40,13 @@ const useRegisterDevice = () => {
   });
 };
 
-export { useGetNotifications, useGetNotificationCount, useRegisterDevice };
+// Hook to mark notifications as read
+const useMarkAsRead = () => {
+  const notificationInstance = NotificationService.getInstance();
+
+  return useMutation({
+    mutationFn: () => notificationInstance.MarkAsRead(),
+  });
+};
+
+export { useGetNotifications, useGetNotificationCount, useRegisterDevice, useMarkAsRead };

@@ -104,5 +104,6 @@ export const API_ROUTES = {
     GET_NOTIFICATIONS: "/notifications/",
     GET_NOTIFICATION_COUNT: "/notifications/count",
     REGISTER_DEVICE: "/notifications/register-device",
+    MARK_AS_READ: "/notifications/mark-as-read",
   }
 };

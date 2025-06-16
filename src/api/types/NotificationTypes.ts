@@ -1,7 +1,8 @@
 export interface INotification {
-  icon_url: string;
+  icon_url: string | null;
   is_new: boolean;
   is_read: boolean;
+  launch_date: string | null;
   notification_text: string;
   notification_title: string;
 }
@@ -37,6 +38,14 @@ export interface TRegisterDeviceRequest {
 
 // Register device response
 export interface IRegisterDeviceResponse {
+  data: string;
+  message: string;
+  status: number;
+  success: boolean;
+}
+
+// Mark as read response
+export interface IMarkAsReadResponse {
   data: string;
   message: string;
   status: number;

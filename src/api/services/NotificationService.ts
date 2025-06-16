@@ -104,4 +104,31 @@ export class NotificationService extends MainService {
       throw error;
     }
   }
+
+  /**
+   * Mark notifications as read
+   * Corresponds to POST /notifications/mark-as-read
+   */
+  public async MarkAsRead() {
+    try {
+      const endpoint = API_ROUTES.NOTIFICATIONS.MARK_AS_READ;
+      const response = await apiClient.post(
+        endpoint,
+        {},
+        {
+          headers: {
+            ...this.getAuthHeaders(),
+          },
+        }
+      );
+
+      const responseData = response.data;
+      if (responseData?.success) {
+        return SuccessResponse(responseData.data);
+      }
+      return ErrorResponse(responseData?.message ?? "Something went wrong");
+    } catch (error) {
+      throw error;
+    }
+  }
 }
