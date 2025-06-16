@@ -35,3 +35,17 @@ export type TSubmitJokeParams = {
   file: FileList;
   jokeText?: string;
 };
+
+// Comic Coins API response types
+export interface IComicCoinsData {
+  comic_coin: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IComicCoinsResponse {
+  data: IComicCoinsData;
+  message: string;
+  status: number;
+  success: boolean;
+}

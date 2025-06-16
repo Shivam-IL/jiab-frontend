@@ -28,8 +28,10 @@ export interface IAddress extends TAddessId, TAddress {}
 type TQuestion = {
   answer_id: number;
   question_id: number;
+  language_id?: number;
 };
 
 export type TSubmitQuestions = {
   questions: TQuestion[];
+  language_id?: number;
 };

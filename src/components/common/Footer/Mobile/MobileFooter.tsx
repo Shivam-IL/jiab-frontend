@@ -4,9 +4,17 @@ import Link from "next/link";
 import comicCoin from "../../../../../public/other-svgs/comic-coin-footer.svg";
 import { BoxIds } from "../../../common/CircularBoxesModal";
 import { useCMSData } from "@/data";
+import { useGetComicCoins } from "@/api/hooks/JokeHooks";
+
 const MobileFooter = () => {
   const [currentPath, setCurrentPath] = useState("/");
   const [mounted, setMounted] = useState(false);
+
+  // Fetch comic coins data
+  const {
+    data: comicCoinsData,
+    isLoading: isComicCoinsLoading,
+  } = useGetComicCoins();
 
   // Use effect to handle client-side hydration
   useEffect(() => {
@@ -15,6 +23,9 @@ const MobileFooter = () => {
 
   // Get mapped CMS data using our data layer
   const cmsData = useCMSData(mounted);
+
+  // Get comic coins value with fallback
+  const comicCoinsValue = comicCoinsData?.data?.comic_coin ?? 0;
 
   useEffect(() => {
     // Set initial path
@@ -163,7 +174,7 @@ const MobileFooter = () => {
                    currentPath === "/my-wallet" ? "bg-green" : "bg-black"
                  }`}
               >
-                0
+                {isComicCoinsLoading ? "0" : comicCoinsValue}
               </div>
             </div>
             <span

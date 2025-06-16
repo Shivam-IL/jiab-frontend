@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import SvgIcons from "../SvgIcons";
+import SvgIcons from "../common/SvgIcons";
 import { ICONS_NAMES } from "@/constants";
 import { aktivGrotesk } from "@/app/layout";
 import SurpriseMeCTA from "@/components/SurpriseMeCTA";
 import { MakeLaughExitPopup } from "@/components/ExitPopUps";
 import { useGetSurpriseMeJoke } from "@/api/hooks/JokeHooks";
 import { formatNumberToK } from "@/utils";
-import CustomPopupWrapper from "../CustomPopupWrapper";
+import CustomPopupWrapper from "../common/CustomPopupWrapper";
 import {
   useSendGluedinUserReaction,
   useGetGluedinAssetById,
@@ -17,27 +17,27 @@ import {
 } from "@/api/hooks/GluedinHooks";
 import { ReactionType } from "@/types";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
-import { useSessionModal } from "@/hooks/useSessionModal";
 
-const SurpriseMeModal = ({
-  onClose,
-  forceShow = false,
-}: {
+interface ContestSurpriseModalProps {
+  open: boolean;
   onClose: () => void;
-  forceShow?: boolean;
+  onReaction?: () => void;
+}
+
+const ContestSurpriseModal: React.FC<ContestSurpriseModalProps> = ({
+  open,
+  onClose,
+  onReaction,
 }) => {
-  const { shouldShow, hasChecked } = useSessionModal(
-    "hasShownSurpriseMe",
-    forceShow
-  );
-  const [open, setOpen] = useState<boolean>(false);
   const [makeLaughExitPopup, setMakeLaughExitPopup] = useState<boolean>(false);
-  const { data: jokeData, isLoading: jokeLoading } = useGetSurpriseMeJoke();
   const [joke, setJoke] = useState<any>(null);
   const [jokeId, setJokeId] = useState<string>("");
   const [reactionType, setReactionType] = useState<string>("");
   const [serialChill, setSerialChill] = useState<boolean>(false);
   const { forceHideLoader } = useGlobalLoader();
+
+  // Only fetch joke data when modal is open
+  const { data: jokeData, isLoading: jokeLoading } = useGetSurpriseMeJoke();
 
   const {
     mutate: mutateSendGluedinUserReaction,
@@ -48,27 +48,16 @@ const SurpriseMeModal = ({
     useViewGludeinJokes();
   const { data: gluedinAssetData } = useGetGluedinAssetById(jokeId);
 
-  // Set open state based on session check
   useEffect(() => {
-    if (hasChecked) {
-      if (shouldShow) {
-        setOpen(true);
-      } else {
-        onClose();
-      }
-    }
-  }, [shouldShow, hasChecked, onClose]);
-
-  useEffect(() => {
-    if (jokeData?.ok) {
+    if (open && jokeData?.ok) {
       viewGludeinJokes({ assetIds: [jokeData?.data?.id] });
       setJoke(jokeData?.data ?? {});
       setSerialChill(false);
-    } else if (jokeData?.ok === false) {
+    } else if (open && jokeData?.ok === false) {
       setJoke({});
       setSerialChill(true);
     }
-  }, [jokeData]);
+  }, [jokeData, open]);
 
   useEffect(() => {
     if (gluedinAssetData?.ok) {
@@ -93,6 +82,11 @@ const SurpriseMeModal = ({
       assetId: assetId,
       reactionType: reactionType,
     });
+
+    // Trigger coin animation on reaction
+    if (onReaction) {
+      onReaction();
+    }
   };
 
   useEffect(() => {
@@ -121,7 +115,6 @@ const SurpriseMeModal = ({
   // Handle modal close with proper cleanup
   const handleClose = () => {
     forceHideLoader(); // Ensure any loading states are cleared
-    setOpen(false);
     onClose();
   };
 
@@ -131,6 +124,11 @@ const SurpriseMeModal = ({
       forceHideLoader(); // Cleanup on unmount
     };
   }, [forceHideLoader]);
+
+  // Don't render anything if modal is not open
+  if (!open) {
+    return null;
+  }
 
   if (serialChill) {
     return (
@@ -280,4 +278,4 @@ const SurpriseMeModal = ({
   );
 };
 
-export default SurpriseMeModal;
+export default ContestSurpriseModal;

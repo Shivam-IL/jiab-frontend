@@ -57,10 +57,10 @@ const HomePageSurpriseButton = () => {
         />
       </button>
       {surpriseMeModal && isAuthenticated && token && !enableCoachMarks && (
-        <SurpriseMeModal onClose={closeSurpriseMe} />
+        <SurpriseMeModal onClose={closeSurpriseMe} forceShow={true} />
       )}
       {surpriseMeModal && !isAuthenticated && !token && (
-        <SurpriseMeLockModal onClose={closeSurpriseMe} />
+        <SurpriseMeLockModal onClose={closeSurpriseMe} forceShow={true} />
       )}
     </>
   );

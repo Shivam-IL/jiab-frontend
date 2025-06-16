@@ -293,6 +293,7 @@ export interface IUgcComponent {
   };
   isUnmounting?: boolean;
   jokesData?: TModifiedUGCContent[];
+  onVoteSuccess?: () => void;
 }
 
 export interface IAddressData {
@@ -337,4 +338,5 @@ export interface IInviteeData {
 export interface UgcCardProps {
   disclaimerText?: string
   item?: TModifiedUGCContent
+  onVoteSuccess?: () => void
 }

@@ -75,7 +75,7 @@ export const API_ROUTES = {
     GET_GENRES: "/reference-data/genres",
   },
   COMIC_COINS: {
-    GET_COINS: "/comic-coins",
+    GET_COINS: "/comic-coin",
   },
   JOKES: {
     GET_SCROLL_AND_LOL: "/joke/jokes",

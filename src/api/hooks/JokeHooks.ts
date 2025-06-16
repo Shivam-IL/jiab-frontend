@@ -5,11 +5,11 @@ import useAppSelector from "@/hooks/useSelector";
 import { TGetJokesParams, TSubmitJokeParams } from "../types/JokeTypes";
 
 const jokeInstance = JokeService.getInstance();
-const useGetSurpriseMeJoke = () => {
+const useGetSurpriseMeJoke = (genreId?: number, languageId?: number) => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
   return useQuery({
-    queryKey: [...keys.joke.getSurpriseMeJoke()],
-    queryFn: () => jokeInstance.GetSurpriseMe(),
+    queryKey: [...keys.joke.getSurpriseMeJoke(), genreId, languageId],
+    queryFn: () => jokeInstance.GetSurpriseMe(genreId, languageId),
     enabled: !!(isAuthenticated && token),
     staleTime: 0,
   });
@@ -41,9 +41,20 @@ const useGetUserSubmittedJokes = () => {
   });
 };
 
+const useGetComicCoins = () => {
+  const { isAuthenticated, token } = useAppSelector((state) => state.auth);
+  return useQuery({
+    queryKey: [...keys.joke.getComicCoins()],
+    queryFn: () => jokeInstance.GetComicCoins(),
+    enabled: isAuthenticated && token ? true : false,
+    staleTime: 0,
+  });
+};
+
 export {
   useGetSurpriseMeJoke,
   useGetJokes,
   useSubmitJoke,
   useGetUserSubmittedJokes,
+  useGetComicCoins,
 };

@@ -186,10 +186,14 @@ export class ProfileService extends MainService {
     }
   }
 
-  public async submitUserQuestions({ questions }: TSubmitQuestions) {
+  public async submitUserQuestions({ questions, language_id }: TSubmitQuestions) {
     try {
       const endpoint = `${API_ROUTES.USER.QUESTIONS.POST}${questions?.[0]?.question_id}`;
-      const response = await apiClient.post(endpoint, questions, {
+      const payload = {
+        questions,
+        ...(language_id && { language_id })
+      };
+      const response = await apiClient.post(endpoint, payload, {
         headers: this.getAuthHeaders(),
       });
       const data = response.data;

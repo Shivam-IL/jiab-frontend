@@ -7,6 +7,7 @@ import GreenCTA from "@/components/GreenCTA";
 import { useRouter } from "next/navigation";
 import useAppSelector from "@/hooks/useSelector";
 import SvgIcons from "../SvgIcons";
+import { useGetComicCoins } from "@/api/hooks/JokeHooks";
 
 const UserComicsCoinsAndRankCard = ({
   comicCoins,
@@ -19,12 +20,26 @@ const UserComicsCoinsAndRankCard = ({
 }) => {
   const router = useRouter();
   const { current_balance, rank } = useAppSelector((state) => state.profile);
+
+  // Fetch comic coins data
+  const {
+    data: comicCoinsData,
+    isLoading: isComicCoinsLoading,
+    isError: isComicCoinsError,
+  } = useGetComicCoins();
+
+  // Get comic coins value with fallback
+  const comicCoinsValue =
+    comicCoinsData?.data?.comic_coin ?? current_balance ?? 0;
+
   return (
     <div className="flex gap-2 md:justify-between py-3 md:pt-[24px]">
       <div className="relative flex md:gap-[50px] md:w-[75%] w-[65%]">
         <div className="relative w-[48%] md:w-[35%] flex flex-col items-center justify-between gap-[6px] md:gap-[8px]">
           <AktivGroteskText
-            text={current_balance?.toString() || "0"}
+            text={
+              isComicCoinsLoading ? "--" : comicCoinsValue.toString() || "0"
+            }
             className="text-black"
             fontSize="text-[16px] md:text-[32px]"
             fontWeight="font-[700]"
@@ -54,11 +69,11 @@ const UserComicsCoinsAndRankCard = ({
               image=""
               itemsGapClass="gap-[5px] md:gap-[8px]"
               icon={ICONS_NAMES.RANK}
-              iconClassName='w-[9px] h-[12px] md:w-[18px] md:h-[28px]'
+              iconClassName="w-[9px] h-[12px] md:w-[18px] md:h-[28px]"
               text={ranks}
-              fontSize='text-[12px] md:text-[28px]'
-              fontWeight='font-[700]'
-              textColor='text-black'
+              fontSize="text-[12px] md:text-[28px]"
+              fontWeight="font-[700]"
+              textColor="text-black"
             />
           </div>
         </div>
