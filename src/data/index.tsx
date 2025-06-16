@@ -1,125 +1,133 @@
 // Export all mapping functions and their types
-export * from "./home-page";
-export * from "./nav-bar";
-export * from "./scroll-and-lol";
-export * from "./pj-challenge";
-export * from "./joke-box";
-export * from "./hall-of-lame";
-export * from "./refer-a-friend";
-export * from "./contest";
-export * from "./web-footer";
-export * from "./comic";
-export * from "./nav-footer";
-export * from "./have-an-invite-code";
-export * from "./my-profile";
-export * from "./logout-button";
-export * from "./faq";
-export * from "./contact-us";
-export * from "./plus-add-inside-profile";
+export * from './home-page'
+export * from './nav-bar'
+export * from './scroll-and-lol'
+export * from './pj-challenge'
+export * from './joke-box'
+export * from './hall-of-lame'
+export * from './refer-a-friend'
+export * from './contest'
+export * from './web-footer'
+export * from './comic'
+export * from './nav-footer'
+export * from './have-an-invite-code'
+export * from './my-profile'
+export * from './logout-button'
+export * from './faq'
+export * from './contact-us'
+export * from './plus-add-inside-profile'
 
 // Import all the mapping functions
 import {
   mapHomePageData,
   defaultHomePageData,
-  type HomePageData,
-} from "./home-page";
-import { mapNavBarData, defaultNavBarData, type NavBarData } from "./nav-bar";
+  type HomePageData
+} from './home-page'
+import { mapNavBarData, defaultNavBarData, type NavBarData } from './nav-bar'
 import {
   mapScrollAndLolData,
   defaultScrollAndLolData,
-  type ScrollAndLolData,
-} from "./scroll-and-lol";
+  type ScrollAndLolData
+} from './scroll-and-lol'
 import {
   mapPjChallengeData,
   defaultPjChallengeData,
-  type PjChallengeData,
-} from "./pj-challenge";
+  type PjChallengeData
+} from './pj-challenge'
 import {
   mapJokeBoxData,
   defaultJokeBoxData,
-  type JokeBoxData,
-} from "./joke-box";
+  type JokeBoxData
+} from './joke-box'
 import {
   mapHallOfLameData,
   defaultHallOfLameData,
-  type HallOfLameData,
-} from "./hall-of-lame";
+  type HallOfLameData
+} from './hall-of-lame'
 import {
   mapReferAFriendData,
   defaultReferAFriendData,
-  type ReferAFriendData,
-} from "./refer-a-friend";
-import {
-  mapContestData,
-  defaultContestData,
-  type ContestData,
-} from "./contest";
+  type ReferAFriendData
+} from './refer-a-friend'
+import { mapContestData, defaultContestData, type ContestData } from './contest'
 import {
   mapWebFooterData,
   defaultWebFooterData,
-  type WebFooterData,
-} from "./web-footer";
-import { mapComicData, defaultComicData, type ComicData } from "./comic";
+  type WebFooterData
+} from './web-footer'
+import { mapComicData, defaultComicData, type ComicData } from './comic'
 import {
   mapNavFooterData,
   defaultNavFooterData,
-  type NavFooterData,
-} from "./nav-footer";
+  type NavFooterData
+} from './nav-footer'
 import {
   mapHaveAnInviteCodeData,
   defaultHaveAnInviteCodeData,
-  type HaveAnInviteCodeData,
-} from "./have-an-invite-code";
+  type HaveAnInviteCodeData
+} from './have-an-invite-code'
 import {
   mapMyProfileData,
   defaultMyProfileData,
-  type MyProfileData,
-} from "./my-profile";
+  type MyProfileData
+} from './my-profile'
 import {
   mapLogoutButtonData,
   defaultLogoutButtonData,
-  type LogoutButtonData,
-} from "./logout-button";
-import { mapFaqData, defaultFaqData, type FaqData } from "./faq";
+  type LogoutButtonData
+} from './logout-button'
+import { mapFaqData, defaultFaqData, type FaqData } from './faq'
 import {
   mapContactUsData,
   defaultContactUsData,
-  type ContactUsData,
-} from "./contact-us";
+  type ContactUsData
+} from './contact-us'
 import {
   mapPlusAddInsideProfileData,
   defaultPlusAddInsideProfileData,
-  type PlusAddInsideProfileData,
-} from "./plus-add-inside-profile";
+  type PlusAddInsideProfileData
+} from './plus-add-inside-profile'
+import {
+  BreakTheIceData,
+  defaultBreakTheIceData,
+  mapBreakTheIceData
+} from './break_the_ice'
 
-import { TCMSResponse } from "@/api/types/CMSTypes";
-import useAppSelector from "@/hooks/useSelector";
-import { useMemo } from "react";
+import { TCMSResponse } from '@/api/types/CMSTypes'
+import useAppSelector from '@/hooks/useSelector'
+import { useMemo } from 'react'
+import {
+  defaultDidThatMakeYouLaughData,
+  DidThatMakeYouLaughData,
+  mapDidThatMakeYouLaughData
+} from './did_that_make_you_laugh'
 
 // Combined interface for all CMS data
 export interface AllCMSData {
-  homePage: HomePageData;
-  navBar: NavBarData;
-  scrollAndLol: ScrollAndLolData;
-  pjChallenge: PjChallengeData;
-  jokeBox: JokeBoxData;
-  hallOfLame: HallOfLameData;
-  referAFriend: ReferAFriendData;
-  contest: ContestData;
-  webFooter: WebFooterData;
-  comic: ComicData;
-  navFooter: NavFooterData;
-  haveAnInviteCode: HaveAnInviteCodeData;
-  myProfile: MyProfileData;
-  logoutButton: LogoutButtonData;
-  faq: FaqData;
-  contactUs: ContactUsData;
-  plusAddInsideProfile: PlusAddInsideProfileData;
+  homePage: HomePageData
+  navBar: NavBarData
+  scrollAndLol: ScrollAndLolData
+  pjChallenge: PjChallengeData
+  jokeBox: JokeBoxData
+  hallOfLame: HallOfLameData
+  referAFriend: ReferAFriendData
+  contest: ContestData
+  webFooter: WebFooterData
+  comic: ComicData
+  navFooter: NavFooterData
+  haveAnInviteCode: HaveAnInviteCodeData
+  myProfile: MyProfileData
+  logoutButton: LogoutButtonData
+  faq: FaqData
+  contactUs: ContactUsData
+  plusAddInsideProfile: PlusAddInsideProfileData
+  breakTheIce: BreakTheIceData
+  didThatMakeYouLaugh: DidThatMakeYouLaughData
 }
 
 // Hook to get all mapped CMS data
 export const useCMSData = (mounted: boolean = true): AllCMSData => {
-  const { homePageContent } = useAppSelector((state) => state.cms);
+  const { homePageContent } = useAppSelector(state => state.cms)
 
   return useMemo(() => {
     if (!mounted) {
@@ -142,7 +150,9 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
         faq: defaultFaqData,
         contactUs: defaultContactUsData,
         plusAddInsideProfile: defaultPlusAddInsideProfileData,
-      };
+        breakTheIce: defaultBreakTheIceData,
+        didThatMakeYouLaugh: defaultDidThatMakeYouLaughData
+      }
     }
 
     // Return mapped data from CMS
@@ -164,13 +174,15 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
       faq: mapFaqData(homePageContent),
       contactUs: mapContactUsData(homePageContent),
       plusAddInsideProfile: mapPlusAddInsideProfileData(homePageContent),
-    };
-  }, [homePageContent, mounted]);
-};
+      breakTheIce: mapBreakTheIceData(homePageContent),
+      didThatMakeYouLaugh: mapDidThatMakeYouLaughData(homePageContent)
+    }
+  }, [homePageContent, mounted])
+}
 
 // Individual mapping functions for specific pages
 export const mapAllCMSData = (
-  cmsData: TCMSResponse["data"] | null
+  cmsData: TCMSResponse['data'] | null
 ): AllCMSData => {
   return {
     homePage: mapHomePageData(cmsData),
@@ -190,5 +202,7 @@ export const mapAllCMSData = (
     faq: mapFaqData(cmsData),
     contactUs: mapContactUsData(cmsData),
     plusAddInsideProfile: mapPlusAddInsideProfileData(cmsData),
-  };
-};
+    breakTheIce: mapBreakTheIceData(cmsData),
+    didThatMakeYouLaugh: mapDidThatMakeYouLaughData(cmsData)
+  }
+}

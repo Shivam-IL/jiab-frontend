@@ -264,6 +264,32 @@ export type TCMSResponse = {
       publishedAt: string;
       locale: string;
     };
+    break_the_ice_complete_profile_pop_up: {
+      id: number;
+      documentId: string;
+      break_the_ice_heading: string;
+      break_the_ice_sub_heading_1: string;
+      break_the_ice_sub_heading_2: string;
+      break_the_ice_yes_button: string;
+      break_the_ice_no_button: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
+    surprise_me_pop_up: {
+      id: number;
+      documentId: string;
+      surprise_me_pop_up_heading: string;
+      surprise_me_pop_up_sub_heading_1: string;
+      surprise_me_pop_up_sub_heading_2: string;
+      surprise_me_pop_up_yes_button: string;
+      surprise_me_pop_up_no_button: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
     faq: {
       id: number;
       documentId: string;

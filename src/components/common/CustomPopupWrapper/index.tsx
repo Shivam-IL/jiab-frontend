@@ -16,17 +16,24 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
   singleButton,
   singleButtonText,
   singleButtonOnClick,
+  sureToExitText,
   doubleButton,
   children,
   childrenPosition,
-  setOpen
+  setOpen,
+  yesButtonClick,
+  noButtonClick,
+  yesButtonText,
+  noButtonText
 }) => {
   return (
     <CustomDialogWrapper
       open={open}
-        onClose={() => {
+      onClose={() => {
+        if (onClose) {
           onClose()
-        }}
+        }
+      }}
     >
       <div className='w-full  h-full flex flex-col gap-[16px] items-center justify-center'>
         <div className='flex flex-col items-center justify-center w-[50px] h-[50px] rounded-full bg-[#FFE200]'>
@@ -45,7 +52,7 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
           />
           {doubleButton && (
             <AktivGroteskText
-              text='Are you sure you want to exit?'
+              text={sureToExitText || 'Are you sure you want to exit?'}
               fontSize='text-[14px]'
               fontWeight='font-[500]'
             />
@@ -55,19 +62,29 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
           <div className='flex pb-[16px] gap-[14px]'>
             <button
               onClick={() => {
-                onClose()
+                if (onClose) {
+                  onClose()
+                }
+                if (yesButtonClick) {
+                  yesButtonClick()
+                }
               }}
               className={`py-[10px] ${aktivGrotesk.className} leading-tight px-[28px] bg-white border-[1px] border-black rounded-[100px] text-[14px] md:text-[18px] font-[700]`}
             >
-              Yes
+              {yesButtonText || 'Yes'}
             </button>
             <GreenCTA
               className='leading-tight'
               fontSize='text-[14px] md:text-[18px]'
               paddingClass='py-[10px] px-[28px]'
-              text='No'
+              text={noButtonText || 'No'}
               onClick={() => {
-                setOpen?.(false)
+                if (setOpen) {
+                  setOpen(false)
+                }
+                if (noButtonClick) {
+                  noButtonClick()
+                }
               }}
             />
           </div>

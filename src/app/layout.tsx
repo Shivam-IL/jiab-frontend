@@ -79,6 +79,12 @@ export default function RootLayout({
         scroll-behavior="smooth"
       >
         <LayoutClient>{children}</LayoutClient>
+        {/* {showExitPopup && (
+        <BreakTheIceExitPopup
+          open={showExitPopup}
+          onClose={handleStayOnPage}
+        />
+      )} */}  
       </body>
     </html>
   );
