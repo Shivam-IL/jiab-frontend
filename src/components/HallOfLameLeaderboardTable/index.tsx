@@ -21,96 +21,116 @@ const DisplayTable = ({
   offset
 }: IHallOfLameDisplayTableProps) => {
   return (
-    <table className='w-full border-separate border-spacing-y-[12px] md:border-spacing-y-[20px]'>
-      <thead>
-        <tr className='border-none bg-[#FFE200] w-full'>
-          <th
-            className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700] text-center py-[12px] md:py-[20px] pl-[12px] md:pl-[60px] rounded-l-[5px] md:rounded-l-[10px]`}
-          >
-            {rank}
-          </th>
-          <th
-            className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700]  text-start py-[12px] pl-[22px] md:py-[20px]`}
-          >
-            {jokes}
-          </th>
-          <th
-            className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700] text-center py-[12px] md:py-[20px] pr-[12px] md:pr-[60px] rounded-r-[5px] md:rounded-r-[10px]`}
-          >
-            {votes}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {data?.length > 0 &&
-          data.map((item: IHallOfLameData) => {
-            return (
-              <tr key={item.id} className='border-none mt-[12px] bg-white'>
-                <td
-                  className={`${aktivGrotesk.className} relative text-[12px] md:text-[16px] font-[400] text-center py-[12px] box-border md:py-[19px] pl-[12px] md:pl-[60px] rounded-l-[5px] md:rounded-l-[10px]`}
-                >
-                  {(offset - 1) * 5 + (item?.rank ?? 0)}.
-                </td>
-                <td
-                  className={`${aktivGrotesk.className} relative box-border text-[12px] md:text-[16px] font-[400] py-[12px] md:py-[19px] pl-[22px]`}
-                >
-                  <div className='flex gap-[19px] box-border relative w-full'>
-                    <div className='min-w-[57px] md:min-w-[72px] min-h-[57px] md:min-h-[72px] rounded-[3px] bg-green'></div>
-                    <div className='flex flex-col text-start box justify-between'>
-                      <div className='flex flex-col md:gap-0 gap-[4px] justify-between'>
+    <>
+      <table className='w-full table-fixed border-separate border-spacing-y-[12px] md:border-spacing-y-[20px]'>
+        <colgroup>
+          <col style={{ width: '15%' }} />
+          <col style={{ width: '60%' }} />
+          <col style={{ width: '25%' }} />
+        </colgroup>
+        <thead>
+          <tr className='border-none bg-[#FFE200] w-full'>
+            <th
+              className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700] text-center py-[12px] md:py-[20px] pl-[12px] md:pl-[60px] rounded-l-[5px] md:rounded-l-[10px]`}
+            >
+              {rank}
+            </th>
+            <th
+              className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700]  text-start py-[12px] pl-[22px] md:py-[20px]`}
+            >
+              {jokes}
+            </th>
+            <th
+              className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700] text-center py-[12px] md:py-[20px] pr-[12px] md:pr-[60px] rounded-r-[5px] md:rounded-r-[10px]`}
+            >
+              {votes}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {data?.length > 0 &&
+            data.map((item: IHallOfLameData) => {
+              return (
+                <tr key={item.id} className='border-none mt-[12px] bg-white'>
+                  <td
+                    className={`${aktivGrotesk.className} relative text-[12px] md:text-[16px] font-[400] text-center py-[12px] box-border md:py-[19px] pl-[12px] md:pl-[60px] rounded-l-[5px] md:rounded-l-[10px]`}
+                  >
+                    {(offset - 1) * 5 + (item?.rank ?? 0)}.
+                  </td>
+                  <td
+                    className={`${aktivGrotesk.className} relative box-border text-[12px] md:text-[16px] font-[400] py-[12px] md:py-[19px] pl-[22px]`}
+                  >
+                    <div className='flex gap-[19px] box-border relative w-full'>
+                      <div className='min-w-[57px] md:min-w-[72px] min-h-[57px] md:min-h-[72px] rounded-[3px] bg-green'></div>
+                      <div className='flex flex-col text-start box justify-between w-full'>
+                        <div className='flex flex-col md:gap-0 gap-[4px] justify-between'>
+                          <div className='truncate max-w-[60%] md:max-w-[75%]'>
+                            <AktivGroteskText
+                              text={item?.title ?? ''}
+                              className='leading-tight w-full'
+                              fontSize='text-[12px] md:text-[18px]'
+                              fontWeight='font-[700]'
+                            />
+                          </div>
+                          <AktivGroteskText
+                            text={item?.jokeOwnerName ?? ''}
+                            className='leading-tight w-full'
+                            fontSize='text-[10px] md:text-[16px]'
+                            fontWeight='font-[400]'
+                          />
+                        </div>
                         <AktivGroteskText
-                          text={item?.title ?? ''}
+                          text={getLabel(item?.labels ?? [])}
+                          className='leading-tight w-full text-[rgba(0,0,0,0.5)]'
+                          fontSize='text-[10px] md:text-[14px]'
+                          fontWeight='font-[400]'
+                        />
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    className={`${aktivGrotesk.className} box-border text-[12px] md:text-[16px] font-[400] text-center py-[12px] md:py-[19px] pr-[12px] md:pr-[60px] rounded-r-[5px] md:rounded-r-[10px]`}
+                  >
+                    <div className='flex flex-col justify-between md:justify-center gap-[2px] md:gap-[9px] items-center h-[57px] md:h-fit relative w-full'>
+                      <AktivGroteskText
+                        text={formatTimestampToDate(
+                          item?.updatedTimestamp ?? 0
+                        )}
+                        fontSize='text-[8px] md:text-[14px]'
+                        fontWeight='font-[400]'
+                        className='text-[rgba(0,0,0,0.5)] w-full'
+                      />
+                      <div className='flex flex-col gap-[2px] md:gap-[4px] items-center'>
+                        <AktivGroteskText
+                          text={formatNumberToK(item?.voteCount ?? 0)}
                           className='leading-tight w-full'
-                          fontSize='text-[12px] md:text-[18px]'
+                          fontSize='text-[16px] md:text-[20px]'
                           fontWeight='font-[700]'
                         />
                         <AktivGroteskText
-                          text={item?.jokeOwnerName ?? ''}
+                          text='Votes'
                           className='leading-tight w-full'
                           fontSize='text-[10px] md:text-[16px]'
                           fontWeight='font-[400]'
                         />
                       </div>
-                      <AktivGroteskText
-                        text={getLabel(item?.labels ?? [])}
-                        className='leading-tight w-full text-[rgba(0,0,0,0.5)]'
-                        fontSize='text-[10px] md:text-[14px]'
-                        fontWeight='font-[400]'
-                      />
                     </div>
-                  </div>
-                </td>
-                <td
-                  className={`${aktivGrotesk.className} box-border text-[12px] md:text-[16px] font-[400] text-center py-[12px] md:py-[19px] pr-[12px] md:pr-[60px] rounded-r-[5px] md:rounded-r-[10px]`}
-                >
-                  <div className='flex flex-col justify-between md:justify-center gap-[2px] md:gap-[9px] items-center h-[57px] md:h-fit relative w-full'>
-                    <AktivGroteskText
-                      text={formatTimestampToDate(item?.updatedTimestamp ?? 0)}
-                      fontSize='text-[8px] md:text-[14px]'
-                      fontWeight='font-[400]'
-                      className='text-[rgba(0,0,0,0.5)] w-full'
-                    />
-                    <div className='flex flex-col gap-[2px] md:gap-[4px] items-center'>
-                      <AktivGroteskText
-                        text={formatNumberToK(item?.voteCount ?? 0)}
-                        className='leading-tight w-full'
-                        fontSize='text-[16px] md:text-[20px]'
-                        fontWeight='font-[700]'
-                      />
-                      <AktivGroteskText
-                        text='Votes'
-                        className='leading-tight w-full'
-                        fontSize='text-[10px] md:text-[16px]'
-                        fontWeight='font-[400]'
-                      />
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            )
-          })}
-      </tbody>
-    </table>
+                  </td>
+                </tr>
+              )
+            })}
+        </tbody>
+      </table>
+      {data?.length === 0 && (
+        <div className='flex justify-center items-center'>
+          <AktivGroteskText
+            text='No Data Found'
+            fontSize='text-[16px] md:text-[20px]'
+            fontWeight='font-[700]'
+          />
+        </div>
+      )}
+    </>
   )
 }
 
@@ -132,6 +152,8 @@ const HallOfLameLeaderboardTable = ({
     console.log('Selected date range:', range)
     // Handle the date range selection here
   }
+
+  console.log('hall of lame data', data)
 
   return (
     <div className='flex flex-col gap-[20px]'>
@@ -173,13 +195,6 @@ const HallOfLameLeaderboardTable = ({
           votes={votes}
           data={data}
         />
-        {/*  <div>
-          <AktivGroteskText
-            text='YOUR RANK'
-            fontSize='text-[16px] md:text-[20px]'
-            fontWeight='font-[700]'
-          />
-        </div>*/}
       </div>
       <div className='flex gap-[12px] md:gap-[24px] self-center'>
         <button

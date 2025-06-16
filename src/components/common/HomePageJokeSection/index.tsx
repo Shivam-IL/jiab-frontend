@@ -145,7 +145,7 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
                   {ugcData?.length > 0 &&
                     ugcData?.map((item: TModifiedUGCContent, index: number) => (
                       <CarouselItem key={item._id} className='basis-auto'>
-                        <div className='max-w-[320px] flex mx-auto h-full'>
+                        <div className='max-w-[350px] flex mx-auto h-full'>
                           <UgcCard
                             disclaimerText={cmsData.homePage.jokeDisclaimerText}
                             item={item}

@@ -77,6 +77,8 @@ const ProfileCard = () => {
     }
   }
 
+  console.log('infoData', infoData)
+
   return (
     <div className='relative w-full rounded-[10px]  bg-white md:rounded-[20px]'>
       <div
@@ -108,7 +110,6 @@ const ProfileCard = () => {
                   className='w-[80%] rounded-full h-[80%]'
                   src={userImage ? userImage : PROFILE_IMAGES?.[0]?.imageURL}
                   alt='profile-badge'
-                    
                 />
               </div>
             </CircularProgress>
@@ -133,10 +134,12 @@ const ProfileCard = () => {
       </div>
       <div className='grid grid-cols-2 gap-2 md:gap-[28px] md:gap-x-[9rem] lg:gap-x-[20rem] gap-x-0 px-[16px] md:px-[66px] pt-[16px] md:pt-[66px] pb-[10px] md:pb-[44px] w-full'>
         {infoData?.length > 0 &&
-          infoData?.map(item => {
+          infoData?.map((item, index) => {
             if (item?.visible) {
               return (
                 <UserInfoCard
+                  index={index}
+                  dataLength={infoData?.length}
                   iconClassName='w-[14px] h-[14px] md:min-w-[29px] md:min-h-[29px]'
                   key={item?.id}
                   iconName={item?.iconName}

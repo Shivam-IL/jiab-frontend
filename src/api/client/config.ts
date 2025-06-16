@@ -60,7 +60,7 @@ export const API_ROUTES = {
       GET: "/profile/balance",
     },
     QUESTIONS: {
-      POST: "/profile/questions/",
+      POST: "/profile/questions",
       GET: "/profile/questions",
     },
   },

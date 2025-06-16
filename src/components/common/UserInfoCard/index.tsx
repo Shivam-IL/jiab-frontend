@@ -4,6 +4,8 @@ import SvgIcons from '../SvgIcons'
 import AktivGroteskText from '../AktivGroteskText'
 
 const UserInfoCard: React.FC<IUserInfoCard> = ({
+  dataLength,
+  index,
   iconName,
   text,
   className,
@@ -29,6 +31,7 @@ const UserInfoCard: React.FC<IUserInfoCard> = ({
         text={text}
         fontSize={textFontSize}
         fontWeight={textFontWeight}
+        className={`${index ? index + 1 === dataLength ? 'capitalize' : '' : ''}`}
       />
     </div>
   )

@@ -7,6 +7,7 @@ import { aktivGrotesk } from '@/app/layout'
 const ImageIconCard: React.FC<IImageIconCard> = ({
   text,
   image,
+  imageUrl='',
   icon,
   iconClassName,
   iconHeight,
@@ -31,11 +32,18 @@ const ImageIconCard: React.FC<IImageIconCard> = ({
           name={icon}
         />
       )}
-      {image!=='' && (
+      {image!=='' && !imageUrl && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           className={imageClassName}
           src={image ? generateImageurl(image) : ''}
+          alt={text}
+        />
+      )}
+      {imageUrl && !image && (
+        <img
+          className={imageClassName}
+          src={imageUrl}
           alt={text}
         />
       )}
