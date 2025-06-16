@@ -8,14 +8,13 @@ import SurpriseMeLockModal from "../common/SurpriseMeLockModal";
 import { useCMSData } from "@/data";
 import { triggerGAEvent } from "@/utils/gTagEvents";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
+import SerialChillerPopup from "../common/SerialChillerPopup";
+import { useSessionModal } from "@/hooks/useSessionModal";
 
 const HomePageSurpriseButton = () => {
   const { isAuthenticated, token, enableCoachMarks } = useAppSelector(
     (state) => state.auth
   );
-  console.log("isAuthenticated", isAuthenticated);
-  console.log("token", token);
-  console.log("enableCoachMarks", enableCoachMarks);
   const [mounted, setMounted] = useState(false);
   const cmsData = useCMSData(mounted);
   const { forceHideLoader } = useGlobalLoader();
@@ -25,6 +24,8 @@ const HomePageSurpriseButton = () => {
   }, []);
 
   const [surpriseMeModal, setSurpriseMeModal] = useState<boolean>(false);
+  const [serialChillerOpen, setSerialChillerOpen] = useState<boolean>(false);
+  const { shouldShow: shouldShowSerialChiller, hasChecked: hasCheckedSerialChiller, markAsShown: markSerialChillerAsShown } = useSessionModal("hasShownSerialChiller");
 
   const openSurpriseMe = () => {
     setSurpriseMeModal(true);
@@ -35,6 +36,8 @@ const HomePageSurpriseButton = () => {
     forceHideLoader(); // Ensure any loading states are cleared
     setSurpriseMeModal(false);
   };
+
+  console.log("surpriseMeModal", surpriseMeModal && isAuthenticated && token && !enableCoachMarks);
 
   return (
     <>
