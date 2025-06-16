@@ -3,11 +3,13 @@ import Image from "next/image";
 
 interface CoinAnimationProps {
   isVisible: boolean;
+  animationKey?: number;
   onAnimationEnd?: () => void;
 }
 
 const CoinAnimation: React.FC<CoinAnimationProps> = ({
   isVisible,
+  animationKey = 0,
   onAnimationEnd,
 }) => {
   if (!isVisible) return null;
@@ -15,6 +17,7 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({
   return (
     <div className="fixed inset-0 z-[49] pointer-events-none flex justify-center items-center">
       <Image
+        key={animationKey} // Force remount to restart GIF from beginning
         src="/videos/coin-animation.gif"
         alt="Coin Animation"
         width={1000}
@@ -27,6 +30,7 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({
             setTimeout(onAnimationEnd, 2800); // Slightly less than hook timeout
           }
         }}
+        priority // Load immediately for smooth animation
       />
     </div>
   );

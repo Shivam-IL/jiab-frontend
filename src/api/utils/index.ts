@@ -16,6 +16,7 @@ export const keys = {
     getSurpriseMeJoke: () => ["get-surprise-me-joke"],
     getJokes: () => ["get-jokes"],
     getUserSubmittedJokes: () => ["get-user-submitted-jokes"],
+    getComicCoins: () => ["get-comic-coins"],
   },
   leaderboard: {
     getLeaderboard: () => ["get-leaderboard"],

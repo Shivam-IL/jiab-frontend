@@ -39,13 +39,12 @@ const OtpModal = () => {
   const {
     mutate: verifyOTP,
     isPending,
-    isSuccess,
     data: verifyOTPData
   } = useMutateVerifyOTP()
 
   const { otpSent } = useAppSelector(state => state.auth)
 
-  const [counter, setCounter] = useState<string>('12')
+  const [counter, setCounter] = useState<string>('59')
   const [counterEnd, setCounterEnd] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()

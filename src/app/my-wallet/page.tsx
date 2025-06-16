@@ -14,11 +14,19 @@ import { GA_EVENTS } from "@/constants";
 import { triggerGAEvent } from "@/utils/gTagEvents";
 import { useRouter } from "next/navigation";
 import ShareLaugh from "@/components/Banners/ShareLaugh";
+import { useGetComicCoins } from "@/api/hooks/JokeHooks";
 
 const ComicCoinsPage = () => {
   const [mounted, setMounted] = useState(false);
   const [isReferModalOpen, setIsReferModalOpen] = useState(false);
   const [isRedeemed, setIsRedeemed] = useState(true);
+
+  // Fetch comic coins data
+  const {
+    data: comicCoinsData,
+    isLoading: isComicCoinsLoading,
+    isError: isComicCoinsError,
+  } = useGetComicCoins();
 
   useEffect(() => {
     setMounted(true);
@@ -29,6 +37,9 @@ const ComicCoinsPage = () => {
     triggerGAEvent(GA_EVENTS.SPRITE_J24_SUBMIT_JOKE);
     router.push("/submit-your-joke");
   };
+
+  // Get comic coins value with fallback
+  const comicCoinsValue = comicCoinsData?.data?.comic_coin ?? 0;
 
   return (
     <>
@@ -44,7 +55,7 @@ const ComicCoinsPage = () => {
             />
             <div className="flex items-center gap-2 md:gap-3 mt-1">
               <AktivGroteskText
-                text="0"
+                text={isComicCoinsLoading ? "--" : comicCoinsValue.toString()}
                 fontSize="text-[28px] md:text-[64px]"
                 fontWeight="font-[700]"
               />

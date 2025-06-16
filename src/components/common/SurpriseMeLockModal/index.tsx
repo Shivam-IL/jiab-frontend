@@ -11,8 +11,17 @@ import { updateCrossModal, updateLoginModal } from "@/store/auth/auth.slice";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
 import { useSessionModal } from "@/hooks/useSessionModal";
 
-const SurpriseMeLockModal = ({ onClose }: { onClose?: () => void }) => {
-  const { shouldShow, hasChecked } = useSessionModal("hasShownSurpriseMeLock");
+const SurpriseMeLockModal = ({
+  onClose,
+  forceShow = false,
+}: {
+  onClose?: () => void;
+  forceShow?: boolean;
+}) => {
+  const { shouldShow, hasChecked } = useSessionModal(
+    "hasShownSurpriseMeLock",
+    forceShow
+  );
   const [open, setOpen] = useState<boolean>(false);
   const { forceHideLoader } = useGlobalLoader();
 

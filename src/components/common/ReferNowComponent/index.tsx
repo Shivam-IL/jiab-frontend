@@ -10,6 +10,10 @@ import AktivGroteskText from "../AktivGroteskText";
 import ReferNowModal from "../ReferNowModal";
 import { useSendReferral } from "@/api/hooks/ReferralHooks";
 import { triggerGAEvent } from "@/utils/gTagEvents";
+import {
+  CoinAnimation,
+  useCoinAnimation,
+} from "@/components/common/CoinAnimation";
 
 const ReferNowComponent = ({
   open,
@@ -32,11 +36,10 @@ const ReferNowComponent = ({
   const [referStatus, setReferStatus] = useState<string>("");
   const [inviteCode, setInviteCode] = useState<string>("");
 
-  const {
-    mutate: sendReferral,
+  // Coin animation hook
+  const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation();
 
-    data: sendReferralData,
-  } = useSendReferral();
+  const { mutate: sendReferral, data: sendReferralData } = useSendReferral();
 
   const handleChange = (key: string, value: string) => {
     const numericValue = value?.replace(/[^0-9]/g, "");
@@ -98,7 +101,7 @@ const ReferNowComponent = ({
   }, []);
 
   return (
-    <div>
+    <>
       {open && (
         <ReferNowModal
           title={REFER_NOW_MODAL_DATA.DEFAULT.title}
@@ -158,6 +161,7 @@ const ReferNowComponent = ({
           onClose={() => {
             setReferStatus1(false);
             setPhoneNumber("");
+            triggerAnimation();
           }}
           icon={REFFERAL_STATUS_POPUP_DATA.EASY.ICON}
           title={REFFERAL_STATUS_POPUP_DATA.EASY.TITLE}
@@ -198,7 +202,10 @@ const ReferNowComponent = ({
           }}
         />
       )}
-    </div>
+
+      {/* Coin Animation */}
+      <CoinAnimation isVisible={isAnimating} animationKey={animationKey} />
+    </>
   );
 };
 

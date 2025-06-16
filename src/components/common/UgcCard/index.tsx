@@ -1,56 +1,57 @@
-import React, { useEffect } from 'react'
-import SvgIcons from '../SvgIcons'
-import { ICONS_NAMES, REDUX_UPDATION_TYPES } from '@/constants'
-import AktivGroteskText from '../AktivGroteskText'
-import SurpriseMeCTA from '@/components/SurpriseMeCTA'
-import GreenCTA from '@/components/GreenCTA'
-import { UgcCardProps } from '@/interfaces'
-import { formatNumberToK } from '@/utils'
+import React, { useEffect } from "react";
+import SvgIcons from "../SvgIcons";
+import { ICONS_NAMES, REDUX_UPDATION_TYPES } from "@/constants";
+import AktivGroteskText from "../AktivGroteskText";
+import SurpriseMeCTA from "@/components/SurpriseMeCTA";
+import GreenCTA from "@/components/GreenCTA";
+import { UgcCardProps } from "@/interfaces";
+import { formatNumberToK } from "@/utils";
 import {
   useSendGluedinUserReaction,
-  useSendVoteToGluedinAssets
-} from '@/api/hooks/GluedinHooks'
-import useAppDispatch from '@/hooks/useDispatch'
-import { ReactionType } from '@/types'
-import { updateUgcReactionData } from '@/store/ugc'
+  useSendVoteToGluedinAssets,
+} from "@/api/hooks/GluedinHooks";
+import useAppDispatch from "@/hooks/useDispatch";
+import { ReactionType } from "@/types";
+import { updateUgcReactionData } from "@/store/ugc";
 
 const UgcCard: React.FC<UgcCardProps> = ({
-  disclaimerText = 'The content displayed above is user generated and may not reflect the opinions of Sprite®',
-  item
+  disclaimerText = "The content displayed above is user generated and may not reflect the opinions of Sprite®",
+  item,
+  onVoteSuccess,
 }) => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { mutate: sendGluedinUserReaction, data: gludeinUserReactionData } =
-    useSendGluedinUserReaction()
+    useSendGluedinUserReaction();
   const { mutate: sendVoteToGluedinAssets, data: gluedinUserVoteData } =
-    useSendVoteToGluedinAssets()
+    useSendVoteToGluedinAssets();
 
   const handlerUserReaction = (reactionType: ReactionType, videoId: string) => {
     if (item?.isReacted) {
-      return
+      return;
     }
     sendGluedinUserReaction({
-      assetId: videoId ?? '',
-      reactionType: reactionType
-    })
-  }
+      assetId: videoId ?? "",
+      reactionType: reactionType,
+    });
+  };
 
   const getLabel = (labels: string[]) => {
-    let newLabel = ''
+    let newLabel = "";
     labels?.forEach((label: string, index: number) => {
       if (index === labels?.length - 1) {
-        newLabel = newLabel + label
+        newLabel = newLabel + label;
       } else {
-        newLabel = newLabel + label + ', '
+        newLabel = newLabel + label + ", ";
       }
-    })
-    return newLabel
-  }
+    });
+    return newLabel;
+  };
 
   useEffect(() => {
     if (gludeinUserReactionData?.ok) {
-      const { reactionType } = gludeinUserReactionData?.data
-      const currentReactionCount = item?.reactions[reactionType] ?? 0
-      const currentReactionUpdated = reactionType
+      const { reactionType } = gludeinUserReactionData?.data;
+      const currentReactionCount = item?.reactions[reactionType] ?? 0;
+      const currentReactionUpdated = reactionType;
 
       const newUGCData = {
         ...item,
@@ -58,88 +59,93 @@ const UgcCard: React.FC<UgcCardProps> = ({
         reactionType: gludeinUserReactionData?.data?.reactionType,
         reactions: {
           ...item?.reactions,
-          [currentReactionUpdated]: currentReactionCount + 1
-        }
-      }
+          [currentReactionUpdated]: currentReactionCount + 1,
+        },
+      };
       dispatch(
         updateUgcReactionData({
-          ugcData: newUGCData
+          ugcData: newUGCData,
         })
-      )
+      );
     }
-  }, [gludeinUserReactionData])
+  }, [gludeinUserReactionData]);
 
   useEffect(() => {
     if (gluedinUserVoteData?.ok) {
       const newUGCData = {
         ...item,
-        isLiked: true
+        isLiked: true,
+      };
+      dispatch(updateUgcReactionData({ ugcData: newUGCData }));
+
+      // Trigger coin animation for successful vote
+      if (onVoteSuccess) {
+        onVoteSuccess();
       }
-      dispatch(updateUgcReactionData({ ugcData: newUGCData }))
     }
-  }, [gluedinUserVoteData])
+  }, [gluedinUserVoteData]);
 
   return (
-    <div className='relative w-full flex-grow-1 p-[16px] md:px-[12px] flex flex-col justify-between gap-[10px] rounded-[5px] bg-[#FFFFFF]'>
-      <div className='flex justify-between items-center md:items-start'>
-        <div className='flex w-full items-start gap-[12px]'>
-          <div className='min-w-[30px] md:min-w-[28px] min-h-[30px] md:min-h-[28px] flex items-end justify-center rounded-full border-[1px] border-black'>
+    <div className="relative w-full flex-grow-1 p-[16px] md:px-[12px] flex flex-col justify-between gap-[10px] rounded-[5px] bg-[#FFFFFF]">
+      <div className="flex justify-between items-center md:items-start">
+        <div className="flex w-full items-start gap-[12px]">
+          <div className="min-w-[30px] md:min-w-[28px] min-h-[30px] md:min-h-[28px] flex items-end justify-center rounded-full border-[1px] border-black">
             <SvgIcons
               name={ICONS_NAMES.TRAFFIC_LIGHT}
-              className='w-[13px] h-[24px]'
+              className="w-[13px] h-[24px]"
             />
           </div>
-          <div className='flex flex-col gap-[6.58px] md:gap-[1.58px] w-full'>
-            <div className='flex justify-between items-center flex-grow'>
-              <div className='flex flex-col justify-between'>
+          <div className="flex flex-col gap-[6.58px] md:gap-[1.58px] w-full">
+            <div className="flex justify-between items-center flex-grow">
+              <div className="flex flex-col justify-between">
                 <AktivGroteskText
-                  text={item?.title ?? ''}
-                  fontSize='text-[14px]'
-                  fontWeight='font-[700]'
+                  text={item?.title ?? ""}
+                  fontSize="text-[14px]"
+                  fontWeight="font-[700]"
                 />
                 <AktivGroteskText
-                  text={`${item?.user?.fullName ?? ''} ${
-                    getLabel(item?.labels ?? []) ?? ''
+                  text={`${item?.user?.fullName ?? ""} ${
+                    getLabel(item?.labels ?? []) ?? ""
                   }`}
-                  fontSize='text-[10px]'
-                  fontWeight='font-[500]'
+                  fontSize="text-[10px]"
+                  fontWeight="font-[500]"
                 />
               </div>
-              <div className='flex gap-[6px]'>
+              <div className="flex gap-[6px]">
                 <AktivGroteskText
-                  text='Report'
-                  fontSize='text-[12px] text-[#FD0202]'
-                  fontWeight='font-[400]'
+                  text="Report"
+                  fontSize="text-[12px] text-[#FD0202]"
+                  fontWeight="font-[400]"
                 />
                 <SvgIcons
                   name={ICONS_NAMES.REPORT}
-                  className='w-[20px] h-[20px]'
+                  className="w-[20px] h-[20px]"
                 />
               </div>
             </div>
             <AktivGroteskText
               text={disclaimerText}
-              fontSize='text-[10px] md:text-[12px]'
-              fontWeight='font-[400]'
-              className='text-[#313131]  block'
+              fontSize="text-[10px] md:text-[12px]"
+              fontWeight="font-[400]"
+              className="text-[#313131]  block"
             />
           </div>
         </div>
       </div>
-      <div className=''>
-        <div className='relative w-full h-[278px] md:h-[330px] bg-[#00953B] px-[19px] flex items-center py-[10px] gap-[34px] rounded-t-[5px]'>
+      <div className="">
+        <div className="relative w-full h-[278px] md:h-[330px] bg-[#00953B] px-[19px] flex items-center py-[10px] gap-[34px] rounded-t-[5px]">
           <SvgIcons
             name={ICONS_NAMES.SPRITE_WITH_BUBBLE}
-            className='w-[57px] md:w-[78px] h-[213px] md:h-[274px]'
+            className="w-[57px] md:w-[78px] h-[213px] md:h-[274px]"
           />
           {/* <SvgIcons
             name={ICONS_NAMES.HEADPHONE2}
             className='w-[87px] h-[87px]'
           /> */}
-          <div className='absolute top-[5px] right-[10px]'>
+          <div className="absolute top-[5px] right-[10px]">
             <SvgIcons
               name={ICONS_NAMES.UGC_MARK}
-              className='w-[25px] md:w-[33px] h-[24px] md:h-[34px]'
+              className="w-[25px] md:w-[33px] h-[24px] md:h-[34px]"
             />
           </div>
           {/* <div className='absolute md:hidden bottom-[3px] left-[10px]'>
@@ -150,16 +156,15 @@ const UgcCard: React.FC<UgcCardProps> = ({
               className='text-white'
             />
           </div> */}
-            <AktivGroteskText
-              text={item?.content ?? ''}  
-              fontSize='text-[12px]'
-              fontWeight='font-[400]'
-              className='text-white  text-center w-[50%] absolute right-[20px] top-[45%]'
-            />
-          
+          <AktivGroteskText
+            text={item?.content ?? ""}
+            fontSize="text-[12px]"
+            fontWeight="font-[400]"
+            className="text-white  text-center w-[50%] absolute right-[20px] top-[45%]"
+          />
         </div>
-        <div className='bg-white border-x-[1px] border-b-[1px] border-[#D9D9D9] rounded-b-[5px] p-[8px] flex justify-between'>
-          <div className='flex gap-[10px] md:gap-[20px] pl-[10px]'>
+        <div className="bg-white border-x-[1px] border-b-[1px] border-[#D9D9D9] rounded-b-[5px] p-[8px] flex justify-between">
+          <div className="flex gap-[10px] md:gap-[20px] pl-[10px]">
             <SurpriseMeCTA
               isReacted={item?.isReacted}
               disabled={
@@ -168,7 +173,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
               name={ICONS_NAMES.FUNNY}
               text={formatNumberToK(item?.reactions?.laugh ?? 0)}
               onClick={() =>
-                handlerUserReaction(ReactionType.LAUGH, item?.videoId ?? '')
+                handlerUserReaction(ReactionType.LAUGH, item?.videoId ?? "")
               }
             />
             <SurpriseMeCTA
@@ -179,7 +184,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
               name={ICONS_NAMES.MAD}
               text={formatNumberToK(item?.reactions?.neutral ?? 0)}
               onClick={() =>
-                handlerUserReaction(ReactionType.NEUTRAL, item?.videoId ?? '')
+                handlerUserReaction(ReactionType.NEUTRAL, item?.videoId ?? "")
               }
             />
             <SurpriseMeCTA
@@ -190,30 +195,30 @@ const UgcCard: React.FC<UgcCardProps> = ({
               name={ICONS_NAMES.ANGRY}
               text={formatNumberToK(item?.reactions?.sad ?? 0)}
               onClick={() =>
-                handlerUserReaction(ReactionType.SAD, item?.videoId ?? '')
+                handlerUserReaction(ReactionType.SAD, item?.videoId ?? "")
               }
             />
           </div>
-          <div className='flex gap-[12px]'>
-            <div className='flex items-center'>
+          <div className="flex gap-[12px]">
+            <div className="flex items-center">
               <GreenCTA
                 onClick={() => {
                   if (item?.isLiked) {
-                    return
+                    return;
                   }
                   if (!item?.videoId) {
-                    return
+                    return;
                   }
                   sendVoteToGluedinAssets({
-                    assetId: item.videoId ?? ''
-                  })
+                    assetId: item.videoId ?? "",
+                  });
                 }}
-                text={item?.isLiked ? 'Voted' : 'Vote'}
+                text={item?.isLiked ? "Voted" : "Vote"}
                 disabled={item?.isLiked ?? false}
-                className='leading-tight flex items-center justify-center'
-                paddingClass='px-[26px] py-[8px] md:px-[21px] md:py-[7px]'
-                fontSize='text-[12px] md:text-[16px]'
-                fontWeight='font-[700]'
+                className="leading-tight flex items-center justify-center"
+                paddingClass="px-[26px] py-[8px] md:px-[21px] md:py-[7px]"
+                fontSize="text-[12px] md:text-[16px]"
+                fontWeight="font-[700]"
               />
             </div>
             <SurpriseMeCTA
@@ -225,7 +230,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UgcCard
+export default UgcCard;

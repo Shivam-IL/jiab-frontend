@@ -10,6 +10,7 @@ import Image from "next/image";
 interface UniqueCodeModalProps {
   open: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
 // Mock validation functions - these would typically call APIs
@@ -48,7 +49,11 @@ const checkDailyLimit = (): boolean => {
   return false; // Change to true to test daily limit state
 };
 
-const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({ open, onClose }) => {
+const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
+  open,
+  onClose,
+  onSuccess,
+}) => {
   const [uniqueCode, setUniqueCode] = useState("");
   const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
@@ -95,6 +100,9 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({ open, onClose }) => {
 
   const handleGotIt = () => {
     handleClose();
+    if (onSuccess) {
+      onSuccess();
+    }
   };
 
   // Success State
@@ -103,7 +111,10 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({ open, onClose }) => {
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent className="max-w-[343px] md:max-w-[401px] gap-0 rounded-[10px] p-0">
           <div className="flex justify-end pt-[12px] pr-[16px] md:pr-[18px]">
-            <button onClick={handleClose} className="p-0 self-end">
+            <button
+              onClick={handleClose}
+              className="p-0 self-end cursor-pointer"
+            >
               <SvgIcons
                 name={ICONS_NAMES.CROSS}
                 className="w-[13px] h-[13px] md:w-[14px] md:h-[12px]"
@@ -155,7 +166,10 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({ open, onClose }) => {
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent className="max-w-[343px] gap-0 rounded-[10px] p-0">
           <div className="flex justify-end pt-[12px] pr-[16px] md:pr-[18px]">
-            <button onClick={handleClose} className="p-0 self-end">
+            <button
+              onClick={handleClose}
+              className="p-0 self-end cursor-pointer"
+            >
               <SvgIcons
                 name={ICONS_NAMES.CROSS}
                 className="w-[13px] h-[13px] md:w-[14px] md:h-[12px]"
@@ -232,16 +246,8 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({ open, onClose }) => {
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-[343px] rounded-[10px] p-0 flex flex-col gap-[16px]">
         <div className="flex justify-end pt-[12px]  pr-[16px] md:pr-[18px]">
-          <button
-            onClick={() => {
-              onClose();
-            }}
-            className="p-0 self-end"
-          >
-            <SvgIcons
-              name={ICONS_NAMES.CROSS}
-              className="w-[13px] h-[13px] md:w-[14px] md:h-[12px]"
-            />
+          <button onClick={handleClose} className="p-0 self-end cursor-pointer">
+            <SvgIcons name={ICONS_NAMES.CROSS} className="w-[14px] h-[14px]" />
           </button>
         </div>
         <div className="w-full px-[22px] md:px-[16px] pt-[12px] pb-[23px] flex flex-col gap-[16px] mt-[-30px]">

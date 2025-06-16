@@ -17,22 +17,25 @@ import {
 } from "@/api/hooks/GluedinHooks";
 import { ReactionType } from "@/types";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
-import { useSessionModal } from "@/hooks/useSessionModal";
 
-const SurpriseMeModal = ({
-  onClose,
-  forceShow = false,
-}: {
+interface GenreSurpriseMeModalProps {
+  open: boolean;
   onClose: () => void;
-  forceShow?: boolean;
+  genreId?: number;
+  languageId?: number;
+}
+
+const GenreSurpriseMeModal: React.FC<GenreSurpriseMeModalProps> = ({
+  open,
+  onClose,
+  genreId,
+  languageId,
 }) => {
-  const { shouldShow, hasChecked } = useSessionModal(
-    "hasShownSurpriseMe",
-    forceShow
-  );
-  const [open, setOpen] = useState<boolean>(false);
   const [makeLaughExitPopup, setMakeLaughExitPopup] = useState<boolean>(false);
-  const { data: jokeData, isLoading: jokeLoading } = useGetSurpriseMeJoke();
+  const { data: jokeData, isLoading: jokeLoading } = useGetSurpriseMeJoke(
+    genreId,
+    languageId
+  );
   const [joke, setJoke] = useState<any>(null);
   const [jokeId, setJokeId] = useState<string>("");
   const [reactionType, setReactionType] = useState<string>("");
@@ -48,27 +51,16 @@ const SurpriseMeModal = ({
     useViewGludeinJokes();
   const { data: gluedinAssetData } = useGetGluedinAssetById(jokeId);
 
-  // Set open state based on session check
   useEffect(() => {
-    if (hasChecked) {
-      if (shouldShow) {
-        setOpen(true);
-      } else {
-        onClose();
-      }
-    }
-  }, [shouldShow, hasChecked, onClose]);
-
-  useEffect(() => {
-    if (jokeData?.ok) {
+    if (open && jokeData?.ok) {
       viewGludeinJokes({ assetIds: [jokeData?.data?.id] });
       setJoke(jokeData?.data ?? {});
       setSerialChill(false);
-    } else if (jokeData?.ok === false) {
+    } else if (open && jokeData?.ok === false) {
       setJoke({});
       setSerialChill(true);
     }
-  }, [jokeData]);
+  }, [jokeData, open]);
 
   useEffect(() => {
     if (gluedinAssetData?.ok) {
@@ -121,7 +113,6 @@ const SurpriseMeModal = ({
   // Handle modal close with proper cleanup
   const handleClose = () => {
     forceHideLoader(); // Ensure any loading states are cleared
-    setOpen(false);
     onClose();
   };
 
@@ -131,6 +122,11 @@ const SurpriseMeModal = ({
       forceHideLoader(); // Cleanup on unmount
     };
   }, [forceHideLoader]);
+
+  // Don't render anything if modal is not open
+  if (!open) {
+    return null;
+  }
 
   if (serialChill) {
     return (
@@ -280,4 +276,4 @@ const SurpriseMeModal = ({
   );
 };
 
-export default SurpriseMeModal;
+export default GenreSurpriseMeModal;

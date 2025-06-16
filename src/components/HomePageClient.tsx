@@ -7,6 +7,7 @@ import SurpriseMeLockModal from "@/components/common/SurpriseMeLockModal";
 import SurpriseMeModal from "@/components/common/SurpriseMeModal";
 import useAppSelector from "@/hooks/useSelector";
 import { useCMSData } from "@/data";
+import Image from "next/image";
 
 import Header from "@/components/common/Header/Header";
 import VideoScroll from "@/components/video-carousel/VideoScroll";
@@ -22,7 +23,7 @@ import CircularBoxesModal, {
 import useWindowWidth from "@/hooks/useWindowWidth";
 import SvgIcons from "@/components/common/SvgIcons";
 import { GA_EVENTS, ICONS_NAMES } from "@/constants";
-import { updateSurpriseMe } from "@/store/auth/auth.slice";
+import { updateSurpriseMe, updateLoginModal } from "@/store/auth/auth.slice";
 import useAppDispatch from "@/hooks/useDispatch";
 import { useGetJokes } from "@/api/hooks/JokeHooks";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -31,7 +32,8 @@ import HomePageJokeSection from "./common/HomePageJokeSection";
 import { PJChallenge, ChillGuyBanner } from "./Banners";
 import { useRouter } from "next/navigation";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
-import HomePageDesktopOnboarding, { DesktopBoxIds } from "./common/HomePageDesktopOnboarding";
+import HomePageDesktopOnboarding from "./common/HomePageDesktopOnboarding";
+import GenreSurpriseMeModal from "@/components/common/GenreSurpriseMeModal";
 
 export default function HomePageClient() {
   const {
@@ -42,6 +44,10 @@ export default function HomePageClient() {
     enableCoachMarks,
     refreshTokenNotVerified,
   } = useAppSelector((state) => state.auth);
+
+  // Get genres from Redux store
+  const { genres } = useAppSelector((state) => state.reference);
+
   const dispatch = useAppDispatch();
   const width = useWindowWidth();
 
@@ -72,133 +78,14 @@ export default function HomePageClient() {
     url: `/scroll-and-lol?selected_joke=${encodeURIComponent(joke.id)}`,
   }));
 
-  const categories: {
-    id: string;
-    name: string;
-    icon: string;
-    url?: string;
-  }[] = [
-    {
-      id: "category1",
-      name: "Cricket",
-      icon: ICONS_NAMES.CRICKET,
+  // Transform genres from API to match the expected structure
+  const categories =
+    genres?.map((genre) => ({
+      id: genre.id.toString(),
+      name: genre.genre,
+      image_url: genre.image_url,
       url: "/pick-mood",
-    },
-    {
-      id: "category2",
-      name: "Animals",
-      icon: ICONS_NAMES.ANIMAL,
-      url: "/pick-mood",
-    },
-    {
-      id: "category3",
-      name: "Food",
-      icon: ICONS_NAMES.FOOD,
-      url: "/pick-mood",
-    },
-    {
-      id: "category4",
-      name: "Wedding",
-      icon: ICONS_NAMES.RELATIONSHIP,
-      url: "/pick-mood",
-    },
-    {
-      id: "category5",
-      name: "College",
-      icon: ICONS_NAMES.COLLEGE,
-      url: "/pick-mood",
-    },
-    {
-      id: "category6",
-      name: "Office",
-      icon: ICONS_NAMES.OFFICE,
-      url: "/pick-mood",
-    },
-    {
-      id: "category7",
-      name: "Family",
-      icon: ICONS_NAMES.FAMILY,
-      url: "/pick-mood",
-    },
-    {
-      id: "category8",
-      name: "Friends",
-      icon: ICONS_NAMES.FRIENDS,
-      url: "/pick-mood",
-    },
-    {
-      id: "category9",
-      name: "Finance",
-      icon: ICONS_NAMES.FINANCE,
-      url: "/pick-mood",
-    },
-    {
-      id: "category10",
-      name: "Daily Humour",
-      icon: ICONS_NAMES.DAILY_HUMOR,
-      url: "/pick-mood",
-    },
-    {
-      id: "category11",
-      name: "Self",
-      icon: ICONS_NAMES.SELF,
-      url: "/pick-mood",
-    },
-    {
-      id: "category12",
-      name: "Adulting",
-      icon: ICONS_NAMES.ADULTING,
-      url: "/pick-mood",
-    },
-    {
-      id: "category13",
-      name: "Observation",
-      icon: ICONS_NAMES.OBSERVING,
-      url: "/pick-mood",
-    },
-    {
-      id: "category14",
-      name: "Internet",
-      icon: ICONS_NAMES.INTERNET,
-      url: "/pick-mood",
-    },
-    {
-      id: "category15",
-      name: "Pollution",
-      icon: ICONS_NAMES.POLLUTION,
-      url: "/pick-mood",
-    },
-    {
-      id: "category16",
-      name: "Travel",
-      icon: ICONS_NAMES.TRAVEL,
-      url: "/pick-mood",
-    },
-    {
-      id: "category17",
-      name: "Dating",
-      icon: ICONS_NAMES.DATING,
-      url: "/pick-mood",
-    },
-    {
-      id: "category18",
-      name: "Traffic",
-      icon: ICONS_NAMES.TRAFFIC,
-      url: "/pick-mood",
-    },
-    {
-      id: "category19",
-      name: "OTT",
-      icon: ICONS_NAMES.OTT,
-      url: "/pick-mood",
-    },
-    {
-      id: "category20",
-      name: "Non-Genre",
-      icon: ICONS_NAMES.NON_GENRE,
-      url: "/pick-mood",
-    },
-  ];
+    })) || [];
 
   // Calculate how many pages we need based on screen size
   const [api, setApi] = useState<CarouselApi>();
@@ -206,6 +93,12 @@ export default function HomePageClient() {
   const [pageCount, setPageCount] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(6); // Default to desktop
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Genre-specific surprise me modal state
+  const [genreSurpriseModal, setGenreSurpriseModal] = useState<boolean>(false);
+  const [selectedGenreId, setSelectedGenreId] = useState<number | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     // Use window check for client-side only
@@ -269,9 +162,22 @@ export default function HomePageClient() {
   };
 
   // Function to handle category click - will trigger modal
-  const handleCategoryClick = (category: (typeof categories)[0]) => {
+  const handleCategoryClick = (category: {
+    id: string;
+    name: string;
+    image_url: string;
+    url: string;
+  }) => {
     console.log(`Category clicked: ${category.name}`);
-    // Modal trigger logic would go here
+    // Check if user is authenticated before showing modal
+    if (isAuthenticated) {
+      setSelectedGenreId(parseInt(category.id));
+      setGenreSurpriseModal(true);
+      triggerGAEvent(GA_EVENTS.SPRITE_J24_SURPRISE_ME);
+    } else {
+      // Show login modal for unauthenticated users
+      dispatch(updateLoginModal({ loginModal: true }));
+    }
   };
 
   const { isAuthenticated, isFirstLogin, surpriseMe } = useAppSelector(
@@ -288,6 +194,12 @@ export default function HomePageClient() {
   const handlePJChallengeClick = () => {
     triggerGAEvent(GA_EVENTS.SPRITE_J24_SUBMIT_JOKE);
     router.push("/submit-your-joke");
+  };
+
+  const closeGenreSurpriseMe = () => {
+    forceHideLoader();
+    setGenreSurpriseModal(false);
+    setSelectedGenreId(undefined);
   };
 
   return (
@@ -311,7 +223,6 @@ export default function HomePageClient() {
           )}
 
         <ChillGuyBanner />
-        
 
         {/* Video Scroll */}
         <Header
@@ -345,16 +256,19 @@ export default function HomePageClient() {
               {categories.map((category) => (
                 <CarouselItem
                   key={category.id}
-                  className="basis-1/5 md:basis-1/6"
+                  className="basis-[19.5%] md:basis-1/6"
                 >
                   <button
                     className="flex flex-col items-center cursor-pointer"
                     onClick={() => handleCategoryClick(category)}
                   >
-                    <div className="rounded-full bg-white w-[60px] h-[60px] md:w-[140px] md:h-[140px] flex items-center justify-center md:hover:border-2 hover:border hover:border-green transition-all duration-900 md:hover:shadow-lg">
-                      <SvgIcons
-                        name={category.icon}
-                        className="w-10 h-10 md:w-20 md:h-20"
+                    <div className="rounded-full bg-white w-[70px] h-[70px] md:w-[140px] md:h-[140px] flex items-center justify-center md:hover:border-2 hover:border hover:border-green transition-all duration-900 md:hover:shadow-lg overflow-hidden">
+                      <Image
+                        src={category.image_url}
+                        alt={category.name}
+                        width={80}
+                        height={80}
+                        className="w-[3.4rem] h-[3.4rem] md:w-[7rem] md:h-[7rem] object-cover rounded-full"
                       />
                     </div>
                     <p className="text-center font-medium mt-3 text-xs md:text-lg">
@@ -459,8 +373,8 @@ export default function HomePageClient() {
           </div>
         </div>
       </div>
-      {isClient && enableCoachMarks && (
-        width < 768 && <CircularBoxesModal
+      {isClient && enableCoachMarks && width < 768 && (
+        <CircularBoxesModal
           isOpen={isModalOpen}
           onClose={() => {
             setIsModalOpen(false);
@@ -474,6 +388,21 @@ export default function HomePageClient() {
             setIsModalOpen(false);
           }}
         />
+      )}
+
+      {/* Genre-specific Surprise Me Modal */}
+      {genreSurpriseModal && isAuthenticated && (
+        <GenreSurpriseMeModal
+          open={genreSurpriseModal}
+          onClose={closeGenreSurpriseMe}
+          genreId={selectedGenreId}
+          languageId={1} // Default language, can be made dynamic later
+        />
+      )}
+
+      {/* Show login modal for unauthenticated users */}
+      {genreSurpriseModal && !isAuthenticated && (
+        <SurpriseMeLockModal onClose={closeGenreSurpriseMe} forceShow={true} />
       )}
     </div>
   );

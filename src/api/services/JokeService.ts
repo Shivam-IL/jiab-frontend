@@ -27,9 +27,11 @@ export class JokeService extends MainService {
       : {};
   }
 
-  public async GetSurpriseMe() {
+  public async GetSurpriseMe(genreId?: number, languageId?: number) {
     try {
-      const endpoint = `${API_ROUTES.JOKES.GET_SURPRISE_ME}?genre=1&language=1`;
+      const genre = genreId || 1;
+      const language = languageId || 1;
+      const endpoint = `${API_ROUTES.JOKES.GET_SURPRISE_ME}?genre=${genre}&language=${language}`;
       const response = await apiClient.get(endpoint, {
         headers: {
           ...this.getAuthHeaders(),
@@ -166,6 +168,23 @@ export class JokeService extends MainService {
       return ErrorResponse(
         jokesResponseData?.message ?? "Something went wrong"
       );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async GetComicCoins() {
+    try {
+      const response = await apiClient.get(API_ROUTES.COMIC_COINS.GET_COINS, {
+        headers: {
+          ...this.getAuthHeaders(),
+        },
+      });
+      const responseData = response.data;
+      if (responseData?.success) {
+        return SuccessResponse(responseData.data);
+      }
+      return ErrorResponse(responseData?.message ?? "Something went wrong");
     } catch (error) {
       throw error;
     }

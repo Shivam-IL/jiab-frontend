@@ -1,19 +1,26 @@
 import { useState, useEffect } from 'react';
 
-export const useSessionModal = (sessionKey: string) => {
+export const useSessionModal = (sessionKey: string, forceShow?: boolean) => {
   const [shouldShow, setShouldShow] = useState(false);
   const [hasChecked, setHasChecked] = useState(false);
 
   useEffect(() => {
     const hasShownModal = sessionStorage.getItem(sessionKey);
-    if (!hasShownModal) {
+    
+    // If forceShow is true (manual trigger), always show the modal
+    if (forceShow) {
       setShouldShow(true);
-      sessionStorage.setItem(sessionKey, "true");
     } else {
-      setShouldShow(false);
+      // Auto-show logic: only show if never shown in this session
+      if (!hasShownModal) {
+        setShouldShow(true);
+        sessionStorage.setItem(sessionKey, "true");
+      } else {
+        setShouldShow(false);
+      }
     }
     setHasChecked(true);
-  }, [sessionKey]);
+  }, [sessionKey, forceShow]);
 
   const markAsShown = () => {
     sessionStorage.setItem(sessionKey, "true");
@@ -25,11 +32,17 @@ export const useSessionModal = (sessionKey: string) => {
     setShouldShow(true);
   };
 
+  // Check if modal has been shown automatically in this session
+  const hasAutoShown = () => {
+    return sessionStorage.getItem(sessionKey) === "true";
+  };
+
   return {
     shouldShow,
     hasChecked,
     markAsShown,
-    clearSession
+    clearSession,
+    hasAutoShown
   };
 };
 
