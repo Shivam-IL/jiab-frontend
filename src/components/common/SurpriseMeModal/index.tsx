@@ -27,10 +27,10 @@ const SurpriseMeModal = ({
   onClose: () => void;
   forceShow?: boolean;
 }) => {
-  const { shouldShow, hasChecked } = useSessionModal(
-    "hasShownSurpriseMe",
-    forceShow
-  );
+  // const { shouldShow, hasChecked } = useSessionModal(
+  //   "hasShownSurpriseMe",
+  //   forceShow
+  // );
   const [open, setOpen] = useState<boolean>(false);
   const [makeLaughExitPopup, setMakeLaughExitPopup] = useState<boolean>(false);
   const { data: jokeData, isLoading: jokeLoading } = useGetSurpriseMeJoke();
@@ -50,23 +50,25 @@ const SurpriseMeModal = ({
   const { data: gluedinAssetData } = useGetGluedinAssetById(jokeId);
 
   // Set open state based on session check
-  useEffect(() => {
-    if (hasChecked) {
-      if (shouldShow) {
-        setOpen(true);
-      } else {
-        onClose();
-      }
-    }
-  }, [shouldShow, hasChecked, onClose]);
+  // useEffect(() => {
+  //   if (hasChecked) {
+  //     if (shouldShow) {
+  //       setOpen(true);
+  //     } else {
+  //       onClose();
+  //     }
+  //   }
+  // }, [shouldShow, hasChecked, onClose]);
 
   useEffect(() => {
     if (jokeData?.ok) {
+      console.log("jokeData", jokeData);
       viewGludeinJokes({ assetIds: [jokeData?.data?.id] });
+      setOpen(true);
       setJoke(jokeData?.data ?? {});
       setSerialChill(false);
     } else if (jokeData?.ok === false) {
-      setJoke({});
+      setJoke(null);
       setSerialChill(true);
     }
   }, [jokeData]);
@@ -97,7 +99,7 @@ const SurpriseMeModal = ({
   };
 
   useEffect(() => {
-    if (viewGludeinJokesData?.ok) {
+    if (viewGludeinJokesData?.ok && jokeData?.ok) {
       setJoke((prev: any) => ({
         ...prev,
         view_count: prev?.view_count + 1,
@@ -121,17 +123,18 @@ const SurpriseMeModal = ({
 
   // Handle modal close with proper cleanup
   const handleClose = () => {
-    forceHideLoader(); // Ensure any loading states are cleared
+    // forceHideLoader(); // Ensure any loading states are cleared
     setOpen(false);
     onClose();
   };
 
-  useEffect(() => {
-    return () => {
-      setJoke(null);
-      forceHideLoader(); // Cleanup on unmount
-    };
-  }, [forceHideLoader]);
+  // useEffect(() => {
+  //   return () => {
+  //     setJoke(null);
+  //     forceHideLoader(); // Cleanup on unmount
+  //   };
+  // }, [forceHideLoader]);
+
 
   if (serialChill) {
     return (
@@ -145,13 +148,11 @@ const SurpriseMeModal = ({
     );
   }
 
-  if (!joke && jokeLoading) {
-    return <></>;
-  }
-
   if (!joke) {
     return <></>;
   }
+
+
 
 
 
