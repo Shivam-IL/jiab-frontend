@@ -43,6 +43,7 @@ import {
   updateLanguages
 } from '@/store/reference'
 import { useGetUserSubmittedJokes } from '@/api/hooks/JokeHooks'
+import { clearAllModalSessions } from '@/hooks/useSessionModal'
 
 const mainServiceInstance = MainService.getInstance()
 
@@ -110,6 +111,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       localStorage.clear()
       dispatch(updateIsAuthenticated({ isAuthenticated: false }))
       dispatch(updateToken({ token: '' }))
+      clearAllModalSessions()
     }
   }, [refreshTokenLoading, refreshTokenData])
 
