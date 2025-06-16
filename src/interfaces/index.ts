@@ -107,9 +107,12 @@ export interface IImageIconCard {
   boxWidth?: string;
   imageClassName?: string;
   textColor?: string;
+  imageUrl?: string;
 }
 
 export interface IUserInfoCard {
+  dataLength?: number;
+  index?: number;
   iconWidth?: number;
   iconHeight?: number;
   iconClassName?: string;

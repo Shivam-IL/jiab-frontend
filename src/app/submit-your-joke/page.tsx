@@ -580,13 +580,14 @@ const SubmitYourJoke = () => {
                     <ImageIconCard
                       key={item.name}
                       boxWidth=''
-                      image={item.image}
+                      imageUrl={item.image}
                       itemsGapClass='gap-[8px]'
                       fontSize='text-[12px] md:text-[14px]'
                       fontWeight='font-[400]'
                       iconClassName={
                         'w-[31px] h-[39px] md:w-[55px] md:h-[56px]'
                       }
+                      imageClassName='w-full h-full object-cover'
                       className={`cursor-pointer ${
                         item.name.toLowerCase() ===
                         jokeData.category.toLowerCase()

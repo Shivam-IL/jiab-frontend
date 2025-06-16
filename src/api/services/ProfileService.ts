@@ -171,9 +171,10 @@ export class ProfileService extends MainService {
     }
   }
 
-  public async getUserQuestions() {
+  public async getUserQuestions(language_id: string) {
     try {
-      const response = await apiClient.get(API_ROUTES.USER.QUESTIONS.GET, {
+      const endpoint = `${API_ROUTES.USER.QUESTIONS.GET}?language_id=${language_id}`;
+      const response = await apiClient.get(endpoint, {
         headers: this.getAuthHeaders(),
       });
       const data = response.data;
@@ -188,12 +189,9 @@ export class ProfileService extends MainService {
 
   public async submitUserQuestions({ questions, language_id }: TSubmitQuestions) {
     try {
-      const endpoint = `${API_ROUTES.USER.QUESTIONS.POST}${questions?.[0]?.question_id}`;
-      const payload = {
-        questions,
-        ...(language_id && { language_id })
-      };
-      const response = await apiClient.post(endpoint, payload, {
+      const endpoint = `${API_ROUTES.USER.QUESTIONS.POST}`;
+
+      const response = await apiClient.post(endpoint, questions, {
         headers: this.getAuthHeaders(),
       });
       const data = response.data;

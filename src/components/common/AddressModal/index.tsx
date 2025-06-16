@@ -109,7 +109,7 @@ const AddressModal: React.FC<IAddressModal> = ({
     if (errorValidation) {
       return
     }
-
+    console.log('data', error, errorValidation)
     if (!errorValidation) {
       const addressData = {
         address1: data?.address_line_1 || '',
@@ -131,7 +131,14 @@ const AddressModal: React.FC<IAddressModal> = ({
     }
   }
 
-  console.log('pincodeData', pincodeData)
+  useEffect(() => {
+    if (data?.address_line_1 !== '') {
+      setError(prev => ({
+        ...prev,
+        address_line_1: ''
+      }))
+    }
+  }, [data?.address_line_1])
 
   useEffect(() => {
     if (!isPending && addNewAddressData?.ok) {
@@ -161,6 +168,7 @@ const AddressModal: React.FC<IAddressModal> = ({
 
   useEffect(() => {
     if (addressId && type === AddressModalType.EDIT) {
+      console.log('addressId', addressId)
       const address = addresses?.find(address => address.id === addressId)
       if (address) {
         setData({
@@ -178,15 +186,17 @@ const AddressModal: React.FC<IAddressModal> = ({
   }, [addressId])
 
   useEffect(() => {
-    if (data?.pincode?.length===6) {
-      setData({
-        ...data,
+    if (data?.pincode?.length === 6) {
+      setData(prev => ({
+        ...prev,
         state: '',
         city: ''
-      })
+      }))
       setError(prev => ({
         ...prev,
-        pincode: ''
+        pincode: '',
+        state: '',
+        city: ''
       }))
       getPincodeData(data?.pincode)
     }
@@ -195,19 +205,48 @@ const AddressModal: React.FC<IAddressModal> = ({
   useEffect(() => {
     if (pincodeData?.ok) {
       const { data } = pincodeData ?? {}
-      setData({
-        ...data,
+      setData(prev => ({
+        ...prev,
         state: data?.state,
         city: data?.city
-      })
-    } else if (pincodeData?.ok === false) {
-      const { message } = pincodeData as any ?? {}
+      }))
       setError(prev => ({
         ...prev,
-        pincode: "Pincode not found"
+        pincode: '',
+        state: '',
+        city: ''
+      }))
+    } else if (pincodeData?.ok === false) {
+      const { message } = (pincodeData as any) ?? {}
+      setError(prev => ({
+        ...prev,
+        pincode: 'Pincode not found'
       }))
     }
   }, [pincodeData])
+
+  useEffect(() => {
+    return () => {
+      setError({
+        address_line_1: '',
+        pincode: '',
+        state: '',
+        city: ''
+      })
+      setData({
+        address_line_1: '',
+        address_line_2: '',
+        nearest_landmark: '',
+        alternate_phone_number: '',
+        pincode: '',
+        state: '',
+        city: '',
+        default: false
+      })
+    }
+  }, [])
+
+  console.log('data', data)
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

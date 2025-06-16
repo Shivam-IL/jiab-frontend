@@ -65,12 +65,12 @@ const useDeleteAddress = () => {
   });
 };
 
-const useGetUserQuestions = () => {
+const useGetUserQuestions = ({ language_id }: { language_id: string }) => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
 
   return useQuery({
-    queryKey: keys.profile.getUserQuestions(),
-    queryFn: () => profileService.getUserQuestions(),
+    queryKey: [...keys.profile.getUserQuestions(), { language_id }],
+    queryFn: () => profileService.getUserQuestions(language_id),
     enabled: isAuthenticated && token ? true : false,
     staleTime: 60 * 60,
   });
