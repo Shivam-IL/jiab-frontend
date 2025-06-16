@@ -9,7 +9,6 @@ import { ICONS_NAMES } from "@/constants";
 import useAppDispatch from "@/hooks/useDispatch";
 import { updateCrossModal, updateLoginModal } from "@/store/auth/auth.slice";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
-import { useSessionModal } from "@/hooks/useSessionModal";
 
 const SurpriseMeLockModal = ({
   onClose,
@@ -18,32 +17,35 @@ const SurpriseMeLockModal = ({
   onClose?: () => void;
   forceShow?: boolean;
 }) => {
-  const { shouldShow, hasChecked } = useSessionModal(
-    "hasShownSurpriseMeLock",
-    forceShow
-  );
+  // const { shouldShow, hasChecked } = useSessionModal(
+  //   "hasShownSurpriseMeLock",
+  //   forceShow
+  // );
   const [open, setOpen] = useState<boolean>(false);
   const { forceHideLoader } = useGlobalLoader();
 
   const dispatch = useAppDispatch();
 
-  // Set open state based on session check
-  useEffect(() => {
-    if (hasChecked) {
-      if (shouldShow) {
-        setOpen(true);
-      } else {
-        onClose?.();
-      }
-    }
-  }, [shouldShow, hasChecked, onClose]);
+  // // Set open state based on session check
+  // useEffect(() => {
+  //   if (hasChecked) {
+  //     if (shouldShow) {
+  //       setOpen(true);
+  //     } else {
+  //       onClose?.();
+  //     }
+  //   }
+  // }, [shouldShow, hasChecked, onClose]);
 
   // Handle modal close with proper cleanup
   const handleClose = () => {
-    forceHideLoader(); // Ensure any loading states are cleared
     setOpen(false);
     onClose?.();
   };
+
+  useEffect(() => {
+    setOpen(true);
+  }, []);
 
   useEffect(() => {
     return () => {

@@ -13,6 +13,9 @@ const HomePageSurpriseButton = () => {
   const { isAuthenticated, token, enableCoachMarks } = useAppSelector(
     (state) => state.auth
   );
+  console.log("isAuthenticated", isAuthenticated);
+  console.log("token", token);
+  console.log("enableCoachMarks", enableCoachMarks);
   const [mounted, setMounted] = useState(false);
   const cmsData = useCMSData(mounted);
   const { forceHideLoader } = useGlobalLoader();
@@ -57,10 +60,10 @@ const HomePageSurpriseButton = () => {
         />
       </button>
       {surpriseMeModal && isAuthenticated && token && !enableCoachMarks && (
-        <SurpriseMeModal onClose={closeSurpriseMe} forceShow={true} />
+        <SurpriseMeModal onClose={closeSurpriseMe}  />
       )}
       {surpriseMeModal && !isAuthenticated && !token && (
-        <SurpriseMeLockModal onClose={closeSurpriseMe} forceShow={true} />
+        <SurpriseMeLockModal onClose={closeSurpriseMe}/>
       )}
     </>
   );
