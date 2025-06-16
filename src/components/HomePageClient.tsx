@@ -32,7 +32,7 @@ import HomePageJokeSection from "./common/HomePageJokeSection";
 import { PJChallenge, ChillGuyBanner } from "./Banners";
 import { useRouter } from "next/navigation";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
-import HomePageDesktopOnboarding from "./common/HomePageDesktopOnboarding";
+import HomePageDesktopOnboarding, { DesktopBoxIds } from "./common/HomePageDesktopOnboarding";
 import GenreSurpriseMeModal from "@/components/common/GenreSurpriseMeModal";
 
 export default function HomePageClient() {
@@ -243,6 +243,7 @@ export default function HomePageClient() {
           description={cmsData.homePage.pickYourMoodSubheading}
         />
         <div id={BoxIds.PICK_YOUR_MOOD} className="categories-section">
+          <span id={DesktopBoxIds.PICK_YOUR_MOOD}></span>
           <Carousel
             className="md:mx-0 mx-4"
             setApi={setApi}

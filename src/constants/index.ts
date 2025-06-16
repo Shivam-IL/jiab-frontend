@@ -180,6 +180,7 @@ export const IMAGES = {
 export const ICONS_NAMES = {
   SPRITE_BOTTLE: "sprite-bottle",
   SPRITE_SMILE: "sprite-smile",
+  CLAP: "clap",
   MULTIPLE_SMILE_MOBILE: "multiple-smile-mobile",
   SPRITE_PLAY: "sprite-play",
   LOCK: "lock",
@@ -210,6 +211,7 @@ export const ICONS_NAMES = {
   IMAGE: "image",
   TEXT: "text",
   UPLOAD_FILE: "upload-file",
+  SUCCESS: "success",
   INFO: "info",
   STEP_1: "step-1",
   STEP_2: "step-2",
@@ -294,6 +296,18 @@ export const INVITE_CODE_POPUP_DATA = {
       "You've entered a used referral code. Please enter a valid code to proceed!",
     CTA_TEXT: "Submit",
   },
+};
+
+export const LANG_VERNICULAR_MAP = {
+  English: "English",
+  Hindi: "हिंदी",
+  Telugu: "తెలుగు",
+  Oriya: "ଓଡ଼ିଆ",
+  Bengali: "বাংলা",
+  Marathi: "मराठी",
+  Kannada: "ಕನ್ನಡ",
+  Bhojpuri: "भोजपुरी",
+  Maithili: "मैथिली",
 };
 
 export const MOBILE_TEMP_NAVBAR_DATA = {

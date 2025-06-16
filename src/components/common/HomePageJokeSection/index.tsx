@@ -20,6 +20,7 @@ import { REDUX_UPDATION_TYPES } from '@/constants'
 import useAppDispatch from '@/hooks/useDispatch'
 import useAppSelector from '@/hooks/useSelector'
 import { BoxIds } from '../CircularBoxesModal'
+import { DesktopBoxIds } from '../HomePageDesktopOnboarding'
 
 const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
   const cmsData = useCMSData()
@@ -100,7 +101,7 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
       />
       {isClient && (
         <div id={BoxIds.JOKE_BOX} className='md:mx-0 mx-4 mt-[20px] mb-[20px]'>
-          <div  className='flex justify-center w-full'>
+          <div id={DesktopBoxIds.JOKE_BOX} className='flex justify-center w-full'>
             <div className='flex items-center bg-white rounded-full mb-4 p-1 relative'>
               <div
                 className={`absolute transition-all duration-300 ease-in-out top-1 h-[calc(100%-8px)] w-[90px] rounded-full bg-green ${
@@ -147,6 +148,7 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
                       <CarouselItem key={item._id} className='basis-auto'>
                         <div className='max-w-[350px] flex mx-auto h-full'>
                           <UgcCard
+                            home={true}
                             disclaimerText={cmsData.homePage.jokeDisclaimerText}
                             item={item}
                           />
@@ -160,6 +162,7 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
                 {ugcData?.length > 0 &&
                   ugcData?.map((item: TModifiedUGCContent, index: number) => (
                     <UgcCard
+                      home={true}
                       key={item._id}
                       disclaimerText={cmsData.homePage.jokeDisclaimerText}
                       item={item}

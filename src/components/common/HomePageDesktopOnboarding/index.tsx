@@ -13,8 +13,8 @@ export const DesktopBoxIds = {
   CONTEST: 'contest-element-desktop',
   LANGUAGE: 'language-element-desktop',
   PROFILE_ELEMENT: 'profile-element-desktop',
-  PICK_YOUR_MOOD: 'pick-your-mood-element',
-  JOKE_BOX: 'joke-box-element'
+  PICK_YOUR_MOOD: 'pick-your-mood-element-desktop',
+  JOKE_BOX: 'joke-box-element-desktop'
 } as const
 
 interface Coordinates {
@@ -123,6 +123,10 @@ const HomePageDesktopOnboarding = ({
     }
   }, [coordinates])
 
+ 
+
+
+
   return (
     <div className='fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center'>
       <style jsx>{`
@@ -143,10 +147,10 @@ const HomePageDesktopOnboarding = ({
       `}</style>
       <div
         onClick={() => {
-          if (currentBox === 5) {
+          if (currentBox === 4) {
             handleClose()
           } else {
-            setCurrentBox(prev => (prev + 1) % 6)
+            setCurrentBox(prev => (prev + 1) % 5)
           }
         }}
         className='relative w-full h-full'
@@ -278,7 +282,7 @@ const HomePageDesktopOnboarding = ({
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
-              left: `${coordinates.pickYourMood.x - 300.5}px`,
+              left: `${coordinates.pickYourMood.x - 200.5}px`,
               top: `${coordinates.pickYourMood.y - 200}px`,
               width: '225px',
               height: '225px',
@@ -303,11 +307,12 @@ const HomePageDesktopOnboarding = ({
           </div>
         )}
 
-        {currentBox === 5 && coordinates.jokeBox.y !== 0 && (
+        {/* Joke Box */}
+        {/* {currentBox === 5 && coordinates.jokeBox.y !== 0 && (
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
-              left: `${coordinates.jokeBox.x - 300.5}px`,
+              left: `${coordinates.jokeBox.x - 200.5}px`,
               top: `${coordinates.jokeBox.y - 200}px`,
               width: '225px',
               height: '225px',
@@ -325,12 +330,12 @@ const HomePageDesktopOnboarding = ({
                 <div
                   className={`text-start relative w-[70%] text-[12px] ${aktivGrotesk.className} font-[400]`}
                 >
-                  All your jokes  bottled here!
+                  All your jokes bottled here!
                 </div>
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   )

@@ -34,7 +34,7 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
     const modifiedLanguages = languages?.map(language => ({
       id: language.id,
       value: language.name,
-      label: language.name
+      label: language.vernacual_name
     }))
     setLanguageOptions(modifiedLanguages)
   }, [languages])

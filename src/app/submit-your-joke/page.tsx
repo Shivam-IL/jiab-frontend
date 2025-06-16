@@ -32,16 +32,18 @@ import { useRouter } from 'next/navigation'
 interface FileContainerProps {
   title: string
   subtitle: string
+  file: FileList | null | undefined
 }
 
 const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
-  ({ title, subtitle }, ref) => {
+  ({ title, subtitle, file }, ref) => {
     const handleClick = () => {
       if (ref && 'current' in ref && ref.current) {
         ref.current.click()
       }
     }
 
+    console.log('file', file)
     return (
       <div
         ref={ref}
@@ -51,20 +53,39 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
         <div className='flex flex-col justify-center items-center gap-[16px]'>
           <SvgIcons
             className='w-[40px] h-[40px] md:w-[69px] md:h-[69px]'
-            name={ICONS_NAMES.UPLOAD_FILE}
+            name={file ? ICONS_NAMES.SUCCESS : ICONS_NAMES.UPLOAD_FILE}
           />
           <div className='flex flex-col justify-center items-center'>
-            <AktivGroteskText
-              text={title}
-              fontSize='text-[16px] md:text-[20px]'
-              fontWeight='font-[700]'
-            />
-            <AktivGroteskText
-              text={subtitle}
-              fontSize='text-[12px] md:text-[16px]'
-              fontWeight='font-[400]'
-            />
-            {title.includes('Image') && (
+            {!file && (
+              <>
+                <AktivGroteskText
+                  text={title}
+                  fontSize='text-[16px] md:text-[20px]'
+                  fontWeight='font-[700]'
+                />
+                <AktivGroteskText
+                  text={subtitle}
+                  fontSize='text-[12px] md:text-[16px]'
+                  fontWeight='font-[400]'
+                />
+              </>
+            )}
+            {file && file?.length > 0 && (
+              <>
+                <AktivGroteskText
+                  text={'File Name'}
+                  fontSize='text-[16px] md:text-[20px]'
+                  fontWeight='font-[700]'
+                />
+                <AktivGroteskText
+                  text={file?.[0]?.name ?? ''}
+                  fontSize='text-[16px] md:text-[20px]'
+                  fontWeight='font-[700]'
+                  className='text-center'
+                />
+              </>
+            )}
+            {!file && title.includes('Image') && (
               <AktivGroteskText
                 text='Preferred Dimensions : Square'
                 fontSize='text-[8px] md:text-[14px]'
@@ -148,13 +169,21 @@ const SubmitYourJoke = () => {
     agreeToTerms: ''
   })
 
+  const [newFormatData, setNewFormatData] = useState<
+    {
+      id: number
+      name: string
+      value: string
+    }[]
+  >([])
+
   const FORMAT_OPTIONS = [
     {
       icon: ICONS_NAMES.IMAGE,
-      title: cmsData.pjChallenge.imageClickableHeading,
       label: cmsData.pjChallenge.image,
       iconClassName: 'w-[31px] h-[39px]',
       acceptedFormats: '.jpg,.jpeg,.png',
+      title: cmsData.pjChallenge.imageClickableHeading,
       accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading,
       name: 'Image'
     },
@@ -310,24 +339,28 @@ const SubmitYourJoke = () => {
 
   useEffect(() => {
     if (languages?.length > 0) {
+      console.log('languages', languages)
       const modifiedLanguages = languages?.map((item: ILanguage) => {
         return {
           id: item.id,
           name: item.name,
           value: item.language_key,
-          label: item.name
+          label: item.vernacual_name
         }
       })
+      console.log('modifiedLanguages', modifiedLanguages)
       setLanguageData(modifiedLanguages)
     }
   }, [languages])
 
   useEffect(() => {
-    if (jokesFormats?.length > 0) {
+    if (jokesFormats?.length > 0 && FORMAT_OPTIONS?.length > 0) {
+      console.log('jokesFormats', jokesFormats)
       const modifiedJokesFormats = FORMAT_OPTIONS?.map(item => {
         const filterItem = jokesFormats?.find(
           (format: IJokeFormat) => format.title === item.name
         )
+
         return {
           ...item,
           id: filterItem?.id ?? 0,
@@ -337,7 +370,7 @@ const SubmitYourJoke = () => {
       })
       setFormatData(modifiedJokesFormats)
     }
-  }, [jokesFormats])
+  }, [jokesFormats, cmsData])
 
   useEffect(() => {
     setMounted(true)
@@ -367,6 +400,23 @@ const SubmitYourJoke = () => {
     } else if (key === 'jokeText') {
       const valueString = value?.toString()?.slice(0, 200)
       setJokeData(prev => ({ ...prev, [key]: valueString ?? '' }))
+    } else if (key === 'category') {
+      setJokeData(prev => {
+        if (prev.category === value) {
+          return { ...prev, category: '' }
+        }
+        return { ...prev, category: value as string }
+      })
+    } else if (key === 'file') {
+      const MAX_FILE_SIZE_MB = 50
+      let file = value as FileList
+      const fileSizeMB = file?.[0]?.size / (1024 * 1024)
+      if (fileSizeMB > MAX_FILE_SIZE_MB) {
+        alert('File size should not exceed 50 MB.')
+        setJokeData(prev => ({ ...prev, file: null }))
+        return
+      }
+      setJokeData(prev => ({ ...prev, file: file }))
     } else {
       setJokeData(prev => ({ ...prev, [key]: value ?? '' }))
     }
@@ -375,11 +425,11 @@ const SubmitYourJoke = () => {
   useEffect(() => {
     setJokeData(prev => ({
       ...prev,
-      format: formatData?.[0]?.label.toLowerCase() ?? '',
-      acceptedFormats: formatData?.[0]?.acceptedFormats ?? '',
-      accptedFormatText: formatData?.[0]?.accptedFormatText ?? ''
+      format: cmsData.pjChallenge.image,
+      acceptedFormats: cmsData.pjChallenge.imageClickableHeading,
+      accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading
     }))
-  }, [cmsData, formatData])
+  }, [cmsData])
 
   console.log(
     'formError',
@@ -387,7 +437,7 @@ const SubmitYourJoke = () => {
     jokeData.format.toLowerCase(),
     cmsData.pjChallenge.text.toLowerCase(),
     jokeData.accptedFormatText,
-    formatData
+    jokeData
   )
 
   return (
@@ -455,6 +505,7 @@ const SubmitYourJoke = () => {
                             'accptedFormatText',
                             item.accptedFormatText
                           )
+                          handleChange('file', null)
                         }}
                       >
                         <ImageIconCard
@@ -491,6 +542,7 @@ const SubmitYourJoke = () => {
               <>
                 <FileContainer
                   ref={fileRef}
+                  file={jokeData.file}
                   title={
                     FORMAT_OPTIONS.find(item => item.label === jokeData.format)
                       ?.title ?? ''

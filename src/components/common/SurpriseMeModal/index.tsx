@@ -18,6 +18,7 @@ import {
 import { ReactionType } from "@/types";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
 import { useSessionModal } from "@/hooks/useSessionModal";
+import SerialChillerPopup from "../SerialChillerPopup";
 
 const SurpriseMeModal = ({
   onClose,
@@ -134,18 +135,13 @@ const SurpriseMeModal = ({
 
   if (serialChill) {
     return (
-      <CustomPopupWrapper
+      <SerialChillerPopup
         open={serialChill}
         onClose={() => {
           setSerialChill(false);
           handleClose();
         }}
-        icon={ICONS_NAMES.EXTREME_LAUGH}
-        title="Serial Chiller! 👀"
-        subtitle="You've exhausted your daily limit of jokes."
-      >
-        <center>Come back tomorrow for more Ha-Ha-mazing jokes.</center>
-      </CustomPopupWrapper>
+      />
     );
   }
 
@@ -156,6 +152,8 @@ const SurpriseMeModal = ({
   if (!joke) {
     return <></>;
   }
+
+
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>

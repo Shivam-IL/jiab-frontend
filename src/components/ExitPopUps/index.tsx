@@ -121,13 +121,17 @@ const MadeYouLaughExitPopup = ({
   open: boolean
   onClose: () => void
 }) => {
+  const { madeYouLoL } = useCMSData()
   return (
     <CustomPopupWrapper
       open={open}
       onClose={onClose}
       icon={EXIT_POPUP_DATA.MADE_YOU_LAUGH.ICON}
-      title={EXIT_POPUP_DATA.MADE_YOU_LAUGH.TITLE}
-      subtitle={EXIT_POPUP_DATA.MADE_YOU_LAUGH.SUB_TITLE}
+      title={madeYouLoL.made_you_lol_heading}
+      subtitle={madeYouLoL.made_you_lol_sub_heading}
+      sureToExitText={madeYouLoL.made_you_lol_sub_heading_2}
+      yesButtonText={madeYouLoL.made_you_lol_yes_button_text}
+      noButtonText={madeYouLoL.made_you_lol_no_button_text}
       doubleButton={true}
     />
   )
