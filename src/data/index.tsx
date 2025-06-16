@@ -19,6 +19,7 @@ export * from './plus-add-inside-profile'
 export * from './break_the_ice'
 export * from './vote_is_in'
 export * from './serial_chiller'
+export * from "./privacy";
 
 // Import all the mapping functions
 import {
@@ -95,6 +96,11 @@ import {
   defaultBreakTheIceData,
   mapBreakTheIceData
 } from './break_the_ice'
+import {
+  mapPrivacyPolicyData,
+  defaultPrivacyPolicyData,
+  type PrivacyPolicyData,
+} from "./privacy";
 
 import { TCMSResponse } from '@/api/types/CMSTypes'
 import useAppSelector from '@/hooks/useSelector'
@@ -142,6 +148,7 @@ export interface AllCMSData {
   tryingToPrankUs: TryingToPrankUsPopupData
   ahemAhem: AhemAhemPopupData
   easyPeasy: EasyPeasyPopupData
+  privacyPolicy: PrivacyPolicyData;
 }
 
 // Hook to get all mapped CMS data
@@ -176,7 +183,8 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
         madeYouLoL: defaultMadeYouLolPopupData,
         tryingToPrankUs: defaultTryingToPrankUsPopupData,
         ahemAhem: defaultAhemAhemPopupData,
-        easyPeasy: defaultEasyPeasyPopupData
+        easyPeasy: defaultEasyPeasyPopupData,
+        privacyPolicy: defaultPrivacyPolicyData,
       }
     }
 
@@ -206,7 +214,8 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
       madeYouLoL: mapMadeYouLolPopupData(homePageContent),
       tryingToPrankUs: mapTryingToPrankUsPopupData(homePageContent),
       ahemAhem: mapAhemAhemPopupData(homePageContent),
-      easyPeasy: mapEasyPeasyPopupData(homePageContent)
+      easyPeasy: mapEasyPeasyPopupData(homePageContent),
+      privacyPolicy: mapPrivacyPolicyData(homePageContent),
     }
   }, [homePageContent, mounted])
 }
@@ -240,6 +249,7 @@ export const mapAllCMSData = (
     madeYouLoL: mapMadeYouLolPopupData(cmsData),
     tryingToPrankUs: mapTryingToPrankUsPopupData(cmsData),
     ahemAhem: mapAhemAhemPopupData(cmsData),
-    easyPeasy: mapEasyPeasyPopupData(cmsData)
+    easyPeasy: mapEasyPeasyPopupData(cmsData),
+    privacyPolicy: mapPrivacyPolicyData(cmsData),
   }
 }

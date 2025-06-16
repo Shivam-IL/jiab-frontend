@@ -7,21 +7,67 @@ import UserAddressCard from "@/components/common/UserAddressCard";
 import UserComicsCoinsAndRankCard from "@/components/common/UserComicsCoinsAndRankCard";
 import ProfileCard from "@/components/ProfileCard";
 import UserGeneratedJokecComponent from "@/components/UserGeneratedJokecComponent";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BreakTheIceExitPopup } from "@/components/ExitPopUps";
 import useAppSelector from "@/hooks/useSelector";
 import { useRouter, usePathname } from "next/navigation";
 import useAppDispatch from "@/hooks/useDispatch";
 import { useCMSData } from "@/data";
+import {
+  CoinAnimation,
+  useCoinAnimation,
+} from "@/components/common/CoinAnimation";
 
 const ProfilePage = () => {
   const [mounted, setMounted] = useState(false);
 
+  // Ref to track previous profile percentage
+  const prevProfilePercentageRef = useRef<number | null>(null);
+
   const cmsData = useCMSData(mounted);
+
+  // Coin animation hook
+  const { user } = useAppSelector((state) => state.profile);
+
+  // Coin animation hook
+  const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Handle profile completion animation
+  useEffect(() => {
+    if (!mounted || !user?.id) return;
+
+    const currentProfilePercentage = user.profile_percentage;
+    const previousProfilePercentage = prevProfilePercentageRef.current;
+
+    // Check if animation has already been shown for this user
+    const animationShownKey = `profile_completion_animation_shown_${user.id}`;
+    const hasAnimationBeenShown =
+      localStorage.getItem(animationShownKey) === "true";
+
+    // Trigger animation if:
+    // 1. Current percentage is 100%
+    // 2. Previous percentage was not 100% (or null on first load)
+    // 3. Animation hasn't been shown before for this user
+    if (
+      currentProfilePercentage === 100 &&
+      (previousProfilePercentage === null || previousProfilePercentage < 100) &&
+      !hasAnimationBeenShown
+    ) {
+      // Small delay to ensure smooth animation
+      setTimeout(() => {
+        triggerAnimation();
+        // Mark animation as shown for this user
+        localStorage.setItem(animationShownKey, "true");
+      }, 500);
+    }
+
+    // Update the ref with current percentage
+    prevProfilePercentageRef.current = currentProfilePercentage;
+  }, [user?.profile_percentage, user?.id, mounted, triggerAnimation]);
 
   // Handle fragment scrolling when page loads
   useEffect(() => {
@@ -81,6 +127,9 @@ const ProfilePage = () => {
           <UserGeneratedJokecComponent />
         </div>
       </div>
+
+      {/* Coin Animation for Profile Completion */}
+      <CoinAnimation isVisible={isAnimating} animationKey={animationKey} />
     </ScreenWrapper>
   );
 };

@@ -399,6 +399,16 @@ export type TCMSResponse = {
       publishedAt: string;
       locale: string;
     };
+    privacy_policy: {
+      id: number;
+      documentId: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+      privacy_policy: string;
+      privacy_policy_heading: string;
+    },
     localizations: Array<{
       id: number;
       documentId: string;
