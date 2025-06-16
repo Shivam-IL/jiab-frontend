@@ -6,6 +6,7 @@ import AktivGroteskText from "../common/AktivGroteskText";
 import Input from "@/components/Input";
 import GreenCTA from "@/components/GreenCTA";
 import Image from "next/image";
+import { useRedeemMixCode, MIX_CODE_STATUS } from "@/api";
 
 interface UniqueCodeModalProps {
   open: boolean;
@@ -13,41 +14,7 @@ interface UniqueCodeModalProps {
   onSuccess?: () => void;
 }
 
-// Mock validation functions - these would typically call APIs
-const validateCode = (
-  code: string
-): { isValid: boolean; isUsed: boolean; error?: string } => {
-  if (!code.trim()) {
-    return { isValid: false, isUsed: false, error: "Please enter a code" };
-  }
-
-  // Mock invalid codes
-  if (code === "123456") {
-    return {
-      isValid: false,
-      isUsed: false,
-      error: "Please enter a valid unique code",
-    };
-  }
-
-  // Mock used codes
-  if (code === "654321") {
-    return {
-      isValid: false,
-      isUsed: true,
-      error: "Used code entered. Please try again with new code",
-    };
-  }
-
-  // Mock valid codes
-  return { isValid: true, isUsed: false };
-};
-
-const checkDailyLimit = (): boolean => {
-  // Mock daily limit check - this would typically check against user's daily attempts
-  // For demo purposes, we'll say limit is reached after showing the error states
-  return false; // Change to true to test daily limit state
-};
+// No longer needed - API validation will handle this
 
 const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
   open,
@@ -59,6 +26,9 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
   const [isSuccess, setIsSuccess] = useState(false);
   const [isDailyLimitReached, setIsDailyLimitReached] = useState(false);
   const [coinsCollected, setCoinsCollected] = useState(20);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const redeemMixCodeMutation = useRedeemMixCode();
 
   const handleChange = (key: string, value: string) => {
     // Only allow alphanumeric characters and limit to 6 digits
@@ -71,23 +41,50 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
     }
   };
 
-  const handleSubmit = () => {
-    // Check daily limit first
-    if (checkDailyLimit()) {
-      setIsDailyLimitReached(true);
+  const handleSubmit = async () => {
+    if (!uniqueCode.trim()) {
+      setError("Please enter a code");
       return;
     }
 
-    const validation = validateCode(uniqueCode);
-
-    if (!validation.isValid) {
-      setError(validation.error ?? "Invalid code");
-      return;
-    }
-
-    // Success case
-    setIsSuccess(true);
+    setIsLoading(true);
     setError("");
+
+    try {
+      const result = await redeemMixCodeMutation.mutateAsync({
+        mix_code: uniqueCode,
+      });
+
+      if (result.ok) {
+        const data = result.data as any;
+
+        switch (data.status) {
+          case MIX_CODE_STATUS.SUCCESS:
+            setCoinsCollected(20); // Default coins for successful redemption
+            setIsSuccess(true);
+            break;
+          case MIX_CODE_STATUS.DAILY_LIMIT_EXCEEDED:
+            setIsDailyLimitReached(true);
+            break;
+          case MIX_CODE_STATUS.INVALID_CODE:
+            setError("Please enter a valid unique code");
+            break;
+          case MIX_CODE_STATUS.ALREADY_USED:
+            setError("Used code entered. Please try again with new code");
+            break;
+          default:
+            setError(data.message ?? "An error occurred");
+        }
+      } else {
+        const message = (result as any).message ?? "Failed to redeem code";
+        setError(message.charAt(0).toUpperCase() + message.slice(1));
+      }
+    } catch (error) {
+      console.log(error);
+      setError("Network error. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleClose = () => {
@@ -169,8 +166,8 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
   if (isDailyLimitReached) {
     return (
       <Dialog open={open} onOpenChange={handleClose}>
-        <DialogContent className="max-w-[343px] gap-0 rounded-[10px] p-0">
-          <div className="flex justify-end pt-[12px] pr-[16px] md:pr-[18px]">
+        <DialogContent className="max-w-[343px] gap-0 rounded-[10px] p-0 h-[337px]">
+          <div className="flex justify-end mt-[-10px] mr-[7.86px]">
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -178,35 +175,37 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
                 console.log("Close button clicked"); // Debug log
                 handleClose();
               }}
-              className="p-2 cursor-pointer bg-transparent hover:bg-gray-100 rounded-full border-none outline-none"
+              className="p-2 cursor-pointer bg-transparent rounded-full border-none outline-none z-50"
               type="button"
             >
               <SvgIcons
                 name={ICONS_NAMES.CROSS}
-                className="w-[13px] h-[13px] md:w-[14px] md:h-[12px]"
+                className="w-[12.14px] h-[12.1px]"
               />
             </button>
           </div>
-          <div className="w-full px-[16px] pt-[29.78px] md:pt-[18px] pb-[23px] flex flex-col gap-[24px]">
+          <div className="w-full flex flex-col gap-[16px] justify-center items-center mt-[-58px]">
             {/* Sprite Bottle Icon */}
             <div className="flex justify-center">
-              <div className="w-[127px] h-[127px] bg-[#11A64B] rounded-sm flex items-center justify-center">
-                <SvgIcons
-                  name={ICONS_NAMES.SPRITE_BOTTLE}
-                  className="w-[60px] h-[80px]"
+              <div className="flex items-center justify-center">
+                <Image
+                  src="/other-svgs/sorry.svg"
+                  alt="Sprite Bottle"
+                  width={56}
+                  height={56}
                 />
               </div>
             </div>
 
-            <div className="flex flex-col gap-[8px] md:gap-[12px] text-center items-center">
+            <div className="flex flex-col gap-[8px] max-w-[265px] items-center justify-center text-center">
               <AktivGroteskText
                 text="Sorry!"
-                fontSize="text-[20px] md:text-[24px]"
+                fontSize="text-[20px] leading-[16px]"
                 fontWeight="font-[700]"
               />
               <AktivGroteskText
                 text="You've reached your daily limit of 5 unique code entries!"
-                fontSize="text-[16px] md:text-[20px]"
+                fontSize="text-[16px] leading-[20px]"
                 fontWeight="font-[400]"
               />
             </div>
@@ -215,23 +214,23 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
               onSubmit={(event) => {
                 event.preventDefault();
               }}
-              className="flex flex-col gap-[4px]"
+              className="flex flex-col gap-[28px]"
             >
               <Input
                 name="uniqueCode"
                 type="text"
                 value={uniqueCode}
-                fontSize="text-[14px] md:text-[16px]"
+                fontSize="text-[14px]"
                 onChange={handleChange}
                 placeholder="Enter Unique Code here"
                 readonly={true}
                 bgColor="bg-[#F3F3F3]"
-                className="p-1"
+                className="p-1 w-[311px]"
               />
 
               <div className="flex flex-col justify-center items-center">
                 <GreenCTA
-                  className=""
+                  className="bg-[#D0D0D1] text-[#ffffff] w-[311px]"
                   text="Submit"
                   fontSize="text-[16px] md:text-[20px]"
                   paddingClass="py-[10px] md:py-[10px] px-[28px]"
@@ -308,10 +307,11 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
             <div className="flex flex-col justify-center items-center">
               <GreenCTA
                 className=""
-                text="Submit"
+                text={isLoading ? "Submitting..." : "Submit"}
                 fontSize="text-[16px]"
                 paddingClass="py-[13.5px] px-[128.5px]"
                 onClick={handleSubmit}
+                disabled={isLoading || !uniqueCode.trim()}
               />
               <AktivGroteskText
                 text="Note: You can enter up to 5 codes in a day!"

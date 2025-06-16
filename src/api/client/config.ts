@@ -97,4 +97,7 @@ export const API_ROUTES = {
     JOKES_FORMATS: "/reference-data/formats",
     LANGUAGES: "/reference-data/languages",
   },
+  MIX_CODE: {
+    REDEEM: "/mix-code/redeem",
+  },
 };
