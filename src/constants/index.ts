@@ -282,6 +282,7 @@ export const ICONS_NAMES = {
   NEW_CUP: "new-cup",
   NEW_COMIC_COINS: "new-comic",
   NEW_REFRESH_RING: "new-refresh-ring",
+  CROSS2: "cross2",
 };
 
 export const INVITE_CODE_POPUP_DATA = {
@@ -553,6 +554,7 @@ export const PROTECTED_ROUTES = [
 export const SESSION_STORAGE_KEYS = {
   CURRENT_PATH: "currentPath",
   PREVIOUS_PATH: "previousPath",
+  HAS_SHOWN_LOCK_MODAL: "hasShownLockModal",
 };
 
 export const LOCAL_IMAGES = {

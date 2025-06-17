@@ -14,6 +14,7 @@ const GreenCTA: React.FC<IGreenCTA> = ({
   disabled = false,
   children,
   childrenPosition,
+  borderRadius = "rounded-[100px]"
 }) => {
   return (
     <button
@@ -25,7 +26,7 @@ const GreenCTA: React.FC<IGreenCTA> = ({
           : isCoinIcon
           ? "hover:bg-yellow/60  bg-yellow text-black"
           : "hover:bg-[#73C392]  bg-[#11A64B] text-white"
-      } ${fontSize} ${fontWeight} leading-tight transition-all duration-300 ${paddingClass} rounded-[100px] ${
+      } ${fontSize} ${fontWeight} ${borderRadius} leading-tight transition-all duration-300 ${paddingClass} ${
         aktivGrotesk.className
       } ${isCoinIcon ? "flex items-center gap-2" : ""}`}
     >

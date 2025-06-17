@@ -8,7 +8,6 @@ import SurpriseMeLockModal from "../common/SurpriseMeLockModal";
 import { useCMSData } from "@/data";
 import { triggerGAEvent } from "@/utils/gTagEvents";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
-import SerialChillerPopup from "../common/SerialChillerPopup";
 import { useSessionModal } from "@/hooks/useSessionModal";
 
 const HomePageSurpriseButton = () => {

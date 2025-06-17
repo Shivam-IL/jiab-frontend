@@ -33,68 +33,83 @@ interface FileContainerProps {
   title: string
   subtitle: string
   file: FileList | null | undefined
+  removeFile: () => void
 }
 
 const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
-  ({ title, subtitle, file }, ref) => {
+  ({ title, subtitle, file, removeFile }, ref) => {
     const handleClick = () => {
       if (ref && 'current' in ref && ref.current) {
         ref.current.click()
       }
     }
 
-    console.log('file', file)
     return (
-      <div
-        ref={ref}
-        onClick={handleClick}
-        className='w-full mt-[24px] h-[147px] md:h-[195px] flex flex-col justify-center items-center bg-[#9BD4B1] border-[1px] border-[#11A64B] rounded-[10px] cursor-pointer'
-      >
-        <div className='flex flex-col justify-center items-center gap-[16px]'>
-          <SvgIcons
-            className='w-[40px] h-[40px] md:w-[69px] md:h-[69px]'
-            name={file ? ICONS_NAMES.SUCCESS : ICONS_NAMES.UPLOAD_FILE}
-          />
-          <div className='flex flex-col justify-center items-center'>
-            {!file && (
-              <>
+      <>
+        <div
+          ref={ref}
+          className='w-full mt-[24px] relative h-[147px] md:h-[195px] flex flex-col justify-center items-center bg-[#9BD4B1] border-[1px] border-[#11A64B] rounded-[10px] cursor-pointer'
+        >
+          {file && (
+            <div
+              className='w-full relative flex justify-end cursor-pointer px-[16px] z-10'
+              onClick={removeFile}
+            >
+              <SvgIcons
+                name={ICONS_NAMES.CROSS2}
+                className='w-[12px] h-[12px]  text-black fill-black stroke-black'
+              />
+            </div>
+          )}
+          <div
+            onClick={handleClick}
+            className='flex flex-col w-full justify-center items-center gap-[16px]'
+          >
+            <SvgIcons
+              className='w-[40px] h-[40px] md:w-[69px] md:h-[69px]'
+              name={file ? ICONS_NAMES.SUCCESS : ICONS_NAMES.UPLOAD_FILE}
+            />
+            <div className='flex flex-col justify-center items-center'>
+              {!file && (
+                <>
+                  <AktivGroteskText
+                    text={title}
+                    fontSize='text-[16px] md:text-[20px]'
+                    fontWeight='font-[700]'
+                  />
+                  <AktivGroteskText
+                    text={subtitle}
+                    fontSize='text-[12px] md:text-[16px]'
+                    fontWeight='font-[400]'
+                  />
+                </>
+              )}
+              {file && file?.length > 0 && (
+                <>
+                  <AktivGroteskText
+                    text={'File Name'}
+                    fontSize='text-[16px] md:text-[20px]'
+                    fontWeight='font-[700]'
+                  />
+                  <AktivGroteskText
+                    text={file?.[0]?.name ?? ''}
+                    fontSize='text-[16px] md:text-[20px]'
+                    fontWeight='font-[700]'
+                    className='text-center'
+                  />
+                </>
+              )}
+              {!file && title.includes('Image') && (
                 <AktivGroteskText
-                  text={title}
-                  fontSize='text-[16px] md:text-[20px]'
-                  fontWeight='font-[700]'
-                />
-                <AktivGroteskText
-                  text={subtitle}
-                  fontSize='text-[12px] md:text-[16px]'
+                  text='Preferred Dimensions : Square'
+                  fontSize='text-[8px] md:text-[14px]'
                   fontWeight='font-[400]'
                 />
-              </>
-            )}
-            {file && file?.length > 0 && (
-              <>
-                <AktivGroteskText
-                  text={'File Name'}
-                  fontSize='text-[16px] md:text-[20px]'
-                  fontWeight='font-[700]'
-                />
-                <AktivGroteskText
-                  text={file?.[0]?.name ?? ''}
-                  fontSize='text-[16px] md:text-[20px]'
-                  fontWeight='font-[700]'
-                  className='text-center'
-                />
-              </>
-            )}
-            {!file && title.includes('Image') && (
-              <AktivGroteskText
-                text='Preferred Dimensions : Square'
-                fontSize='text-[8px] md:text-[14px]'
-                fontWeight='font-[400]'
-              />
-            )}
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      </>
     )
   }
 )
@@ -425,20 +440,15 @@ const SubmitYourJoke = () => {
   useEffect(() => {
     setJokeData(prev => ({
       ...prev,
-      format: cmsData.pjChallenge.image,
-      acceptedFormats: cmsData.pjChallenge.imageClickableHeading,
-      accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading
+      format: formatData?.length > 0 ? formatData[0].label : '',
+      acceptedFormats:
+        formatData?.length > 0 ? formatData[0].acceptedFormats : '',
+      accptedFormatText:
+        formatData?.length > 0 ? formatData[0].accptedFormatText : ''
     }))
-  }, [cmsData])
+  }, [cmsData, formatData])
 
-  console.log(
-    'formError',
-    formError,
-    jokeData.format.toLowerCase(),
-    cmsData.pjChallenge.text.toLowerCase(),
-    jokeData.accptedFormatText,
-    jokeData
-  )
+  console.log('formError', formatData)
 
   return (
     <div className='flex flex-col gap-3'>
@@ -539,8 +549,11 @@ const SubmitYourJoke = () => {
             </div>
             {jokeData.format.toLowerCase() !==
               cmsData.pjChallenge.text.toLowerCase() && (
-              <>
+              <div className='relative'>
                 <FileContainer
+                  removeFile={() => {
+                    handleChange('file', null)
+                  }}
                   ref={fileRef}
                   file={jokeData.file}
                   title={
@@ -554,9 +567,14 @@ const SubmitYourJoke = () => {
                   hidden
                   type='file'
                   accept={jokeData.acceptedFormats}
-                  onChange={event => handleChange('file', event.target.files)}
+                  onChange={event => {
+                    if (event.target.files?.length === 0) {
+                      return
+                    }
+                    handleChange('file', event.target.files)
+                  }}
                 />
-              </>
+              </div>
             )}
             {jokeData.format.toLowerCase() ===
               cmsData.pjChallenge.text.toLowerCase() && (

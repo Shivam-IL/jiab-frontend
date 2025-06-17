@@ -5,7 +5,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import GreenBG from "../../../../public/assets/images/green-bg.png";
 import Image from "next/image";
 import SvgIcons from "../SvgIcons";
-import { ICONS_NAMES } from "@/constants";
+import { ICONS_NAMES, SESSION_STORAGE_KEYS } from "@/constants";
 import useAppDispatch from "@/hooks/useDispatch";
 import { updateCrossModal, updateLoginModal } from "@/store/auth/auth.slice";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
@@ -39,6 +39,7 @@ const SurpriseMeLockModal = ({
 
   // Handle modal close with proper cleanup
   const handleClose = () => {
+    sessionStorage.setItem(SESSION_STORAGE_KEYS.HAS_SHOWN_LOCK_MODAL, "true");
     setOpen(false);
     onClose?.();
   };
@@ -47,11 +48,11 @@ const SurpriseMeLockModal = ({
     setOpen(true);
   }, []);
 
-  useEffect(() => {
-    return () => {
-      forceHideLoader(); // Cleanup on unmount
-    };
-  }, [forceHideLoader]);
+  // useEffect(() => {
+  //   return () => {
+  //     forceHideLoader(); // Cleanup on unmount
+  //   };
+  // }, [forceHideLoader]);
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>

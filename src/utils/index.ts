@@ -20,6 +20,22 @@ export const formatNumberToK = (number: number): string => {
   return `${formattedValue}${units[unitIndex]}`;
 };
 
+export const getSessionStorageItem = (key: string) => {
+  return sessionStorage.getItem(key);
+};
+
+export const setSessionStorageItem = (key: string, value: string) => {
+  sessionStorage.setItem(key, value);
+};
+
+export const removeSessionStorageItem = (key: string) => {
+  sessionStorage.removeItem(key);
+};
+
+export const clearSessionStorage = () => {
+  sessionStorage.clear();
+};
+
 export const setLocalStorageItem = (key: string, value: string) => {
   localStorage.setItem(key, value);
 };
