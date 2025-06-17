@@ -159,7 +159,12 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
                 className="relative"
                 href="/notifications"
               >
-                <Bell className="h-6 w-6" />
+                <Image
+                  src="/other-svgs/bell-icon.svg"
+                  alt="Notification"
+                  width={20}
+                  height={20}
+                />
                 {notificationCount > 0 && (
                   <div className="absolute -top-0.5 right-0 bg-yellow text-black rounded-full w-[12px] h-[12px] flex items-center justify-center text-[6.86px] font-semibold">
                     {notificationCount > 99 ? "99+" : notificationCount}
@@ -174,7 +179,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
             <LanguageHydration
               fallback={
                 <div id={BoxIds.LANG} className="relative">
-                  <div className="w-[66px] border border-black px-1 py-0.5 flex justify-between items-center cursor-pointer rounded">
+                  <div className="w-[66px] border border-black px-1 py-0.5 flex justify-between items-center cursor-pointer rounded-[2px]">
                     <span className="mr-1 text-[10px]">ENGLISH</span>
                     <ChevronDown className="h-4 w-4" />
                   </div>
@@ -183,7 +188,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
             >
               <div id={BoxIds.LANG} className="relative" ref={langDropdownRef}>
                 <div
-                  className="w-[66px] border border-black px-1 py-0.5 flex justify-between items-center cursor-pointer rounded"
+                  className="w-[66px] border border-black px-1 py-0.5 flex justify-between items-center cursor-pointer rounded-[2px]"
                   onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
                 >
                   <span className="mr-1 text-[10px]">
@@ -193,11 +198,11 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
                 </div>
 
                 {isLangDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-1 w-auto min-w-full rounded-md shadow-md z-20 bg-white text-xs">
+                  <div className="absolute top-full right-0 mt-1 w-auto min-w-full rounded-md shadow-md z-20 bg-white">
                     {languages.map((lang) => (
                       <div
                         key={lang.id}
-                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                        className="px-3 py-1.5 hover:bg-gray-100 cursor-pointer text-[10px]"
                         onClick={() => {
                           changeLanguage(lang.value);
                           setIsLangDropdownOpen(false);

@@ -63,8 +63,8 @@ const PJChallenge: React.FC<{
               sm:px-[20px] sm:py-[10px] sm:text-[12px]
               md:px-[28px] md:py-[14px] md:text-[16px]
               lg:px-[36px] lg:py-[18px] lg:text-[20px]
-              xl:px-[44px] xl:py-[22px] xl:text-[24px]
-              2xl:px-[52px] 2xl:py-[26px] 2xl:text-[28px]"
+              xl:px-[67.2px] xl:py-[22px] xl:text-[28px]
+              2xl:px-[67.2px] 2xl:py-[22px] 2xl:text-[30px]"
             >
               <span className="whitespace-nowrap">{buttonText}</span>
             </button>

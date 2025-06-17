@@ -228,23 +228,29 @@ const ScrollAndLol: React.FC = () => {
           // Auto-play the current video only if user hasn't paused it
           const currentVideo = videoRefs.current[videoIndex];
           if (currentVideo) {
-            // Check if user has manually paused this video
-            setUserPausedVideos((prevUserPaused) => {
-              const userHasPaused = prevUserPaused[videoIndex];
+            // Use a small delay to ensure state is stable
+            setTimeout(() => {
+              setUserPausedVideos((prevUserPaused) => {
+                const userHasPaused = prevUserPaused[videoIndex];
 
-              if (!userHasPaused && currentVideo.paused) {
-                currentVideo.play().catch(console.error);
-              }
+                if (
+                  !userHasPaused &&
+                  currentVideo.paused &&
+                  currentVideo.readyState >= 3
+                ) {
+                  currentVideo.play().catch(console.error);
+                }
 
-              // Update play state based on whether video should be playing
-              setVideoPlayStates((prev) => {
-                const newStates = [...prev];
-                newStates[videoIndex] = !userHasPaused;
-                return newStates;
+                // Update play state based on whether video should be playing
+                setVideoPlayStates((prev) => {
+                  const newStates = [...prev];
+                  newStates[videoIndex] = !userHasPaused;
+                  return newStates;
+                });
+
+                return prevUserPaused; // Don't change user pause state
               });
-
-              return prevUserPaused; // Don't change user pause state
-            });
+            }, 100);
           }
         } else {
           // Skip processing for end page when it goes out of view
@@ -377,22 +383,32 @@ const ScrollAndLol: React.FC = () => {
 
   const togglePlay = (index: number) => {
     if (index === activeVideoIndex) {
-      const newPlayStates = [...videoPlayStates];
-      newPlayStates[index] = !newPlayStates[index];
-      setVideoPlayStates(newPlayStates);
+      const video = videoRefs.current[index];
+      if (!video) return;
+
+      // Get current actual video state
+      const isCurrentlyPlaying = !video.paused;
+      const newPlayState = !isCurrentlyPlaying;
+
+      // Update states immediately
+      setVideoPlayStates((prev) => {
+        const newStates = [...prev];
+        newStates[index] = newPlayState;
+        return newStates;
+      });
 
       // Track user-initiated pause/play
-      const newUserPausedStates = [...userPausedVideos];
-      newUserPausedStates[index] = !newPlayStates[index]; // If not playing, then user paused
-      setUserPausedVideos(newUserPausedStates);
+      setUserPausedVideos((prev) => {
+        const newUserPausedStates = [...prev];
+        newUserPausedStates[index] = !newPlayState; // If not playing, then user paused
+        return newUserPausedStates;
+      });
 
-      const video = videoRefs.current[index];
-      if (video) {
-        if (newPlayStates[index]) {
-          video.play().catch(console.error);
-        } else {
-          video.pause();
-        }
+      // Apply video state change
+      if (newPlayState) {
+        video.play().catch(console.error);
+      } else {
+        video.pause();
       }
     }
   };
@@ -477,7 +493,10 @@ const ScrollAndLol: React.FC = () => {
         <></>
       ) : (
         <div className="w-full container md:block hidden">
-          <Header title={cmsData?.scrollAndLol?.scrollAndLolHeading} />
+          <Header
+            title={cmsData?.scrollAndLol?.scrollAndLolHeading}
+            textTransform='capitalize'
+          />
         </div>
       )}
 
@@ -513,9 +532,10 @@ const ScrollAndLol: React.FC = () => {
                             src={video.thumbnail}
                             alt={video.title}
                             fill
-                            className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] h-full w-full md:object-contain object-cover"
+                            className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] h-full w-full md:object-contain object-cover absolute inset-0"
                             sizes="(max-width: 768px) 100vw, 442px"
                             style={{ aspectRatio: "9/16" }}
+                            priority={index === 0}
                           />
                         )}
                         <SpinnerOverlay />
@@ -530,7 +550,8 @@ const ScrollAndLol: React.FC = () => {
                       loop
                       playsInline
                       muted={isMuted}
-                      autoPlay
+                      autoPlay={false}
+                      preload="metadata"
                       onLoadedData={() => handleVideoLoad(index)}
                       onCanPlay={() => handleVideoCanPlay(index)}
                       onLoadStart={() => {
@@ -540,15 +561,32 @@ const ScrollAndLol: React.FC = () => {
                         }
                       }}
                       onError={() => handleVideoError(index)}
+                      onPlay={() => {
+                        // Sync state when video starts playing
+                        setVideoPlayStates((prev) => {
+                          const newStates = [...prev];
+                          newStates[index] = true;
+                          return newStates;
+                        });
+                      }}
+                      onPause={() => {
+                        // Sync state when video is paused
+                        setVideoPlayStates((prev) => {
+                          const newStates = [...prev];
+                          newStates[index] = false;
+                          return newStates;
+                        });
+                      }}
                       style={{
                         aspectRatio: "9/16",
                       }}
                     />
                     {/* Top controls */}
-                    <div className="absolute top-4 w-full flex justify-between px-4 z-50">
+                    <div className="absolute top-4 w-full flex justify-between px-4 z-20">
                       <button
                         onClick={() => togglePlay(index)}
                         className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
+                        disabled={!videoReady[index]}
                       >
                         <Image
                           src={
@@ -576,6 +614,7 @@ const ScrollAndLol: React.FC = () => {
                       <button
                         onClick={() => toggleMute(index)}
                         className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
+                        disabled={!videoReady[index]}
                       >
                         <Image
                           src={
@@ -611,7 +650,7 @@ const ScrollAndLol: React.FC = () => {
             {activeVideoIndex !== undefined &&
               activeVideoIndex !== null &&
               activeVideoIndex < videos.length && (
-                <div className="absolute md:bottom-[88.82px] bottom-[135px] md:right-[-5rem] right-[10px] z-20">
+                <div className="absolute bottom-[135px] right-[10px] md:bottom-[12vh] md:right-[clamp(-8rem,0vw,-4rem)] z-20 md:scale-[clamp(0.7,1.2vh,1.2)] origin-bottom-right">
                   <ReactionEmojies
                     key={currentVideoData?.id}
                     videoId={currentVideoData?.id}

@@ -23,6 +23,18 @@ messaging.onBackgroundMessage((payload) => {
     JSON.stringify(payload, null, 2)
   );
 
+  // Notify main app to update notification cache
+  self.clients
+    .matchAll({ includeUncontrolled: true, type: "window" })
+    .then((clients) => {
+      clients.forEach((client) => {
+        client.postMessage({
+          type: "NOTIFICATION_RECEIVED",
+          payload: payload,
+        });
+      });
+    });
+
   try {
     let notificationTitle = "New Notification";
     let notificationBody = "You have a new message!";

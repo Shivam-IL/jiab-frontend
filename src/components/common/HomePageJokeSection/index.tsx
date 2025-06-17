@@ -1,87 +1,94 @@
-import React, { useEffect, useState } from 'react'
-import UgcCard from '../UgcCard'
+import React, { useEffect, useState } from "react";
+import UgcCard from "../UgcCard";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  type CarouselApi
-} from '@/components/ui/carousel'
-import Header from '@/components/common/Header/Header'
-import { useCMSData } from '@/data'
-import useWindowWidth from '@/hooks/useWindowWidth'
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import Header from "@/components/common/Header/Header";
+import { useCMSData } from "@/data";
+import useWindowWidth from "@/hooks/useWindowWidth";
 import {
   useGetGluedinFeedList,
-  useViewGludeinJokes
-} from '@/api/hooks/GluedinHooks'
-import { TModifiedUGCContent } from '@/api/types/GluedinTypes'
-import { resetUgcData, updateUgcViewData } from '@/store/ugc'
-import { updateUgcData } from '@/store/ugc'
-import { REDUX_UPDATION_TYPES } from '@/constants'
-import useAppDispatch from '@/hooks/useDispatch'
-import useAppSelector from '@/hooks/useSelector'
-import { BoxIds } from '../CircularBoxesModal'
-import { DesktopBoxIds } from '../HomePageDesktopOnboarding'
+  useViewGludeinJokes,
+} from "@/api/hooks/GluedinHooks";
+import { TModifiedUGCContent } from "@/api/types/GluedinTypes";
+import { resetUgcData, updateUgcViewData, updateUgcData } from "@/store/ugc";
+import { REDUX_UPDATION_TYPES } from "@/constants";
+import useAppDispatch from "@/hooks/useDispatch";
+import useAppSelector from "@/hooks/useSelector";
+import { BoxIds } from "../CircularBoxesModal";
+import { DesktopBoxIds } from "../HomePageDesktopOnboarding";
 
-const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
-  const cmsData = useCMSData()
-  const width = useWindowWidth()
+const HomePageJokeSection = ({
+  isClient,
+  onVoteSuccess,
+  onReactSuccess,
+}: {
+  isClient: boolean;
+  onVoteSuccess?: () => void;
+  onReactSuccess?: () => void;
+}) => {
+  const cmsData = useCMSData();
+  const width = useWindowWidth();
 
-  const { ugcData } = useAppSelector(state => state.ugc)
-  const [jokeBoxApi, setJokeBoxApi] = useState<CarouselApi>()
-  const [activeTab, setActiveTab] = useState<'Latest' | 'Trending'>('Latest')
-  const [jokeBoxCurrent, setJokeBoxCurrent] = useState(0)
-  const [jokeBoxPageCount, setJokeBoxPageCount] = useState(3)
+  const { ugcData } = useAppSelector((state) => state.ugc);
+  const [jokeBoxApi, setJokeBoxApi] = useState<CarouselApi>();
+  const [activeTab, setActiveTab] = useState<"Latest" | "Trending">("Latest");
+  const [jokeBoxCurrent, setJokeBoxCurrent] = useState(0);
+  const [jokeBoxPageCount, setJokeBoxPageCount] = useState(3);
 
   const {
     data: jokeBoxData,
     isLoading: jokeBoxLoading,
     error: jokeBoxError,
-    isFetched: isJokeBoxFetched
+    isFetched: isJokeBoxFetched,
   } = useGetGluedinFeedList({
     sortBy: activeTab === 'Latest' ? 'latest' : 'popular',
     limit: 6,
     offset: 0
   })
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
-    useViewGludeinJokes()
+    useViewGludeinJokes();
 
   useEffect(() => {
     if (!jokeBoxApi) {
-      return
+      return;
     }
 
-    jokeBoxApi.on('select', () => {
-      setJokeBoxCurrent(jokeBoxApi.selectedScrollSnap())
-    })
-  }, [jokeBoxApi])
+    jokeBoxApi.on("select", () => {
+      setJokeBoxCurrent(jokeBoxApi.selectedScrollSnap());
+    });
+  }, [jokeBoxApi]);
 
   const goToJokeBoxPage = (pageIndex: number) => {
-    if (!jokeBoxApi) return
-    jokeBoxApi.scrollTo(pageIndex)
-  }
+    if (!jokeBoxApi) return;
+    jokeBoxApi.scrollTo(pageIndex);
+  };
 
   useEffect(() => {
     if (jokeBoxData?.ok && isJokeBoxFetched) {
-      const { data } = jokeBoxData ?? {}
-      const assetIds = data?.map((item: any) => item?.videoId)
-      viewGludeinJokes({ assetIds })
+      const { data } = jokeBoxData ?? {};
+      const assetIds = data?.map((item: any) => item?.videoId);
+      viewGludeinJokes({ assetIds });
       dispatch(
         updateUgcData({
           type: REDUX_UPDATION_TYPES.REPLACED,
-          ugcData: data
+          ugcData: data,
         })
-      )
+      );
     }
-  }, [jokeBoxData, isJokeBoxFetched])
+  }, [jokeBoxData, isJokeBoxFetched]);
 
   useEffect(() => {
     if (viewGludeinJokesData?.ok) {
-      const { data } = viewGludeinJokesData ?? {}
-      dispatch(updateUgcViewData({ assetIds: data }))
+      const { data } = viewGludeinJokesData ?? {};
+      dispatch(updateUgcViewData({ assetIds: data }));
     }
-  }, [viewGludeinJokesData])
+  }, [viewGludeinJokesData]);
 
   useEffect(() => {
     return () => {
@@ -114,8 +121,8 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
       {/* Joke Box */}
       <Header
         title={cmsData.homePage.jokeBoxHeading}
-        className='md:mb-[24px] mb-[16px] md:mt-0 mt-[20px]'
-        viewAllUrl='/user-generated-jokes'
+        className="md:mb-[24px] mb-[16px] md:mt-0 mt-[20px]"
+        viewAllUrl="/user-generated-jokes"
         viewAllButtonText={cmsData.homePage.viewAllButtonText}
         description={cmsData.homePage.jokeBoxSubheading}
       />
@@ -128,25 +135,25 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
             <div className='flex items-center bg-white rounded-full mb-4 p-1 relative'>
               <div
                 className={`absolute transition-all duration-300 ease-in-out top-1 h-[calc(100%-8px)] w-[90px] rounded-full bg-green ${
-                  activeTab === 'Latest' ? 'left-1' : 'left-[94px]'
+                  activeTab === "Latest" ? "left-1" : "left-[94px]"
                 }`}
               />
               <button
-                onClick={() => setActiveTab('Latest')}
+                onClick={() => setActiveTab("Latest")}
                 className={`w-[90px] h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
-                  activeTab === 'Latest'
-                    ? 'text-white'
-                    : 'text-gray-600 hover:text-black'
+                  activeTab === "Latest"
+                    ? "text-white"
+                    : "text-gray-600 hover:text-black"
                 }`}
               >
                 {cmsData.homePage.latestButtonText}
               </button>
               <button
-                onClick={() => setActiveTab('Trending')}
+                onClick={() => setActiveTab("Trending")}
                 className={`w-[90px] h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
-                  activeTab === 'Trending'
-                    ? 'text-white'
-                    : 'text-gray-600 hover:text-black'
+                  activeTab === "Trending"
+                    ? "text-white"
+                    : "text-gray-600 hover:text-black"
                 }`}
               >
                 {cmsData.homePage.trendingButtonText}
@@ -159,22 +166,24 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
               <Carousel
                 setApi={setJokeBoxApi}
                 opts={{
-                  align: 'start',
+                  align: "start",
                   loop: false,
                   skipSnaps: true,
                   slidesToScroll: 1
                 }}
-                className='w-full'
+                className="w-full"
               >
-                <CarouselContent className='w-full'>
+                <CarouselContent className="w-full">
                   {ugcData?.length > 0 &&
                     ugcData?.map((item: TModifiedUGCContent, index: number) => (
-                      <CarouselItem key={item._id} className='basis-auto'>
-                        <div className='max-w-[350px] flex mx-auto h-full'>
+                      <CarouselItem key={item._id} className="basis-auto">
+                        <div className="max-w-[350px] flex mx-auto h-full">
                           <UgcCard
                             home={true}
                             disclaimerText={cmsData.homePage.jokeDisclaimerText}
                             item={item}
+                            onVoteSuccess={onVoteSuccess}
+                            onReactSuccess={onReactSuccess}
                           />
                         </div>
                       </CarouselItem>
@@ -205,7 +214,9 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
                                   cmsData.homePage.jokeDisclaimerText
                                 }
                                 item={item}
-                              />
+                                onVoteSuccess={onVoteSuccess}
+                      onReactSuccess={onReactSuccess}
+                    />
                             </div>
                           </CarouselItem>
                         )
@@ -222,8 +233,8 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
                   key={`joke-slide-${index}`}
                   className={`h-1 rounded-full transition-all duration-300 ${
                     index === jokeBoxCurrent
-                      ? 'w-[17.73px] bg-black'
-                      : 'w-[8.86px] bg-gray-300'
+                      ? "w-[17.73px] bg-black"
+                      : "w-[8.86px] bg-gray-300"
                   }`}
                   onClick={() => goToJokeBoxPage(index)}
                   aria-label={`Go to joke page ${index + 1}`}
@@ -234,7 +245,7 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default HomePageJokeSection
+export default HomePageJokeSection;

@@ -8,10 +8,7 @@ import UserComicsCoinsAndRankCard from "@/components/common/UserComicsCoinsAndRa
 import ProfileCard from "@/components/ProfileCard";
 import UserGeneratedJokecComponent from "@/components/UserGeneratedJokecComponent";
 import React, { useEffect, useState, useRef } from "react";
-import { BreakTheIceExitPopup } from "@/components/ExitPopUps";
 import useAppSelector from "@/hooks/useSelector";
-import { useRouter, usePathname } from "next/navigation";
-import useAppDispatch from "@/hooks/useDispatch";
 import { useCMSData } from "@/data";
 import {
   CoinAnimation,
@@ -118,6 +115,9 @@ const ProfilePage = () => {
             referNowButtonText={cmsData?.myProfile?.referNowButtonText}
             prevButtonText={cmsData?.myProfile?.prevButtonText}
             nextButtonText={cmsData?.myProfile?.nextButtonText}
+            user={cmsData?.myProfile?.user}
+            sendReminder={cmsData?.myProfile?.sendReminder}
+            status={cmsData?.myProfile?.status}
           />
           <HelpUsToKnowYourBetter
             id={'qna'}

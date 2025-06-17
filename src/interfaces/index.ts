@@ -317,6 +317,7 @@ export interface IUgcComponent {
   jokesData?: TModifiedUGCContent[];
   onVoteSuccess?: () => void;
   animation?: boolean;
+  onReactSuccess?: () => void;
 }
 
 export interface IAddressData {
@@ -362,6 +363,7 @@ export interface UgcCardProps {
   disclaimerText?: string
   item?: TModifiedUGCContent
   onVoteSuccess?: () => void
+  onReactSuccess?: () => void
   home?: boolean
   animation?: boolean
 }

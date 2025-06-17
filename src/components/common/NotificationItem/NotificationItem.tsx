@@ -48,7 +48,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
 }) => {
   return (
     <div
-      className={`flex items-center gap-4 md:py-4 py-1 border-b border-[#D3D3D3] md:mb-3 mb-0 h-[73px] md:h-auto ${
+      className={`flex items-center gap-[8px] md:py-4 py-1 border-b border-[#D3D3D3] md:mb-3 mb-0 h-[73px] md:h-auto ${
         onClick ? "cursor-pointer transition-colors" : ""
       }`}
       onClick={onClick}
@@ -61,8 +61,8 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
           <Image
             src={iconUrl}
             alt="Notification icon"
-            width={48}
-            height={48}
+            width={38}
+            height={38}
             className="object-contain"
             onError={(e) => {
               // Fallback if image fails to load
@@ -77,12 +77,12 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
       {/* Content */}
       <div className="flex-1 min-w-0">
         <h3
-          className={`text-gray-900 font-medium ${titleFontSize.desktop} ${titleFontSize.mobile} mb-1 font-bold`}
+          className={`text-gray-900 font-bold ${titleFontSize.desktop} ${titleFontSize.mobile} leading-tight`}
         >
           {title}
         </h3>
         <p
-          className={`text-gray-600 ${descriptionFontSize.desktop} ${descriptionFontSize.mobile} leading-relaxed`}
+          className={`text-gray-600 ${descriptionFontSize.desktop} ${descriptionFontSize.mobile} leading-tight`}
         >
           {description}
         </p>

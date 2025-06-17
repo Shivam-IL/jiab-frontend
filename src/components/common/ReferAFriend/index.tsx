@@ -13,12 +13,18 @@ const ReferAFriend = ({
   referToFriendHeader,
   referNowButtonText,
   prevButtonText,
-  nextButtonText
+  nextButtonText,
+  user,
+  sendReminder,
+  status,
 }: {
   referToFriendHeader: string
   referNowButtonText: string
   prevButtonText: string
   nextButtonText: string
+  user: string;
+  sendReminder: string;
+  status: string;
 }) => {
   const [page, setPage] = useState<number>(1)
   const [pages, setPages] = useState<number>(1)
@@ -74,12 +80,12 @@ const ReferAFriend = ({
           />
           <div className='flex justify-between px-[12px] py-[12px] md:px-[35px] md:py-[24px] bg-[#FFE200] rounded-[5px] md:rounded-[20px]'>
             <AktivGroteskText
-              text={referToFriendHeader}
+              text={user}
               fontSize='text-[12px] md:text-[20px]'
               fontWeight='font-[700]'
             />
             <AktivGroteskText
-              text={referToFriendHeader}
+              text={status}
               fontSize='text-[12px] md:text-[20px]'
               fontWeight='font-[700]'
             />
@@ -172,7 +178,7 @@ const ReferAFriend = ({
               className='px-[24px] box-border py-[8px] md:py-[20px] md:px-[60px] relative border-[1px] md:border-[3px] border-[#00953B] rounded-[100px]'
             >
               <AktivGroteskText
-                text={SEND_REMINDER}
+                text={sendReminder}
                 className='leading-tight'
                 fontSize='text-[14px] md:text-[20px]'
                 fontWeight='font-[700]'

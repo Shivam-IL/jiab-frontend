@@ -13,8 +13,9 @@ const useGetNotifications = (params: TGetNotificationsParams = {}) => {
     queryKey: [...keys.notifications.getNotifications(), params],
     queryFn: () => notificationInstance.GetNotifications(params),
     enabled: !!(isAuthenticated && token),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchOnWindowFocus: false, // Prevent refetch on window focus
+    staleTime: 60 * 1000, // 1 minute - shorter stale time for real-time updates
+    refetchOnWindowFocus: true, // Refetch when user focuses window
+    refetchIntervalInBackground: false, // Don't poll when tab is not active
   });
 };
 
@@ -27,8 +28,10 @@ const useGetNotificationCount = () => {
     queryKey: [...keys.notifications.getNotificationCount()],
     queryFn: () => notificationInstance.GetNotificationCount(),
     enabled: !!(isAuthenticated && token),
-    staleTime: 2 * 60 * 1000, // 2 minutes
-    refetchOnWindowFocus: false, // Prevent refetch on window focus
+    staleTime: 30 * 1000, // 30 seconds - shorter stale time for real-time updates
+    refetchInterval: 60 * 1000, // Poll every 60 seconds as fallback
+    refetchOnWindowFocus: true, // Refetch when user focuses window
+    refetchIntervalInBackground: false, // Don't poll when tab is not active
   });
 };
 

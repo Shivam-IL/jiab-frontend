@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { messaging, getToken, onMessage } from '@/lib/firebase';
 import { sendTokenToServer, getStoredToken } from '@/utils/fcmUtils';
+import { useQueryClient } from '@tanstack/react-query';
+import { keys } from '@/api/utils';
 
 export interface FCMHookResult {
   token: string | null;
@@ -8,12 +10,14 @@ export interface FCMHookResult {
   isSupported: boolean;
   requestPermission: () => Promise<boolean>;
   getRegistrationToken: () => Promise<string | null>;
+  testNotificationUpdate: () => void;
 }
 
 export const useFCM = (): FCMHookResult => {
   const [token, setToken] = useState<string | null>(null);
   const [permission, setPermission] = useState<NotificationPermission | null>(null);
   const [isSupported, setIsSupported] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     // Check if FCM is supported
@@ -31,7 +35,31 @@ export const useFCM = (): FCMHookResult => {
     };
 
     checkSupport();
-  }, []);
+
+    // Listen for messages from service worker
+    const handleServiceWorkerMessage = (event: MessageEvent) => {
+      if (event.data && event.data.type === 'NOTIFICATION_RECEIVED') {
+        console.log('Background notification received via service worker:', event.data.payload);
+        
+        // Update notification count and list immediately
+        queryClient.invalidateQueries({
+          queryKey: [...keys.notifications.getNotificationCount()],
+        });
+        
+        queryClient.invalidateQueries({
+          queryKey: [...keys.notifications.getNotifications()],
+        });
+      }
+    };
+
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
+      
+      return () => {
+        navigator.serviceWorker.removeEventListener('message', handleServiceWorkerMessage);
+      };
+    }
+  }, [queryClient]);
 
   const requestPermission = async (): Promise<boolean> => {
     try {
@@ -101,6 +129,15 @@ export const useFCM = (): FCMHookResult => {
       const unsubscribe = onMessage(messaging, (payload) => {
         console.log('Foreground message received:', payload);
         
+        // Update notification count and list immediately
+        queryClient.invalidateQueries({
+          queryKey: [...keys.notifications.getNotificationCount()],
+        });
+        
+        queryClient.invalidateQueries({
+          queryKey: [...keys.notifications.getNotifications()],
+        });
+        
         // Handle foreground message
         if (payload.notification) {
           // You can show a custom notification or update UI
@@ -120,7 +157,18 @@ export const useFCM = (): FCMHookResult => {
 
       return () => unsubscribe();
     }
-  }, [permission]);
+  }, [permission, queryClient]);
+
+  const testNotificationUpdate = () => {
+    console.log('Manual notification cache invalidation triggered');
+    queryClient.invalidateQueries({
+      queryKey: [...keys.notifications.getNotificationCount()],
+    });
+    
+    queryClient.invalidateQueries({
+      queryKey: [...keys.notifications.getNotifications()],
+    });
+  };
 
   return {
     token,
@@ -128,5 +176,6 @@ export const useFCM = (): FCMHookResult => {
     isSupported,
     requestPermission,
     getRegistrationToken,
+    testNotificationUpdate,
   };
 }; 
