@@ -17,7 +17,7 @@ import { useLanguage } from '@/hooks/useLanguage'
 import LanguageHydration from '../../LanguageHydration'
 import { useCMSData } from '@/data'
 import { triggerGAEvent } from '@/utils/gTagEvents'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { DesktopBoxIds } from '../../HomePageDesktopOnboarding'
 import {
   useGetNotifications,
@@ -190,6 +190,8 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const loginHandler = () => {
     dispatch(updateLoginModal({ loginModal: true }))
   }
+
+  const pathName = usePathname()
 
   return (
     <div className='w-full bg-white fixed top-0 left-0 right-0 z-50'>
@@ -520,6 +522,9 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                     onClick={() => {
                       dispatch(updateLoginModal({ loginModal: true }))
                       setIsProfileDropdownOpen(false)
+                      if (pathName !== '/') {
+                        router.push('/')
+                      }
                     }}
                   >
                     {cmsData.navBar.login}
