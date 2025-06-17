@@ -73,17 +73,21 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   // Handle notification click to mark as read
   const handleNotificationClick = async () => {
     try {
+      // Prevent multiple calls if already pending
+      if (markAsReadMutation.isPending) return;
+
       await markAsReadMutation.mutateAsync();
 
-      // Invalidate and refetch notifications to update the UI
-      queryClient.invalidateQueries({
-        queryKey: [...keys.notifications.getNotifications()],
-      });
+      // Use a timeout to batch invalidations and prevent rapid refetching
+      setTimeout(() => {
+        queryClient.invalidateQueries({
+          queryKey: [...keys.notifications.getNotifications()],
+        });
 
-      // Also invalidate notification count
-      queryClient.invalidateQueries({
-        queryKey: [...keys.notifications.getNotificationCount()],
-      });
+        queryClient.invalidateQueries({
+          queryKey: [...keys.notifications.getNotificationCount()],
+        });
+      }, 100);
 
       // Close the dropdown after marking as read
       setIsNotificationDropdownOpen(false);
@@ -349,7 +353,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                               isNew={notification.is_new}
                               onClick={handleNotificationClick}
                               titleFontSize={{
-                                desktop: "md:text-[16px]",
+                                desktop: "md:text-[20px]",
                               }}
                               descriptionFontSize={{
                                 desktop: "md:text-[12px]",

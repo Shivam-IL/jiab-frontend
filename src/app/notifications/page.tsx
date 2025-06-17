@@ -17,6 +17,7 @@ import { keys } from "@/api/utils";
 
 const NotificationsPage: React.FC = () => {
   const queryClient = useQueryClient();
+  const [hasMarkedAsRead, setHasMarkedAsRead] = useState(false);
 
   const {
     data: notificationsResponse,
@@ -29,8 +30,14 @@ const NotificationsPage: React.FC = () => {
 
   // Auto mark as read when page loads on mobile (width < 768)
   useEffect(() => {
-    if (width > 0 && width < 768) {
-      // Only for mobile
+    if (
+      width > 0 &&
+      width < 768 &&
+      !markAsReadMutation.isPending &&
+      !hasMarkedAsRead
+    ) {
+      // Only for mobile, if not already pending, and hasn't been marked yet
+      setHasMarkedAsRead(true);
       markAsReadMutation.mutate(undefined, {
         onSuccess: () => {
           // Invalidate and refetch notifications to update the UI
@@ -45,10 +52,11 @@ const NotificationsPage: React.FC = () => {
         },
         onError: (error) => {
           console.error("Failed to mark notifications as read:", error);
+          setHasMarkedAsRead(false); // Reset flag on error
         },
       });
     }
-  }, [width, markAsReadMutation, queryClient]);
+  }, [width, queryClient, hasMarkedAsRead]); // Removed markAsReadMutation from dependencies to prevent loops
 
   // Extract notifications data from the response
   const notifications = notificationsResponse?.data?.notifications ?? [];
@@ -76,17 +84,21 @@ const NotificationsPage: React.FC = () => {
   // Handle notification click to mark as read
   const handleNotificationClick = async () => {
     try {
+      // Prevent multiple calls if already pending
+      if (markAsReadMutation.isPending) return;
+
       await markAsReadMutation.mutateAsync();
 
-      // Invalidate and refetch notifications to update the UI
-      queryClient.invalidateQueries({
-        queryKey: [...keys.notifications.getNotifications()],
-      });
+      // Use a timeout to batch invalidations and prevent rapid refetching
+      setTimeout(() => {
+        queryClient.invalidateQueries({
+          queryKey: [...keys.notifications.getNotifications()],
+        });
 
-      // Also invalidate notification count
-      queryClient.invalidateQueries({
-        queryKey: [...keys.notifications.getNotificationCount()],
-      });
+        queryClient.invalidateQueries({
+          queryKey: [...keys.notifications.getNotificationCount()],
+        });
+      }, 100);
     } catch (error) {
       console.error("Failed to mark notification as read:", error);
     }

@@ -77,7 +77,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
       {/* Content */}
       <div className="flex-1 min-w-0">
         <h3
-          className={`text-gray-900 font-medium ${titleFontSize.desktop} ${titleFontSize.mobile} mb-1`}
+          className={`text-gray-900 font-medium ${titleFontSize.desktop} ${titleFontSize.mobile} mb-1 font-bold`}
         >
           {title}
         </h3>

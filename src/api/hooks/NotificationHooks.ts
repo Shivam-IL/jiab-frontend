@@ -13,7 +13,8 @@ const useGetNotifications = (params: TGetNotificationsParams = {}) => {
     queryKey: [...keys.notifications.getNotifications(), params],
     queryFn: () => notificationInstance.GetNotifications(params),
     enabled: !!(isAuthenticated && token),
-    staleTime: 0,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false, // Prevent refetch on window focus
   });
 };
 
@@ -26,7 +27,8 @@ const useGetNotificationCount = () => {
     queryKey: [...keys.notifications.getNotificationCount()],
     queryFn: () => notificationInstance.GetNotificationCount(),
     enabled: !!(isAuthenticated && token),
-    staleTime: 0,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    refetchOnWindowFocus: false, // Prevent refetch on window focus
   });
 };
 
