@@ -18,7 +18,6 @@ import { GA_EVENTS, LOCAL_KEYS } from '@/constants'
 import ReferNowComponent from '@/components/common/ReferNowComponent'
 import InviteCodeComponent from '@/components/common/InviteCodeComponent'
 import UniqueCodeModal from '@/components/UniqueCodeModal'
-import ContestSurpriseModal from '@/components/ContestSurpriseModal'
 import { useCMSData } from '@/data'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import ComingSoon from '@/components/Banners/ComingSoon'
@@ -29,6 +28,7 @@ import {
   CoinAnimation,
   useCoinAnimation
 } from '@/components/common/CoinAnimation'
+import SurpriseMeModal from '@/components/ContestSurpriseModal'
 
 const steps: Step[] = [
   {
@@ -422,7 +422,7 @@ const ContestPage: React.FC = () => {
 
       {/* Contest Surprise Modal */}
       {surpriseMeModalOpen && (
-        <ContestSurpriseModal
+        <SurpriseMeModal
           open={surpriseMeModalOpen}
           onClose={() => {
             setSurpriseMeModalOpen(false)

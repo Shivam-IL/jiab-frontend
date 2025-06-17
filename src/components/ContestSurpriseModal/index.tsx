@@ -91,15 +91,6 @@ const ContestSurpriseModal: React.FC<ContestSurpriseModalProps> = ({
   }
 
   useEffect(() => {
-    if (viewGludeinJokesData?.ok) {
-      setJoke((prev: any) => ({
-        ...prev,
-        view_count: prev?.view_count + 1
-      }))
-    }
-  }, [viewGludeinJokesData])
-
-  useEffect(() => {
     if (gluedinUserReactionData?.ok) {
       setJoke((prev: any) => ({
         ...prev,
@@ -113,6 +104,15 @@ const ContestSurpriseModal: React.FC<ContestSurpriseModalProps> = ({
     }
   }, [gluedinUserReactionData])
 
+  useEffect(() => {
+    if (viewGludeinJokesData?.ok && joke) {
+      setJoke((prev: any) => ({
+        ...prev,
+        view_count: prev?.view_count + 1
+      }))
+    }
+  }, [viewGludeinJokesData])
+
   // Handle modal close with proper cleanup
   const handleClose = () => {
     forceHideLoader() // Ensure any loading states are cleared
@@ -121,7 +121,6 @@ const ContestSurpriseModal: React.FC<ContestSurpriseModalProps> = ({
 
   useEffect(() => {
     return () => {
-      setJoke(null)
       forceHideLoader() // Cleanup on unmount
     }
   }, [forceHideLoader])
