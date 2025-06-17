@@ -106,12 +106,6 @@ const PickMood: React.FC = () => {
             </div>
           ))}
         </div>
-
-        <div className="md:mt-[40px] mt-[20px] justify-center md:flex hidden mb-[11px]">
-          <button className="bg-green text-white px-[60px] py-[20px] rounded-full flex items-center gap-[4px] transition-colors duration-200 text-[20px] hover:bg-[#73C392]">
-            Submit
-          </button>
-        </div>
       </ScreenWrapper>
 
       {/* Genre-specific Surprise Me Modal */}
