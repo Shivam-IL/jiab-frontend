@@ -227,7 +227,7 @@ export default function HomePageClient () {
     <div className='bg-lightGray min-h-screen'>
       {/* SerialChillerPopup only once after login */}
 
-      <div className='container mx-auto md:pt-24 pt-20'>
+      <div className='md:w-[76.57%] mx-auto md:pt-24 pt-20'>
         {/* Modals */}
         {!isAuthenticated &&
           refreshTokenNotVerified &&

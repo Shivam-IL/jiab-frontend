@@ -52,7 +52,6 @@ export class ProfileService extends MainService {
       if (userData?.dob) {
         formData.append("dob", userData.dob);
       }
-      formData.append("email", userData.email);
       if (userData?.gender) {
         formData.append("gender", userData.gender);
       }

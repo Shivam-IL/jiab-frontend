@@ -28,6 +28,7 @@ export interface IJokeData {
   category: string;
   file:FileList | null | undefined;
   agreeToTerms: boolean;
+  size: number;
 }
 
 export interface IClaimFormData {
@@ -64,6 +65,8 @@ export interface IHallOfLameLeaderboardTableProps {
   setOffset: React.Dispatch<React.SetStateAction<number>>;
   totalPages: number;
   offset: number;
+  setToDate: React.Dispatch<React.SetStateAction<number>>;
+  setFromDate: React.Dispatch<React.SetStateAction<number>>;
 }
 
 

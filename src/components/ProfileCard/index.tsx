@@ -122,7 +122,6 @@ const ProfileCard = () => {
     }
   }
 
-  console.log('infoData', infoData)
 
   return (
     <div className='relative w-full rounded-[10px]  bg-white md:rounded-[20px]'>

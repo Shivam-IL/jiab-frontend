@@ -86,4 +86,6 @@ export type TGludeinJokes = {
 export type TGludeinHallOfLame = {
   offset: number;
   limit: number;
+  toDate?:number;
+  fromDate?:number;
 }

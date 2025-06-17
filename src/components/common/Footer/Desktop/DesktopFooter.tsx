@@ -20,7 +20,7 @@ const DesktopFooter = () => {
 
   return (
     <footer className="bg-black w-full h-[440px] py-[60px] text-white">
-      <div className="container mx-auto h-full flex flex-col">
+      <div className="md:w-[76.57%] mx-auto h-full flex flex-col">
         <div className="w-full flex-0.5 pb-[40px] border-b border-white">
           <Image
             src="/header-logo.svg"

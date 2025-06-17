@@ -29,6 +29,7 @@ interface IUserData {
 
 interface IErrors {
   name: string
+  dob: string
 }
 
 const EditProfilePage = () => {
@@ -57,7 +58,8 @@ const EditProfilePage = () => {
   const [pfImage, setPfImage] = useState<File | null>(null)
 
   const [errors, setErrors] = useState<IErrors>({
-    name: ''
+    name: '',
+    dob: ''
   })
 
   const validateName = (name: string) => {
@@ -75,11 +77,11 @@ const EditProfilePage = () => {
 
   const validateDOB = (dob: string) => {
     if (!dob) {
-      return 'Date of birth is required'
+      return ''
     }
     const dobDate = new Date(dob)
     const today = new Date()
-    const minAge = 0 // Minimum age requirement
+    const minAge = 18 // Minimum age requirement
 
     // Calculate age
     let age = today.getFullYear() - dobDate.getFullYear()
@@ -91,11 +93,12 @@ const EditProfilePage = () => {
       age--
     }
 
-    if (age < minAge) {
-      return `You must be at least ${minAge} years old`
-    }
     if (dobDate > today) {
       return 'Date of birth cannot be in the future'
+    }
+
+    if (age < minAge) {
+      return `Sorry, you are below 18 years of age."`
     }
     return ''
   }
@@ -114,12 +117,6 @@ const EditProfilePage = () => {
     switch (key) {
       case 'name':
         setErrors(prev => ({ ...prev, name: validateName(value) }))
-        break
-      case 'dob':
-        setErrors(prev => ({ ...prev, dob: validateDOB(value) }))
-        break
-      case 'gender':
-        setErrors(prev => ({ ...prev, gender: validateGender(value) }))
         break
     }
   }
@@ -163,12 +160,18 @@ const EditProfilePage = () => {
 
   const isFormValid = () => {
     const nameError = validateName(userData.name)
+    let dobError = ''
+    if (userData.dob) {
+      dobError = validateDOB(userData.dob)
+    }
 
-    setErrors({
-      name: nameError
-    })
+    setErrors(prev => ({
+      ...prev,
+      name: nameError,
+      dob: dobError
+    }))
 
-    return !nameError
+    return !nameError && !dobError
   }
 
   const submitHandler = () => {
@@ -186,6 +189,8 @@ const EditProfilePage = () => {
     }
   }
 
+  const [generalError, setGeneralError] = useState<string>('')
+
   useEffect(() => {
     if (editUserProfileDetailsData?.ok) {
       const { data } = editUserProfileDetailsData?.data ?? {}
@@ -193,6 +198,10 @@ const EditProfilePage = () => {
       if (data?.profile_percentage === 100) {
         triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)
       }
+      router.push('/profile')
+    } else if (editUserProfileDetailsData?.ok === false) {
+        const message = (editUserProfileDetailsData as { message?: string })?.message || 'Something went wrong'
+        setGeneralError(message)
     }
   }, [editUserProfileDetailsData])
 
@@ -235,8 +244,6 @@ const EditProfilePage = () => {
                 setEditProfileImage={setEditProfileImage}
                 image={currentImage}
                 onChange={handleChange}
-                editProfile={true}
-                setPfImage={setPfImage}
               />
             </div>
             <Input
@@ -280,6 +287,7 @@ const EditProfilePage = () => {
               name={'dob'}
               type='date'
               value={userData.dob}
+              error={errors.dob}
               onChange={handleChange}
               placeholder='YYYY/MM/DD'
             />
@@ -293,11 +301,17 @@ const EditProfilePage = () => {
               type='select'
               options={[
                 { id: 1, name: 'male', value: 'male', label: 'Male' },
-                { id: 2, name: 'female', value: 'female', label: 'Female' }
+                { id: 2, name: 'female', value: 'female', label: 'Female' },
+                { id: 3, name: 'other', value: 'others', label: 'Others' }
               ]}
               value={userData.gender}
               onChange={handleChange}
             />
+            {generalError !== '' && (
+              <span className='text-[#FD0202] font-[400] text-[12px]'>
+                {generalError}
+              </span>
+            )}
             <GreenCTA
               disabled={isPending}
               onClick={submitHandler}

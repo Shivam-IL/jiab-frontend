@@ -19,7 +19,7 @@ import { useMutateRequestOTP } from '@/api/hooks/LoginHooks'
 import SvgIcons from '../SvgIcons'
 import { GA_EVENTS, ICONS_NAMES } from '@/constants'
 import { triggerGAEvent } from '@/utils/gTagEvents'
-
+import { useGlobalLoader } from '@/hooks/useGlobalLoader'
 
 const Login = () => {
   const {
@@ -30,6 +30,7 @@ const Login = () => {
   } = useMutateRequestOTP()
   const [mobileNumber, setMobileNumber] = useState<string>('')
   const [error, setError] = useState<string>('')
+  const { showLoader, hideLoader } = useGlobalLoader()
 
   const dispatch = useDispatch()
   const { loginModal } = useAppSelector(state => state.auth)
@@ -64,6 +65,7 @@ const Login = () => {
       setError('Please enter a valid 10-digit mobile number')
       return
     }
+    showLoader()
     requestOTP({ mobile_number: mobileNumber })
   }
 
@@ -79,22 +81,25 @@ const Login = () => {
   }, [isSuccess, data, dispatch, handleClose, mobileNumber])
 
   useEffect(() => {
+    if (!isPending) {
+      hideLoader()
+    }
+  }, [isPending])
+
+  useEffect(() => {
     handleDataUpdation()
   }, [isPending, handleDataUpdation])
-
 
   return (
     <LoginSignupWrapper open={loginModal} setOpen={handleClose} logo={true}>
       <div
-        className={`absolute top-[-60%]
+        className={`absolute top-[-50%]
      left-1/2 transform -translate-x-1/2`}
       >
-        <Image
-          src='/videos/bottle-sprite-t.gif'
+        <img
+          src='/assets/images/bottle-sprite-t.gif'
           alt='sprite'
-          className='h-[234.68px] w-full mt-2'
-          width={134.68}
-          height={234.68}
+          className='h-[200px] w-[166px]  mt-2'
         />
       </div>
       <div className='w-full absolute top-[4px] right-[4px] flex justify-end box-border pt-[10px] pr-[10px]'>
@@ -135,6 +140,8 @@ const Login = () => {
           <GreenCTA
             disabled={isPending}
             className=''
+            borderRadius='rounded-[112px]'
+            fontSize='text-[14px] md:text-[16.5px]'
             onClick={() => {
               handleGetOTP()
             }}

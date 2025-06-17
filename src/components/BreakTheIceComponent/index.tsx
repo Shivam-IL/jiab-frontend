@@ -26,7 +26,14 @@ const BreakTheIceComponent = () => {
   const { user } = useAppSelector(state => state.profile)
   const router = useRouter()
 
-  if (!isAuthenticated || !token || user?.profile_percentage === 100) return null
+  const pathName = usePathname()
+
+  if (!isAuthenticated || !token || user?.profile_percentage === 100)
+    return null
+
+  if (pathName.includes('my-profile')) return null
+
+  if (pathName.includes('profile')) return null
 
   return (
     <>
@@ -34,6 +41,9 @@ const BreakTheIceComponent = () => {
       {showExitPopup && user?.profile_percentage < 100 && (
         <BreakTheIceExitPopup
           open={showExitPopup}
+          onClose={() => {
+            setShowExitPopup(false)
+          }}
           yesButtonClick={() => {
             setShowExitPopup(false)
           }}

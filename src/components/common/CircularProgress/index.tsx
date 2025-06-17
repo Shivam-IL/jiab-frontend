@@ -15,8 +15,8 @@ export function CircularProgress ({
   children,
   size = 100,
   thickness = 6,
-  color = '#11A64B',
-  bgColor = '#D9D9D9'
+  color = '#D9D9D9',
+  bgColor='#11A64B'
 }: CircularProgressProps) {
   const angle = (value / 100) * 360
   const radius = size / 2
@@ -24,7 +24,7 @@ export function CircularProgress ({
   const toRadians = (deg: number) => ((deg - 90) * Math.PI) / 180
 
   const getPoint = (angleDeg: number) => {
-    const rad = toRadians(angleDeg)
+    const rad = toRadians(-angleDeg)
     const x = radius + (radius - thickness / 2) * Math.cos(rad)
     const y = radius + (radius - thickness / 2) * Math.sin(rad)
     return { x, y }
@@ -40,7 +40,7 @@ export function CircularProgress ({
         style={{
           width: size,
           height: size,
-          background: `conic-gradient(${color} ${angle}deg, ${bgColor} ${angle}deg)`
+          background: `conic-gradient(${color} 0deg, ${color} ${360 - angle}deg, ${bgColor} ${360 - angle}deg)`
         }}
       >
         {/* Inner Circle (cutout) */}

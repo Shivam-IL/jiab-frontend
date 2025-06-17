@@ -26,6 +26,7 @@ import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
 import { removeLocalStorageItem, setLocalStorageItem } from '@/utils'
 
 import { triggerGAEvent } from '@/utils/gTagEvents'
+import { useGlobalLoader } from '@/hooks/useGlobalLoader'
 
 const OtpModal = () => {
   const [otp, setOtp] = useState<string>('')
@@ -41,6 +42,7 @@ const OtpModal = () => {
     isPending,
     data: verifyOTPData
   } = useMutateVerifyOTP()
+  const { showLoader, hideLoader } = useGlobalLoader()
 
   const { otpSent } = useAppSelector(state => state.auth)
 
@@ -82,6 +84,7 @@ const OtpModal = () => {
   }, [otp])
 
   const resendOTP = () => {
+    showLoader()
     requestOTP({ mobile_number: phoneNumber })
   }
 
@@ -91,9 +94,15 @@ const OtpModal = () => {
       setError('Please enter a valid OTP')
       return
     }
+    showLoader()
     verifyOTP({ otp, mobile_number: phoneNumber })
   }
 
+  useEffect(() => {
+    if (!isPending) {
+      hideLoader()
+    }
+  }, [isPending])
 
   useEffect(() => {
     if (verifyOTPData?.ok) {
@@ -125,14 +134,12 @@ const OtpModal = () => {
   return (
     <LoginSignupWrapper open={open} setOpen={setOpen} logo={true}>
       <div
-        className={`absolute top-[-50%] left-1/2 transform -translate-x-1/2`}
+        className={`absolute top-[-42%] left-1/2 transform -translate-x-1/2`}
       >
-        <Image
-          src='/videos/bottle-sprite-t.gif'
+        <img
+          src='/assets/images/bottle-sprite-t.gif'
           alt='sprite'
-          className='h-[234.68px] w-full mt-2'
-          width={134.68}
-          height={234.68}
+          className='h-[200px] w-[166px]  mt-2'
         />
       </div>
       <div className='w-full absolute top-[4px] right-[4px] flex justify-end box-border pt-[10px] pr-[10px]'>
@@ -151,12 +158,12 @@ const OtpModal = () => {
           <SvgIcons name={ICONS_NAMES.CROSS} className='w-[16px] h-[16px]' />
         </button>
       </div>
-      <div className={`flex flex-col gap-[24px] pt-[50px]`}>
-        <div className='flex flex-col justify-center items-center md:gap-[12px] gap-[8px]'>
+      <div className={`flex flex-col gap-[12px] pt-[50px]`}>
+        <div className='flex flex-col justify-center items-center md:gap-[12px] gap-[4px]'>
           <AuthHeading title='OTP VERIFICATION' />
 
           <p
-            className={`${aktivGrotesk.className} font-[400] md:text-[16px] text-[12px] w-[80%] flex justify-center text-center`}
+            className={`${aktivGrotesk.className} font-[400]  text-[10px] md:text-[12px] w-[80%] flex justify-center text-center`}
           >
             Please enter the OTP sent to your registered mobile number
           </p>
@@ -165,9 +172,9 @@ const OtpModal = () => {
           onSubmit={event => {
             event.preventDefault()
           }}
-          className='flex flex-col md:gap-[24px] gap-[28px]'
+          className='flex flex-col md:gap-[24px] gap-[30px]'
         >
-          <div className='flex flex-col gap-[12px]'>
+          <div className='flex flex-col gap-[10px]'>
             <Input
               name='otp'
               value={otp}
@@ -182,7 +189,7 @@ const OtpModal = () => {
             />
             {!counterEnd && (
               <span
-                className={`text-center text-[#606060] font-400 md:text-[16px] text-[12px]`}
+                className={`text-center text-[#606060] font-400 text-[12px]`}
               >
                 Try Again in 00:{counter}
               </span>
@@ -195,7 +202,7 @@ const OtpModal = () => {
                   setCounter('12')
                   resendOTP()
                 }}
-                className={`text-[#606060] self-center border-b-[#606060] border-b-[1px] ${aktivGrotesk.className} font-[500] text-[12px] md:text-[16px] outline-none`}
+                className={`text-[#606060] self-center border-b-[#606060] border-b-[1px] ${aktivGrotesk.className} font-[500] text-[13px] md:text-[16px] outline-none`}
               >
                 Resend
               </button>
@@ -203,6 +210,9 @@ const OtpModal = () => {
           </div>
 
           <GreenCTA
+            paddingClass='px-[24px] py-[16px]'
+            borderRadius='rounded-[112px]'
+            fontSize='text-[14px] md:text-[16.5px]'
             onClick={() => {
               handlerSubmitOtp()
             }}

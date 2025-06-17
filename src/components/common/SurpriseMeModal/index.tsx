@@ -87,7 +87,7 @@ const SurpriseMeModal = ({
     }
   }, [gluedinAssetData])
 
-  console.log("joke", joke);
+  console.log('joke', joke)
 
   const handleSendGluedinUserReaction = (
     reactionType: string,
@@ -137,6 +137,7 @@ const SurpriseMeModal = ({
   //   };
   // }, [forceHideLoader]);
 
+  console.log('serialChill', serialChill)
   if (serialChill) {
     return (
       <SerialChillerPopup
@@ -156,14 +157,14 @@ const SurpriseMeModal = ({
   if (joke) {
     return (
       <Dialog open={open} onOpenChange={handleClose}>
-        <DialogContent className='border-none md:max-w-[239px] max-w-[277px] shadow-none p-0 rounded-[10px]'>
+        <DialogContent className='border-none md:max-w-[353px] px-[12px] max-w-[277px] shadow-none p-0 rounded-[20px]'>
           <div className='absolute border-none outline-none top-[-105px] md:top-[-125px] left-0 flex justify-center items-center w-full'>
             <SvgIcons
               name={ICONS_NAMES.SURPRISE_ME}
               className='w-[145px] h-[102px] md:w-[182px] md:h-[114px]'
             />
           </div>
-          <div className='flex justify-between items-start px-[10px] pt-[10px]'>
+          <div className='flex justify-between items-start p-[12px]'>
             <div className='w-[80%] relative flex gap-[10px]'>
               <SvgIcons
                 name={ICONS_NAMES.MAN_WITH_SEARCH}
@@ -171,12 +172,12 @@ const SurpriseMeModal = ({
               />
               <div className='flex flex-col gap-[2px]'>
                 <p
-                  className={`${aktivGrotesk.className} font-[700] md:text-[9px] text-[12px] text-[#000000]`}
+                  className={`${aktivGrotesk.className} font-[700] md:text-[12px] text-[14px] text-[#000000]`}
                 >
                   {joke?.title ?? ''}
                 </p>
                 <p
-                  className={`${aktivGrotesk.className} font-[400] md:text-[7px] text-[8px] text-[#000000]`}
+                  className={`${aktivGrotesk.className} font-[400] md:text-[10px] text-[12px] text-[#000000]`}
                 >
                   {joke?.joke_creator ?? ''}
                 </p>
@@ -190,11 +191,11 @@ const SurpriseMeModal = ({
             >
               <SvgIcons
                 name={ICONS_NAMES.CROSS}
-                className='w-[16px] h-[16px] md:w-[13px] md:h-[13px]'
+                className='w-[20px] h-[20px]'
               />
             </button>
           </div>
-          <div className='relative max-w-[255px] md:max-w-[220px] h-[429px] md:h-[371px] ml-[11px]'>
+          <div className='relative  max-w-[255px] md:max-w-[329px] h-[429px] md:h-[526px] ml-[11px]'>
             <video
               className='w-full h-full relative bg-[#11A64B]  object-fill'
               controls
@@ -206,7 +207,7 @@ const SurpriseMeModal = ({
               <source src={joke?.url ?? ''} type='video/mp4' />
             </video>
           </div>
-          <div className='bg-white rounded-[10px] px-[12px] pb-[16px] flex justify-between'>
+          <div className='bg-white rounded-[10px] p-[8px] mt-[14px]  pb-[12px] flex justify-between'>
             <div className='flex gap-[24px] md:gap-[14px] pl-[10px]'>
               <SurpriseMeCTA
                 name={ICONS_NAMES.FUNNY}
@@ -277,7 +278,7 @@ const SurpriseMeModal = ({
     )
   }
 
-  return null;
+  return null
 }
 
 export default SurpriseMeModal

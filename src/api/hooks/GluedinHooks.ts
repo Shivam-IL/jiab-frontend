@@ -111,6 +111,7 @@ const useGetHallOfLames = (data: TGludeinHallOfLame) => {
   const { isAuthenticated, token, gludeinIsAuthenticated } = useAppSelector(
     (state) => state.auth
   );
+  
   return useQuery({
     queryKey: [...keys.gluedin.getHallOfLame(), { ...data }],
     queryFn: () => gluedinInstance.getHallOfLame(data),

@@ -118,7 +118,7 @@ export class JokeService extends MainService {
           } else if (value instanceof FileList && value.length > 0) {
             formData.append(key, value[0]);
           }
-        } else {
+        } else if(value){
           formData.append(key, value.toString());
         }
       });

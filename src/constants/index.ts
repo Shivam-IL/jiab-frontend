@@ -243,6 +243,7 @@ export const ICONS_NAMES = {
   THANK_YOU: "thank-you",
   APPLAUSE: "applause",
   CHECK: "check",
+  CRYING: "crying",
   CALENDAR_NOTIFICATION: "calendar-notification",
   HAPPY_PERSON: "happy-person",
   FACEBOOK: "facebook",
@@ -283,6 +284,7 @@ export const ICONS_NAMES = {
   NEW_COMIC_COINS: "new-comic",
   NEW_REFRESH_RING: "new-refresh-ring",
   CROSS2: "cross2",
+  HASHTAG: "hashtag",
 };
 
 export const INVITE_CODE_POPUP_DATA = {
@@ -309,6 +311,8 @@ export const LANG_VERNICULAR_MAP = {
   Kannada: "ಕನ್ನಡ",
   Bhojpuri: "भोजपुरी",
   Maithili: "मैथिली",
+  Tamil: "தமிழ்",
+  tulu: "ತುಳು",
 };
 
 export const MOBILE_TEMP_NAVBAR_DATA = {
@@ -536,7 +540,6 @@ export const USER_INFO_EMAIL_GENDER_ARRAY = [
     iconName: ICONS_NAMES.GENDER,
   },
 ];
-
 
 export const PROTECTED_ROUTES = [
   "/my-profile",

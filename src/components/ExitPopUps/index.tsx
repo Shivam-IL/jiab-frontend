@@ -71,17 +71,20 @@ const FOMOExitPopup = ({
 const BreakTheIceExitPopup = ({
   open,
   yesButtonClick,
-  noButtonClick
+  noButtonClick,
+  onClose
 }: {
   open: boolean
   yesButtonClick: () => void
-  noButtonClick: () => void
+  noButtonClick: () => void,
+  onClose:()=>void
 }) => {
   const { breakTheIce } = useCMSData()
   console.log('breakTheIce', breakTheIce)
   return (
     <CustomPopupWrapper
       open={open}
+      onClose={onClose}
       yesButtonClick={yesButtonClick}
       noButtonClick={noButtonClick}
       icon={EXIT_POPUP_DATA.BREAK_THE_ICE.ICON}

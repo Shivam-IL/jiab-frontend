@@ -15,6 +15,9 @@ import {
   useCoinAnimation
 } from '@/components/common/CoinAnimation'
 import { useCMSData } from '@/data'
+import useAppSelector from '@/hooks/useSelector'
+import useAppDispatch from '@/hooks/useDispatch'
+import { updateLoginModal } from '@/store/auth/auth.slice'
 
 const ReferNowComponent = ({
   open,
@@ -33,6 +36,7 @@ const ReferNowComponent = ({
   const [referStatus1, setReferStatus1] = useState<boolean>(false)
   const [referStatus2, setReferStatus2] = useState<boolean>(false)
   const [phoneNumber, setPhoneNumber] = useState<string>('')
+  const [error, setError] = useState<string>('')
 
   const [referStatus, setReferStatus] = useState<string>('')
   const [inviteCode, setInviteCode] = useState<string>('')
@@ -43,12 +47,34 @@ const ReferNowComponent = ({
   const { mutate: sendReferral, data: sendReferralData } = useSendReferral()
 
   const handleChange = (key: string, value: string) => {
+    if (value?.length === 10 && parseInt(value?.[0]) >= 6) {
+      if (open2) {
+        const numericValue = value?.replace(/[^0-9]/g, '')
+        const valueString = numericValue?.slice(0, 10)
+        setPhoneNumber(valueString)
+        setOpen2(false)
+        setOpen?.(true)
+        setError('')
+        return
+      }
+    }
+
+    if (value?.length === 10 && parseInt(value?.[0]) < 6) {
+      setError('Please enter a valid 10 digit mobile number')
+    }
+
     const numericValue = value?.replace(/[^0-9]/g, '')
     const valueString = numericValue?.slice(0, 10)
     setPhoneNumber(valueString)
   }
 
   const submitReferNow = () => {
+    if (phoneNumber?.length < 10) {
+      setError('Please enter a valid 10 digit mobile number')
+      setOpen2(true)
+      setOpen?.(false)
+    }
+
     sendReferral({
       refer_to: phoneNumber
     })
@@ -103,6 +129,10 @@ const ReferNowComponent = ({
 
   const { easyPeasy, ahemAhem, tryingToPrankUs, referAFriend } = useCMSData()
 
+  
+
+  
+
   return (
     <>
       {open && (
@@ -118,6 +148,7 @@ const ReferNowComponent = ({
             triggerGAEvent(GA_EVENTS.SPRITE_J24_REFER_NOW)
             submitReferNow()
           }}
+          error={error}
           onClose={() => {
             onClose()
             setPhoneNumber('')
@@ -132,6 +163,7 @@ const ReferNowComponent = ({
           phoneNumber={phoneNumber}
           placeholder={referAFriend.mobileNumberTextField}
           onChange={handleChange}
+          error={error}
           onSubmit={() => {
             submitReferNow()
           }}

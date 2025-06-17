@@ -55,7 +55,7 @@ const DisplayTable = ({
                   <td
                     className={`${aktivGrotesk.className} relative text-[12px] md:text-[16px] font-[400] text-start box-border p-[10px] md:pl-[32px] rounded-l-[5px] md:rounded-l-[10px]`}
                   >
-                    {(offset - 1) * 5 + (item?.rank ?? 0)}.
+                    {(offset - 1) * 5 + (item?.rank ?? 0)}
                   </td>
                   <td
                     className={`${aktivGrotesk.className} relative box-border text-[12px] md:text-[16px] font-[400] p-[10px]`}
@@ -144,13 +144,15 @@ const HallOfLameLeaderboardTable = ({
   setOffset,
   data,
   totalPages,
-  offset
+  offset,
+  setToDate,
+  setFromDate
 }: IHallOfLameLeaderboardTableProps) => {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState(false)
 
   const handleDateRangeSelect = (range: DateRange | undefined) => {
-    console.log('Selected date range:', range)
-    // Handle the date range selection here
+    setToDate(range?.to?.getTime() ?? 0)
+    setFromDate(range?.from?.getTime() ?? 0)
   }
 
   console.log('hall of lame data', data)
@@ -197,30 +199,32 @@ const HallOfLameLeaderboardTable = ({
         />
       </div>
       <div className='flex gap-[12px] md:gap-[24px] self-center'>
-        {offset > 1 && <button
-          onClick={() =>
-            setOffset(prev => {
-              if (prev > 1) {
-                return prev - 1
-              }
-              return prev
-            })
-          }
-          className={`px-[36px] py-[8px] md:py-[20px] md:px-[60px] border-[1px] ${
-            offset > 1
-              ? 'text-black border-black'
-              : 'text-[rgba(0,0,0,0.3)] border-[rgba(0,0,0,0.2)]'
-          } rounded-[100px]`}
-        >
-          <AktivGroteskText
-            text={prevButtonText}
-            className={`${
-              offset > 1 ? 'text-black' : 'text-[rgba(0,0,0,0.3)]'
-            } leading-tight relative`}
-            fontSize='text-[14px] md:text-[20px]'
-            fontWeight='font-[700]'
-          />
-        </button>}
+        {offset > 1 && (
+          <button
+            onClick={() =>
+              setOffset(prev => {
+                if (prev > 1) {
+                  return prev - 1
+                }
+                return prev
+              })
+            }
+            className={`px-[36px] py-[8px] md:py-[8px] md:px-[16px] border-[1px] ${
+              offset > 1
+                ? 'text-black border-black'
+                : 'text-[rgba(0,0,0,0.3)] border-[rgba(0,0,0,0.2)]'
+            } rounded-[100px]`}
+          >
+            <AktivGroteskText
+              text={prevButtonText}
+              className={`${
+                offset > 1 ? 'text-black' : 'text-[rgba(0,0,0,0.3)]'
+              } leading-tight relative`}
+              fontSize='text-[14px] md:text-[16px]'
+              fontWeight='font-[700]'
+            />
+          </button>
+        )}
         <GreenCTA
           disabled={totalPages > offset ? false : true}
           className='leading-tight'
