@@ -506,6 +506,7 @@ export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE: string[] = [
   "/terms-and-conditions",
   "/privacy-policy",
   "/faqs",
+  "/sitemap",
 ];
 
 export const USER_INFO_NUMBER_DATE_ARRAY = [

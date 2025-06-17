@@ -13,6 +13,7 @@ export type TSignUp = {
   full_name: string;
   mobile_number: string;
   referral_code: string;
+  device_token?: string;
 };
 
 export type TRefreshToken = {

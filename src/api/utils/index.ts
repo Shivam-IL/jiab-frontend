@@ -33,4 +33,8 @@ export const keys = {
     getJokesFormats: () => ["get-jokes-formats"],
     getLanguages: () => ["get-languages"],
   },
+  notifications: {
+    getNotifications: () => ["get-notifications"],
+    getNotificationCount: () => ["get-notification-count"],
+  },
 };

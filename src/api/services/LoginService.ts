@@ -101,6 +101,9 @@ export class LoginService extends MainService {
       if(data?.email){
         formData['email'] = data.email;
       }
+      if(data?.device_token){
+        formData['device_token'] = data.device_token;
+      }
       const response = await apiClient.post(
         API_ROUTES.AUTH.SIGN_UP,
         {

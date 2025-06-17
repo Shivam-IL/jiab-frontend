@@ -1,83 +1,200 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import Header from "@/components/common/Header/Header";
 import MobileTempNavBar from "@/components/common/MobileTempNavBar";
 import NotificationItem from "@/components/common/NotificationItem/NotificationItem";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
 import { MOBILE_TEMP_NAVBAR_DATA } from "@/constants";
 import useWindowWidth from "@/hooks/useWindowWidth";
+import {
+  useGetNotifications,
+  useMarkAsRead,
+} from "@/api/hooks/NotificationHooks";
+import { INotification } from "@/api/types/NotificationTypes";
+import { useQueryClient } from "@tanstack/react-query";
+import { keys } from "@/api/utils";
 
-import React from "react";
 const NotificationsPage: React.FC = () => {
-  const notifications = [
-    {
-      title: "Welcome to the chill-zone! 🤩",
-      description:
-        "Enter the Unique Code from behind the label of a Sprite® promo pack to participate & win* prizes up to Rs.25,000!",
-      timestamp: "2 h",
-    },
-    {
-      title: "And It's Done! 👍",
-      description:
-        "Thanks for the heads up. The joke you flagged was taken down.",
-      timestamp: "2 h",
-    },
-    {
-      title: "Cha-Ching Alert!",
-      description: "You just earned 2 Comic Coins! 🪙",
-      timestamp: "2 h",
-    },
-    {
-      title: "Oops, We've Seen This Before",
-      description:
-        "We had to take your joke down as we realized it already exists! But we know you got more in you, keep them coming! 😊",
-      timestamp: "2 h",
-    },
-    {
-      title: "Thank you for being a vigilante!",
-      description: "Thand Rakh, we'll get this sorted soon!",
-      timestamp: "2 h",
-    },
-    {
-      title: "It's going to be a laughter riot! 😂",
-      description: "Your joke buddy has used your referral code to sign up! 🎉",
-      timestamp: "2 h",
-    },
-    {
-      title: "Uh Oh, That punchline needs a rework!",
-      description:
-        "No worries, even the funniest jokes don't always land! Keep submitting more jokes!",
-      timestamp: "2 h",
-    },
-    {
-      title: "You Made 'em LOL",
-      description:
-        "Did you hear that? That's the noise of your fans ROFL to your joke! Can't wait to hear what else you have in store!",
-      timestamp: "2 h",
-    },
-    {
-      title: "Good news coming your way!",
-      description:
-        "You've officially won a Sprite® tastic reward! Grab it now before it's too late.",
-      timestamp: "2 h",
-    },
-    {
-      title: "Let's Break The Ice",
-      description:
-        "Complete your profile to earn more Comic Coins, laugh and gain access to our treasured rewards!",
-      timestamp: "2 h",
-    },
-    {
-      title: "New Chill Buddy Alert!",
-      description:
-        "Great! You've successfully referred a friend! Let's get ready to greet them with a barrage of jokes!",
-      timestamp: "2 h",
-    },
-  ];
+  const queryClient = useQueryClient();
+
+  const {
+    data: notificationsResponse,
+    isLoading,
+    isError,
+  } = useGetNotifications({});
+
+  const markAsReadMutation = useMarkAsRead();
   const width = useWindowWidth();
 
+  // Auto mark as read when page loads on mobile (width < 768)
+  useEffect(() => {
+    if (width > 0 && width < 768) {
+      // Only for mobile
+      markAsReadMutation.mutate(undefined, {
+        onSuccess: () => {
+          // Invalidate and refetch notifications to update the UI
+          queryClient.invalidateQueries({
+            queryKey: [...keys.notifications.getNotifications()],
+          });
+
+          // Also invalidate notification count
+          queryClient.invalidateQueries({
+            queryKey: [...keys.notifications.getNotificationCount()],
+          });
+        },
+        onError: (error) => {
+          console.error("Failed to mark notifications as read:", error);
+        },
+      });
+    }
+  }, [width, markAsReadMutation, queryClient]);
+
+  // Extract notifications data from the response
+  const notifications = notificationsResponse?.data?.notifications ?? [];
+
+  // Function to calculate time difference for timestamps
+  const getTimeAgo = (launchDate: string | null): string => {
+    if (!launchDate) return "Recently";
+
+    const now = new Date();
+    const launch = new Date(launchDate);
+    const diffInMs = now.getTime() - launch.getTime();
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInDays > 0) {
+      return `${diffInDays}d`;
+    } else if (diffInHours > 0) {
+      return `${diffInHours}h`;
+    } else {
+      const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+      return diffInMinutes > 0 ? `${diffInMinutes}m` : "Now";
+    }
+  };
+
+  // Handle notification click to mark as read
+  const handleNotificationClick = async () => {
+    try {
+      await markAsReadMutation.mutateAsync();
+
+      // Invalidate and refetch notifications to update the UI
+      queryClient.invalidateQueries({
+        queryKey: [...keys.notifications.getNotifications()],
+      });
+
+      // Also invalidate notification count
+      queryClient.invalidateQueries({
+        queryKey: [...keys.notifications.getNotificationCount()],
+      });
+    } catch (error) {
+      console.error("Failed to mark notification as read:", error);
+    }
+  };
+
+  // Handle loading state
+  if (isLoading) {
+    return (
+      <div className="bg-lightGray min-h-screen">
+        <MobileTempNavBar
+          title={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.TITLE}
+          subtitle={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.SUB_TITLE}
+        />
+        <ScreenWrapper
+          className={` ${
+            width > 750
+              ? "mt-20 flex justify-center bg-lightGray"
+              : "mt-0 border-t-[14px] border-t-lightGray bg-white"
+          }`}
+        >
+          <Header
+            title="Notifications"
+            description="Keep up with the build-up."
+            className="md:my-[40px] my-[20px] hidden md:block"
+          />
+          <div className="flex justify-center items-center py-20">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading notifications...</p>
+            </div>
+          </div>
+        </ScreenWrapper>
+      </div>
+    );
+  }
+
+  // Handle error state
+  if (isError) {
+    return (
+      <div className="bg-lightGray min-h-screen">
+        <MobileTempNavBar
+          title={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.TITLE}
+          subtitle={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.SUB_TITLE}
+        />
+        <ScreenWrapper
+          className={` ${
+            width > 750
+              ? "mt-20 flex justify-center bg-lightGray"
+              : "mt-0 border-t-[14px] border-t-lightGray bg-white"
+          }`}
+        >
+          <Header
+            title="Notifications"
+            description="Keep up with the build-up."
+            className="md:my-[40px] my-[20px] hidden md:block"
+          />
+          <div className="flex justify-center items-center py-20">
+            <div className="text-center">
+              <div className="text-red-500 text-6xl mb-4">⚠️</div>
+              <p className="text-gray-600 mb-4">Failed to load notifications</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </ScreenWrapper>
+      </div>
+    );
+  }
+
+  // Handle empty state
+  if (notifications.length === 0) {
+    return (
+      <div className="bg-lightGray min-h-screen">
+        <MobileTempNavBar
+          title={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.TITLE}
+          subtitle={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.SUB_TITLE}
+        />
+        <ScreenWrapper
+          className={` ${
+            width > 750
+              ? "mt-20 flex justify-center bg-lightGray"
+              : "mt-0 border-t-[14px] border-t-lightGray bg-white"
+          }`}
+        >
+          <Header
+            title="Notifications"
+            description="Keep up with the build-up."
+            className="md:my-[40px] my-[20px] hidden md:block"
+          />
+          <div className="flex justify-center items-center py-20">
+            <div className="text-center">
+              <p className="text-gray-600 mb-2">No notifications yet</p>
+              <p className="text-gray-500 text-sm">
+                Check back later for updates!
+              </p>
+            </div>
+          </div>
+        </ScreenWrapper>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-lightGray">
+    <div className="bg-lightGray min-h-screen">
       <MobileTempNavBar
         title={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.TITLE}
         subtitle={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.SUB_TITLE}
@@ -95,15 +212,20 @@ const NotificationsPage: React.FC = () => {
           description="Keep up with the build-up."
           className="md:my-[40px] my-[20px] hidden md:block"
         />
+
         {/* Notifications List */}
         <div className="">
-          {notifications.map((notification, index) => (
+          {notifications.map((notification: INotification, index: number) => (
             <NotificationItem
               key={index}
-              title={notification.title}
-              description={notification.description}
-              timestamp={notification.timestamp}
-              iconBg="bg-green"
+              title={notification.notification_title}
+              description={notification.notification_text}
+              timestamp={getTimeAgo(notification.launch_date)}
+              iconBg={notification.is_new ? "bg-primary" : "bg-gray-400"}
+              iconUrl={notification.icon_url}
+              isRead={notification.is_read}
+              isNew={notification.is_new}
+              onClick={handleNotificationClick}
             />
           ))}
         </div>

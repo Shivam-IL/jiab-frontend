@@ -5,6 +5,8 @@ import ScreenWrapper from "@/components/common/ScreenWrapper";
 import { useCMSData } from "@/data";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 
 const PrivacyPolicy: React.FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -25,8 +27,14 @@ const PrivacyPolicy: React.FC = () => {
         <div className="mb-10">
           {/* Privacy Policy Content */}
           <div className="mt-[2.4rem]">
+            <h1 className="text-[20px] font-bold text-center">
+              Welcome to the Coca-Cola Consumer Privacy Policy
+            </h1>
             <div className="md:text-xl text-xs space-y-6 privacy-policy-content">
-              <ReactMarkdown>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+              >
                 {cmsData.privacyPolicy.privacyPolicyContent}
               </ReactMarkdown>
             </div>
