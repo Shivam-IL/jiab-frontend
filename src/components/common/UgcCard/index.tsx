@@ -14,13 +14,15 @@ import useAppDispatch from '@/hooks/useDispatch'
 import { ReactionType } from '@/types'
 import { updateUgcReactionData } from '@/store/ugc'
 import VoteIsInPopup from '@/components/VoteIsInPopup'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import ReportPopupComponent from '../ReportPopupComponent'
 
 const UgcCard: React.FC<UgcCardProps> = ({
   disclaimerText = 'The content displayed above is user generated and may not reflect the opinions of Sprite®',
   item,
   onVoteSuccess,
-  home = false
+  home = false,
+  animation = false
 }) => {
   const dispatch = useAppDispatch()
   const { mutate: sendGluedinUserReaction, data: gludeinUserReactionData } =
@@ -29,6 +31,10 @@ const UgcCard: React.FC<UgcCardProps> = ({
     useSendVoteToGluedinAssets()
 
   const [voteIsInPopup, setVoteIsInPopup] = useState<boolean>(false)
+  const [animationStart, setAnimationStart] = useState<boolean>(false)
+  const [reportPopup, setReportPopup] = useState<boolean>(false)
+
+  const pathName = usePathname()
 
   const handlerUserReaction = (reactionType: ReactionType, videoId: string) => {
     if (item?.isReacted) {
@@ -81,10 +87,12 @@ const UgcCard: React.FC<UgcCardProps> = ({
         ...item,
         isLiked: true
       }
-      if (home) {
+      dispatch(updateUgcReactionData({ ugcData: newUGCData }))
+
+      if (pathName !== '/user-generated-jokes') {
+        console.log('pathName', pathName)
         setVoteIsInPopup(true)
       }
-      dispatch(updateUgcReactionData({ ugcData: newUGCData }))
 
       // Trigger coin animation for successful vote
       if (onVoteSuccess) {
@@ -95,9 +103,13 @@ const UgcCard: React.FC<UgcCardProps> = ({
 
   const router = useRouter()
 
-  console.log('voteIsInPopup', voteIsInPopup, home)
+  useEffect(() => {
+    if (animation && pathName === '/user-generated-jokes') {
+    }
+  }, [animation])
+
   return (
-    <div className='relative w-full flex-grow-1 p-[16px] md:px-[12px] flex flex-col justify-between gap-[10px] rounded-[5px] bg-[#FFFFFF]'>
+    <div className='relative w-full flex-grow-1 p-[16px] md:px-[12px] flex flex-col justify-between gap-[10px] md:rounded-[10px] rounded-[5px] bg-[#FFFFFF]'>
       <div className='flex justify-between items-center md:items-start'>
         <div className='flex w-full items-start gap-[12px]'>
           <div className='min-w-[30px] md:min-w-[28px] min-h-[30px] md:min-h-[28px] flex items-end justify-center rounded-full border-[1px] border-black'>
@@ -113,6 +125,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
                   text={item?.title ?? ''}
                   fontSize='text-[14px]'
                   fontWeight='font-[700]'
+                  className='line-clamp-1'
                 />
                 <AktivGroteskText
                   text={`${item?.user?.fullName ?? ''} ${
@@ -123,11 +136,16 @@ const UgcCard: React.FC<UgcCardProps> = ({
                 />
               </div>
               <div className='flex gap-[6px]'>
-                <AktivGroteskText
-                  text='Report'
-                  fontSize='text-[12px] text-[#FD0202]'
-                  fontWeight='font-[400]'
-                />
+                <button
+                  className='cursor-pointer border-none outline-none'
+                  onClick={() => setReportPopup(true)}
+                >
+                  <AktivGroteskText
+                    text='Report'
+                    fontSize='text-[12px] text-[#FD0202]'
+                    fontWeight='font-[400]'
+                  />
+                </button>
                 <SvgIcons
                   name={ICONS_NAMES.REPORT}
                   className='w-[20px] h-[20px]'
@@ -144,7 +162,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
         </div>
       </div>
       <div className=''>
-        <div className='relative w-full h-[278px] md:h-[330px] bg-[#00953B] px-[19px] flex items-center py-[10px] gap-[34px] rounded-t-[5px]'>
+        <div className='relative w-full h-[278px] md:h-[340px] bg-[#00953B] px-[19px] flex items-center py-[10px] gap-[34px] rounded-t-[5px]'>
           <SvgIcons
             name={ICONS_NAMES.SPRITE_WITH_BUBBLE}
             className='w-[57px] md:w-[78px] h-[213px] md:h-[274px]'
@@ -155,8 +173,8 @@ const UgcCard: React.FC<UgcCardProps> = ({
           /> */}
           <div className='absolute top-[5px] right-[10px]'>
             <SvgIcons
-              name={ICONS_NAMES.UGC_MARK}
-              className='w-[25px] md:w-[33px] h-[24px] md:h-[34px]'
+              name={ICONS_NAMES.HASHTAG}
+              className='w-[46px] md:w-[60px] h-[48px] md:h-[62px]'
             />
           </div>
           {/* <div className='absolute md:hidden bottom-[3px] left-[10px]'>
@@ -249,6 +267,11 @@ const UgcCard: React.FC<UgcCardProps> = ({
           </div>
         </div>
       </div>
+      <ReportPopupComponent
+        setOpen={setReportPopup}
+        open={reportPopup}
+        onClose={() => setReportPopup(false)}
+      />
     </div>
   )
 }

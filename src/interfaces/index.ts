@@ -160,7 +160,19 @@ export interface IReferNowModal {
   onChange: (key: string, value: string) => void;
   onSubmit: () => void;
   placeholder?: string;
-  
+  error?: string;
+}
+
+export interface IReportPopup {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  ctaText: string;
+  refferalLink: string;
+  onChange: (key: string, value: string) => void;
+  onSubmit: () => void;
+  placeholder?: string;
+  error?: string;
 }
 
 export interface IInviteCodePopup {
@@ -304,6 +316,7 @@ export interface IUgcComponent {
   isUnmounting?: boolean;
   jokesData?: TModifiedUGCContent[];
   onVoteSuccess?: () => void;
+  animation?: boolean;
 }
 
 export interface IAddressData {
@@ -350,4 +363,5 @@ export interface UgcCardProps {
   item?: TModifiedUGCContent
   onVoteSuccess?: () => void
   home?: boolean
+  animation?: boolean
 }

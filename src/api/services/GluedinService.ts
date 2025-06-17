@@ -15,6 +15,7 @@ import {
 import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
 import { MainService } from "./MainService";
 import gluedin from "gluedin";
+import { messaging, getToken } from "@/lib/firebase";
 
 export class GluedinService extends MainService {
   private static instance: GluedinService;
@@ -31,6 +32,46 @@ export class GluedinService extends MainService {
     return {
       Authorization: `Bearer ${token}`,
     };
+  }
+
+  public async generateFCMToken() {
+    try {
+      if (!messaging) {
+        console.log("Firebase messaging not available");
+        return;
+      }
+
+      // Check if service worker is supported
+      if ("serviceWorker" in navigator) {
+        // Register service worker
+        await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+
+        // Request notification permission
+        const permission = await Notification.requestPermission();
+
+        if (permission === "granted") {
+          // Generate FCM token
+          const token = await getToken(messaging, {
+            vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+          });
+
+          if (token) {
+            console.log("FCM Token generated for signup:", token);
+            return token;
+            // Store token in localStorage for persistence
+            localStorage.setItem("fcm_token", token);
+          } else {
+            console.log("No FCM token available");
+          }
+          return null;
+        } else {
+          console.log("Notification permission denied");
+          return null;
+        }
+      }
+    } catch (error) {
+      console.error("Error generating FCM token:", error);
+    }
   }
 
   public async GludeinLogin({
@@ -209,17 +250,6 @@ export class GluedinService extends MainService {
           reactionType: reactionType,
         });
       const response = gluedinUserReactionList?.data ?? {};
-      await apiClient.post(
-        API_ROUTES.JOKES.INCREASE_COMIC_COINS,
-        {
-          comicCoin: 1,
-        },
-        {
-          headers: {
-            ...this.getAuthHeaders(),
-          },
-        }
-      );
       if (response?.success) {
         return SuccessResponse(response?.result);
       }
@@ -237,6 +267,7 @@ export class GluedinService extends MainService {
     try {
       let authModuleObj = new gluedin.GluedInAuthModule();
       let accessToken = await authModuleObj.getAccessToken();
+      const token = await this.generateFCMToken();
       if (!accessToken) {
         return ErrorResponse("Please login to react");
       }
@@ -245,6 +276,17 @@ export class GluedinService extends MainService {
         await actityvityTimelineModule.activityTimelineLike({
           assetId: assetId,
         });
+      await apiClient.post(
+        API_ROUTES.JOKES.INCREASE_COMIC_COINS,
+        {
+          deviceId: token,
+        },
+        {
+          headers: {
+            ...this.getAuthHeaders(),
+          },
+        }
+      );
       const response = gluedinUserVoteList?.data ?? {};
       if (response?.success) {
         return SuccessResponse(response?.result);
@@ -292,12 +334,19 @@ export class GluedinService extends MainService {
     }
   }
 
-  public async getHallOfLame({ offset, limit }: TGludeinHallOfLame) {
+  public async getHallOfLame({
+    offset,
+    limit,
+    toDate,
+    fromDate,
+  }: TGludeinHallOfLame) {
     try {
       const feedModule = new gluedin.GluedInFeedModule();
       const gluedinHallOfLame = await feedModule.getJokeLeaderBoard({
         offset,
         limit,
+        ...(toDate && { toDate }),
+        ...(fromDate && { fromDate }),
       });
       const response = gluedinHallOfLame?.data ?? {};
       if (response?.success) {

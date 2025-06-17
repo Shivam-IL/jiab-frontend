@@ -69,10 +69,10 @@ const Input: React.FC<IInput> = ({
       >
         <div
           className={`w-full cursor-pointer flex items-center justify-between ${
-            error !== '' ? 'border-[#FD0202] border-[1px]' : ''
+            error !== '' ? 'border-[#FD0202] border-[1px]' : 'border border-transparent'
           } outline-none ${fontSize} font-[400] ${
             aktivGrotesk.className
-          } ${paddingClass} ${bgColor} rounded-[100px] border border-transparent transition-all duration-200 hover:border-gray-200 focus-visible:border-[#11A64B] ${
+          } ${paddingClass} ${bgColor} rounded-[100px] transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B] focus-visible:border-[#11A64B] ${
             isOpen ? 'border-[#11A64B]' : ''
           }`}
           onClick={() => !readonly && setIsOpen(!isOpen)}

@@ -15,6 +15,7 @@ const UgcComponent: React.FC<IUgcComponent> = ({
   isUnmounting,
   jokesData,
   onVoteSuccess,
+  animation = false
 }) => {
   const [showExitModal, setShowExitModal] = useState(false);
   const { filterChnageId } = useAppSelector((state) => state.ugc);
@@ -30,7 +31,7 @@ const UgcComponent: React.FC<IUgcComponent> = ({
     <div className="py-[16px] md:py-[24px]">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[16px] md:gap-x-[94px] md:gap-y-[24px]">
         {jokesData?.map((item: TModifiedUGCContent, index: number) => (
-          <UgcCard item={item} key={index} onVoteSuccess={onVoteSuccess} />
+          <UgcCard animation={animation} home={true} item={item} key={index} onVoteSuccess={onVoteSuccess} />
         ))}
       </div>
       <div className="flex justify-center items-center md:mt-[32px] mt-[16px]">

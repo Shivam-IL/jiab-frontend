@@ -5,12 +5,14 @@ interface CoinAnimationProps {
   isVisible: boolean;
   animationKey?: number;
   onAnimationEnd?: () => void;
+  animation?: boolean;
 }
 
 const CoinAnimation: React.FC<CoinAnimationProps> = ({
   isVisible,
   animationKey = 0,
   onAnimationEnd,
+  animation =false
 }) => {
   if (!isVisible) return null;
 

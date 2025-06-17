@@ -3,10 +3,12 @@ import { JOKES_POPUP_DATA } from '@/constants'
 
 const ApproveJokePopup = ({
   open,
-  onClose
+  onClose,
+  singleButtonOnClick
 }: {
   open: boolean
   onClose: () => void
+  singleButtonOnClick: () => void
 }) => {
   return (
     <CustomPopupWrapper
@@ -16,6 +18,7 @@ const ApproveJokePopup = ({
       singleButton={JOKES_POPUP_DATA.JOKE_SUBMITTED.SINGLE_BUTTON}
       singleButtonText={JOKES_POPUP_DATA.JOKE_SUBMITTED.SINGLE_BUTTON_TEXT}
       open={open}
+      singleButtonOnClick={singleButtonOnClick}
       onClose={onClose}
     />
   )

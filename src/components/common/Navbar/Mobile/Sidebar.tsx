@@ -300,7 +300,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                         <li key={subIndex} className="text-xs  ml-8">
                           <button
                             onClick={() => {
-                              setRefer1(true);
+                              if (isAuthenticated) {
+                                setRefer1(true)
+                              } else {
+                                dispatch(updateLoginModal({ loginModal: true }))
+                              }
                               onClose();
                             }}
                             className="block px-4 py-1 text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200"
@@ -315,7 +319,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                         <li key={subIndex} className="text-xs ml-8">
                           <button
                             onClick={() => {
-                              setInvite1(true);
+                              if (isAuthenticated) {
+                                setInvite1(true)
+                              } else {
+                                dispatch(updateLoginModal({ loginModal: true }))
+                              }
                               onClose();
                             }}
                             key={subItem.label}
@@ -510,21 +518,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
           </ul>
         </nav>
       </div>
-      <ReferNowComponent
+      {isAuthenticated && <ReferNowComponent
         setOpen={setRefer1}
         open={refer1}
         onClose={() => {
           setRefer1(false);
         }}
-      />
+      />}
 
-      <InviteCodeComponent
+      {isAuthenticated && <InviteCodeComponent
         setOpen={setInvite1}
         open={invite1}
         onClose={() => {
           setInvite1(false);
         }}
-      />
+      />}
       <ContactCard
         isOpen={isContactCardOpen}
         onClose={() => setIsContactCardOpen(false)}

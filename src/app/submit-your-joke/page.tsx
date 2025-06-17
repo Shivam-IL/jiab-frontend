@@ -52,7 +52,7 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
         >
           {file && (
             <div
-              className='w-full relative flex justify-end cursor-pointer px-[16px] z-10'
+              className='w-full relative flex justify-end cursor-pointer mt-[12px] md:pt-0 px-[16px] z-10'
               onClick={removeFile}
             >
               <SvgIcons
@@ -149,6 +149,7 @@ const SubmitYourJoke = () => {
       accptedFormatText: string
       icon: string
       label: string
+      size: number
     }[]
   >([])
   const [categoryData, setCategoryData] = useState<
@@ -200,7 +201,8 @@ const SubmitYourJoke = () => {
       acceptedFormats: '.jpg,.jpeg,.png',
       title: cmsData.pjChallenge.imageClickableHeading,
       accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading,
-      name: 'Image'
+      name: 'Image',
+      size: 1
     },
     {
       icon: ICONS_NAMES.TEXT,
@@ -209,7 +211,8 @@ const SubmitYourJoke = () => {
       label: cmsData.pjChallenge.text,
       accptedFormatText: '',
       acceptedFormats: '.txt',
-      name: 'Text'
+      name: 'Text',
+      size: 1
     },
     {
       icon: ICONS_NAMES.HEADPHONE,
@@ -218,7 +221,8 @@ const SubmitYourJoke = () => {
       label: cmsData.pjChallenge.audio,
       accptedFormatText: cmsData.pjChallenge.audioClickableSubheading,
       acceptedFormats: '.mp3,.wav',
-      name: 'Audio'
+      name: 'Audio',
+      size: 50
     },
     {
       icon: ICONS_NAMES.VIDEO,
@@ -227,7 +231,8 @@ const SubmitYourJoke = () => {
       accptedFormatText: cmsData.pjChallenge.videoSubHeading,
       label: cmsData.pjChallenge.video,
       acceptedFormats: '.mp4',
-      name: 'Video'
+      name: 'Video',
+      size: 100
     }
   ]
 
@@ -294,7 +299,7 @@ const SubmitYourJoke = () => {
       categoryData.find(item => item.name === jokeData.category)?.id ?? 0
 
     const languageId =
-      languageData.find(item => item.value === jokeData.language)?.id ?? 0
+      languageData.find(item => item?.value === jokeData?.language)?.id ?? 0
 
     const format =
       formatData.find(item => item.label === jokeData.format)?.title ?? ''
@@ -360,7 +365,7 @@ const SubmitYourJoke = () => {
           id: item.id,
           name: item.name,
           value: item.language_key,
-          label: item.vernacual_name
+          label: item?.vernacual_name ?? ''
         }
       })
       console.log('modifiedLanguages', modifiedLanguages)
@@ -400,14 +405,15 @@ const SubmitYourJoke = () => {
     title: '',
     file: null,
     category: '',
-    agreeToTerms: false
+    agreeToTerms: false,
+    size: 1
   })
 
   const fileRef = useRef<HTMLInputElement>(null)
 
   const handleChange = (
     key: string,
-    value: string | boolean | FileList | null
+    value: string | boolean | FileList | null | number
   ) => {
     if (key === 'title') {
       const valueString = value?.toString()?.slice(0, 30)
@@ -423,11 +429,11 @@ const SubmitYourJoke = () => {
         return { ...prev, category: value as string }
       })
     } else if (key === 'file') {
-      const MAX_FILE_SIZE_MB = 50
+      const MAX_FILE_SIZE_MB = jokeData.size
       let file = value as FileList
       const fileSizeMB = file?.[0]?.size / (1024 * 1024)
       if (fileSizeMB > MAX_FILE_SIZE_MB) {
-        alert('File size should not exceed 50 MB.')
+        alert(`File size should not exceed ${MAX_FILE_SIZE_MB} MB.`)
         setJokeData(prev => ({ ...prev, file: null }))
         return
       }
@@ -440,15 +446,14 @@ const SubmitYourJoke = () => {
   useEffect(() => {
     setJokeData(prev => ({
       ...prev,
-      format: formatData?.length > 0 ? formatData[0].label : '',
+      format: formatData?.length > 0 ? formatData[0]?.label : '',
       acceptedFormats:
-        formatData?.length > 0 ? formatData[0].acceptedFormats : '',
+        formatData?.length > 0 ? formatData[0]?.acceptedFormats : '',
       accptedFormatText:
-        formatData?.length > 0 ? formatData[0].accptedFormatText : ''
+        formatData?.length > 0 ? formatData[0]?.accptedFormatText : '',
+      size: formatData?.length > 0 ? formatData[0]?.size : 1
     }))
   }, [cmsData, formatData])
-
-  console.log('formError', formatData)
 
   return (
     <div className='flex flex-col gap-3'>
@@ -516,6 +521,7 @@ const SubmitYourJoke = () => {
                             item.accptedFormatText
                           )
                           handleChange('file', null)
+                          handleChange('size', item.size)
                         }}
                       >
                         <ImageIconCard
@@ -529,8 +535,8 @@ const SubmitYourJoke = () => {
                             'w-[31px] h-[39px] md:w-[43px] md:h-[56px]'
                           }
                           className={`${
-                            item.label.toLowerCase() ===
-                            jokeData.format.toLowerCase()
+                            item?.label?.toLowerCase() ===
+                            jokeData?.format?.toLowerCase()
                               ? 'border-[1px] border-[#11A64B]'
                               : ''
                           } max-w-[80px] box-border min-h-[80px] md:min-w-[120px] md:min-h-[120px] flex flex-col justify-center items-center bg-white px-[24px] py-[9px] rounded-[10px]`}
@@ -553,6 +559,9 @@ const SubmitYourJoke = () => {
                 <FileContainer
                   removeFile={() => {
                     handleChange('file', null)
+                    if (fileRef.current) {
+                      fileRef.current.value = ''
+                    }
                   }}
                   ref={fileRef}
                   file={jokeData.file}
@@ -718,6 +727,23 @@ const SubmitYourJoke = () => {
       {openApproveJokePopup && (
         <ApproveJokePopup
           open={openApproveJokePopup}
+          singleButtonOnClick={() => {
+            setJokeData({
+              format: cmsData.pjChallenge.image,
+              fileType: FileType.IMAGE,
+              acceptedFormats: '.jpg,.jpeg,.png',
+              accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading,
+              file: null,
+              jokeText: '',
+              title: '',
+              category: '',
+              agreeToTerms: false,
+              language: '',
+              size: 1
+            })
+            setOpenApproveJokePopup(false)
+            router.push('/user-generated-jokes')
+          }}
           onClose={() => {
             setJokeData({
               format: cmsData.pjChallenge.image,
@@ -729,9 +755,9 @@ const SubmitYourJoke = () => {
               title: '',
               category: '',
               agreeToTerms: false,
-              language: ''
+              language: '',
+              size: 1
             })
-            router.push('/user-generated-jokes')
             setOpenApproveJokePopup(false)
           }}
         />

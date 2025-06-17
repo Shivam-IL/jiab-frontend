@@ -19,7 +19,7 @@ const CustomDialogWrapper: React.FC<ICustomDialogWrapper> = ({
           >
             <SvgIcons
               name={ICONS_NAMES.CROSS}
-              className='w-[12px] h-[12px] text-black'
+              className='w-[20px] h-[20px] text-black'
             />
           </button>
         </div>

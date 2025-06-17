@@ -39,7 +39,7 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
     isFetched: isJokeBoxFetched
   } = useGetGluedinFeedList({
     sortBy: activeTab === 'Latest' ? 'latest' : 'popular',
-    limit: 3,
+    limit: 6,
     offset: 0
   })
 
@@ -89,6 +89,26 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
     }
   }, [])
 
+  useEffect(() => {
+    if (width > 768) {
+      setJokeBoxPageCount(2)
+    } else {
+      setJokeBoxPageCount(6)
+    }
+  }, [width])
+
+  useEffect(() => {
+    if (activeTab) {
+      setJokeBoxCurrent(0)
+    }
+  }, [activeTab])
+
+  useEffect(() => {
+    if (jokeBoxApi) {
+      jokeBoxApi.scrollTo(jokeBoxCurrent)
+    }
+  }, [jokeBoxCurrent, jokeBoxApi])
+
   return (
     <>
       {/* Joke Box */}
@@ -101,7 +121,10 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
       />
       {isClient && (
         <div id={BoxIds.JOKE_BOX} className='md:mx-0 mx-4 mt-[20px] mb-[20px]'>
-          <div id={DesktopBoxIds.JOKE_BOX} className='flex justify-center w-full'>
+          <div
+            id={DesktopBoxIds.JOKE_BOX}
+            className='flex justify-center w-full'
+          >
             <div className='flex items-center bg-white rounded-full mb-4 p-1 relative'>
               <div
                 className={`absolute transition-all duration-300 ease-in-out top-1 h-[calc(100%-8px)] w-[90px] rounded-full bg-green ${
@@ -131,14 +154,15 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
             </div>
           </div>
 
-          <div className='md:grid md:grid-cols-3 flex justify-start overflow-x-scroll scrollbar-hide md:gap-[8px] gap-4'>
+          <div className='flex justify-start overflow-x-scroll scrollbar-hide md:gap-[8px] gap-4'>
             {width < 768 ? (
               <Carousel
                 setApi={setJokeBoxApi}
                 opts={{
                   align: 'start',
                   loop: false,
-                  skipSnaps: true
+                  skipSnaps: true,
+                  slidesToScroll: 1
                 }}
                 className='w-full'
               >
@@ -159,19 +183,39 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
               </Carousel>
             ) : (
               <>
-                {ugcData?.length > 0 &&
-                  ugcData?.map((item: TModifiedUGCContent, index: number) => (
-                    <UgcCard
-                      home={true}
-                      key={item._id}
-                      disclaimerText={cmsData.homePage.jokeDisclaimerText}
-                      item={item}
-                    />
-                  ))}
+                <Carousel
+                  setApi={setJokeBoxApi}
+                  opts={{
+                    align: 'start',
+                    loop: true,
+                    skipSnaps: false,
+                    slidesToScroll: width > 768 ? 3 : 1
+                  }}
+                  className='w-full'
+                >
+                  <CarouselContent className='w-full'>
+                    {ugcData?.length > 0 &&
+                      ugcData?.map(
+                        (item: TModifiedUGCContent, index: number) => (
+                          <CarouselItem key={item._id} className='basis-1/3'>
+                            <div className='w-full flex mx-auto h-full px-2'>
+                              <UgcCard
+                                home={true}
+                                disclaimerText={
+                                  cmsData.homePage.jokeDisclaimerText
+                                }
+                                item={item}
+                              />
+                            </div>
+                          </CarouselItem>
+                        )
+                      )}
+                  </CarouselContent>
+                </Carousel>
               </>
             )}
           </div>
-          {width < 768 && (
+          {
             <div className='flex justify-center md:gap-2 gap-[1.77px] mt-[8px]'>
               {Array.from({ length: jokeBoxPageCount }).map((_, index) => (
                 <button
@@ -186,7 +230,7 @@ const HomePageJokeSection = ({ isClient }: { isClient: boolean }) => {
                 />
               ))}
             </div>
-          )}
+          }
         </div>
       )}
     </>

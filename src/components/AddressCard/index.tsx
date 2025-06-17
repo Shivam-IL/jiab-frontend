@@ -6,9 +6,9 @@ import { Checkbox } from '../ui/checkbox'
 import {
   deleteAddress,
   IUserAddressData,
-  updateAddresses
+  updateDefaultAddress
 } from '@/store/profile/profile.slice'
-import { useDeleteAddress } from '@/api/hooks/ProfileHooks'
+import { useDeleteAddress, useEditAddress } from '@/api/hooks/ProfileHooks'
 import useAppDispatch from '@/hooks/useDispatch'
 import { AddressModalType } from '@/types'
 import AddressModal from '../common/AddressModal/index'
@@ -33,6 +33,12 @@ const AddressCard = ({
     data: deleteAddressData
   } = useDeleteAddress()
 
+  const {
+    mutate: editAddressApi,
+    isPending: editAddressPending,
+    data: editAddressData
+  } = useEditAddress()
+
   const handleDeleteAddress = (id: number) => {
     if (!id) return
     deleteAddess({ address_id: id })
@@ -42,6 +48,16 @@ const AddressCard = ({
       dispatch(deleteAddress({ addressId: address?.id }))
     }
   }, [deleteAddressData])
+
+  useEffect(() => {
+    if (editAddressData?.ok) {
+      console.log(editAddressData)
+      dispatch(
+        updateDefaultAddress({ addressId: address?.id })
+      )
+    }
+  }, [editAddressData])
+
 
   return (
     <div
@@ -89,6 +105,21 @@ const AddressCard = ({
       <div className='flex justify-between items-center gap-2'>
         <div className='flex items-center gap-2'>
           <Checkbox
+            onClick={() => {
+              if (!address?.id || addressLength === 1 || address?.is_default)
+                return
+              editAddressApi({
+                address_id: address?.id,
+                address1: address?.address1,
+                address2: address?.address2,
+                nearest_landmark: address?.nearest_landmark,
+                city: address?.city,
+                state: address?.state,
+                pincode: address?.pincode,
+                shipping_mobile: address?.shipping_mobile,
+                is_default: !address?.is_default
+              })
+            }}
             checked={address?.is_default ?? false}
             className='w-[16px] h-[16px] md:w-[19px] md:h-[19px]'
           />

@@ -45,7 +45,6 @@ const UserGeneratedJokes = () => {
   // Coin animation hook
   const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation();
 
-  console.log("ugcFilters", ugcFilters);
 
   useEffect(() => {
     setMounted(true);
@@ -157,7 +156,7 @@ const UserGeneratedJokes = () => {
             <UgcFilter filter={cmsData?.jokeBox?.filter} />
           </div>
         </div>
-        <UgcComponent jokesData={ugcData} onVoteSuccess={handleVoteSuccess} />
+        <UgcComponent animation={canShowAnimation} jokesData={ugcData} onVoteSuccess={handleVoteSuccess} />
       </div>
       {isUnmounting && (
         <MadeYouLaughExitPopup
@@ -169,7 +168,7 @@ const UserGeneratedJokes = () => {
       )}
 
       {/* Coin Animation */}
-      <CoinAnimation isVisible={isAnimating} animationKey={animationKey} />
+      <CoinAnimation  isVisible={isAnimating} animationKey={animationKey} />
     </ScreenWrapper>
   );
 };

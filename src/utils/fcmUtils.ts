@@ -36,7 +36,7 @@ export const sendTokenToServer = async (token: string, userId?: string): Promise
       deviceInfo,
     };
 
-    const response = await fetch(`${API_URL}/notifications/token`, {
+    const response = await fetch(`${API_URL}notifications/token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export const sendTokenToServer = async (token: string, userId?: string): Promise
  */
 export const removeTokenFromServer = async (token: string): Promise<boolean> => {
   try {
-    const response = await fetch(`${API_URL}/notifications/token`, {
+    const response = await fetch(`${API_URL}notifications/token`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

@@ -134,10 +134,20 @@ const profileSlice = createSlice({
       if (user?.profile_picture) {
         userImage = user?.profile_picture;
       }
+      let gender = "";
+      if (user?.gender) {
+        if (user?.gender === 1) {
+          gender = "male";
+        } else if (user?.gender === 2) {
+          gender = "female";
+        } else if (user?.gender === 3) {
+          gender = "other";
+        }
+      }
       const newUserData = {
         ...state.user,
         ...user,
-        gender: user?.gender ? (user?.gender === 1 ? "male" : "female") : "",
+        gender,
         userImage,
       };
       state.user = { ...newUserData };
@@ -189,6 +199,30 @@ const profileSlice = createSlice({
         (address) => address.id === addressId
       );
       newAddresses[indexOfAddress] = address;
+      state.addresses = [...newAddresses];
+    },
+    updateDefaultAddress: (state, action) => {
+      const { addressId } = action.payload;
+      const newAddresses = [...state.addresses];
+      console.log('newAddresses', newAddresses)
+      const indexOfAddress = newAddresses.findIndex(
+        (address) => address.id === addressId
+      );
+      const currentDefaultAddress = newAddresses.findIndex(
+        (address) => address.is_default
+      );
+      if (currentDefaultAddress !== -1) {
+        console.log('currentDefaultAddress', currentDefaultAddress)
+        const newIndexData = { ...newAddresses[currentDefaultAddress] };
+        newIndexData.is_default = false;
+        newAddresses[currentDefaultAddress] = newIndexData;
+      }
+      if (indexOfAddress !== -1) {  
+        console.log('indexOfAddress', indexOfAddress)
+        const newIndexData = { ...newAddresses[indexOfAddress] };
+        newIndexData.is_default = true;
+        newAddresses[indexOfAddress] = newIndexData;
+      }
       state.addresses = [...newAddresses];
     },
     resetProfile: (state) => {
@@ -249,6 +283,7 @@ export const {
   updateBalance,
   updateRank,
   updateUser,
+  updateDefaultAddress,
   updateAddresses,
   deleteAddress,
   editAddress,

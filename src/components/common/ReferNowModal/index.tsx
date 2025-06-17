@@ -18,21 +18,22 @@ const ReferNowModal: React.FC<IReferNowModal> = ({
   phoneNumber,
   onChange,
   onSubmit,
-  placeholder="Enter Your Friend's Mobile No."
+  placeholder="Enter Your Friend's Mobile No.",
+  error
 }) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className='max-w-[343px] md:max-w-[401px] gap-0 rounded-[10px] p-0'>
-        <div className='flex justify-end pt-[12px]  pr-[16px] md:pr-[18px]'>
+        <div className='flex justify-end pt-[16px]  pr-[16px] md:pr-[18px]'>
           <button
             onClick={() => {
               onClose()
             }}
-            className='p-0 self-end'
+            className='p-0 self-end cursor-pointer border-none outline-none'
           >
             <SvgIcons
               name={ICONS_NAMES.CROSS}
-              className='w-[13px] h-[13px] md:w-[14px] md:h-[12px]'
+              className='w-[20px] h-[20px]'
             />
           </button>
         </div>
@@ -58,6 +59,7 @@ const ReferNowModal: React.FC<IReferNowModal> = ({
               value={phoneNumber}
               fontSize='text-[14px] md:text-[16px]'
               onChange={onChange}
+              error={error}
               placeholder={placeholder}
             />
             <div className='flex flex-col justify-center items-center'>

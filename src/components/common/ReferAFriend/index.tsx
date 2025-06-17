@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import AktivGroteskText from '../AktivGroteskText'
-import {
-  GA_EVENTS,
-  ICONS_NAMES,
-  SEND_REMINDER,
-} from '@/constants'
+import { GA_EVENTS, ICONS_NAMES, SEND_REMINDER } from '@/constants'
 import GreenCTA from '@/components/GreenCTA'
 import SvgIcons from '../SvgIcons'
 import { useRouter } from 'next/navigation'
 import ReferNowComponent from '../ReferNowComponent'
 import { useGetAllReferrals } from '@/api/hooks/ReferralHooks'
 import { IInviteeData } from '@/interfaces'
+import useAppSelector from '@/hooks/useSelector'
 
 const ReferAFriend = ({
   referToFriendHeader,
   referNowButtonText,
   prevButtonText,
-  nextButtonText,
+  nextButtonText
 }: {
-  referToFriendHeader: string;
-  referNowButtonText: string;
-  prevButtonText: string;
-  nextButtonText: string;
+  referToFriendHeader: string
+  referNowButtonText: string
+  prevButtonText: string
+  nextButtonText: string
 }) => {
   const [page, setPage] = useState<number>(1)
   const [pages, setPages] = useState<number>(1)
@@ -42,10 +39,14 @@ const ReferAFriend = ({
       setData(referralsData)
     }
   }, [referrals])
+
+  const { isAuthenticated } = useAppSelector(state => state.auth)
+
+  
   return (
     <>
       {data?.length === 0 && (
-        <div className='flex justify-between items-center p-[16px] bg-white rounded-[5px]'>
+        <div className='flex justify-between items-center p-[16px] bg-white rounded-[5px] md:rounded-[20px]'>
           <AktivGroteskText
             text={referToFriendHeader}
             fontSize='text-[16px] md:text-[28px]'
@@ -120,42 +121,46 @@ const ReferAFriend = ({
           ))}
           <div className='w-full flex justify-center flex-row items-center'>
             <div className='relative flex gap-[12px] md:gap-[16px]'>
-              {page > 1 && <button
-                onClick={() => {
-                  if (page > 1) {
-                    setPage(prev => prev - 1)
-                  }
-                }}
-                className={`hover:bg-[#E0E0E0] transition-all duration-300 rounded-[100px]  border-[1px]   text-[10px] font-[700] py-[6px] px-[36px] ${
-                  page > 1
-                    ? 'border-black text-black'
-                    : 'border-[rgba(0,0,0,0.2)] text-[rgba(0,0,0,0.2)]'
-                }`}
-              >
-                <AktivGroteskText
-                  text={prevButtonText}
-                  fontSize='text-[14px] md:text-[24px]'
-                  fontWeight='font-[700]'
-                />
-              </button>}
-              {pages>1 &&<button
-                onClick={() => {
-                  if (page < pages) {
-                    setPage(prev => prev + 1)
-                  }
-                }}
-                className={` hover:bg-[#E0E0E0]  ${
-                  pages !== page
-                    ? 'border-black text-black'
-                    : 'border-[rgba(0,0,0,0.2)] text-[rgba(0,0,0,0.2)]'
-                }  transition-all duration-300 rounded-[100px] border-[1px] text-[10px] font-[700] py-[6px] px-[36px]`}
-              >
-                <AktivGroteskText
-                  text={nextButtonText}
-                  fontSize='text-[14px] md:text-[24px]'
-                  fontWeight='font-[700]'
-                />
-              </button>}
+              {page > 1 && (
+                <button
+                  onClick={() => {
+                    if (page > 1) {
+                      setPage(prev => prev - 1)
+                    }
+                  }}
+                  className={`hover:bg-[#E0E0E0] transition-all duration-300 rounded-[100px]  border-[1px]   text-[10px] font-[700] py-[6px] px-[36px] ${
+                    page > 1
+                      ? 'border-black text-black'
+                      : 'border-[rgba(0,0,0,0.2)] text-[rgba(0,0,0,0.2)]'
+                  }`}
+                >
+                  <AktivGroteskText
+                    text={prevButtonText}
+                    fontSize='text-[14px] md:text-[24px]'
+                    fontWeight='font-[700]'
+                  />
+                </button>
+              )}
+              {pages > 1 && (
+                <button
+                  onClick={() => {
+                    if (page < pages) {
+                      setPage(prev => prev + 1)
+                    }
+                  }}
+                  className={` hover:bg-[#E0E0E0]  ${
+                    pages !== page
+                      ? 'border-black text-black'
+                      : 'border-[rgba(0,0,0,0.2)] text-[rgba(0,0,0,0.2)]'
+                  }  transition-all duration-300 rounded-[100px] border-[1px] text-[10px] font-[700] py-[6px] px-[36px]`}
+                >
+                  <AktivGroteskText
+                    text={nextButtonText}
+                    fontSize='text-[14px] md:text-[24px]'
+                    fontWeight='font-[700]'
+                  />
+                </button>
+              )}
             </div>
           </div>
 
@@ -186,12 +191,14 @@ const ReferAFriend = ({
           </div>
         </div>
       )}
-      <ReferNowComponent
-        setReferralCode={setReferralCode}
-        setOpen={setOpen}
-        open={open}
-        onClose={() => setOpen(false)}
-      />
+      {isAuthenticated && (
+        <ReferNowComponent
+          setReferralCode={setReferralCode}
+          setOpen={setOpen}
+          open={open}
+          onClose={() => setOpen(false)}
+        />
+      )}
     </>
   )
 }

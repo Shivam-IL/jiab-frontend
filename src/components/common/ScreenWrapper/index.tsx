@@ -1,20 +1,18 @@
-import { IScreenWrapper } from "@/interfaces";
-import React from "react";
+import { IScreenWrapper } from '@/interfaces'
+import React from 'react'
 
 const ScreenWrapper: React.FC<IScreenWrapper> = ({
   children,
-  className = "mt-20",
-  desktopWidth = "",
+  className = 'mt-20',
+  desktopWidth = 'md:w-[78.57%]'
 }) => {
   return (
     <div
       className={`w-full mb-16 md:mb-0 mx-auto md:min-h-[100vh] relative flex justify-center p-[16px] bg-[#F2F2F2] ${className}`}
     >
-      <div className={`relative container ${desktopWidth}  w-full`}>
-        {children}
-      </div>
+      <div className={`relative  ${desktopWidth}  w-full`}>{children}</div>
     </div>
-  );
-};
+  )
+}
 
-export default ScreenWrapper;
+export default ScreenWrapper

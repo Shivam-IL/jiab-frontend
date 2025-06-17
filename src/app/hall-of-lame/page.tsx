@@ -17,11 +17,20 @@ const HallOfLameLeaderboard = () => {
   const [offset, setOffset] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [data, setData] = useState<IHallOfLameData[]>([])
+  const [toDate, setToDate] = useState<number>(0)
+  const [fromDate, setFromDate] = useState<number>(0)
   const { data: hallOfLameData } = useGetHallOfLames({
     offset,
-    limit: 5
+    limit: 5,
+    toDate,
+    fromDate
   })
 
+  useEffect(() => {
+    if (toDate && fromDate) {
+      setOffset(1)
+    }
+  }, [toDate, fromDate])
 
   useEffect(() => {
     if (hallOfLameData?.ok) {
@@ -73,6 +82,8 @@ const HallOfLameLeaderboard = () => {
             votes={cmsData.hallOfLame.votesHeading}
             totalPages={totalPages}
             offset={offset}
+            setToDate={setToDate}
+            setFromDate={setFromDate}
           />
         </div>
       </ScreenWrapper>
