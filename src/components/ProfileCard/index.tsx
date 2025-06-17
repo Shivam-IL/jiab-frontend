@@ -4,7 +4,8 @@ import {
   ICONS_NAMES,
   LOCAL_IMAGES,
   PROFILE_IMAGES,
-  USER_INFO_CARD_DATA
+  USER_INFO_EMAIL_GENDER_ARRAY,
+  USER_INFO_NUMBER_DATE_ARRAY
 } from '@/constants'
 import Image from 'next/image'
 import { CircularProgress } from '../common/CircularProgress'
@@ -28,6 +29,8 @@ const ProfileCard = () => {
   const router = useRouter()
 
   const width = useWindowWidth()
+  const [numberDateArray, setNumberDateArray] = useState<InfoDataItem[]>([])
+  const [emailGenderArray, setEmailGenderArray] = useState<InfoDataItem[]>([])
   const [infoData, setInfoData] = useState<InfoDataItem[]>([])
 
   const { user } = useAppSelector(state => state.profile)
@@ -50,24 +53,66 @@ const ProfileCard = () => {
     }
   }, [width])
 
+  // useEffect(() => {
+  //   if (user && user?.id) {
+  //     const newInfoData = USER_INFO_CARD_DATA.map(item => {
+  //       const itemKey = item.type as keyof User
+  //       const value = user[itemKey]
+  //       if (value !== undefined && value !== null && value) {
+  //         return {
+  //           ...item,
+  //           text:
+  //             item.type === 'dob'
+  //               ? dateConvert(value as string)
+  //               : String(value),
+  //           visible: true
+  //         }
+  //       }
+  //       return { ...item, visible: false, text: '' }
+  //     })
+  //     setInfoData(newInfoData)
+  //   }
+  // }, [user])
+
   useEffect(() => {
     if (user && user?.id) {
-      const newInfoData = USER_INFO_CARD_DATA.map(item => {
-        const itemKey = item.type as keyof User
-        const value = user[itemKey]
-        if (value !== undefined && value !== null && value) {
-          return {
-            ...item,
-            text:
-              item.type === 'dob'
-                ? dateConvert(value as string)
-                : String(value),
-            visible: true
+      if (user && user?.id) {
+        const modifiedNumberDateArray = USER_INFO_NUMBER_DATE_ARRAY?.map(
+          item => {
+            const itemKey = item.type as keyof User
+            const value = user[itemKey]
+            if (value !== undefined && value !== null && value) {
+              return {
+                ...item,
+                text:
+                  item.type === 'dob'
+                    ? dateConvert(value as string)
+                    : String(value),
+                visible: true
+              }
+            }
+            return { ...item, visible: false, text: '' }
           }
+        )
+        setNumberDateArray(modifiedNumberDateArray)
+      }
+    }
+    if (user && user?.id) {
+      const modifiedEmailGenderArray = USER_INFO_EMAIL_GENDER_ARRAY?.map(
+        item => {
+          const itemKey = item.type as keyof User
+          const value = user[itemKey]
+          if (value !== undefined && value !== null && value) {
+            return {
+              ...item,
+              text: String(value),
+              visible: true
+            }
+          }
+          return { ...item, visible: false, text: '' }
         }
-        return { ...item, visible: false, text: '' }
-      })
-      setInfoData(newInfoData)
+      )
+      setEmailGenderArray(modifiedEmailGenderArray)
     }
   }, [user])
 
@@ -132,8 +177,47 @@ const ProfileCard = () => {
           </button>
         </div>
       </div>
-      <div className='grid grid-cols-2 gap-2 md:gap-[28px] md:gap-x-[9rem] lg:gap-x-[20rem] gap-x-0 px-[16px] md:px-[66px] pt-[16px] md:pt-[66px] pb-[10px] md:pb-[44px] w-full'>
-        {infoData?.length > 0 &&
+
+      <div className='flex flex-row gap-2 justify-between   gap-x-0 px-[16px] md:px-[66px] pt-[16px] md:pt-[66px] pb-[20px] md:pb-[32px] w-full'>
+        <div className='flex flex-col gap-[10px]'>
+          {numberDateArray?.length > 0 &&
+            numberDateArray?.map((item, index) => {
+              if (item?.visible) {
+                return (
+                  <UserInfoCard
+                    index={index}
+                    dataLength={numberDateArray?.length}
+                    iconClassName='w-[14px] h-[14px] md:min-w-[29px] md:min-h-[29px]'
+                    key={item?.id}
+                    iconName={item?.iconName}
+                    text={item?.text}
+                  />
+                )
+              } else {
+                return null
+              }
+            })}
+        </div>
+        <div className='flex flex-col gap-[10px]'>
+          {emailGenderArray?.length > 0 &&
+            emailGenderArray?.map((item, index) => {
+              if (item?.visible) {
+                return (
+                  <UserInfoCard
+                    index={index}
+                    dataLength={emailGenderArray?.length}
+                    iconClassName='w-[14px] h-[14px] md:min-w-[29px] md:min-h-[29px]'
+                    key={item?.id}
+                    iconName={item?.iconName}
+                    text={item?.text}
+                  />
+                )
+              } else {
+                return null
+              }
+            })}
+        </div>
+        {/* {infoData?.length > 0 &&
           infoData?.map((item, index) => {
             if (item?.visible) {
               return (
@@ -149,7 +233,7 @@ const ProfileCard = () => {
             } else {
               return null
             }
-          })}
+          })} */}
       </div>
     </div>
   )

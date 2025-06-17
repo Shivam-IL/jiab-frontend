@@ -113,11 +113,22 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
       Object.entries(elements).forEach(([key, element]) => {
         if (element && key in newCoords) {
           const rect = element.getBoundingClientRect()
-          newCoords[key as keyof Omit<CoordinatesState, 'windowHeight'>] = {
-            x: rect.left + window.scrollX,
-            y: rect.top + window.scrollY,
-            width: rect.width,
-            height: rect.height
+          // For pickYourMovie and jokeBox, use scroll offset (so they stay with the section)
+          if (key === 'pickYourMovie' || key === 'jokeBox') {
+            newCoords[key as keyof Omit<CoordinatesState, 'windowHeight'>] = {
+              x: rect.left + window.scrollX,
+              y: rect.top + window.scrollY,
+              width: rect.width,
+              height: rect.height
+            }
+          } else {
+            // For all others, use viewport coordinates (fixed)
+            newCoords[key as keyof Omit<CoordinatesState, 'windowHeight'>] = {
+              x: rect.left,
+              y: rect.top,
+              width: rect.width,
+              height: rect.height
+            }
           }
         }
       })
@@ -137,6 +148,25 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
       window.removeEventListener('scroll', calculatePositions)
     }
   }, [coordinates])
+
+  // Auto-scroll for pickYourMovie and jokeBox
+  useEffect(() => {
+    if (currentBox === 3) {
+      setTimeout(() => {
+        const pickYourMoodEl = document.getElementById(BoxIds.PICK_YOUR_MOOD)
+        if (pickYourMoodEl) {
+          pickYourMoodEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }, 100)
+    } else if (currentBox === 4) {
+      setTimeout(() => {
+        const jokeBoxEl = document.getElementById(BoxIds.JOKE_BOX)
+        if (jokeBoxEl) {
+          jokeBoxEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }, 100)
+    }
+  }, [currentBox])
 
   return (
     <div className='fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center'>
@@ -254,21 +284,21 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
               left: `${coordinates.pickYourMovie.x - 30.5}px`,
-              top: `${coordinates.pickYourMovie.y - 168.5}px`,
-              width: '177px',
-              height: '177px',
+              top: `${coordinates.pickYourMovie.y-400}px`,
+              width: '187px',
+              height: '187px',
               position: 'fixed'
             }}
           >
             <div className='flex w-full text-center h-full flex-col justify-center items-center gap-[9px]'>
-              <div className='flex flex-col items-center absolute bottom-12 left-[20px]'>
+              <div className='flex flex-col items-start top-[61px] absolute w-[128px] bottom-[58px] right-[18px]'>
                 <div
-                  className={`w-[80%] text-[16px] ${aktivGrotesk.className} font-[700]`}
+                  className={`text-start text-[16px] ${aktivGrotesk.className} font-[700]`}
                 >
                   Pick your Mood
                 </div>
                 <div
-                  className={`text-start relative w-[70%] text-[12px] ${aktivGrotesk.className} font-[400]`}
+                  className={`text-start relative  text-[12px] ${aktivGrotesk.className} font-[400]`}
                 >
                   Tell us what&apos;s annoying you today! 😎🌡️
                 </div>
@@ -281,22 +311,22 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
-              left: `${coordinates.jokeBox.x - 30.5}px`,
-              top: `${coordinates.jokeBox.y - 388.5}px`,
+              left: `${coordinates.jokeBox.x - 80.5}px`,
+              top: `${coordinates.jokeBox.y - 900.5}px`,
               width: '177px',
               height: '177px',
               position: 'fixed'
             }}
           >
             <div className='flex w-full text-center h-full flex-col justify-center items-center gap-[9px]'>
-              <div className='flex flex-col items-center absolute bottom-12 left-[20px]'>
+              <div className='flex w-[81px] items-start flex-col absolute bottom-[56px] right-[21px]'>
                 <div
-                  className={`w-[80%] text-[16px] ${aktivGrotesk.className} font-[700]`}
+                  className={`text-[16px] ${aktivGrotesk.className} font-[700]`}
                 >
                   Joke Box
                 </div>
                 <div
-                  className={`text-start relative w-[70%] text-[12px] ${aktivGrotesk.className} font-[400]`}
+                  className={`text-start relative text-[12px] ${aktivGrotesk.className} font-[400]`}
                 >
                   All your jokes bottled here!
                 </div>

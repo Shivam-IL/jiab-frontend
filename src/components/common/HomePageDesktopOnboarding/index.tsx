@@ -99,8 +99,8 @@ const HomePageDesktopOnboarding = ({
         if (element && key in newCoords) {
           const rect = element.getBoundingClientRect()
           newCoords[key as keyof Omit<CoordinatesState, 'windowHeight'>] = {
-            x: rect.left + window.scrollX,
-            y: rect.top + window.scrollY,
+            x: rect.left,
+            y: rect.top,
             width: rect.width,
             height: rect.height
           }
@@ -110,6 +110,7 @@ const HomePageDesktopOnboarding = ({
       if (JSON.stringify(newCoords) !== JSON.stringify(coordinates)) {
         setCoordinates(newCoords)
         console.log('New coordinates:', newCoords)
+        console.log('Pick Your Mood Coordinates:', newCoords.pickYourMood)
       }
     }
 
@@ -123,9 +124,24 @@ const HomePageDesktopOnboarding = ({
     }
   }, [coordinates])
 
- 
-
-
+  // Auto-scroll to the relevant section when currentBox is 4 or 5
+  useEffect(() => {
+    if (currentBox === 4) {
+      setTimeout(() => {
+        const pickYourMoodEl = document.getElementById(BoxIds.PICK_YOUR_MOOD)
+        if (pickYourMoodEl) {
+          pickYourMoodEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }, 100)
+    } else if (currentBox === 5) {
+      setTimeout(() => {
+        const jokeBoxEl = document.getElementById(BoxIds.JOKE_BOX)
+        if (jokeBoxEl) {
+          jokeBoxEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }, 100)
+    }
+  }, [currentBox])
 
   return (
     <div className='fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center'>
@@ -147,10 +163,10 @@ const HomePageDesktopOnboarding = ({
       `}</style>
       <div
         onClick={() => {
-          if (currentBox === 4) {
+          if (currentBox === 5) {
             handleClose()
           } else {
-            setCurrentBox(prev => (prev + 1) % 5)
+            setCurrentBox(prev => (prev + 1) % 6)
           }
         }}
         className='relative w-full h-full'
@@ -282,11 +298,16 @@ const HomePageDesktopOnboarding = ({
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
-              left: `${coordinates.pickYourMood.x - 200.5}px`,
-              top: `${coordinates.pickYourMood.y - 200}px`,
+              left: '-30px',
+              top: `${
+                coordinates.pickYourMood.y +
+                coordinates.pickYourMood.height / 2 -
+                112.5
+              }px`,
               width: '225px',
               height: '225px',
-              position: 'fixed'
+              position: 'fixed',
+              zIndex: 1000
             }}
           >
             <div className='flex w-full text-center h-full flex-col justify-center items-center gap-[9px]'>
@@ -308,12 +329,12 @@ const HomePageDesktopOnboarding = ({
         )}
 
         {/* Joke Box */}
-        {/* {currentBox === 5 && coordinates.jokeBox.y !== 0 && (
+        {currentBox === 5 && coordinates.jokeBox.y !== 0 && (
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
-              left: `${coordinates.jokeBox.x - 200.5}px`,
-              top: `${coordinates.jokeBox.y - 200}px`,
+              left: `-50px`,
+              top: `${coordinates.jokeBox.y - 100}px`,
               width: '225px',
               height: '225px',
               position: 'fixed'
@@ -335,7 +356,7 @@ const HomePageDesktopOnboarding = ({
               </div>
             </div>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   )
