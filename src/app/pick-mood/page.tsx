@@ -126,7 +126,7 @@ const PickMood: React.FC = () => {
 
       {/* Show login modal for unauthenticated users */}
       {genreSurpriseModal && !isAuthenticated && (
-        <SurpriseMeLockModal onClose={closeGenreSurpriseMe} forceShow={true} />
+        <SurpriseMeLockModal onClose={closeGenreSurpriseMe}  />
       )}
     </>
   );

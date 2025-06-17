@@ -31,17 +31,17 @@ const DisplayTable = ({
         <thead>
           <tr className='border-none bg-[#FFE200] w-full'>
             <th
-              className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700] text-center py-[12px] md:py-[20px] pl-[12px] md:pl-[60px] rounded-l-[5px] md:rounded-l-[10px]`}
+              className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700] text-start p-[10px] md:pl-[32px] rounded-l-[5px] md:rounded-l-[10px]`}
             >
               {rank}
             </th>
             <th
-              className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700]  text-start py-[12px] pl-[22px] md:py-[20px]`}
+              className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700]  text-start p-[10px]`}
             >
               {jokes}
             </th>
             <th
-              className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700] text-center py-[12px] md:py-[20px] pr-[12px] md:pr-[60px] rounded-r-[5px] md:rounded-r-[10px]`}
+              className={`${aktivGrotesk.className} mb-[12px] text-start box-border text-[12px] md:text-[20px] font-[700] p-[10px] md:pr-[32px] rounded-r-[5px] md:rounded-r-[10px]`}
             >
               {votes}
             </th>
@@ -53,35 +53,35 @@ const DisplayTable = ({
               return (
                 <tr key={item.id} className='border-none mt-[12px] bg-white'>
                   <td
-                    className={`${aktivGrotesk.className} relative text-[12px] md:text-[16px] font-[400] text-center py-[12px] box-border md:py-[19px] pl-[12px] md:pl-[60px] rounded-l-[5px] md:rounded-l-[10px]`}
+                    className={`${aktivGrotesk.className} relative text-[12px] md:text-[16px] font-[400] text-start box-border p-[10px] md:pl-[32px] rounded-l-[5px] md:rounded-l-[10px]`}
                   >
                     {(offset - 1) * 5 + (item?.rank ?? 0)}.
                   </td>
                   <td
-                    className={`${aktivGrotesk.className} relative box-border text-[12px] md:text-[16px] font-[400] py-[12px] md:py-[19px] pl-[22px]`}
+                    className={`${aktivGrotesk.className} relative box-border text-[12px] md:text-[16px] font-[400] p-[10px]`}
                   >
                     <div className='flex gap-[19px] box-border relative w-full'>
                       <div className='min-w-[57px] md:min-w-[72px] min-h-[57px] md:min-h-[72px] rounded-[3px] bg-green'></div>
                       <div className='flex flex-col text-start box justify-between w-full'>
-                        <div className='flex flex-col md:gap-0 gap-[4px] justify-between'>
+                        <div className='flex flex-col md:gap-0 gap-[4px] justify-start'>
                           <div className='truncate max-w-[60%] md:max-w-[75%]'>
                             <AktivGroteskText
                               text={item?.title ?? ''}
-                              className='leading-tight w-full'
+                              className='leading-tight w-full text-start'
                               fontSize='text-[12px] md:text-[18px]'
                               fontWeight='font-[700]'
                             />
                           </div>
                           <AktivGroteskText
                             text={item?.jokeOwnerName ?? ''}
-                            className='leading-tight w-full'
+                            className='leading-tight w-full text-start'
                             fontSize='text-[10px] md:text-[16px]'
                             fontWeight='font-[400]'
                           />
                         </div>
                         <AktivGroteskText
                           text={getLabel(item?.labels ?? [])}
-                          className='leading-tight w-full text-[rgba(0,0,0,0.5)]'
+                          className='leading-tight w-full text-[rgba(0,0,0,0.5)] text-start'
                           fontSize='text-[10px] md:text-[14px]'
                           fontWeight='font-[400]'
                         />
@@ -89,27 +89,27 @@ const DisplayTable = ({
                     </div>
                   </td>
                   <td
-                    className={`${aktivGrotesk.className} box-border text-[12px] md:text-[16px] font-[400] text-center py-[12px] md:py-[19px] pr-[12px] md:pr-[60px] rounded-r-[5px] md:rounded-r-[10px]`}
+                    className={`${aktivGrotesk.className} box-border text-[12px] md:text-[16px] font-[400] text-center p-[10px] md:pr-[32px] rounded-r-[5px] md:rounded-r-[10px]`}
                   >
-                    <div className='flex flex-col justify-between md:justify-center gap-[2px] md:gap-[9px] items-center h-[57px] md:h-fit relative w-full'>
+                    <div className='flex flex-col justify-between md:justify-start gap-[2px] md:gap-[9px] items-start h-[57px] md:h-fit relative w-full'>
                       <AktivGroteskText
                         text={formatTimestampToDate(
                           item?.updatedTimestamp ?? 0
                         )}
                         fontSize='text-[8px] md:text-[14px]'
                         fontWeight='font-[400]'
-                        className='text-[rgba(0,0,0,0.5)] w-full'
+                        className='text-[rgba(0,0,0,0.5)] w-full text-start'
                       />
-                      <div className='flex flex-col gap-[2px] md:gap-[4px] items-center'>
+                      <div className='flex flex-col gap-[2px] md:gap-[4px] justify-start'>
                         <AktivGroteskText
                           text={formatNumberToK(item?.voteCount ?? 0)}
-                          className='leading-tight w-full'
+                          className='leading-tight w-full text-start'
                           fontSize='text-[16px] md:text-[20px]'
                           fontWeight='font-[700]'
                         />
                         <AktivGroteskText
                           text='Votes'
-                          className='leading-tight w-full'
+                          className='leading-tight w-full text-start'
                           fontSize='text-[10px] md:text-[16px]'
                           fontWeight='font-[400]'
                         />
@@ -197,7 +197,7 @@ const HallOfLameLeaderboardTable = ({
         />
       </div>
       <div className='flex gap-[12px] md:gap-[24px] self-center'>
-        <button
+        {offset > 1 && <button
           onClick={() =>
             setOffset(prev => {
               if (prev > 1) {
@@ -220,13 +220,14 @@ const HallOfLameLeaderboardTable = ({
             fontSize='text-[14px] md:text-[20px]'
             fontWeight='font-[700]'
           />
-        </button>
+        </button>}
         <GreenCTA
           disabled={totalPages > offset ? false : true}
           className='leading-tight'
-          fontSize='text-[14px] md:text-[20px]'
+          fontSize='text-[14px] md:text-[16px]'
           fontWeight='font-[700]'
-          paddingClass='px-[36px] py-[8px] md:py-[20px] md:px-[60px] '
+          borderRadius='rounded-[20px]'
+          paddingClass='px-[36px] py-[8px] md:py-[8px] md:px-[16px]'
           text={nextButtonText}
           onClick={() => {
             setOffset(prev => {

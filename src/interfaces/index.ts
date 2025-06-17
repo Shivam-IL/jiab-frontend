@@ -54,6 +54,7 @@ export interface IGreenCTA {
   children?: React.ReactNode;
   childrenPosition?: string;
   editProfile?: boolean;
+  borderRadius?: string;
 }
 
 export interface IEditProfileImage {
