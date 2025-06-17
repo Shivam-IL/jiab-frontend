@@ -11,6 +11,7 @@ interface HeaderProps {
   viewAllButtonText?: string;
   className?: string;
   id?: string;
+  textTransform?: "uppercase" | "capitalize";
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -20,6 +21,7 @@ const Header: React.FC<HeaderProps> = ({
   viewAllButtonText,
   className = "",
   id,
+  textTransform = "uppercase",
 }) => {
   return (
     <div
@@ -27,7 +29,9 @@ const Header: React.FC<HeaderProps> = ({
       id={id}
     >
       <div>
-        <h2 className="md:text-[30px] text-[16px] font-bold text-gray-900 uppercase">
+        <h2
+          className={`md:text-[30px] text-[16px] font-bold text-gray-900 ${textTransform}`}
+        >
           {title}
         </h2>
         {description && (
@@ -39,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({
       {viewAllUrl && (
         <Link
           href={viewAllUrl}
-          className="flex items-center md:text-[20px] text-[12px] font-medium text-gray-900 group"
+          className="flex items-center md:text-[20px] text-[12px] font-[400] text-gray-900 group"
         >
           {viewAllButtonText}
           <span className="ml-1 group-hover:translate-x-1 transition-transform">

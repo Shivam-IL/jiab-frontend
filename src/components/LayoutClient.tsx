@@ -36,10 +36,11 @@ export default function LayoutClient({
             <ProtectedRoutedWrapper>
               <Navbar />
               {children}
-              {/* Show Surprise button only when not on /scroll-and-lol */}
-              {!pathname.includes("/scroll-and-lol") && (
-                <HomePageSurpriseButton />
-              )}
+              {/* Show Surprise button only when not on /scroll-and-lol or /notification */}
+              {!pathname.includes("/scroll-and-lol") &&
+                !pathname.includes("/notifications") && (
+                  <HomePageSurpriseButton />
+                )}
 
               {/* Mobile Footer */}
               <div className="block lg:hidden">

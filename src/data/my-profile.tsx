@@ -12,6 +12,9 @@ export interface MyProfileData {
   nextButtonText: string;
   surpriseMe: string;
   saveButtonText: string;
+  user: string;
+  sendReminder: string;
+  status: string;
 }
 
 export const mapMyProfileData = (
@@ -33,6 +36,9 @@ export const mapMyProfileData = (
     nextButtonText: myProfileCMS?.next_button_text ?? "Next",
     surpriseMe: myProfileCMS?.surprise_me ?? "Surprise Me",
     saveButtonText: myProfileCMS?.save_button_text ?? "Save",
+    user: myProfileCMS?.user ?? "User",
+    sendReminder: myProfileCMS?.send_reminder ?? "Send Reminder",
+    status: myProfileCMS?.statu_s ?? "Status",
   };
 };
 
@@ -49,4 +55,7 @@ export const defaultMyProfileData: MyProfileData = {
   nextButtonText: "Next",
   surpriseMe: "Surprise Me",
   saveButtonText: "Save",
+  user: "User",
+  sendReminder: "Send Reminder",
+  status: "Status",
 };

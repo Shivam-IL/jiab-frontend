@@ -230,11 +230,14 @@ export type TCMSResponse = {
       prev_button_text: string;
       next_button_text: string;
       surprise_me: string;
-      save_button_text: string;
       createdAt: string;
       updatedAt: string;
       publishedAt: string;
       locale: string;
+      save_button_text: string;
+      user: string;
+      statu_s: string;
+      send_reminder: string;
     };
     comic_coins: {
       id: number;

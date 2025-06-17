@@ -70,29 +70,35 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const notifications = notificationsResponse?.data?.notifications ?? []
   const notificationCount = notificationCountResponse?.data?.count ?? 0
 
-  // Handle notification click to mark as read
-  const handleNotificationClick = async () => {
-    try {
-      // Prevent multiple calls if already pending
-      if (markAsReadMutation.isPending) return
+  // Handle notification dropdown toggle and mark as read
+  const handleNotificationDropdownToggle = async () => {
+    const newState = !isNotificationDropdownOpen;
+    setIsNotificationDropdownOpen(newState);
 
-      await markAsReadMutation.mutateAsync()
+    // If opening dropdown and there are unread notifications, mark all as read
+    if (newState && notificationCount > 0) {
+      try {
+        // Don't await - fire and forget to avoid blocking UI
+        markAsReadMutation
+          .mutateAsync()
+          .then(() => {
+            // Use a timeout to batch invalidations and prevent rapid refetching
+            setTimeout(() => {
+              queryClient.invalidateQueries({
+                queryKey: [...keys.notifications.getNotifications()],
+              });
 
-      // Use a timeout to batch invalidations and prevent rapid refetching
-      setTimeout(() => {
-        queryClient.invalidateQueries({
-          queryKey: [...keys.notifications.getNotifications()]
-        })
-
-        queryClient.invalidateQueries({
-          queryKey: [...keys.notifications.getNotificationCount()]
-        })
-      }, 100)
-
-      // Close the dropdown after marking as read
-      setIsNotificationDropdownOpen(false)
-    } catch (error) {
-      console.error('Failed to mark notification as read:', error)
+              queryClient.invalidateQueries({
+                queryKey: [...keys.notifications.getNotificationCount()],
+              });
+            }, 100);
+          })
+          .catch((error) => {
+            console.error("Failed to mark notifications as read:", error);
+          });
+      } catch (error) {
+        console.error("Failed to mark notifications as read:", error);
+      }
     }
   }
 
@@ -318,11 +324,14 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
             <div className='relative' ref={notificationDropdownRef}>
               <button
                 className='cursor-pointer'
-                onClick={() =>
-                  setIsNotificationDropdownOpen(!isNotificationDropdownOpen)
-                }
+                onClick={handleNotificationDropdownToggle}
               >
-                <Bell className='h-6 w-6' />
+                <Image
+                  src="/other-svgs/bell-icon.svg"
+                  alt="Notification"
+                  width={25}
+                  height={25}
+                />
                 {notificationCount > 0 && (
                   <div className='absolute -top-0.5 right-0 bg-yellow text-black rounded-full w-[12px] h-[12px] flex items-center justify-center text-[6.86px] font-semibold'>
                     {notificationCount > 99 ? '99+' : notificationCount}
@@ -331,18 +340,8 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
               </button>
 
               {isNotificationDropdownOpen && (
-                <div className='absolute top-full right-0 mt-4 w-[450px] bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 max-h-[500px] overflow-y-auto'>
-                  {markAsReadMutation.isPending && (
-                    <div className='absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10'>
-                      <div className='flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-lg'>
-                        <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-primary'></div>
-                        <span className='text-sm text-gray-600'>
-                          Marking as read...
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  <div className='py-2'>
+                <div className="absolute top-full right-0 mt-4 w-[450px] bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 max-h-[500px] overflow-y-auto">
+                  <div className="py-2">
                     {notificationsLoading ? (
                       <div className='flex justify-center items-center py-8'>
                         <div className='animate-spin rounded-full h-6 w-6 border-b-2 border-primary'></div>
@@ -363,7 +362,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                               iconUrl={notification.icon_url}
                               isRead={notification.is_read}
                               isNew={notification.is_new}
-                              onClick={handleNotificationClick}
+                              onClick={() => {}} // No-op since we're already marking as read on dropdown open
                               titleFontSize={{
                                 desktop: 'md:text-[20px]'
                               }}

@@ -100,14 +100,16 @@ const ComicCoinsPage = () => {
             imageAlt='my-win'
             containerClassName='bg-white rounded-[10.68px] px-[13px] py-[14.57px] md:pt-[16px] md:pb-[35px] md:px-[33.5px] flex flex-col md:gap-[18.5px] gap-[8px] w-full'
           >
-            <div className='flex flex-col items-center gap-[24px] md:gap-[36px]'>
-              <div className='flex flex-col items-center gap-[0px] md:gap-[20px]'>
+            <div className="flex flex-col items-center gap-[24px] md:gap-[36px]">
+              <div className="flex flex-col items-center gap-[0px] md:gap-[20px]">
+                <div className="flex items-center gap-[10px]">
                 <AktivGroteskText
                   text='Cashback worth Rs.10'
                   fontSize='text-[20px] md:text-[28px]'
                   fontWeight='font-[700]'
                 />
-                <p className='text-[#313131] md:text-[20px] text-[16px] text-center max-w-[355px]'>
+                </div>
+                <p className="text-[#313131] md:text-[20px] text-[16px] text-center max-w-[355px]">
                   Here's a pocket-sized perk just for you. Grab this Rs.10
                   PhonePe voucher now!
                 </p>

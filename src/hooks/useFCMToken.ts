@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { messaging, getToken, onMessage } from '@/lib/firebase';
 import { useRegisterDevice } from '@/api/hooks/NotificationHooks';
 import useAppSelector from '@/hooks/useSelector';
+import { useQueryClient } from '@tanstack/react-query';
+import { keys } from '@/api/utils';
 
 interface FCMTokenState {
   token: string | null;
@@ -15,6 +17,7 @@ interface FCMTokenState {
 
 const useFCMToken = () => {
   const { isAuthenticated, token: authToken } = useAppSelector((state) => state.auth);
+  const queryClient = useQueryClient();
   
   const [fcmState, setFcmState] = useState<FCMTokenState>({
     token: null,
@@ -78,6 +81,15 @@ const useFCMToken = () => {
 
     const unsubscribe = onMessage(messaging, (payload) => {
       console.log('Foreground message received:', payload);
+      
+      // Update notification count and list immediately
+      queryClient.invalidateQueries({
+        queryKey: [...keys.notifications.getNotificationCount()],
+      });
+      
+      queryClient.invalidateQueries({
+        queryKey: [...keys.notifications.getNotifications()],
+      });
       
       // Show notification even when app is in foreground
       if (Notification.permission === 'granted') {
