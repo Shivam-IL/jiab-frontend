@@ -508,13 +508,20 @@ export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE: string[] = [
   "/faqs",
 ];
 
-export const USER_INFO_CARD_DATA = [
+export const USER_INFO_NUMBER_DATE_ARRAY = [
   {
     id: 1,
     type: "phone_number",
     iconName: ICONS_NAMES.PHONE_ICON,
-    text: "9876543210",
   },
+  {
+    id: 3,
+    type: "dob",
+    iconName: ICONS_NAMES.CALENDAR,
+  },
+];
+
+export const USER_INFO_EMAIL_GENDER_ARRAY = [
   {
     id: 2,
     type: "email",
@@ -522,18 +529,12 @@ export const USER_INFO_CARD_DATA = [
     text: "kartikeya@gmail.com",
   },
   {
-    id: 3,
-    type: "dob",
-    iconName: ICONS_NAMES.CALENDAR,
-    text: "24/05/2025",
-  },
-  {
     id: 4,
     type: "gender",
     iconName: ICONS_NAMES.GENDER,
-    text: "Male",
   },
 ];
+
 
 export const PROTECTED_ROUTES = [
   "/my-profile",

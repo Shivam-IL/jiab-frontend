@@ -26,9 +26,6 @@ export default function LayoutClient ({ children }: LayoutClientProps) {
     pageview(window.location.pathname)
   }, [pathname])
 
-
-
-
   return (
     <QueryClientAndReduxWrapper>
       <CMSWrapper>

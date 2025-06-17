@@ -17,6 +17,7 @@ const useLogout = () => {
     dispatch(resetProfile());
     localStorage.clear();
     clearAllModalSessions();
+    sessionStorage.clear();
   };
 
   return { logoutHandler };
