@@ -300,7 +300,7 @@ export default function HomePageClient () {
                         className='w-[3.4rem] h-[3.4rem] md:w-[7rem] md:h-[7rem] object-cover rounded-full'
                       />
                     </div>
-                    <p className='text-center font-medium mt-3 text-xs md:text-lg'>
+                    <p className='text-center font-medium mt-3 text-xs md:text-[16px]'>
                       {category.name}
                     </p>
                   </button>

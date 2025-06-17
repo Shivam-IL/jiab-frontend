@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({
           {title}
         </h2>
         {description && (
-          <p className="md:mt-1 -mt-[1px] md:text-lg text-[12px] text-[#313131]">
+          <p className="md:mt-1 -mt-[1px] md:text-[20px] text-[12px] text-[#313131]">
             {description}
           </p>
         )}
