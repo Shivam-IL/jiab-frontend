@@ -8,6 +8,7 @@ const BreakTheIceComponent = () => {
   // ...existing code...
   const [showExitPopup, setShowExitPopup] = useState(false)
   const pathname = usePathname()
+  const { isAuthenticated, token } = useAppSelector(state => state.auth)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -24,6 +25,8 @@ const BreakTheIceComponent = () => {
   const handleStayOnPage = () => setShowExitPopup(false)
   const { user } = useAppSelector(state => state.profile)
   const router = useRouter()
+
+  if (!isAuthenticated || !token || user?.profile_percentage === 100) return null
 
   return (
     <>

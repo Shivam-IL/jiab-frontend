@@ -52,6 +52,7 @@ const UserAddressCard = ({
         <div className="flex flex-col gap-2 md:gap-[20px]">
           {addresses?.map((address, index) => (
             <AddressCard
+              addressLength={addresses?.length}
               address={address}
               index={index}
               allowBottomBorder={index !== addresses.length - 1}

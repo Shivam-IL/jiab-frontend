@@ -16,11 +16,13 @@ import AddressModal from '../common/AddressModal/index'
 const AddressCard = ({
   index,
   allowBottomBorder = false,
-  address
+  address,
+  addressLength
 }: {
   index: number
   allowBottomBorder?: boolean
   address?: IUserAddressData | null
+  addressLength?: number
 }) => {
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false)
   const [addressId, setAddressId] = useState<number | null>(null)
@@ -98,7 +100,7 @@ const AddressCard = ({
         </div>
         <button
           onClick={() => {
-            if (!address?.id) return
+            if (!address?.id || addressLength === 1) return
             handleDeleteAddress(address.id)
           }}
         >
