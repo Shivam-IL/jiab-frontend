@@ -57,11 +57,15 @@ const InviteCodePopupWrapper: React.FC<IInviteCodePopup> = ({
             />
             <GreenCTA
               text={ctaText}
-              className="w-full"
+              className={`w-full ${
+                !code?.trim() ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               fontSize="text-[16px] md:text-[20px]"
               paddingClass="py-[16px] md:py-[14px] px-[24px]"
               onClick={() => {
-                onSubmit();
+                if (code?.trim()) {
+                  onSubmit();
+                }
               }}
             />
           </div>
