@@ -19,6 +19,8 @@ import { ReactionType } from "@/types";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
 import SerialChillerPopup from "../common/SerialChillerPopup";
 import { CoinAnimation, useCoinAnimation } from "../common/CoinAnimation";
+import useAppDispatch from "@/hooks/useDispatch";
+import { incrementComicCoins } from "@/store/profile/profile.slice";
 
 interface ContestSurpriseModalProps {
   open: boolean;
@@ -52,6 +54,7 @@ const ContestSurpriseModal: React.FC<ContestSurpriseModalProps> = ({
   const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
     useViewGludeinJokes();
   const { data: gluedinAssetData } = useGetGluedinAssetById(jokeId);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (open && jokeData?.ok) {
@@ -86,6 +89,7 @@ const ContestSurpriseModal: React.FC<ContestSurpriseModalProps> = ({
     mutateSendGluedinUserReaction({
       assetId: assetId,
       reactionType: reactionType,
+      increaseComicCoin: true,
     });
 
     // Trigger coin animation on reaction
@@ -96,6 +100,7 @@ const ContestSurpriseModal: React.FC<ContestSurpriseModalProps> = ({
 
   useEffect(() => {
     if (gluedinUserReactionData?.ok) {
+      dispatch(incrementComicCoins());
       setJoke((prev: any) => ({
         ...prev,
         isReacted: true,

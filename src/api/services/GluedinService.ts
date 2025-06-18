@@ -232,9 +232,11 @@ export class GluedinService extends MainService {
   public async sendGluedinUserReaction({
     assetId,
     reactionType,
+    increaseComicCoin,
   }: {
     assetId: string;
     reactionType: string;
+    increaseComicCoin?: boolean;
   }) {
     try {
       let authModuleObj = new gluedin.GluedInAuthModule();
@@ -249,6 +251,20 @@ export class GluedinService extends MainService {
           event: "reaction",
           reactionType: reactionType,
         });
+      if (increaseComicCoin) {
+        const token = await this.generateFCMToken();
+        await apiClient.post(
+          API_ROUTES.JOKES.INCREASE_COMIC_COINS,
+          {
+            deviceId: token,
+          },
+          {
+            headers: {
+              ...this.getAuthHeaders(),
+            },
+          }
+        );
+      }
       const response = gluedinUserReactionList?.data ?? {};
       if (response?.success) {
         return SuccessResponse(response?.result);

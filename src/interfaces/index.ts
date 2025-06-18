@@ -320,6 +320,7 @@ export interface IUgcComponent {
   animation?: boolean;
   onReactSuccess?: () => void;
   isLoadingGluedinFeedList?: boolean;
+  noMoreData?: boolean;
 }
 
 export interface IAddressData {

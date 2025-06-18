@@ -76,6 +76,7 @@ export interface TGludeinUserVote {
 
 export interface TGludeinUserReaction extends TGludeinUserVote {
   reactionType: string;
+  increaseComicCoin?: boolean;
 }
 
 

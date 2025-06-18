@@ -16,7 +16,8 @@ const UgcComponent: React.FC<IUgcComponent> = ({
   jokesData,
   onVoteSuccess,
   animation = false,
-  isLoadingGluedinFeedList = false
+  isLoadingGluedinFeedList = false,
+  noMoreData = false
 }) => {
   const [showExitModal, setShowExitModal] = useState(false)
   const { filterChnageId } = useAppSelector(state => state.ugc)
@@ -41,22 +42,33 @@ const UgcComponent: React.FC<IUgcComponent> = ({
           />
         ))}
       </div>
+      {jokesData?.length === 0 && (
+        <div className='flex justify-center items-center md:mt-[32px] mt-[16px]'>
+          <AktivGroteskText
+            text='No more data'
+            fontSize='text-[16px]'
+            fontWeight='font-[700]'
+          />
+        </div>
+      )}
       <div className='flex justify-center items-center md:mt-[32px] mt-[16px]'>
-        <GreenCTA
-          text={isLoadingGluedinFeedList ? 'Loading...' : 'Load More'}
-          disabled={isLoadingGluedinFeedList}
-          className='leading-tight'
-          paddingClass='md:py-[16px] md:px-[50px] px-[20px] py-[10px]'
-          fontSize='md:text-[28px] text-[16px]'
-          fontWeight='font-[700]'
-          onClick={() => {
-            if (filterChnageId !== '') {
-              dispatch(updateUgcLoadMore())
-            }
+        {!noMoreData && (
+          <GreenCTA
+            text={isLoadingGluedinFeedList ? 'Loading...' : 'Load More'}
+            disabled={isLoadingGluedinFeedList}
+            className='leading-tight'
+            paddingClass='md:py-[16px] md:px-[50px] px-[20px] py-[10px]'
+            fontSize='md:text-[28px] text-[16px]'
+            fontWeight='font-[700]'
+            onClick={() => {
+              if (filterChnageId !== '') {
+                dispatch(updateUgcLoadMore())
+              }
 
-            dispatch(updateUgcOffset())
-          }}
-        />
+              dispatch(updateUgcOffset())
+            }}
+          />
+        )}
       </div>
 
       <Dialog open={showExitModal} onOpenChange={setShowExitModal}>
