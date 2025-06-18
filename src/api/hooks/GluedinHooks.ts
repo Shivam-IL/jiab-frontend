@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { GLUEDIN_LOGIN_SECRET_KEY } from "@/config";
 import { encryptData } from "@/utils";
@@ -13,6 +13,7 @@ import {
 } from "../types/GluedinTypes";
 import { keys } from "../utils";
 import useAppSelector from "@/hooks/useSelector";
+import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
 
 const gluedinInstance = GluedinService.getInstance();
 
@@ -68,16 +69,30 @@ const useGetGluedinUserVoteList = (params: any) => {
 };
 
 const useSendGluedinUserReaction = () => {
+  const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
+  
   return useMutation({
     mutationFn: (data: TGludeinUserReaction) =>
       gluedinInstance.sendGluedinUserReaction(data),
+    onSuccess: () => {
+      // Revalidate comic coins when reaction is successful (reactions give coins)
+      // Add delay to allow backend to process the coin increment
+      revalidateComicCoinsAfterDelay(500);
+    },
   });
 };
 
 const useSendVoteToGluedinAssets = () => {
+  const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
+  
   return useMutation({
     mutationFn: (data: TGludeinUserVote) =>
       gluedinInstance.sendVoteToGluedinAssets(data),
+    onSuccess: () => {
+      // Revalidate comic coins when vote is successful (votes give coins)
+      // Add delay to allow backend to process the coin increment
+      revalidateComicCoinsAfterDelay(500);
+    },
   });
 };
 
