@@ -147,6 +147,7 @@ const AddressCard = ({
           addressId={addressId}
           open={openAddressModal}
           setOpen={setOpenAddressModal}
+          addressLength={addressLength}
         />
       )}
     </div>

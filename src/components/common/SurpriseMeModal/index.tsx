@@ -19,13 +19,20 @@ import { ReactionType } from '@/types'
 import { useGlobalLoader } from '@/hooks/useGlobalLoader'
 import { useSessionModal } from '@/hooks/useSessionModal'
 import SerialChillerPopup from '../SerialChillerPopup'
+import { CoinAnimation } from '../CoinAnimation'
 
 const SurpriseMeModal = ({
   onClose,
-  forceShow = false
+  triggerAnimation,
+  forceShow = false,
+  isAnimating,
+  animationKey
 }: {
   onClose: () => void
+  triggerAnimation: () => void
   forceShow?: boolean
+  isAnimating: boolean
+  animationKey: number
 }) => {
   // const { shouldShow, hasChecked } = useSessionModal(
   //   "hasShownSurpriseMe",
@@ -86,8 +93,6 @@ const SurpriseMeModal = ({
       }))
     }
   }, [gluedinAssetData])
-
-  console.log('joke', joke)
 
   const handleSendGluedinUserReaction = (
     reactionType: string,
@@ -264,6 +269,7 @@ const SurpriseMeModal = ({
             </div>
           </div>
         </DialogContent>
+
         {makeLaughExitPopup && (
           <MakeLaughExitPopup
             open={makeLaughExitPopup}

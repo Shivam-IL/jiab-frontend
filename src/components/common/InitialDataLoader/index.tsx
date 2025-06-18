@@ -7,7 +7,7 @@ import {
 } from '@/api/hooks/ProfileHooks'
 import gluedin from 'gluedin'
 import { MainService } from '@/api/services/MainService'
-import { REDUX_UPDATION_TYPES } from '@/constants'
+import { REDUX_UPDATION_TYPES, SESSION_STORAGE_KEYS } from '@/constants'
 import useAppDispatch from '@/hooks/useDispatch'
 import {
   updateIsAuthenticated,
@@ -26,7 +26,11 @@ import {
   updateUser,
   updateUserSubmittedJokes
 } from '@/store/profile/profile.slice'
-import { getLocalStorageItem, setLocalStorageItem } from '@/utils'
+import {
+  getLocalStorageItem,
+  removeSessionStorageItem,
+  setLocalStorageItem
+} from '@/utils'
 import { ReactNode, useEffect, useState } from 'react'
 import { useGetAllReferrals } from '@/api/hooks/ReferralHooks'
 import { useGetLeaderBoard } from '@/api/hooks/LeaderBoardHooks'
@@ -44,11 +48,15 @@ import {
 } from '@/store/reference'
 import { useGetUserSubmittedJokes } from '@/api/hooks/JokeHooks'
 import { clearAllModalSessions } from '@/hooks/useSessionModal'
+import { usePathname } from 'next/navigation'
+import useAppSelector from '@/hooks/useSelector'
 
 const mainServiceInstance = MainService.getInstance()
 
 const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const dispatch = useAppDispatch()
+  const pathname = usePathname()
+  const { isAuthenticated } = useAppSelector(state => state.auth)
   const [tokenUpdated, setTokenUpdated] = useState(false)
   const { data: userProfileData } = useGetUserProfileDetails()
   const { data: userAddressesData } = useGetUserAddresses()
@@ -62,7 +70,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   })
   const { data: referralData } = useGetAllReferrals({ page: 1 })
   const { data: avatarsData } = useGetAvatarsData()
-  const { data: leaderboardData } = useGetLeaderBoard({ })
+  const { data: leaderboardData } = useGetLeaderBoard({})
   const { data: genresData } = useGetGenres()
   const { data: languagesData } = useGetLanguages()
   const { data: jokesFormatsData } = useGetJokesFormats()
@@ -224,9 +232,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (userSubmittedJokesData?.ok) {
       const { data } = userSubmittedJokesData ?? {}
-      dispatch(
-        updateUserSubmittedJokes({ userSubmittedJokes: data ?? [] })
-      )
+      dispatch(updateUserSubmittedJokes({ userSubmittedJokes: data ?? [] }))
     }
   }, [userSubmittedJokesData])
 
@@ -236,6 +242,14 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       dispatch(updateJokesFormats({ jokesFormats: data?.formats ?? [] }))
     }
   }, [jokesFormatsData])
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      console.log('pathname', pathname)
+      sessionStorage.removeItem(SESSION_STORAGE_KEYS.PREVIOUS_PATH)
+      sessionStorage.removeItem(SESSION_STORAGE_KEYS.CURRENT_PATH)
+    }
+  }, [pathname, isAuthenticated])
 
   return <>{children}</>
 }

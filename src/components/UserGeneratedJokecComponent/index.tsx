@@ -40,6 +40,10 @@ const UserGeneratedJokecComponent = () => {
 
   const isAllShown = currentItems >= allJokes.length
 
+  if (currentJokes?.length === 0) {
+    return null
+  }
+
   return (
     <div className='flex flex-col gap-[16px] md:gap-[32px]'>
       <div className='relative flex justify-between items-center'>

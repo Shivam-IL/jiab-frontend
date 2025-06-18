@@ -16,6 +16,7 @@ import { updateUgcReactionData } from "@/store/ugc";
 import VoteIsInPopup from "@/components/VoteIsInPopup";
 import { usePathname, useRouter } from "next/navigation";
 import ReportPopupComponent from '../ReportPopupComponent'
+import { incrementComicCoins } from "@/store/profile/profile.slice";
 
 const UgcCard: React.FC<UgcCardProps> = ({
   disclaimerText = "The content displayed above is user generated and may not reflect the opinions of Sprite®",
@@ -94,6 +95,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
         isLiked: true,
       };
       dispatch(updateUgcReactionData({ ugcData: newUGCData }))
+      dispatch(incrementComicCoins())
 
       if (pathName !== '/user-generated-jokes') {
         console.log('pathName', pathName)

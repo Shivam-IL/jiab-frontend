@@ -23,7 +23,8 @@ const AddressModal: React.FC<IAddressModal> = ({
   open,
   setOpen,
   type,
-  addressId
+  addressId,
+  addressLength
 }) => {
   const [mounted, setMounted] = useState(false)
 
@@ -122,6 +123,9 @@ const AddressModal: React.FC<IAddressModal> = ({
         state: data?.state || ''
       }
       if (type === AddressModalType.ADD) {
+        if (addressLength === 0) {
+          addressData.is_default = true
+        }
         addNewAddress(addressData)
       } else {
         if (addressId) {

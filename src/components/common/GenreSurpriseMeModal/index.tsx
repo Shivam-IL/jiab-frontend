@@ -32,6 +32,7 @@ const GenreSurpriseMeModal: React.FC<GenreSurpriseMeModalProps> = ({
   genreId,
   languageId
 }) => {
+  console.log('open', open, genreId, languageId, onClose)
   const [makeLaughExitPopup, setMakeLaughExitPopup] = useState<boolean>(false)
   const { data: jokeData, isLoading: jokeLoading } = useGetSurpriseMeJoke(
     genreId,
@@ -53,7 +54,8 @@ const GenreSurpriseMeModal: React.FC<GenreSurpriseMeModalProps> = ({
   const { data: gluedinAssetData } = useGetGluedinAssetById(jokeId)
 
   useEffect(() => {
-    if (open && jokeData?.ok) {
+    console.log('jokeData', jokeData)
+    if (jokeData?.ok) {
       viewGludeinJokes({ assetIds: [jokeData?.data?.id] })
       setJoke(jokeData?.data ?? {})
       setSerialChill(false)
@@ -61,7 +63,7 @@ const GenreSurpriseMeModal: React.FC<GenreSurpriseMeModalProps> = ({
       setJoke({})
       setSerialChill(true)
     }
-  }, [jokeData, open])
+  }, [jokeData])
 
   useEffect(() => {
     if (gluedinAssetData?.ok) {
@@ -119,10 +121,11 @@ const GenreSurpriseMeModal: React.FC<GenreSurpriseMeModalProps> = ({
 
   useEffect(() => {
     return () => {
-      setJoke(null)
       forceHideLoader() // Cleanup on unmount
     }
-  }, [forceHideLoader])
+  }, [])
+
+  console.log('joke', joke, open)
 
   // Don't render anything if modal is not open
   if (!open) {
@@ -139,10 +142,6 @@ const GenreSurpriseMeModal: React.FC<GenreSurpriseMeModalProps> = ({
         }}
       />
     )
-  }
-
-  if (!joke && jokeLoading) {
-    return <></>
   }
 
   if (!joke) {
