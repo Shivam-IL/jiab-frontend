@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AktivGroteskText from '../AktivGroteskText'
 import {
   GA_EVENTS,
@@ -14,7 +14,7 @@ import {
   useGetUserQuestions,
   useSubmitUserQuestions
 } from '@/api/hooks/ProfileHooks'
-import { updateUser } from '@/store/profile/profile.slice'
+import { updateBalance, updateUser } from '@/store/profile/profile.slice'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import useAppDispatch from '@/hooks/useDispatch'
 import useAppSelector from '@/hooks/useSelector'
@@ -58,6 +58,7 @@ const HelpUsToKnowYourBetter = ({
   const { selectedLanguage } = useAppSelector(state => state.language)
   const { languages } = useAppSelector(state => state.reference)
   const [selectedLanguageId, setSelectedLanguageId] = useState<string>('')
+  const mountRef = useRef(false)
 
   const { data: userProfileQuestions } = useGetUserQuestions({
     language_id: selectedLanguageId
@@ -76,21 +77,27 @@ const HelpUsToKnowYourBetter = ({
   }, [selectedLanguage])
 
   useEffect(() => {
-    if (userProfileQuestions?.ok) {
+    if (userProfileQuestions?.ok && !mountRef.current) {
+      mountRef.current = true
       setAllQuestions(userProfileQuestions?.data)
       setSelectedQuestion(userProfileQuestions?.data[0])
       setCurrentQuestionNumber(1)
 
       let isSubmitted = false
       let isSaved = false
-      userProfileQuestions?.data?.forEach((question: IQuestion, index: number) => {
-        if (question?.selected_option && index === 0) {
-          isSaved = true
+      userProfileQuestions?.data?.forEach(
+        (question: IQuestion, index: number) => {
+          if (question?.selected_option && index === 0) {
+            isSaved = true
+          }
+          if (
+            question?.selected_option &&
+            index === userProfileQuestions?.data?.length - 1
+          ) {
+            isSubmitted = true
+          }
         }
-        if (question?.selected_option && index === userProfileQuestions?.data?.length - 1) {
-          isSubmitted = true
-        }
-      })
+      )
       setSubmittedCheck(isSubmitted)
       setSavedCheck(isSaved)
     }
@@ -122,8 +129,8 @@ const HelpUsToKnowYourBetter = ({
   useEffect(() => {
     if (userProfileData?.ok) {
       const { data } = userProfileData?.data ?? {}
-      dispatch(updateUser({ user: { ...data?.user } }))
-      if (data?.profile_percentage === 100) {
+      dispatch(updateBalance({ current_balance: data?.current_balance }))
+      if (data?.user?.profile_percentage === 100) {
         triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)
       }
     }
