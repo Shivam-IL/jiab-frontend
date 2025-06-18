@@ -428,7 +428,7 @@ const ScrollAndLol: React.FC = () => {
       <div className="w-full h-screen flex flex-col justify-center items-center bg-white text-black text-center px-6">
         <div className="w-[279px] flex flex-col items-center">
           {/* Breaking News Header */}
-          <h1 className="font-bold text-black md:text-[25px] text-[20px] mb-[15px] max-w-[200px] text-center">
+          <h1 className="font-bold text-black md:text-[25px] text-[20px] mb-[15px] text-center">
             {cmsData?.scrollAndLol?.breakingNews}
           </h1>
 
