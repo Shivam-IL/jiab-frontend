@@ -10,6 +10,16 @@ interface CircularProgressProps {
   bgColor?: string
 }
 
+// Utility function to remove duplicates by 'id'
+export function removeDuplicatesById<T extends { id: string | number }>(arr: T[]): T[] {
+  const seen = new Set<string | number>();
+  return arr.filter(item => {
+    if (seen.has(item.id)) return false;
+    seen.add(item.id);
+    return true;
+  });
+}
+
 export function CircularProgress({
   value,
   children,
