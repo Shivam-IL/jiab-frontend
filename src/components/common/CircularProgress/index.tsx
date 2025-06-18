@@ -10,80 +10,71 @@ interface CircularProgressProps {
   bgColor?: string
 }
 
-export function CircularProgress ({
+// Utility function to remove duplicates by 'id'
+export function removeDuplicatesById<T extends { id: string | number }>(arr: T[]): T[] {
+  const seen = new Set<string | number>();
+  return arr.filter(item => {
+    if (seen.has(item.id)) return false;
+    seen.add(item.id);
+    return true;
+  });
+}
+
+export function CircularProgress({
   value,
   children,
   size = 100,
   thickness = 6,
-  color = '#D9D9D9',
-  bgColor='#11A64B'
+  color = '#D9D9D9',    // background track color (gray)
+  bgColor = '#11A64B'   // progress color (green)
 }: CircularProgressProps) {
-  const angle = (value / 100) * 360
-  const radius = size / 2
-
-  const toRadians = (deg: number) => ((deg - 90) * Math.PI) / 180
-
-  const getPoint = (angleDeg: number) => {
-    const rad = toRadians(-angleDeg)
-    const x = radius + (radius - thickness / 2) * Math.cos(rad)
-    const y = radius + (radius - thickness / 2) * Math.sin(rad)
-    return { x, y }
-  }
-
-  const start = getPoint(0)
-  const end = getPoint(angle)
+  const radius = (size - thickness) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const progress = Math.max(0, Math.min(100, value)); // Clamp between 0 and 100
+  const offset = circumference * (1 - progress / 100);
 
   return (
-    <div className="relative flex flex-col items-center justify-center">
+    <div className="relative flex flex-col items-center justify-center" style={{ width: size, height: size }}>
+      <svg width={size} height={size} style={{ position: 'absolute', top: 0, left: 0 }}>
+        {/* Background track */}
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={color}
+          strokeWidth={thickness}
+          fill="none"
+        />
+        {/* Progress arc */}
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={bgColor}
+          strokeWidth={thickness}
+          fill="none"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          style={{ transition: 'stroke-dashoffset 0.5s' }}
+          transform={`rotate(90 ${size / 2} ${size / 2})`} // <-- THIS IS THE KEY CHANGE
+        />
+      </svg>
+      {/* Center content */}
       <div
-        className='relative rounded-full transition-all duration-300'
+        className="flex items-center justify-center rounded-full"
         style={{
-          width: size,
-          height: size,
-          background: `conic-gradient(${color} 0deg, ${color} ${360 - angle}deg, ${bgColor} ${360 - angle}deg)`
+          width: size - thickness * 2,
+          height: size - thickness * 2,
+          // No background color for the center, keep it transparent
+          zIndex: 1,
         }}
       >
-        {/* Inner Circle (cutout) */}
-        <div
-          className='absolute inset-0 m-auto rounded-full bg-white flex items-center justify-center'
-          style={{
-            width: size - thickness * 2,
-            height: size - thickness * 2
-          }}
-        >
-          {children}
-        </div>
-
-        {/* Start Cap */}
-        {value > 0 && (
-          <div
-            className='absolute rounded-full'
-            style={{
-              width: thickness,
-              height: thickness,
-              backgroundColor: color,
-              top: start.y - thickness / 2,
-              left: start.x - thickness / 2
-            }}
-          />
-        )}
-
-        {/* End Cap */}
-        {value > 0 && (
-          <div
-            className='absolute rounded-full'
-            style={{
-              width: thickness,
-              height: thickness,
-              backgroundColor: color,
-              top: end.y - thickness / 2,
-              left: end.x - thickness / 2
-            }}
-          />
-        )}
+        {children}
       </div>
+      {/* Percentage badge */}
       <Badge className="bg-[#FFE200] hover:bg-[#FFE200] shadow-none absolute bottom-[-18px] px-[5px] py-[3px] md:py-[4.5px] md:px-[8px] rounded-[100px] border-[3px] border-white">
-        <AktivGroteskText className="text-black" text={`${value}%`} fontSize="text-[10px] md:text-[16px]" fontWeight="font-[700]"/>
+        <AktivGroteskText className="text-black" text={`${progress} %`} fontSize="text-[10px] md:text-[16px]" fontWeight="font-[700]"/>
       </Badge>
     </div>
   )

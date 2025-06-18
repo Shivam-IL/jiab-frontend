@@ -131,7 +131,7 @@ const AddressCard = ({
         </div>
         <button
           onClick={() => {
-            if (!address?.id || addressLength === 1) return
+            if (!address?.id || addressLength === 1 || address?.is_default) return
             handleDeleteAddress(address.id)
           }}
         >

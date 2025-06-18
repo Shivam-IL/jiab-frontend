@@ -109,6 +109,16 @@ const initialState: UserState = {
   userSubmittedJokes: [],
 };
 
+// Utility function to remove duplicates by 'id'
+function removeDuplicatesById<T extends { id: string | number }>(arr: T[]): T[] {
+  const seen = new Set<string | number>();
+  return arr.filter(item => {
+    if (seen.has(item.id)) return false;
+    seen.add(item.id);
+    return true;
+  });
+}
+
 const profileSlice = createSlice({
   name: "profile",
   initialState,
@@ -174,7 +184,7 @@ const profileSlice = createSlice({
       } else if (type === REDUX_UPDATION_TYPES.MULTIPLE_ADDED) {
         newAddresses.push(...address);
       }
-      state.addresses = [...newAddresses];
+      state.addresses = [...removeDuplicatesById(newAddresses)]
     },
     deleteAddress: (state, action) => {
       const { addressId } = action.payload;
@@ -182,7 +192,7 @@ const profileSlice = createSlice({
       const filteredAddresses = newAddresses?.filter(
         (address) => address.id !== addressId
       );
-      state.addresses = [...filteredAddresses];
+      state.addresses = [...removeDuplicatesById(filteredAddresses)];
     },
     editAddress: (state, action) => {
       const { addressId, address } = action.payload;
@@ -196,12 +206,13 @@ const profileSlice = createSlice({
           newIndexData.is_default = false;
           newAddresses[indexOfDefaultAddress] = newIndexData;
         }
+
       }
       const indexOfAddress = newAddresses.findIndex(
         (address) => address.id === addressId
       );
       newAddresses[indexOfAddress] = address;
-      state.addresses = [...newAddresses];
+      state.addresses = [...removeDuplicatesById(newAddresses)]
     },
     updateDefaultAddress: (state, action) => {
       const { addressId } = action.payload;
@@ -225,7 +236,7 @@ const profileSlice = createSlice({
         newIndexData.is_default = true;
         newAddresses[indexOfAddress] = newIndexData;
       }
-      state.addresses = [...newAddresses];
+      state.addresses = [...removeDuplicatesById(newAddresses)]
     },
     resetProfile: (state) => {
       state.current_balance = 0;
