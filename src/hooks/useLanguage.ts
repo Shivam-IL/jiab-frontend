@@ -1,20 +1,13 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import useAppSelector from './useSelector';
 import useAppDispatch from './useDispatch';
-import { setLanguage, hydrateLanguage } from '@/store/language/language.slice';
+import { setLanguage } from '@/store/language/language.slice';
 import { useQueryClient } from '@tanstack/react-query';
 
 export const useLanguage = () => {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
-  const { selectedLanguage, isHydrated } = useAppSelector((state) => state.language);
-
-  // Hydrate language from localStorage on client-side
-  useEffect(() => {
-    if (!isHydrated) {
-      dispatch(hydrateLanguage());
-    }
-  }, [dispatch, isHydrated]);
+  const { selectedLanguage } = useAppSelector((state) => state.language);
 
   const changeLanguage = useCallback((languageCode: string) => {
     // Only change if the language is actually different
@@ -23,8 +16,6 @@ export const useLanguage = () => {
       
       // Invalidate all React Query cache to ensure fresh data with new language
       queryClient.invalidateQueries();
-      
-      
     }
   }, [dispatch, selectedLanguage, queryClient]);
 
@@ -36,6 +27,5 @@ export const useLanguage = () => {
     selectedLanguage,
     changeLanguage,
     getApiLocale,
-    isHydrated,
   };
 }; 

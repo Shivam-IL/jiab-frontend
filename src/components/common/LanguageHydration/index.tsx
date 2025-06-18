@@ -1,6 +1,5 @@
 "use client";
 
-import { useLanguage } from "@/hooks/useLanguage";
 import { ReactNode } from "react";
 
 interface LanguageHydrationProps {
@@ -8,17 +7,9 @@ interface LanguageHydrationProps {
   fallback?: ReactNode;
 }
 
-const LanguageHydration: React.FC<LanguageHydrationProps> = ({
-  children,
-  fallback = null,
-}) => {
-  const { isHydrated } = useLanguage();
-
-  // Show fallback or nothing until hydrated to prevent mismatch
-  if (!isHydrated) {
-    return <>{fallback}</>;
-  }
-
+// Redux Persist will handle hydration automatically
+// This component is no longer needed but kept for backward compatibility
+const LanguageHydration: React.FC<LanguageHydrationProps> = ({ children }) => {
   return <>{children}</>;
 };
 

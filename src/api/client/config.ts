@@ -32,8 +32,8 @@ export const getCurrentLocale = (): string => {
 };
 
 export const getCurrentLanguage = (): string => {
-  const language = localStorage.getItem("selectedLanguage");
-  return language ?? LANGUAGE_MNEMONICS.ENGLISH;
+  const state = store.getState();
+  return state.language.selectedLanguage;
 };
 
 export const API_ROUTES = {

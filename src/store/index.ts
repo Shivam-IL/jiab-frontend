@@ -31,7 +31,7 @@ const cmsPersistConfig = {
 const rootPersistConfig = {
   key: "root",
   storage,
-  whitelist: ["cms"], // Only persist the cms slice
+  whitelist: ["cms", "language"], // Persist cms and language slices
 };
 
 const rootReducer = combineReducers({

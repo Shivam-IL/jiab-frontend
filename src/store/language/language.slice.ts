@@ -3,13 +3,11 @@ import { LANGUAGE_MNEMONICS } from '@/constants';
 
 export interface ILanguageState {
   selectedLanguage: string;
-  isHydrated: boolean;
 }
 
-// Always start with default language to avoid hydration mismatch
+// Start with default language - Redux Persist will handle rehydration
 const initialState: ILanguageState = {
-  selectedLanguage: LANGUAGE_MNEMONICS.ENGLISH, // Always default to English initially
-  isHydrated: false,
+  selectedLanguage: LANGUAGE_MNEMONICS.ENGLISH,
 };
 
 const languageSlice = createSlice({
@@ -18,23 +16,9 @@ const languageSlice = createSlice({
   reducers: {
     setLanguage: (state, action: PayloadAction<string>) => {
       state.selectedLanguage = action.payload;
-      // Persist to localStorage
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('selectedLanguage', action.payload);
-      }
-    },
-    hydrateLanguage: (state) => {
-      // This will be called on client-side to load from localStorage
-      if (typeof window !== 'undefined') {
-        const savedLanguage = localStorage.getItem('selectedLanguage');
-        if (savedLanguage && savedLanguage !== state.selectedLanguage) {
-          state.selectedLanguage = savedLanguage;
-        }
-        state.isHydrated = true;
-      }
     },
   },
 });
 
-export const { setLanguage, hydrateLanguage } = languageSlice.actions;
+export const { setLanguage } = languageSlice.actions;
 export default languageSlice.reducer; 
