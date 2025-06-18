@@ -303,7 +303,7 @@ const EditProfilePage = () => {
                 { id: 1, name: 'male', value: 'male', label: 'Male' },
                 { id: 2, name: 'female', value: 'female', label: 'Female' },
                 { id: 3, name: 'other', value: 'other', label: 'Others' },
-                { id: 4, name: 'prefer not to say', value: 'prefer not to say', label: 'Prefer not to say' }
+                { id: 4, name: 'perfer_not_to_say', value: 'perfer_not_to_say', label: 'Prefer not to say' }
               ]}
               value={userData.gender}
               onChange={handleChange}
