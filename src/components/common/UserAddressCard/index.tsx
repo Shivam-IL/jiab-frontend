@@ -66,6 +66,7 @@ const UserAddressCard = ({
           type={AddressModalType.ADD}
           open={open}
           setOpen={setOpen}
+          addressLength={addresses?.length}
         />
       )}
     </div>

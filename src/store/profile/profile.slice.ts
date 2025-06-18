@@ -204,7 +204,7 @@ const profileSlice = createSlice({
     updateDefaultAddress: (state, action) => {
       const { addressId } = action.payload;
       const newAddresses = [...state.addresses];
-      console.log('newAddresses', newAddresses)
+      console.log("newAddresses", newAddresses);
       const indexOfAddress = newAddresses.findIndex(
         (address) => address.id === addressId
       );
@@ -212,13 +212,13 @@ const profileSlice = createSlice({
         (address) => address.is_default
       );
       if (currentDefaultAddress !== -1) {
-        console.log('currentDefaultAddress', currentDefaultAddress)
+        console.log("currentDefaultAddress", currentDefaultAddress);
         const newIndexData = { ...newAddresses[currentDefaultAddress] };
         newIndexData.is_default = false;
         newAddresses[currentDefaultAddress] = newIndexData;
       }
-      if (indexOfAddress !== -1) {  
-        console.log('indexOfAddress', indexOfAddress)
+      if (indexOfAddress !== -1) {
+        console.log("indexOfAddress", indexOfAddress);
         const newIndexData = { ...newAddresses[indexOfAddress] };
         newIndexData.is_default = true;
         newAddresses[indexOfAddress] = newIndexData;
@@ -276,6 +276,11 @@ const profileSlice = createSlice({
       const { userSubmittedJokes } = action.payload;
       state.userSubmittedJokes = [...userSubmittedJokes];
     },
+    incrementComicCoins: (state) => {
+      state.current_balance = state.current_balance
+        ? state.current_balance + 1
+        : 1;
+    },
   },
 });
 
@@ -292,5 +297,6 @@ export const {
   updateReferralData,
   updateAvatarsData,
   updateUserSubmittedJokes,
+  incrementComicCoins,
 } = profileSlice.actions;
 export default profileSlice.reducer;

@@ -129,6 +129,7 @@ export interface IAddressModal {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   type: AddressModalType;
   addressId?: number | null;
+  addressLength?: number;
 }
 
 export interface IUserGeneratedJokeCard {

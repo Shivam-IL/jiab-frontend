@@ -3,6 +3,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { BreakTheIceExitPopup } from '../ExitPopUps'
 import { SESSION_STORAGE_KEYS } from '@/constants'
 import useAppSelector from '@/hooks/useSelector'
+import { removeSessionStorageItem } from '@/utils'
 
 const BreakTheIceComponent = () => {
   // ...existing code...
@@ -19,8 +20,12 @@ const BreakTheIceComponent = () => {
       if (prev === '/profile') {
         setShowExitPopup(true)
       }
+      if (!isAuthenticated) {
+        removeSessionStorageItem(SESSION_STORAGE_KEYS.CURRENT_PATH)
+        removeSessionStorageItem(SESSION_STORAGE_KEYS.PREVIOUS_PATH)
+      }
     }
-  }, [pathname])
+  }, [pathname, isAuthenticated])
 
   const handleStayOnPage = () => setShowExitPopup(false)
   const { user } = useAppSelector(state => state.profile)

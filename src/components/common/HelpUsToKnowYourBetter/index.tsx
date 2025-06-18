@@ -67,9 +67,10 @@ const HelpUsToKnowYourBetter = ({
 
   useEffect(() => {
     if (selectedLanguage) {
-      const languageId = languages?.find(
-        (language: any) => language.language_key === selectedLanguage
-      )?.id ?? '1'
+      const languageId =
+        languages?.find(
+          (language: any) => language.language_key === selectedLanguage
+        )?.id ?? '1'
       setSelectedLanguageId(languageId?.toString() ?? '1')
     }
   }, [selectedLanguage])
@@ -80,21 +81,38 @@ const HelpUsToKnowYourBetter = ({
       setSelectedQuestion(userProfileQuestions?.data[0])
       setCurrentQuestionNumber(1)
 
-      let isSubmitted = true
-      userProfileQuestions?.data?.forEach((question: IQuestion) => {
-        if (!question.selected_option) {
-          isSubmitted = false
+      let isSubmitted = false
+      let isSaved = false
+      userProfileQuestions?.data?.forEach((question: IQuestion, index: number) => {
+        if (question?.selected_option && index === 0) {
+          isSaved = true
+        }
+        if (question?.selected_option && index === userProfileQuestions?.data?.length - 1) {
+          isSubmitted = true
         }
       })
       setSubmittedCheck(isSubmitted)
+      setSavedCheck(isSaved)
     }
   }, [userProfileQuestions])
 
   useEffect(() => {
-    if (selectedQuestion?.selected_option) {
-      setSavedCheck(true)
+    if (currentQuestionNumber === allQuestions?.length) {
+      const question = allQuestions?.[currentQuestionNumber - 1]
+      if (question?.selected_option) {
+        setSubmittedCheck(true)
+      } else {
+        setSubmittedCheck(false)
+      }
+    } else {
+      const question = allQuestions?.[currentQuestionNumber - 1]
+      if (question?.selected_option) {
+        setSavedCheck(true)
+      } else {
+        setSavedCheck(false)
+      }
     }
-  }, [selectedQuestion])
+  }, [currentQuestionNumber])
 
   const dispatch = useAppDispatch()
   const { data: userProfileData } = useGetUserProfileDetails({
@@ -113,6 +131,12 @@ const HelpUsToKnowYourBetter = ({
 
   useEffect(() => {
     if (submitQuestionResponse?.ok) {
+      setAllQuestions(prev => {
+        const newQuestions = [...prev]
+        newQuestions[currentQuestionNumber - 1].selected_option =
+          selectedQuestion?.selected_option
+        return newQuestions
+      })
       if (currentQuestionNumber === allQuestions?.length) {
         setSubmittedCheck(true)
       } else {
@@ -189,7 +213,7 @@ const HelpUsToKnowYourBetter = ({
             </div>
             <div className='w-full flex justify-center md:justify-between flex-col md:flex-row items-center gap-[8px]'>
               <GreenCTA
-                disabled={submittedCheck}
+                disabled={submittedCheck || savedCheck}
                 className=''
                 paddingClass='py-[10px] px-[61.5px] md:px-[60px] md:py-[20px]'
                 text={

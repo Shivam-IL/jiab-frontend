@@ -17,7 +17,7 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-[49] pointer-events-none flex justify-center items-center">
+    <div className="fixed inset-0 z-[1000] pointer-events-none flex justify-center items-center">
       <Image
         key={animationKey} // Force remount to restart GIF from beginning
         src="/videos/coin-animation.gif"

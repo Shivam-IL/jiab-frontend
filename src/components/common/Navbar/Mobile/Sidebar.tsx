@@ -111,8 +111,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
   } = useGetComicCoins()
 
   // Get comic coins value with fallback
-  const comicCoinsValue =
-    comicCoinsData?.data?.comic_coin ?? current_balance ?? 0
 
   const pathName = usePathname()
 
@@ -169,7 +167,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                     </h3>
                     <div className='flex items-center'>
                       <span className='text-2xl font-bold text-gray-800 mr-1 leading-[28px]'>
-                        {isComicCoinsLoading ? '--' : comicCoinsValue}
+                        {current_balance ? current_balance : "--"}
                       </span>
                       {coinImage && (
                         <Image
