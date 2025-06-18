@@ -27,7 +27,7 @@ const PrivacyPolicy: React.FC = () => {
         <div className="mb-10">
           {/* Privacy Policy Content */}
           <div className="mt-[2.4rem]">
-            <h1 className="text-[20px] font-bold text-center">
+            <h1 className="md:text-[20px] text-[12px] font-bold md:text-center mb-[16px]">
               Welcome to the Coca-Cola Consumer Privacy Policy
             </h1>
             <div className="md:text-xl text-xs space-y-6 privacy-policy-content">

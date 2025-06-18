@@ -159,15 +159,16 @@ const termsContent = [
             </li>
             <li>
               use any robot, spider, website search/retrieval application or
-              other manual or automatic device to retrieve, index, &quot;scrape&quot;,
-              &quot;data mine&quot; or in any way reproduce or circumvent the navigational
-              structure or presentation of our website, without our express
-              prior written consent.
+              other manual or automatic device to retrieve, index,
+              &quot;scrape&quot;, &quot;data mine&quot; or in any way reproduce
+              or circumvent the navigational structure or presentation of our
+              website, without our express prior written consent.
             </li>
             <li>
               publish any unsolicited or unauthorised advertising, promotional
-              materials, &quot;junk mail&quot;, &quot;spam&quot;, &quot;chain letters&quot;, &quot;pyramid scheme&quot;
-              or investment opportunity, or any other form of solicitation.
+              materials, &quot;junk mail&quot;, &quot;spam&quot;, &quot;chain
+              letters&quot;, &quot;pyramid scheme&quot; or investment
+              opportunity, or any other form of solicitation.
             </li>
             <li>
               publish any material non-public information about a person or a
@@ -220,8 +221,8 @@ const termsContent = [
         </div>
         <div className="mt-4">
           You further, to the extent permissible by law, irrevocably waive any
-          &quot;moral rights&quot; or other rights with respect to attribution of
-          authorship or integrity of materials regarding each item of user
+          &quot;moral rights&quot; or other rights with respect to attribution
+          of authorship or integrity of materials regarding each item of user
           content that you submit.
         </div>
         <div className="mt-4">
@@ -244,7 +245,10 @@ const termsContent = [
           className="text-[#1985d3] cursor-pointer hover:underline"
           href="https://www.coca-cola.com/in/en"
           target="_blank"
-        >https://www.coca-cola.com/in/en</a>. Any other communication or material you transmit to the Site, such as
+        >
+          https://www.coca-cola.com/in/en
+        </a>
+        . Any other communication or material you transmit to the Site, such as
         questions, comments, suggestions or the like, will be treated as
         non-confidential and non-proprietary.
       </>
@@ -774,6 +778,15 @@ const page: React.FC = () => {
         />
 
         <div className="mb-10">
+          <div className="mt-[2.4rem]">
+            <h2 className="md:text-xl text-xs font-bold mb-4 underline">
+              JIAB Terms and Conditions
+              <br />
+              <a href="#sprite-refresh-rings" className="cursor-pointer">
+                Refresh Rings Terms and Conditions
+              </a>
+            </h2>
+          </div>
           {/* General Terms Content */}
           <div className="mt-[2.4rem]">
             <ol className="list-decimal pl-5 md:text-xl text-xs marker:font-bold marker:text-black space-y-4">
@@ -784,7 +797,7 @@ const page: React.FC = () => {
           </div>
 
           {/* Sprite Refresh Rings Terms */}
-          <div className="mt-8">
+          <div className="mt-8" id="sprite-refresh-rings">
             <h2 className="md:text-xl text-xs font-bold mb-4 underline text-center">
               SPRITE&reg; Refresh Rings <br />
               Terms and Conditions
