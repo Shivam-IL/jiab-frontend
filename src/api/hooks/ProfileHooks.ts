@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ProfileService } from "../services/ProfileService";
 import { keys } from "../utils";
 import {
@@ -9,6 +9,7 @@ import {
   TSubmitQuestions,
 } from "../types/ProfileTypes";
 import useAppSelector from "@/hooks/useSelector";
+import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
 
 const profileService = ProfileService.getInstance();
 
@@ -27,9 +28,21 @@ const useGetUserProfileDetails = (params?: any) => {
 };
 
 const useEditUserProfileDetails = () => {
+  const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
+  const queryClient = useQueryClient();
+  
   return useMutation({
     mutationFn: (userData: TEditProfile) =>
       profileService.editUserProfileDetails(userData),
+    onSuccess: (response) => {
+      // Revalidate comic coins when profile is completed (profile completion gives coins)
+      // Add delay to allow backend to process any potential coin rewards
+      revalidateComicCoinsAfterDelay(500);
+      // Also revalidate user profile details
+      queryClient.invalidateQueries({
+        queryKey: [...keys.profile.userProfileDetails()],
+      });
+    },
   });
 };
 
@@ -45,23 +58,55 @@ const useGetUserAddresses = () => {
 };
 
 const useAddNewAddress = () => {
+  const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
+  const queryClient = useQueryClient();
+  
   return useMutation({
     mutationFn: (addressData: TAddress) =>
       profileService.addNewAddress(addressData),
+    onSuccess: () => {
+      // Revalidate addresses
+      queryClient.invalidateQueries({
+        queryKey: [...keys.profile.getUserAddresses()],
+      });
+      // Also revalidate user profile details in case this contributes to profile completion
+      queryClient.invalidateQueries({
+        queryKey: [...keys.profile.userProfileDetails()],
+      });
+      // Revalidate comic coins in case profile completion gives coins
+      // Add delay to allow backend to process any potential coin rewards
+      revalidateComicCoinsAfterDelay(500);
+    },
   });
 };
 
 const useEditAddress = () => {
+  const queryClient = useQueryClient();
+  
   return useMutation({
     mutationFn: (addressData: IAddress) =>
       profileService.editAddress(addressData),
+    onSuccess: () => {
+      // Revalidate addresses
+      queryClient.invalidateQueries({
+        queryKey: [...keys.profile.getUserAddresses()],
+      });
+    },
   });
 };
 
 const useDeleteAddress = () => {
+  const queryClient = useQueryClient();
+  
   return useMutation({
     mutationFn: (addressData: TAddessId) =>
       profileService.deleteAddress(addressData),
+    onSuccess: () => {
+      // Revalidate addresses
+      queryClient.invalidateQueries({
+        queryKey: [...keys.profile.getUserAddresses()],
+      });
+    },
   });
 };
 
@@ -77,9 +122,25 @@ const useGetUserQuestions = ({ language_id }: { language_id: string }) => {
 };
 
 const useSubmitUserQuestions = () => {
+  const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
+  const queryClient = useQueryClient();
+  
   return useMutation({
     mutationFn: (questions: TSubmitQuestions) =>
       profileService.submitUserQuestions(questions),
+    onSuccess: () => {
+      // Revalidate user questions
+      queryClient.invalidateQueries({
+        queryKey: [...keys.profile.getUserQuestions()],
+      });
+      // Also revalidate user profile details in case this contributes to profile completion
+      queryClient.invalidateQueries({
+        queryKey: [...keys.profile.userProfileDetails()],
+      });
+      // Revalidate comic coins in case profile completion gives coins
+      // Add delay to allow backend to process any potential coin rewards
+      revalidateComicCoinsAfterDelay(500);
+    },
   });
 };
 

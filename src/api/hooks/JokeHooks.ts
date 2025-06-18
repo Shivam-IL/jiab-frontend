@@ -1,8 +1,9 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { JokeService } from "../services/JokeService";
 import { keys } from "../utils";
 import useAppSelector from "@/hooks/useSelector";
 import { TGetJokesParams, TSubmitJokeParams } from "../types/JokeTypes";
+import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
 
 const jokeInstance = JokeService.getInstance();
 const useGetSurpriseMeJoke = (genreId?: number, languageId?: number) => {
@@ -26,8 +27,20 @@ const useGetJokes = (params: TGetJokesParams = {}) => {
 };
 
 const useSubmitJoke = () => {
+  const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
+  const queryClient = useQueryClient();
+  
   return useMutation({
     mutationFn: (data: TSubmitJokeParams) => jokeInstance.SubmitJoke(data),
+    onSuccess: () => {
+      // Revalidate comic coins when joke submission is successful
+      // Add delay to allow backend to process any potential coin rewards
+      revalidateComicCoinsAfterDelay(500);
+      // Also invalidate user submitted jokes list
+      queryClient.invalidateQueries({
+        queryKey: [...keys.joke.getUserSubmittedJokes()],
+      });
+    },
   });
 };
 
@@ -47,7 +60,11 @@ const useGetComicCoins = () => {
     queryKey: [...keys.joke.getComicCoins()],
     queryFn: () => jokeInstance.GetComicCoins(),
     enabled: isAuthenticated && token ? true : false,
-    staleTime: 0,
+    staleTime: 30 * 1000, // Consider data fresh for 30 seconds
+    gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes
+    refetchOnWindowFocus: false, // Don't refetch on window focus to avoid unnecessary calls
+    refetchOnMount: true, // Refetch when component mounts
+    refetchOnReconnect: true, // Refetch when reconnecting to internet
   });
 };
 
