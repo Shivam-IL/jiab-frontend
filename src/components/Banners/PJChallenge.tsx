@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
 const PJChallenge: React.FC<{
@@ -7,6 +7,78 @@ const PJChallenge: React.FC<{
   buttonText: string;
   onClick: () => void;
 }> = ({ heading, subheading, buttonText, onClick }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
+  const [fontScale, setFontScale] = useState(1);
+
+  useEffect(() => {
+    const adjustFontSize = () => {
+      if (!buttonRef.current || !textRef.current) return;
+
+      const text = textRef.current;
+
+      // Get the current screen width to determine breakpoint
+      const screenWidth = window.innerWidth;
+
+      // Define max widths for each breakpoint (accounting for padding)
+      let maxWidth = 120; // base
+      if (screenWidth >= 1536) maxWidth = 450; // 2xl
+      else if (screenWidth >= 1280) maxWidth = 400; // xl
+      else if (screenWidth >= 1024) maxWidth = 280; // lg
+      else if (screenWidth >= 768) maxWidth = 220; // md
+      else if (screenWidth >= 640) maxWidth = 160; // sm
+
+      // Reset scale to measure original size
+      setFontScale(1);
+
+      // Small delay to ensure the font scale is applied
+      setTimeout(() => {
+        if (!textRef.current) return;
+
+        const textWidth = textRef.current.scrollWidth;
+
+        // If text exceeds max width, calculate scale factor
+        if (textWidth > maxWidth) {
+          const newScale = Math.max(maxWidth / textWidth, 0.6); // Minimum 60% scale
+          setFontScale(newScale);
+        }
+      }, 10);
+    };
+
+    // Run on mount and when buttonText changes
+    adjustFontSize();
+
+    // Run on window resize with debounce
+    let timeoutId: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(adjustFontSize, 100);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(timeoutId);
+    };
+  }, [buttonText]);
+
+  // Get current font size based on screen width and scale
+  const getCurrentFontSize = () => {
+    if (typeof window === "undefined") return 8 * fontScale;
+
+    const screenWidth = window.innerWidth;
+    let baseFontSize = 8;
+
+    if (screenWidth >= 1536) baseFontSize = 28; // 2xl
+    else if (screenWidth >= 1280) baseFontSize = 26; // xl
+    else if (screenWidth >= 1024) baseFontSize = 20; // lg
+    else if (screenWidth >= 768) baseFontSize = 16; // md
+    else if (screenWidth >= 640) baseFontSize = 12; // sm
+
+    return baseFontSize * fontScale;
+  };
+
   return (
     <div className="relative w-full">
       {/* Background Image */}
@@ -54,19 +126,25 @@ const PJChallenge: React.FC<{
           </div>
 
           {/* Submit Button */}
-          <div className="absolute bottom-[20%] left-1/2 2xl:top-[69%] transform -translate-x-1/2">
+          <div className="absolute bottom-[20%] left-1/2 xl:top-[69%] top-[70%] transform -translate-x-1/2">
             <button
+              ref={buttonRef}
               onClick={onClick}
               className="bg-black text-white font-bold rounded-full 
               transition-all duration-200 hover:bg-gray-800 active:scale-95
-              px-[12px] py-[6px] text-[8px]
-              sm:px-[20px] sm:py-[10px] sm:text-[12px]
-              md:px-[28px] md:py-[14px] md:text-[16px]
-              lg:px-[36px] lg:py-[18px] lg:text-[20px]
-              xl:px-[67.2px] xl:py-[22px] xl:text-[28px]
-              2xl:px-[67.2px] 2xl:py-[22px] 2xl:text-[30px]"
+              px-[12px] py-[6px]
+              sm:px-[20px] sm:py-[10px]
+              md:px-[28px] md:py-[14px]
+              lg:px-[36px] lg:py-[18px]
+              xl:px-[67.2px] xl:py-[22px]
+              2xl:px-[67.2px] 2xl:py-[22px]"
+              style={{
+                fontSize: `${getCurrentFontSize()}px`,
+              }}
             >
-              <span className="whitespace-nowrap">{buttonText}</span>
+              <span ref={textRef} className="whitespace-nowrap">
+                {buttonText}
+              </span>
             </button>
           </div>
         </div>
