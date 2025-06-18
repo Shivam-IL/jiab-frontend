@@ -29,10 +29,10 @@ const SurpriseMeModal = ({
   animationKey
 }: {
   onClose: () => void
-  triggerAnimation: () => void
+  triggerAnimation?: () => void
   forceShow?: boolean
-  isAnimating: boolean
-  animationKey: number
+  isAnimating?: boolean
+  animationKey?: number
 }) => {
   // const { shouldShow, hasChecked } = useSessionModal(
   //   "hasShownSurpriseMe",
@@ -142,7 +142,6 @@ const SurpriseMeModal = ({
   //   };
   // }, [forceHideLoader]);
 
-  console.log('serialChill', serialChill)
   if (serialChill) {
     return (
       <SerialChillerPopup
@@ -191,7 +190,11 @@ const SurpriseMeModal = ({
             <button
               className='flex justify-center items-center cursor-pointer border-none outline-none'
               onClick={() => {
-                setMakeLaughExitPopup(true)
+                if (joke?.reactionType) {
+                  handleClose()
+                } else {
+                  setMakeLaughExitPopup(true)
+                }
               }}
             >
               <SvgIcons

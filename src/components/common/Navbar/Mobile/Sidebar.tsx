@@ -353,6 +353,25 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                         </li>
                       )
                     }
+                    if (subItem.label === cmsData.navBar.hallOfLame) {
+                      return (
+                        <li key={subIndex} className='text-xs ml-8'>
+                          <button
+                            onClick={() => {
+                              if (isAuthenticated) {
+                                router.push(subItem.href)
+                              } else {
+                                dispatch(updateLoginModal({ loginModal: true }))
+                              }
+                              onClose()
+                            }}
+                            className='block px-4 py-1 text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200'
+                          >
+                            {subItem.label}
+                          </button>
+                        </li>
+                      )
+                    }
                     return (
                       <li key={subIndex} className='text-xs ml-8'>
                         <Link

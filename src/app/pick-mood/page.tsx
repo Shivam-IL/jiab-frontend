@@ -64,6 +64,8 @@ const PickMood: React.FC = () => {
     setSelectedGenreId(undefined)
   }
 
+  console.log("genreSurpriseModal", genreSurpriseModal,isAuthenticated,selectedGenreId)
+
   return (
     <>
       <MobileTempNavBar

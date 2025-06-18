@@ -51,8 +51,8 @@ const HomePageSurpriseButton = () => {
     <>
       <button
         onClick={openSurpriseMe}
-        className='fixed cursor-pointer md:top-[50%] top-[68%] right-[10px] border-[1px] border-[#11A64B] rounded-[100px] min-w-[78px] md:max-w-[185px]
-    py-[8px] pl-[5px] pr-[8px] md:px-[24px] md:py-[15px] flex items-center gap-[5px] bg-yellow'
+        className="fixed cursor-pointer md:top-[50%] top-[68%] right-[10px] border-[1px] border-[#11A64B] rounded-[100px] min-w-[78px]  md:min-w-[185px]
+    py-[8px] pl-[5px] pr-[8px] md:px-[24px] md:py-[15px] flex items-center gap-[5px] bg-yellow"
       >
         <div className='relative  min-w-[25px] min-h-[25px] md:min-w-[42px]  md:min-h-[42px]  rounded-full bg-white flex items-center justify-center'>
           <img

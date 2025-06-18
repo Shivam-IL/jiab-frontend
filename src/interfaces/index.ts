@@ -319,6 +319,7 @@ export interface IUgcComponent {
   onVoteSuccess?: () => void;
   animation?: boolean;
   onReactSuccess?: () => void;
+  isLoadingGluedinFeedList?: boolean;
 }
 
 export interface IAddressData {

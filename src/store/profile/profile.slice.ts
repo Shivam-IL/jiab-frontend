@@ -142,6 +142,8 @@ const profileSlice = createSlice({
           gender = "female";
         } else if (user?.gender === 3) {
           gender = "other";
+        } else if (user?.gender === 4) {
+          gender = "Prefer not to say";
         }
       }
       const newUserData = {
