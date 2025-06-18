@@ -558,6 +558,7 @@ export const SESSION_STORAGE_KEYS = {
   CURRENT_PATH: "currentPath",
   PREVIOUS_PATH: "previousPath",
   HAS_SHOWN_LOCK_MODAL: "hasShownLockModal",
+  HAS_SHOWN_SERIAL_CHILL_MODAL: "hasShownSerialChiller",
 };
 
 export const LOCAL_IMAGES = {

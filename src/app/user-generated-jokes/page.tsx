@@ -33,7 +33,7 @@ const UserGeneratedJokes = () => {
 
   const { ugcData, offset, limit, ugcFilters, filterChnageId, loadMore } =
     useAppSelector((state) => state.ugc);
-  const { data: gluedinFeedList } = useGetGluedinFeedList({
+  const { data: gluedinFeedList ,isLoading:isLoadingGluedinFeedList} = useGetGluedinFeedList({
     offset,
     limit,
     ...ugcFilters,
@@ -156,7 +156,7 @@ const UserGeneratedJokes = () => {
             <UgcFilter filter={cmsData?.jokeBox?.filter} />
           </div>
         </div>
-        <UgcComponent animation={canShowAnimation} jokesData={ugcData} onVoteSuccess={handleVoteSuccess} />
+        <UgcComponent isLoadingGluedinFeedList={isLoadingGluedinFeedList} animation={canShowAnimation} jokesData={ugcData} onVoteSuccess={handleVoteSuccess} />
       </div>
       {isUnmounting && (
         <MadeYouLaughExitPopup

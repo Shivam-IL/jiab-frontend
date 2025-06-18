@@ -72,8 +72,8 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
 
   // Handle notification dropdown toggle and mark as read
   const handleNotificationDropdownToggle = async () => {
-    const newState = !isNotificationDropdownOpen;
-    setIsNotificationDropdownOpen(newState);
+    const newState = !isNotificationDropdownOpen
+    setIsNotificationDropdownOpen(newState)
 
     // If opening dropdown and there are unread notifications, mark all as read
     if (newState && notificationCount > 0) {
@@ -85,19 +85,19 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
             // Use a timeout to batch invalidations and prevent rapid refetching
             setTimeout(() => {
               queryClient.invalidateQueries({
-                queryKey: [...keys.notifications.getNotifications()],
-              });
+                queryKey: [...keys.notifications.getNotifications()]
+              })
 
               queryClient.invalidateQueries({
-                queryKey: [...keys.notifications.getNotificationCount()],
-              });
-            }, 100);
+                queryKey: [...keys.notifications.getNotificationCount()]
+              })
+            }, 100)
           })
-          .catch((error) => {
-            console.error("Failed to mark notifications as read:", error);
-          });
+          .catch(error => {
+            console.error('Failed to mark notifications as read:', error)
+          })
       } catch (error) {
-        console.error("Failed to mark notifications as read:", error);
+        console.error('Failed to mark notifications as read:', error)
       }
     }
   }
@@ -279,6 +279,24 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                           </button>
                         )
                       }
+                      if (item.label === cmsData.navBar.hallOfLame) {
+                        return (
+                          <button
+                            onClick={() => {
+                              if (isAuthenticated) {
+                                router.push(item.href)
+                              } else {
+                                dispatch(updateLoginModal({ loginModal: true }))
+                              }
+                              setIsExploreDropdownOpen(false)
+                            }}
+                            key={item.id}
+                            className='px-[20px] py-[10px] text-start hover:bg-gray-50 text-[18px] font-normal leading-tight'
+                          >
+                            {item.label}
+                          </button>
+                        )
+                      }
                       return (
                         <Link
                           key={item.id}
@@ -290,6 +308,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         </Link>
                       )
                     })}
+
                     <div className='px-[20px] py-[10px]'>
                       <Link
                         href='/user-generated-jokes'
@@ -327,8 +346,8 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                 onClick={handleNotificationDropdownToggle}
               >
                 <Image
-                  src="/other-svgs/bell-icon.svg"
-                  alt="Notification"
+                  src='/other-svgs/bell-icon.svg'
+                  alt='Notification'
                   width={25}
                   height={25}
                 />
@@ -340,8 +359,8 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
               </button>
 
               {isNotificationDropdownOpen && (
-                <div className="absolute top-full right-0 mt-4 w-[450px] bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 max-h-[500px] overflow-y-auto">
-                  <div className="py-2">
+                <div className='absolute top-full right-0 mt-4 w-[450px] bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 max-h-[500px] overflow-y-auto'>
+                  <div className='py-2'>
                     {notificationsLoading ? (
                       <div className='flex justify-center items-center py-8'>
                         <div className='animate-spin rounded-full h-6 w-6 border-b-2 border-primary'></div>

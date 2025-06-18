@@ -179,7 +179,11 @@ const GenreSurpriseMeModal: React.FC<GenreSurpriseMeModalProps> = ({
           <button
             className='flex justify-center items-center cursor-pointer border-none outline-none'
             onClick={() => {
-              setMakeLaughExitPopup(true)
+              if (joke?.reactionType) {
+                handleClose()
+              } else {
+                setMakeLaughExitPopup(true)
+              }
             }}
           >
             <SvgIcons
