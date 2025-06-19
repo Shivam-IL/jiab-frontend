@@ -35,7 +35,6 @@ import { useGlobalLoader } from "@/hooks/useGlobalLoader";
 import HomePageDesktopOnboarding, {
   DesktopBoxIds,
 } from "./common/HomePageDesktopOnboarding";
-import GenreSurpriseMeModal from "@/components/common/GenreSurpriseMeModal";
 import { useSessionModal } from "@/hooks/useSessionModal";
 import { getSessionStorageItem } from "@/utils";
 import {
@@ -210,8 +209,9 @@ export default function HomePageClient() {
       setGenreSurpriseModal(true);
       triggerGAEvent(GA_EVENTS.SPRITE_J24_SURPRISE_ME);
     } else {
-      // Show login modal for unauthenticated users
-      dispatch(updateLoginModal({ loginModal: true }));
+      // Show SurpriseMeLockModal for unauthenticated users
+      setSelectedGenreId(parseInt(category.id));
+      setGenreSurpriseModal(true);
     }
   };
 
@@ -345,7 +345,7 @@ export default function HomePageClient() {
     <div className="bg-lightGray min-h-screen md:pb-[28px]">
       {/* SerialChillerPopup only once after login */}
 
-      <div className='md:w-[76.57%] mx-auto md:pt-24 pt-20'>
+      <div className="md:w-[76.57%] mx-auto md:pt-24 pt-20">
         {/* Modals */}
         {!isAuthenticated &&
           refreshTokenNotVerified &&
@@ -553,8 +553,8 @@ export default function HomePageClient() {
           genreId={selectedGenreId}
           languageId={1}
           onClose={() => {
-            closeGenreSurpriseMe()
-            setGenreSurpriseModal(false)
+            closeGenreSurpriseMe();
+            setGenreSurpriseModal(false);
           }}
         />
         // <GenreSurpriseMeModal
