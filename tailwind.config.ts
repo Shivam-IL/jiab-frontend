@@ -10,10 +10,59 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+			screens: {
+        'xxs': {'max': '389px'},
+      },
       fontFamily: {
-        sans: ["var(--font-geist-sans)"],
-        mono: ["var(--font-geist-mono)"],
-        aktiv: ["var(--font-aktiv-grotesk)"],
+        sans: [
+          "var(--font-geist-sans)",
+          // Mac fallbacks
+          "-apple-system",
+          "BlinkMacSystemFont", 
+          // Windows fallbacks
+          "Segoe UI",
+          // Generic fallbacks
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif",
+          // Emoji fallbacks
+          "Apple Color Emoji",
+          "Segoe UI Emoji", 
+          "Segoe UI Symbol",
+          "Noto Color Emoji"
+        ],
+        mono: [
+          "var(--font-geist-mono)",
+          // Mac fallbacks
+          "SF Mono",
+          "Monaco",
+          // Windows fallbacks
+          "Consolas",
+          // Generic fallbacks
+          "Liberation Mono",
+          "Menlo",
+          "Courier New",
+          "monospace"
+        ],
+        aktiv: [
+          "var(--font-aktiv-grotesk)",
+          // Mac fallbacks
+          "-apple-system",
+          "BlinkMacSystemFont",
+          // Windows fallbacks
+          "Segoe UI",
+          // Generic fallbacks
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif",
+          // Emoji fallbacks
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol", 
+          "Noto Color Emoji"
+        ],
       },
 			colors: {
   			background: 'hsl(var(--background))',
@@ -84,6 +133,14 @@ const config: Config = {
           '&::-webkit-scrollbar': {
             display: 'none'
           }
+        },
+        '.font-smooth': {
+          '-webkit-font-smoothing': 'antialiased',
+          '-moz-osx-font-smoothing': 'grayscale',
+        },
+        '.font-crisp': {
+          '-webkit-font-smoothing': 'auto',
+          '-moz-osx-font-smoothing': 'auto',
         }
       }
       addUtilities(newUtilities);

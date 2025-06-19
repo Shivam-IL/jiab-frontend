@@ -45,10 +45,10 @@ const HomePageJokeSection = ({
     error: jokeBoxError,
     isFetched: isJokeBoxFetched,
   } = useGetGluedinFeedList({
-    sortBy: activeTab === 'Latest' ? 'latest' : 'popular',
+    sortBy: activeTab === "Latest" ? "latest" : "popular",
     limit: 6,
-    offset: 0
-  })
+    offset: 0,
+  });
 
   const dispatch = useAppDispatch();
   const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
@@ -92,55 +92,57 @@ const HomePageJokeSection = ({
 
   useEffect(() => {
     return () => {
-      dispatch(resetUgcData())
-    }
-  }, [])
+      dispatch(resetUgcData());
+    };
+  }, []);
 
   useEffect(() => {
     if (width > 768) {
-      setJokeBoxPageCount(2)
+      setJokeBoxPageCount(2);
     } else {
-      setJokeBoxPageCount(6)
+      setJokeBoxPageCount(6);
     }
-  }, [width])
+  }, [width]);
 
   useEffect(() => {
     if (activeTab) {
-      setJokeBoxCurrent(0)
+      setJokeBoxCurrent(0);
     }
-  }, [activeTab])
+  }, [activeTab]);
 
   useEffect(() => {
     if (jokeBoxApi) {
-      jokeBoxApi.scrollTo(jokeBoxCurrent)
+      jokeBoxApi.scrollTo(jokeBoxCurrent);
     }
-  }, [jokeBoxCurrent, jokeBoxApi])
+  }, [jokeBoxCurrent, jokeBoxApi]);
 
   return (
     <>
       {/* Joke Box */}
       <Header
         title={cmsData.homePage.jokeBoxHeading}
-        className="md:mb-[24px] mb-[16px] md:mt-0 mt-[20px]"
+        className="md:mt-[58px] md:mb-[24px] mt-[20px] mb-[16px]"
         viewAllUrl="/user-generated-jokes"
         viewAllButtonText={cmsData.homePage.viewAllButtonText}
         description={cmsData.homePage.jokeBoxSubheading}
       />
       {isClient && (
-        <div id={BoxIds.JOKE_BOX} className='md:mx-0 mx-4 mt-[20px] mb-[20px]'>
+        <div id={BoxIds.JOKE_BOX} className="md:mx-0 mx-4 mt-[20px] mb-[20px]">
           <div
             id={DesktopBoxIds.JOKE_BOX}
-            className='flex justify-center w-full'
+            className="flex justify-center w-full"
           >
-            <div className='flex items-center bg-white rounded-full mb-4 p-1 relative'>
+            <div className="flex items-center bg-white rounded-full mb-4 p-1 relative">
               <div
-                className={`absolute transition-all duration-300 ease-in-out top-1 h-[calc(100%-8px)] w-[90px] rounded-full bg-green ${
-                  activeTab === "Latest" ? "left-1" : "left-[94px]"
+                className={`absolute transition-all duration-300 ease-in-out top-1 h-[calc(100%-8px)] rounded-full bg-green ${
+                  activeTab === "Latest"
+                    ? "left-1 right-[50%]"
+                    : "left-[50%] right-1"
                 }`}
               />
               <button
                 onClick={() => setActiveTab("Latest")}
-                className={`w-[90px] h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
+                className={`min-w-[80px] px-6 h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 flex-1 ${
                   activeTab === "Latest"
                     ? "text-white"
                     : "text-gray-600 hover:text-black"
@@ -150,7 +152,7 @@ const HomePageJokeSection = ({
               </button>
               <button
                 onClick={() => setActiveTab("Trending")}
-                className={`w-[90px] h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 ${
+                className={`min-w-[80px] px-6 h-[36px] flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 relative z-10 flex-1 ${
                   activeTab === "Trending"
                     ? "text-white"
                     : "text-gray-600 hover:text-black"
@@ -161,7 +163,7 @@ const HomePageJokeSection = ({
             </div>
           </div>
 
-          <div className='flex justify-start overflow-x-scroll scrollbar-hide md:gap-[8px] gap-4'>
+          <div className="flex justify-start overflow-x-scroll scrollbar-hide md:gap-[8px] gap-4">
             {width < 768 ? (
               <Carousel
                 setApi={setJokeBoxApi}
@@ -169,7 +171,7 @@ const HomePageJokeSection = ({
                   align: "start",
                   loop: false,
                   skipSnaps: true,
-                  slidesToScroll: 1
+                  slidesToScroll: 1,
                 }}
                 className="w-full"
               >
@@ -195,19 +197,19 @@ const HomePageJokeSection = ({
                 <Carousel
                   setApi={setJokeBoxApi}
                   opts={{
-                    align: 'start',
+                    align: "start",
                     loop: true,
                     skipSnaps: false,
-                    slidesToScroll: width > 768 ? 3 : 1
+                    slidesToScroll: width > 768 ? 3 : 1,
                   }}
-                  className='w-full'
+                  className="w-full"
                 >
-                  <CarouselContent className='w-full'>
+                  <CarouselContent className="w-full">
                     {ugcData?.length > 0 &&
                       ugcData?.map(
                         (item: TModifiedUGCContent, index: number) => (
-                          <CarouselItem key={item._id} className='basis-1/3'>
-                            <div className='w-full flex mx-auto h-full px-2'>
+                          <CarouselItem key={item._id} className="basis-1/3">
+                            <div className="w-full flex mx-auto h-full">
                               <UgcCard
                                 home={true}
                                 disclaimerText={
@@ -215,8 +217,8 @@ const HomePageJokeSection = ({
                                 }
                                 item={item}
                                 onVoteSuccess={onVoteSuccess}
-                      onReactSuccess={onReactSuccess}
-                    />
+                                onReactSuccess={onReactSuccess}
+                              />
                             </div>
                           </CarouselItem>
                         )
@@ -227,7 +229,7 @@ const HomePageJokeSection = ({
             )}
           </div>
           {
-            <div className='flex justify-center md:gap-2 gap-[1.77px] mt-[8px]'>
+            <div className="flex justify-center md:gap-2 gap-[1.77px] mt-[8px]">
               {Array.from({ length: jokeBoxPageCount }).map((_, index) => (
                 <button
                   key={`joke-slide-${index}`}

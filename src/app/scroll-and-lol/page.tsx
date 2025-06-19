@@ -495,7 +495,7 @@ const ScrollAndLol: React.FC = () => {
         <div className="w-full container md:block hidden">
           <Header
             title={cmsData?.scrollAndLol?.scrollAndLolHeading}
-            textTransform='capitalize'
+            textTransform="capitalize"
           />
         </div>
       )}
@@ -545,7 +545,7 @@ const ScrollAndLol: React.FC = () => {
                       ref={(el) => {
                         videoRefs.current[index] = el;
                       }}
-                      className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] h-full w-full md:object-contain object-cover relative"
+                      className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] h-full w-full md:object-cover object-cover relative"
                       src={video.url}
                       loop
                       playsInline
@@ -650,7 +650,7 @@ const ScrollAndLol: React.FC = () => {
             {activeVideoIndex !== undefined &&
               activeVideoIndex !== null &&
               activeVideoIndex < videos.length && (
-                <div className="absolute bottom-[135px] right-[10px] md:bottom-[12vh] md:right-[clamp(-8rem,0vw,-4rem)] z-20 md:scale-[clamp(0.7,1.2vh,1.2)] origin-bottom-right">
+                <div className="absolute bottom-[135px] right-[10px] md:bottom-[12vh] md:right-[clamp(-8rem,0vw,-3rem)] z-20 md:scale-[clamp(0.7,1.2vh,1.2)] origin-bottom-right">
                   <ReactionEmojies
                     key={currentVideoData?.id}
                     videoId={currentVideoData?.id}

@@ -249,6 +249,7 @@ const GenreSurpriseMeModal: React.FC<GenreSurpriseMeModalProps> = ({
             preload="auto"
             autoPlay
             controls
+            poster={joke?.thumbnail_url ?? ""}
             disablePictureInPicture
             controlsList="nodownload"
             playsInline

@@ -7,57 +7,106 @@ import LoadGAScript from "@/components/common/LoadGAScript";
 export const aktivGrotesk = localFont({
   src: [
     {
-      path: "./fonts/AktivGrotesk-Hairline.otf",
-      weight: "100",
-      style: "normal",
-    },
-    {
-      path: "./fonts/AktivGrotesk-Thin.otf",
-      weight: "200",
-      style: "normal",
-    },
-    {
-      path: "./fonts/AktivGrotesk-Light.otf",
+      path: "./fonts/AktivGroteskCorp-Light.woff2",
       weight: "300",
       style: "normal",
     },
     {
-      path: "./fonts/AktivGrotesk-Regular.otf",
+      path: "./fonts/AktivGroteskCorp-Light.woff",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "./fonts/AktivGroteskCorp-Regular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./fonts/AktivGrotesk-Medium.otf",
+      path: "./fonts/AktivGroteskCorp-Regular.woff",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/AktivGroteskCorp-Medium.woff2",
       weight: "500",
       style: "normal",
     },
     {
-      path: "./fonts/AktivGrotesk-Bold.otf",
+      path: "./fonts/AktivGroteskCorp-Medium.woff",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/AktivGroteskCorp-Bold.woff2",
       weight: "700",
       style: "normal",
     },
     {
-      path: "./fonts/AktivGrotesk-XBold.otf",
-      weight: "800",
+      path: "./fonts/AktivGroteskCorp-Bold.woff",
+      weight: "700",
       style: "normal",
     },
     {
-      path: "./fonts/AktivGrotesk-Black.otf",
-      weight: "900",
-      style: "normal",
-    },
-    {
-      path: "./fonts/AktivGrotesk-Italic.otf",
+      path: "./fonts/AktivGroteskCorp-Italic.woff2",
       weight: "400",
       style: "italic",
     },
     {
-      path: "./fonts/AktivGrotesk-BoldItalic.otf",
+      path: "./fonts/AktivGroteskCorp-Italic.woff",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./fonts/AktivGroteskCorp-LightItalic.woff2",
+      weight: "300",
+      style: "italic",
+    },
+    {
+      path: "./fonts/AktivGroteskCorp-LightItalic.woff",
+      weight: "300",
+      style: "italic",
+    },
+    {
+      path: "./fonts/AktivGroteskCorp-MediumItalic.woff2",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "./fonts/AktivGroteskCorp-MediumItalic.woff",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "./fonts/AktivGroteskCorp-BoldItalic.woff2",
+      weight: "700",
+      style: "italic",
+    },
+    {
+      path: "./fonts/AktivGroteskCorp-BoldItalic.woff",
       weight: "700",
       style: "italic",
     },
   ],
   variable: "--font-aktiv-grotesk",
+  display: "swap",
+  preload: true,
+  fallback: [
+    // Mac fallbacks
+    "-apple-system",
+    "BlinkMacSystemFont",
+    // Windows fallbacks
+    "Segoe UI",
+    // Generic fallbacks
+    "Roboto",
+    "Helvetica Neue",
+    "Arial",
+    "sans-serif",
+    // Emoji fallbacks
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji",
+  ],
 });
 
 export default function RootLayout({
@@ -72,11 +121,41 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#11A64B" />
+
+        {/* Font preload hints for better performance */}
+        <link
+          rel="preload"
+          href="/fonts/AktivGroteskCorp-Regular.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/AktivGroteskCorp-Medium.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/AktivGroteskCorp-Bold.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+
         <LoadGAScript />
       </head>
       <body
         className={`${aktivGrotesk.variable} antialiased bg-[#F2F2F2]`}
-        scroll-behavior="smooth"
+        style={{
+          fontFeatureSettings: "'kern' 1, 'liga' 1, 'calt' 1",
+          fontOpticalSizing: "auto",
+          textRendering: "optimizeLegibility",
+          WebkitFontSmoothing: "antialiased",
+          MozOsxFontSmoothing: "grayscale",
+        }}
       >
         <LayoutClient>{children}</LayoutClient>
         {/* {showExitPopup && (
@@ -84,7 +163,7 @@ export default function RootLayout({
           open={showExitPopup}
           onClose={handleStayOnPage}
         />
-      )} */}  
+      )} */}
       </body>
     </html>
   );

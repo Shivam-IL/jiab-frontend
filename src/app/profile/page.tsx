@@ -118,6 +118,8 @@ const ProfilePage = () => {
             user={cmsData?.myProfile?.user}
             sendReminder={cmsData?.myProfile?.sendReminder}
             status={cmsData?.myProfile?.status}
+            referAnother={cmsData?.myProfile?.referAnother}
+            myReferrals={cmsData?.myProfile?.myReferrals}
           />
           <HelpUsToKnowYourBetter
             id={'qna'}

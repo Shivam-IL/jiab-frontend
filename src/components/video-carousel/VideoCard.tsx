@@ -23,7 +23,13 @@ const VideoCard = ({ src }: { src: string }) => {
         <div className="absolute inset-0 bg-black opacity-35 group-hover:opacity-50 transition-opacity duration-300"></div>
       </div>
       <div className="absolute inset-0 flex items-center justify-center">
-        <CirclePlay className="w-12 h-12 text-white transition-transform group-hover:scale-110" />
+        <Image
+          src="/other-svgs/play-button.svg"
+          alt="play"
+          className="w-[64px] md:w-[50px] h-[64px] md:h-[50px]"
+          width={64}
+          height={64}
+        />
       </div>
     </div>
   );

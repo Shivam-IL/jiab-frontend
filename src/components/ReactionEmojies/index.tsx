@@ -95,7 +95,7 @@ const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center gap-[22.5px] md:gap-[clamp(16px,2.5vh,28px)] cursor-pointer rounded-full py-3 px-2 md:text-black text-white hover:text-black hover:bg-white">
+    <div className="flex flex-col items-center gap-[10px] md:gap-[1rem] cursor-pointer rounded-full px-1 py-3 md:text-black text-white hover:text-black hover:bg-white">
       {reactions.map((reaction) => {
         const isViewIcon = reaction.icon === ICONS_NAMES.VIEWS;
         const isHovered = hoveredIcon === reaction.icon;
@@ -146,13 +146,13 @@ const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({
               name={reaction.icon}
               width={36.2}
               height={36.2}
-              className={`md:w-[clamp(28px,4.5vh,35.25px)] ${getClassName(
+              className={`md:w-[clamp(28px,4.5vh,32.25px)] ${getClassName(
                 reaction.name,
                 isReacted,
                 reactionType ?? ""
-              )} md:h-[clamp(28px,4.5vh,35.25px)] w-[32px] h-[32px]`}
+              )} md:h-[clamp(28px,4.5vh,32.25px)] w-[32px] h-[32px]`}
             />
-            <span className="md:text-[clamp(16px,2.8vh,22.5px)] text-[10px] text-shadow-4xl md:text-shadow-none">
+            <span className="text-[10px] text-shadow-4xl md:text-shadow-none font-bold">
               {reaction.count}
             </span>
           </div>

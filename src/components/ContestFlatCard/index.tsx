@@ -50,9 +50,9 @@ const ContestFlatCard: React.FC<ContestFlatCardProps> = ({
             <Image
               src="/assets/images/coin-final-sidebar.svg"
               alt="coin"
-              width={25}
-              height={25}
-              className="md:w-[25px] md:h-[25px] w-[14px] h-[14px]"
+              width={31}
+              height={31}
+              className="md:w-[31px] md:h-[31px] w-[14px] h-[14px]"
             />
           </div>
           <span className="text-[#313131] md:text-[16px] text-[7px] font-medium">
