@@ -37,4 +37,9 @@ export const keys = {
     getNotifications: () => ["get-notifications"],
     getNotificationCount: () => ["get-notification-count"],
   },
+  geolocation: {
+    getUserGeolocation: () => ["get-user-geolocation"],
+    getGeolocationByIP: (ip: string) => ["get-geolocation-by-ip", ip],
+    getUserIP: () => ["get-user-ip"],
+  },
 };

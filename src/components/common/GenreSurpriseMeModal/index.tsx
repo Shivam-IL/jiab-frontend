@@ -162,6 +162,45 @@ const GenreSurpriseMeModal: React.FC<GenreSurpriseMeModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
+      <style jsx>{`
+        video:fullscreen {
+          object-fit: contain !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          max-width: 100vw !important;
+          max-height: 100vh !important;
+        }
+        video:-webkit-full-screen {
+          object-fit: contain !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          max-width: 100vw !important;
+          max-height: 100vh !important;
+        }
+        video:-moz-full-screen {
+          object-fit: contain !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          max-width: 100vw !important;
+          max-height: 100vh !important;
+        }
+        /* Ensure video controls are fully accessible */
+        video::-webkit-media-controls-panel {
+          z-index: 9999 !important;
+        }
+        video::-webkit-media-controls {
+          z-index: 9999 !important;
+        }
+        /* Ensure playback speed dropdown is visible */
+        video::-webkit-media-controls-playback-rate-menu-button {
+          z-index: 10000 !important;
+        }
+        video::-webkit-media-controls-playback-rate-menu-button ul {
+          z-index: 10000 !important;
+          max-height: 200px !important;
+          overflow-y: auto !important;
+        }
+      `}</style>
       <DialogContent className='border-none md:max-w-[239px] max-w-[277px] shadow-none p-0 rounded-[10px]'>
         <div className='absolute border-none outline-none top-[-105px] md:top-[-125px] left-0 flex justify-center items-center w-full'>
           <SvgIcons
@@ -204,17 +243,24 @@ const GenreSurpriseMeModal: React.FC<GenreSurpriseMeModalProps> = ({
             />
           </button>
         </div>
-        <div className='relative max-w-[255px] md:max-w-[220px] h-[429px] md:h-[371px] ml-[11px]'>
+        <div className='relative aspect-[9/16] h-[429px] md:h-[371px] ml-[11px]'>
           <video
-            className='w-full h-full relative bg-[#11A64B]  object-fill'
-            controls
+            src={joke?.url ?? ''}
+            preload="auto"
             autoPlay
-            muted
-            loop
-            poster={joke?.thumbnail_url ?? ''}
-          >
-            <source src={joke?.url ?? ''} type='video/mp4' />
-          </video>
+            controls
+            disablePictureInPicture
+            controlsList="nodownload"
+            playsInline
+            webkit-playsinline=""
+            x5-playsinline=""
+            style={{
+              width: '100%',
+              height: '100%',
+              aspectRatio: '9/16',
+              objectFit: 'cover'
+            }}
+          />
         </div>
         <div className='bg-white rounded-[10px] px-[12px] pb-[16px] flex justify-between'>
           <div className='flex gap-[24px] md:gap-[14px] pl-[10px]'>

@@ -52,6 +52,13 @@ import { clearAllModalSessions } from '@/hooks/useSessionModal'
 import { usePathname, useSearchParams } from 'next/navigation'
 import useAppSelector from '@/hooks/useSelector'
 import { setLanguage } from '@/store/language/language.slice'
+import { useGetUserGeolocation } from '@/api/hooks/GeolocationHooks'
+import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
+import {
+  CDPEventPayloadBuilder,
+  LandingPageCDPEventPayload
+} from '@/api/utils/cdpEvents'
+import { IGeolocationData, ILocalGeoData } from '@/api/types/GeolocationTypes'
 
 const mainServiceInstance = MainService.getInstance()
 
@@ -69,7 +76,6 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const refreshTokenFromParams = searchParams.get('refresh')
   const langKey = searchParams.get('lang')
 
-
   let gluedInSDKInitilize = new gluedin.GluedInSDKInitilize()
   gluedInSDKInitilize.initialize({
     apiKey: process.env.NEXT_PUBLIC_GLUEDIN_API_KEY || '',
@@ -82,12 +88,15 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const { data: languagesData } = useGetLanguages()
   const { data: jokesFormatsData } = useGetJokesFormats()
   const { data: userSubmittedJokesData } = useGetUserSubmittedJokes()
+  const { data: userGeolocationDataResponse } = useGetUserGeolocation()
+  const cdpEventsPayload = CDPEventPayloadBuilder.getInstance()
 
   const {
     mutate: mutateRefreshToken,
     data: refreshTokenData,
     isPending: refreshTokenLoading
   } = useMutateRefreshToken()
+  const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   useEffect(() => {
     const refreshToken =
@@ -150,6 +159,9 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   // Handle profile data changes
   useEffect(() => {
     if (userProfileData?.ok) {
+      const geoLocationData = JSON.parse(
+        getLocalStorageItem(LOCAL_STORAGE_KEYS.USER_GEOLOCATION) ?? '{}'
+      ) as ILocalGeoData
       const { data } = userProfileData?.data ?? {}
       dispatch(updateRank({ rank: data?.rank }))
       dispatch(updateBalance({ current_balance: data?.current_balance }))
@@ -158,6 +170,21 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         rank: data?.rank,
         current_balance: data?.current_balance,
         user: { ...data?.user }
+      }
+      if (refreshTokenFromParams) {
+        const payload: LandingPageCDPEventPayload =
+          CDPEventPayloadBuilder.buildLandingPageFromWAPayload({
+            user_identifier: data?.user?.id,
+            ...geoLocationData
+          })
+        sendCDPEvent(payload)
+      } else {
+        const payload: LandingPageCDPEventPayload =
+          CDPEventPayloadBuilder.buildLandingPagePayload({
+            user_identifier: data?.user?.id,
+            ...geoLocationData
+          })
+        sendCDPEvent(payload)
       }
       if (data?.user?.id) {
         const user_id = data.user.id

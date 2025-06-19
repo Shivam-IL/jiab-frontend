@@ -160,7 +160,7 @@ const UserGeneratedJokes = () => {
               fontWeight='font-[400]'
               text={cmsData?.jokeBox?.jokeBoxSubHeading}
             />
-            <UgcFilter filter={cmsData?.jokeBox?.filter} />
+            <UgcFilter text={cmsData?.jokeBox?.filter} filter={cmsData?.jokeBox?.filter} />
           </div>
         </div>
         <UgcComponent

@@ -13,6 +13,7 @@ import { updateLoginModal } from '@/store/auth/auth.slice'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import { GA_EVENTS } from '@/constants'
 import { useGlobalLoader } from '@/hooks/useGlobalLoader'
+import SurpriseMeModal from '@/components/common/SurpriseMeModal'
 
 const PickMood: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
@@ -64,7 +65,12 @@ const PickMood: React.FC = () => {
     setSelectedGenreId(undefined)
   }
 
-  console.log("genreSurpriseModal", genreSurpriseModal,isAuthenticated,selectedGenreId)
+  console.log(
+    'genreSurpriseModal',
+    genreSurpriseModal,
+    isAuthenticated,
+    selectedGenreId
+  )
 
   return (
     <>
@@ -112,15 +118,23 @@ const PickMood: React.FC = () => {
 
       {/* Genre-specific Surprise Me Modal */}
       {genreSurpriseModal && isAuthenticated && (
-        <GenreSurpriseMeModal
-          open={genreSurpriseModal}
+        <SurpriseMeModal
+          genreId={selectedGenreId}
+          languageId={1}
           onClose={() => {
             closeGenreSurpriseMe()
             setGenreSurpriseModal(false)
           }}
-          genreId={selectedGenreId}
-          languageId={1} // Default language, can be made dynamic later
         />
+        // <GenreSurpriseMeModal
+        //   open={genreSurpriseModal}
+        //   onClose={() => {
+        //     closeGenreSurpriseMe()
+        //     setGenreSurpriseModal(false)
+        //   }}
+        //   genreId={selectedGenreId}
+        //   languageId={1} // Default language, can be made dynamic later
+        // />
       )}
 
       {/* Show login modal for unauthenticated users */}

@@ -21,7 +21,8 @@ const Input: React.FC<IInput> = ({
   paddingClass = 'pl-[16px] pr-[16px] py-[16px] md:py-[19px] md:pl-[25px]',
   className = '',
   borderRadius = 'rounded-[100px]',
-  rows
+  rows,
+  errorClassName = ''
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -47,6 +48,9 @@ const Input: React.FC<IInput> = ({
   )
 
   if (type === 'date') {
+    console.log('🎯 INPUT COMPONENT IS RENDERING!')
+    console.log('Input component rendered with value:', value)
+    console.log('Input component type of value:', typeof value)
     return (
       <Calendar
         value={value}
@@ -143,7 +147,7 @@ const Input: React.FC<IInput> = ({
           </div>
         )}
         {error !== '' && (
-          <span className='text-[#FD0202] font-[400] text-[12px]'>{error}</span>
+          <span className={`${errorClassName} text-[#FD0202] font-[400] text-[12px]`}>{error}</span>
         )}
       </div>
     )
@@ -192,7 +196,7 @@ const Input: React.FC<IInput> = ({
         />
       )}
       {error !== '' && (
-        <span className='text-[#FD0202] font-[400] text-[12px]'>{error}</span>
+        <span className={`${errorClassName} text-[#FD0202] font-[400] text-[12px]`}>{error}</span>
       )}
     </div>
   )

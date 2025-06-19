@@ -23,6 +23,7 @@ export const LOCAL_STORAGE_KEYS = {
   REFRESH_TOKEN: "refreshToken",
   USER_DETAILS: "userDetails",
   ADDRESSES: "addressesDetails",
+  USER_GEOLOCATION: "userGeolocation",
 };
 
 // Helper function to get current locale from Redux store

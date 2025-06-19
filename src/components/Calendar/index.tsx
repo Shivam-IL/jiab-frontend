@@ -5,7 +5,8 @@ import { format, parse, isValid } from 'date-fns'
 import {
   Calendar as CalendarIcon,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  X
 } from 'lucide-react'
 import { Calendar as CalendarComponent } from '@/components/ui/calendar'
 import {
@@ -155,6 +156,11 @@ const Calendar: React.FC<CalendarProps> = ({
       const formattedDate = formatDateToString(date)
       onChange(name, formattedDate)
     }
+  }
+
+  const handleClearDate = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onChange(name, '')
   }
 
   useEffect(() => {
@@ -370,7 +376,17 @@ const Calendar: React.FC<CalendarProps> = ({
             <span className={!value ? 'text-[rgba(0,0,0,0.3)]' : ''}>
               {displayValue || placeholder}
             </span>
-            <CalendarIcon className='h-5 w-5' />
+            <div className='flex items-center gap-2'>
+              {value && (
+                <button
+                  onClick={handleClearDate}
+                  className='w-6 h-6 bg-[#11A64B] rounded-[50%] flex items-center justify-center hover:bg-[#0E8A3F] transition-colors'
+                >
+                  <X className='h-3 w-3 text-white' />
+                </button>
+              )}
+              <CalendarIcon className='h-5 w-5' />
+            </div>
           </div>
         </PopoverTrigger>
         <PopoverContent className='w-auto p-0' align='start'>

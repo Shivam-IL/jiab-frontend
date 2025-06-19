@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SvgIcons from '../common/SvgIcons'
+import defaultProfile from '../../../public/profile-images/default-profile.svg'
 import {
   ICONS_NAMES,
   LOCAL_IMAGES,
@@ -122,6 +123,7 @@ const ProfileCard = () => {
     }
   }
 
+  console.log(userImage, 'userImage')
 
   return (
     <div className='relative w-full rounded-[10px]  bg-white md:rounded-[20px]'>
@@ -137,24 +139,42 @@ const ProfileCard = () => {
           <div className='md:hidden'>
             <CircularProgress value={profile_percentage}>
               <div className='text-sm w-[90%] h-[90%] flex items-center justify-center rounded-full font-medium bg-[#11A64B] text-gray-700'>
-                <img
-                  className='w-[80%] rounded-full h-[80%]'
-                  src={userImage ? userImage : PROFILE_IMAGES?.[0]?.imageURL}
-                  alt='profile-badge'
-                  width={32}
-                  height={32}
-                />
+                {userImage ? (
+                  <img
+                    className='w-[80%] rounded-full h-[80%]'
+                    src={userImage}
+                    alt='profile-badge'
+                    width={32}
+                    height={32}
+                  />
+                ) : (
+                  <Image
+                    width={32}
+                    height={32}
+                    src={defaultProfile}
+                    alt='profile-badge'
+                  />
+                )}
               </div>
             </CircularProgress>
           </div>
           <div className='hidden md:block'>
             <CircularProgress size={148} value={profile_percentage}>
               <div className='text-sm w-[90%] flex items-center justify-center h-[90%] rounded-full font-medium bg-[#11A64B] text-gray-700'>
-                <img
-                  className='w-[80%] rounded-full h-[80%]'
-                  src={userImage ? userImage : PROFILE_IMAGES?.[0]?.imageURL}
-                  alt='profile-badge'
-                />
+                {userImage ? (
+                  <img
+                    className='w-[80%] rounded-full h-[80%]'
+                    src={userImage}
+                    alt='profile-badge'
+                  />
+                ) : (
+                  <Image
+                    width={60}
+                    height={60}
+                    src={defaultProfile}
+                    alt='profile-badge'
+                  />
+                )}
               </div>
             </CircularProgress>
           </div>

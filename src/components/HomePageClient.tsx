@@ -342,7 +342,7 @@ export default function HomePageClient () {
     <div className='bg-lightGray min-h-screen'>
       {/* SerialChillerPopup only once after login */}
 
-      <div className="md:w-[76.57%] mx-auto md:pt-24 pt-20">
+      <div className='md:w-[76.57%] mx-auto md:pt-24 pt-20'>
         {/* Modals */}
         {!isAuthenticated &&
           refreshTokenNotVerified &&
@@ -542,12 +542,20 @@ export default function HomePageClient () {
 
       {/* Genre-specific Surprise Me Modal */}
       {genreSurpriseModal && isAuthenticated && (
-        <GenreSurpriseMeModal
-          open={genreSurpriseModal}
-          onClose={closeGenreSurpriseMe}
+        <SurpriseMeModal
           genreId={selectedGenreId}
-          languageId={1} // Default language, can be made dynamic later
+          languageId={1}
+          onClose={() => {
+            closeGenreSurpriseMe()
+            setGenreSurpriseModal(false)
+          }}
         />
+        // <GenreSurpriseMeModal
+        //   open={genreSurpriseModal}
+        //   onClose={closeGenreSurpriseMe}
+        //   genreId={selectedGenreId}
+        //   languageId={1} // Default language, can be made dynamic later
+        // />
       )}
 
       {/* Show login modal for unauthenticated users */}

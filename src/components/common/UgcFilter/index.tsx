@@ -7,7 +7,7 @@ import AktivGroteskText from '../AktivGroteskText'
 import { updateUgcFilters } from '@/store/ugc'
 import useAppDispatch from '@/hooks/useDispatch'
 
-const UgcFilter = ({ filter }: { filter: string }) => {
+const UgcFilter = ({ filter,text }: { filter: string,text:string }) => {
   const [openUgcFilterModal, setOpenUgcFilterModal] = useState<boolean>(false)
   const [selectedFilters, setSelectedFilters] = useState({
     language: '',
@@ -63,14 +63,14 @@ const UgcFilter = ({ filter }: { filter: string }) => {
             onChange={e => setSearch(e.target.value)}
           />
         </div>
-        <div className='flex items-center gap-[4px]'>
+        <div onClick={() => setOpenUgcFilterModal(true)} className='flex items-center gap-[4px] cursor-pointer'>
           <AktivGroteskText
             text={filter}
             fontSize='text-[14px] md:text-[16px]'
-            fontWeight='font-[400]'
+            fontWeight='font-[400] cursor-pointer'
           />
           <button
-            onClick={() => setOpenUgcFilterModal(true)}
+            
             className='border-none outline-none'
           >
             <SvgIcons name={ICONS_NAMES.FILTER} className='w-[12px] h-[12px]' />
