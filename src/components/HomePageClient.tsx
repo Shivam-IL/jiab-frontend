@@ -240,10 +240,10 @@ export default function HomePageClient() {
     const currentLanguage = selectedLanguage || "default";
     const now = Date.now();
     const lastAnimationTime = localStorage.getItem(
-      "homepage_vote_animation_time"
+      "shared_vote_animation_time"
     );
     const lastAnimationLanguage = localStorage.getItem(
-      "homepage_vote_animation_language"
+      "shared_vote_animation_language"
     );
 
     // Check if language changed
@@ -268,10 +268,10 @@ export default function HomePageClient() {
     const currentLanguage = selectedLanguage || "default";
     const now = Date.now();
     const lastAnimationTime = localStorage.getItem(
-      "homepage_react_animation_time"
+      "shared_react_animation_time"
     );
     const lastAnimationLanguage = localStorage.getItem(
-      "homepage_react_animation_language"
+      "shared_react_animation_language"
     );
 
     // Check if language changed
@@ -303,8 +303,8 @@ export default function HomePageClient() {
       const now = Date.now();
 
       // Update localStorage with current time and language
-      localStorage.setItem("homepage_vote_animation_time", now.toString());
-      localStorage.setItem("homepage_vote_animation_language", currentLanguage);
+      localStorage.setItem("shared_vote_animation_time", now.toString());
+      localStorage.setItem("shared_vote_animation_language", currentLanguage);
 
       // Disable further animations until next cooldown/language change
       setCanShowVoteAnimation(false);
@@ -321,11 +321,8 @@ export default function HomePageClient() {
       const now = Date.now();
 
       // Update localStorage with current time and language
-      localStorage.setItem("homepage_react_animation_time", now.toString());
-      localStorage.setItem(
-        "homepage_react_animation_language",
-        currentLanguage
-      );
+      localStorage.setItem("shared_react_animation_time", now.toString());
+      localStorage.setItem("shared_react_animation_language", currentLanguage);
 
       // Disable further animations until next cooldown/language change
       setCanShowReactAnimation(false);
