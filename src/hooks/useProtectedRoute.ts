@@ -15,7 +15,7 @@ export const useProtectedRoute = () => {
 
   useEffect(() => {
     const accessToken = getLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
-    const isProtectedRoute = PROTECTED_ROUTES.some(route => 
+        const isProtectedRoute = PROTECTED_ROUTES.some(route => 
       pathname.startsWith(route)
     );
 

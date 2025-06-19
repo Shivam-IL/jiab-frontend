@@ -115,6 +115,7 @@ const SurpriseMeModal = ({
     }
   }, [viewGludeinJokesData])
 
+  console.log(gluedinUserReactionData, 'gluedinUserReactionData')
   useEffect(() => {
     if (gluedinUserReactionData?.ok) {
       dispatch(incrementComicCoins())

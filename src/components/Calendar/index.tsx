@@ -1,8 +1,12 @@
 'use client'
 
-import React from 'react'
-import { format } from 'date-fns'
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react'
+import React, { useState, useEffect, useMemo } from 'react'
+import { format, parse, isValid } from 'date-fns'
+import {
+  Calendar as CalendarIcon,
+  ChevronLeft,
+  ChevronRight
+} from 'lucide-react'
 import { Calendar as CalendarComponent } from '@/components/ui/calendar'
 import {
   Popover,
@@ -20,33 +24,146 @@ interface CalendarProps {
   fontSize?: string
   paddingClass?: string
   bgColor?: string
+  dateFormat?: string // Default: 'yyyy/MM/dd'
 }
 
 const MONTHS = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
 ]
+
+type ViewMode = 'calendar' | 'year' | 'month'
 
 const Calendar: React.FC<CalendarProps> = ({
   value,
-  placeholder,
+  placeholder = 'Select date',
   onChange,
   name,
   error = '',
   fontSize = 'text-[14px]',
   paddingClass = 'pl-[16px] pr-[16px] py-[16px] md:py-[19px] md:pl-[25px]',
-  bgColor = 'bg-[#F3F3F3]'
+  bgColor = 'bg-[#F3F3F3]',
+  dateFormat = 'yyyy/MM/dd'
 }) => {
-  const [viewMode, setViewMode] = React.useState<'calendar' | 'year' | 'month'>('calendar')
-  const [currentDate, setCurrentDate] = React.useState(value ? parseDate(value) : new Date())
-  const [yearViewStartYear, setYearViewStartYear] = React.useState(() => {
-    return currentDate.getFullYear() - 6
+  // State management
+  const [viewMode, setViewMode] = useState<ViewMode>('calendar')
+  const [currentDate, setCurrentDate] = useState(new Date())
+  const [yearViewStartYear, setYearViewStartYear] = useState(() => {
+    return new Date().getFullYear() - 6
   })
 
-  function parseDate(dateString: string) {
-    const [year, month, day] = dateString.split('/')
-    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
+  // Parse date string to Date object
+  const parseDateString = (dateString: string): Date | null => {
+    if (!dateString) return null
+
+    try {
+      // Handle ISO date format (2003-06-05T00:00:00Z)
+      if (dateString.includes('T') && dateString.includes('Z')) {
+        const date = new Date(dateString)
+        if (isValid(date)) return date
+      }
+
+      // Try parsing with date-fns first
+      const parsed = parse(dateString, dateFormat, new Date())
+      if (isValid(parsed)) {
+        return parsed
+      }
+
+      // Fallback parsing for common formats
+      if (dateString.includes('/')) {
+        const parts = dateString.split('/')
+        if (parts.length === 3) {
+          const [year, month, day] = parts
+          const date = new Date(
+            parseInt(year),
+            parseInt(month) - 1,
+            parseInt(day)
+          )
+          if (isValid(date)) return date
+        }
+      }
+
+      if (dateString.includes('-')) {
+        const [year, month, day] = dateString.split('-')
+        const date = new Date(
+          parseInt(year),
+          parseInt(month) - 1,
+          parseInt(day)
+        )
+        if (isValid(date)) return date
+      }
+
+      return null
+    } catch {
+      return null
+    }
   }
+
+  // Format Date object to string
+  const formatDateToString = (date: Date): string => {
+    return format(date, dateFormat)
+  }
+
+  // Get selected date from value prop
+  const selectedDate = useMemo(() => {
+    return value ? parseDateString(value) : null
+  }, [value, dateFormat])
+
+  // Update current date and year view when value changes
+  useEffect(() => {
+    if (selectedDate) {
+      setCurrentDate(selectedDate)
+      setYearViewStartYear(selectedDate.getFullYear() - 6)
+    } else {
+      const now = new Date()
+      setCurrentDate(now)
+      setYearViewStartYear(now.getFullYear() - 6)
+    }
+  }, [selectedDate])
+
+  // Format display value for the input field
+  const displayValue = useMemo(() => {
+    if (!value) return ''
+
+    // If value is already a string in YYYY/MM/DD format, use it directly
+    if (typeof value === 'string' && value.match(/^\d{4}\/\d{2}\/\d{2}$/)) {
+      return value
+    }
+
+    // Parse the date (handles ISO format, YYYY/MM/DD, etc.)
+    const parsedDate = parseDateString(value)
+    if (parsedDate) {
+      return format(parsedDate, 'yyyy/MM/dd')
+    }
+
+    return value
+  }, [value])
+
+  // Event handlers
+  const handleDateSelect = (date: Date | undefined) => {
+    if (date) {
+      const formattedDate = formatDateToString(date)
+      onChange(name, formattedDate)
+    }
+  }
+
+  useEffect(() => {
+    if (value) {
+      const date = new Date(value)
+      const formattedDate = formatDateToString(date)
+      onChange(name, formattedDate)
+    }
+  }, [value])
 
   const handleYearSelect = (year: number) => {
     const newDate = new Date(currentDate)
@@ -82,6 +199,7 @@ const Calendar: React.FC<CalendarProps> = ({
     setCurrentDate(newDate)
   }
 
+  // Render month grid
   const renderMonthGrid = () => {
     return (
       <div className='p-6'>
@@ -93,7 +211,9 @@ const Calendar: React.FC<CalendarProps> = ({
             >
               <ChevronLeft className='h-4 w-4' />
             </button>
-            <h2 className={`${aktivGrotesk.className} text-[14px] font-[500] text-gray-800`}>
+            <h2
+              className={`${aktivGrotesk.className} text-[14px] font-[500] text-gray-800`}
+            >
               {currentDate.getFullYear()}
             </h2>
             <button
@@ -118,7 +238,9 @@ const Calendar: React.FC<CalendarProps> = ({
                 }
               `}
             >
-              <span className={`${aktivGrotesk.className} text-[14px] font-[400]`}>
+              <span
+                className={`${aktivGrotesk.className} text-[14px] font-[400]`}
+              >
                 {month}
               </span>
             </button>
@@ -128,6 +250,7 @@ const Calendar: React.FC<CalendarProps> = ({
     )
   }
 
+  // Render year grid
   const renderYearGrid = () => {
     const years = Array.from({ length: 12 }, (_, i) => yearViewStartYear + i)
 
@@ -141,7 +264,9 @@ const Calendar: React.FC<CalendarProps> = ({
             >
               <ChevronLeft className='h-4 w-4' />
             </button>
-            <h2 className={`${aktivGrotesk.className} text-[14px] font-[500] text-gray-800`}>
+            <h2
+              className={`${aktivGrotesk.className} text-[14px] font-[500] text-gray-800`}
+            >
               {years[0]} - {years[years.length - 1]}
             </h2>
             <button
@@ -166,7 +291,9 @@ const Calendar: React.FC<CalendarProps> = ({
                 }
               `}
             >
-              <span className={`${aktivGrotesk.className} text-[14px] font-[400]`}>
+              <span
+                className={`${aktivGrotesk.className} text-[14px] font-[400]`}
+              >
                 {year}
               </span>
             </button>
@@ -175,6 +302,59 @@ const Calendar: React.FC<CalendarProps> = ({
       </div>
     )
   }
+
+  // Render calendar content based on view mode
+  const renderCalendarContent = () => {
+    switch (viewMode) {
+      case 'calendar':
+        return (
+          <CalendarComponent
+            mode='single'
+            selected={selectedDate || undefined}
+            onSelect={handleDateSelect}
+            initialFocus
+            className='rounded-md border'
+            defaultMonth={currentDate}
+            components={{
+              IconLeft: () => <ChevronLeft className='h-4 w-4' />,
+              IconRight: () => <ChevronRight className='h-4 w-4' />,
+              CaptionLabel: ({ displayMonth }) => (
+                <div className='flex items-center gap-2'>
+                  <span
+                    onClick={() => setViewMode('month')}
+                    className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
+                  >
+                    {format(displayMonth, 'MMM')}
+                  </span>
+                  <span
+                    onClick={() => setViewMode('year')}
+                    className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
+                  >
+                    {format(displayMonth, 'yyyy')}
+                  </span>
+                </div>
+              )
+            }}
+            classNames={{
+              day_selected:
+                'bg-[#11A64B] text-white hover:bg-[#11A64B] hover:text-white focus:bg-[#11A64B] focus:text-white',
+              day_today: 'bg-accent text-accent-foreground',
+              day_range_middle: 'bg-[#11A64B] text-white',
+              day_range_end: 'bg-[#11A64B] text-white',
+              day_range_start: 'bg-[#11A64B] text-white'
+            }}
+          />
+        )
+      case 'month':
+        return renderMonthGrid()
+      case 'year':
+        return renderYearGrid()
+      default:
+        return null
+    }
+  }
+
+  console.log(value, 'value')
 
   return (
     <div className='flex flex-col gap-[6px] w-full'>
@@ -188,59 +368,13 @@ const Calendar: React.FC<CalendarProps> = ({
             } ${paddingClass} ${bgColor} rounded-[100px] border border-transparent transition-all duration-200 hover:border-gray-200 data-[state=open]:border-[#11A64B] focus-visible:border-[#11A64B]`}
           >
             <span className={!value ? 'text-[rgba(0,0,0,0.3)]' : ''}>
-              {value || placeholder}
+              {displayValue || placeholder}
             </span>
             <CalendarIcon className='h-5 w-5' />
           </div>
         </PopoverTrigger>
         <PopoverContent className='w-auto p-0' align='start'>
-          {viewMode === 'calendar' ? (
-            <CalendarComponent
-              mode='single'
-              selected={value ? parseDate(value) : undefined}
-              onSelect={date => {
-                if (date) {
-                  const formattedDate = format(date, 'yyyy/MM/dd')
-                  onChange(name, formattedDate)
-                }
-              }}
-              initialFocus
-              className='rounded-md border'
-              defaultMonth={currentDate}
-              components={{
-                IconLeft: () => <ChevronLeft className='h-4 w-4' />,
-                IconRight: () => <ChevronRight className='h-4 w-4' />,
-                CaptionLabel: ({ displayMonth }) => (
-                  <div className='flex items-center gap-2'>
-                    <span
-                      onClick={() => setViewMode('month')}
-                      className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
-                    >
-                      {format(displayMonth, 'MMM')}
-                    </span>
-                    <span
-                      onClick={() => setViewMode('year')}
-                      className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
-                    >
-                      {format(displayMonth, 'yyyy')}
-                    </span>
-                  </div>
-                )
-              }}
-              classNames={{
-                day_selected:
-                  'bg-[#11A64B] text-white hover:bg-[#11A64B] hover:text-white focus:bg-[#11A64B] focus:text-white',
-                day_today: 'bg-accent text-accent-foreground',
-                day_range_middle: 'bg-[#11A64B] text-white',
-                day_range_end: 'bg-[#11A64B] text-white',
-                day_range_start: 'bg-[#11A64B] text-white'
-              }}
-            />
-          ) : viewMode === 'month' ? (
-            renderMonthGrid()
-          ) : (
-            renderYearGrid()
-          )}
+          {renderCalendarContent()}
         </PopoverContent>
       </Popover>
       {error !== '' && (
@@ -250,4 +384,4 @@ const Calendar: React.FC<CalendarProps> = ({
   )
 }
 
-export default Calendar 
+export default Calendar
