@@ -455,6 +455,39 @@ const SubmitYourJoke = () => {
     }))
   }, [cmsData, formatData])
 
+  useEffect(() => {
+    if (jokeData.language) {
+      setFormError(prev => ({
+        ...prev,
+        language: ''
+      }))
+    }
+    if (jokeData.title) {
+      setFormError(prev => ({
+        ...prev,
+        title: ''
+      }))
+    }
+    if (jokeData.agreeToTerms) {
+      setFormError(prev => ({
+        ...prev,
+        agreeToTerms: ''
+      }))
+    }
+    if (jokeData.format) {
+      setFormError(prev => ({
+        ...prev,
+        format: ''
+      }))
+    }
+    if (jokeData.jokeText || jokeData.file) {
+      setFormError(prev => ({
+        ...prev,
+        joke: ''
+      }))
+    }
+  }, [jokeData])
+
   return (
     <div className='flex flex-col gap-3'>
       <MobileTempNavBar
@@ -497,6 +530,7 @@ const SubmitYourJoke = () => {
               onChange={handleChange}
               value={jokeData.language}
               placeholder={cmsData.pjChallenge.selectLanguageDropbox}
+              errorClassName='md:text-center'
             />
           </LabeledInput>
           <LabeledInput
@@ -548,7 +582,7 @@ const SubmitYourJoke = () => {
                   })}
               </div>
               {formError.format !== '' && (
-                <span className='text-[#FD0202] font-[400] text-[12px]'>
+                <span className='text-[#FD0202] font-[400] text-[12px] md:text-center'>
                   {formError.format}
                 </span>
               )}
@@ -607,7 +641,8 @@ const SubmitYourJoke = () => {
                     onChange={handleChange}
                     value={jokeData.jokeText}
                     placeholder={cmsData.pjChallenge.textClickablePlaceholder}
-                  />
+                    errorClassName='md:text-center'
+                    />
                 </div>
                 <AktivGroteskText
                   text={cmsData.pjChallenge.textClickableTextLimit}
@@ -618,7 +653,7 @@ const SubmitYourJoke = () => {
               </div>
             )}
             {formError.joke !== '' && (
-              <span className='text-[#FD0202] font-[400] text-[12px]'>
+              <span className='text-[#FD0202] font-[400] text-[12px] md:text-center'>
                 {formError.joke}
               </span>
             )}
@@ -636,6 +671,7 @@ const SubmitYourJoke = () => {
               error={formError.title}
               paddingClass='md:p-[16px] py-[19px] px-[16px]'
               placeholder={cmsData.pjChallenge.titleJokeTitleTextSpace}
+              errorClassName='md:text-center'
             />
             <AktivGroteskText
               text='Max 30 character limit'
@@ -696,12 +732,12 @@ const SubmitYourJoke = () => {
             />
           </div>
           {formError.agreeToTerms !== '' && (
-            <span className='text-[#FD0202] font-[400] text-start text-[12px]'>
+            <span className='text-[#FD0202] font-[400] text-start text-[12px] md:text-center'>
               {formError.agreeToTerms}
             </span>
           )}
           {errorMessage !== '' && (
-            <span className='text-[#FD0202] font-[400] text-start text-[12px]'>
+            <span className='text-[#FD0202] font-[400] text-start md:text-center text-[12px]'>
               {errorMessage}
             </span>
           )}

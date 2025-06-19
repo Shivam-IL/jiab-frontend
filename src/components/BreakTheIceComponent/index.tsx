@@ -14,11 +14,14 @@ const BreakTheIceComponent = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // Store the previous path
-      const prev = sessionStorage.getItem(SESSION_STORAGE_KEYS.CURRENT_PATH)
-      if (prev) sessionStorage.setItem(SESSION_STORAGE_KEYS.PREVIOUS_PATH, prev)
-      sessionStorage.setItem(SESSION_STORAGE_KEYS.CURRENT_PATH, pathname)
-      if (prev === '/profile') {
-        setShowExitPopup(true)
+      if (isAuthenticated) {
+        const prev = sessionStorage.getItem(SESSION_STORAGE_KEYS.CURRENT_PATH)
+        if (prev)
+          sessionStorage.setItem(SESSION_STORAGE_KEYS.PREVIOUS_PATH, prev)
+        sessionStorage.setItem(SESSION_STORAGE_KEYS.CURRENT_PATH, pathname)
+        if (prev === '/profile') {
+          setShowExitPopup(true)
+        }
       }
       if (!isAuthenticated) {
         removeSessionStorageItem(SESSION_STORAGE_KEYS.CURRENT_PATH)
@@ -36,9 +39,9 @@ const BreakTheIceComponent = () => {
   if (!isAuthenticated || !token || user?.profile_percentage === 100)
     return null
 
-  if (pathName.includes('my-profile')) return null
+  if (pathName.startsWith('/my-profile')) return null
 
-  if (pathName.includes('profile')) return null
+  if (pathName.startsWith('/profile')) return null
 
   return (
     <>

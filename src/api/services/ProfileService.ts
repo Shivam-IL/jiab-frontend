@@ -49,14 +49,15 @@ export class ProfileService extends MainService {
     try {
       const formData = new FormData();
       formData.append("name", userData.name);
-      if (userData?.dob) {
-        formData.append("dob", userData.dob);
-      }
+        formData.append("dob", userData?.dob ?? '');
       if (userData?.gender) {
         formData.append("gender", userData.gender);
       }
       if (userData?.avatar_id) {
         formData.append("avatar_id", userData.avatar_id.toString());
+      }
+      if (userData?.email) {
+        formData.append("email", userData.email);
       }
 
       if (userData?.pfImage) {
@@ -65,6 +66,7 @@ export class ProfileService extends MainService {
       } else if (userData?.avatar_id) {
         formData.append("is_avatar", "true");
       }
+
       const response = await apiClient.patch(
         API_ROUTES.USER.PROFILE.EDIT,
         formData,
