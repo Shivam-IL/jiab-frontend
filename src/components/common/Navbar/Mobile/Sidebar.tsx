@@ -15,6 +15,7 @@ import InviteCodeComponent from '../../InviteCodeComponent'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import { usePathname, useRouter } from 'next/navigation'
 import { useGetComicCoins } from '@/api/hooks/JokeHooks'
+import { INFOBIP_WHATSAPP_URL } from '@/config'
 
 interface SidebarProps {
   isOpen: boolean
@@ -167,7 +168,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                     </h3>
                     <div className='flex items-center'>
                       <span className='text-2xl font-bold text-gray-800 mr-1 leading-[28px]'>
-                        {current_balance ? current_balance : "--"}
+                        {current_balance ? current_balance : '--'}
                       </span>
                       {coinImage && (
                         <Image
@@ -414,7 +415,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
             </li>
 
             {/* Text me, Maybe? */}
-            <li
+            <a
+              href={`${INFOBIP_WHATSAPP_URL}&text=Hi,+I+am+here+for+Sprite+Joke-In-A-Bottle!+By+pressing+Send+on+this,+I+give+my+consent+to+sharing+my+mobile+number+and+display+name+with+Sprite.`}
+              target='_blank'
               className={`transition-all duration-300 ease-out ${
                 isOpen
                   ? 'opacity-100 translate-x-0'
@@ -450,7 +453,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                   Chat
                 </button>
               </div>
-            </li>
+            </a>
 
             <div className='mt-[61px]'>
               {/* Bottom Menu Items */}
