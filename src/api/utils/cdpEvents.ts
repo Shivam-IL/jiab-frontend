@@ -318,11 +318,6 @@ export class CDPEventPayloadBuilder {
     phone_with_countrycode: string;
     email: string;
     first_name: string;
-    targeting_age_from: number;
-    sms_message: number;
-    phone_call: number;
-    email_comm: number;
-    whatsapp: number;
     geo_country_code: string;
     geo_state_province_code: string;
     geo_city_name: string;
@@ -339,11 +334,11 @@ export class CDPEventPayloadBuilder {
       phone_with_countrycode: data.phone_with_countrycode,
       email: data.email,
       first_name: data.first_name,
-      targeting_age_from: data.targeting_age_from,
-      [COMMUNICATION_PREFERENCES.SMS_MESSAGE]: data.sms_message,
-      [COMMUNICATION_PREFERENCES.PHONE_CALL]: data.phone_call,
-      [COMMUNICATION_PREFERENCES.EMAIL]: data.email_comm,
-      [COMMUNICATION_PREFERENCES.WHATSAPP]: data.whatsapp,
+      targeting_age_from: 18,
+      [COMMUNICATION_PREFERENCES.SMS_MESSAGE]:1,
+      [COMMUNICATION_PREFERENCES.PHONE_CALL]:1,
+      [COMMUNICATION_PREFERENCES.EMAIL]:1,
+      [COMMUNICATION_PREFERENCES.WHATSAPP]:1,
       geo_country_code: data.geo_country_code,
       geo_state_province_code: data.geo_state_province_code,
       geo_city_name: data.geo_city_name,

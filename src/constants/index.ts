@@ -412,7 +412,7 @@ export const CLAIM_POPUP_DATA = {
 
 export const JOKES_POPUP_DATA = {
   JOKE_SUBMITTED: {
-    ICON: ICONS_NAMES.THANK_YOU,
+    ICON: ICONS_NAMES.CLAP,
     TITLE: "Your joke is in!",
     SUB_TITLE: "You did good, we'll take it from here. Ping you in 14 days!",
     SINGLE_BUTTON: true,
