@@ -26,7 +26,6 @@ export default function LayoutClient ({
   children
 }: Readonly<LayoutClientProps>) {
   const pathname = usePathname()
-
   useEffect(() => {
     pageview(window.location.pathname)
   }, [pathname])

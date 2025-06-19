@@ -14,7 +14,8 @@ import {
   updateSurpriseMe,
   updateToken,
   updateGludeinIsAuthenticated,
-  updateRefreshTokenNotVerified
+  updateRefreshTokenNotVerified,
+  updateLoginModal
 } from '@/store/auth/auth.slice'
 import {
   updateAddresses,
@@ -48,8 +49,9 @@ import {
 } from '@/store/reference'
 import { useGetUserSubmittedJokes } from '@/api/hooks/JokeHooks'
 import { clearAllModalSessions } from '@/hooks/useSessionModal'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import useAppSelector from '@/hooks/useSelector'
+import { setLanguage } from '@/store/language/language.slice'
 
 const mainServiceInstance = MainService.getInstance()
 
@@ -62,6 +64,11 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const { data: userAddressesData } = useGetUserAddresses()
   const { mutate: mutateGludeinLogin, data: gluedinLoginData } =
     useMutateGludeinLogin()
+
+  const searchParams = useSearchParams()
+  const refreshTokenFromParams = searchParams.get('refresh')
+  const langKey = searchParams.get('lang')
+
 
   let gluedInSDKInitilize = new gluedin.GluedInSDKInitilize()
   gluedInSDKInitilize.initialize({
@@ -83,7 +90,9 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   } = useMutateRefreshToken()
 
   useEffect(() => {
-    const refreshToken = getLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN)
+    const refreshToken =
+      getLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN) ??
+      refreshTokenFromParams
     if (refreshToken) {
       mutateRefreshToken({ refresh_token: refreshToken })
       const userDetails = getLocalStorageItem(LOCAL_STORAGE_KEYS.USER_DETAILS)
@@ -98,12 +107,15 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         const data = JSON.parse(addressesDetails)
         dispatch(updateAddresses({ addresses: data?.addresses }))
       }
+      if (langKey) {
+        dispatch(setLanguage(langKey))
+      }
     } else {
       dispatch(updateIsAuthenticated({ isAuthenticated: false }))
       dispatch(updateToken({ token: '' }))
       dispatch(updateRefreshTokenNotVerified({ refreshTokenNotVerified: true }))
     }
-  }, [])
+  }, [refreshTokenFromParams])
 
   useEffect(() => {
     if (refreshTokenData?.ok) {
@@ -115,9 +127,12 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       setLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, access_token)
       dispatch(updateSurpriseMe({ surpriseMe: true }))
       setTokenUpdated(true)
-    } else {
+    } else if (refreshTokenData?.ok === false) {
       localStorage.clear()
       dispatch(updateIsAuthenticated({ isAuthenticated: false }))
+      if (refreshTokenFromParams) {
+        dispatch(updateLoginModal({ loginModal: true }))
+      }
       dispatch(updateToken({ token: '' }))
       clearAllModalSessions()
     }

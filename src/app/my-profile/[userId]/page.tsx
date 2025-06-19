@@ -12,7 +12,7 @@ import { GA_EVENTS, MOBILE_TEMP_NAVBAR_DATA } from '@/constants'
 import { updateUser } from '@/store/profile/profile.slice'
 import useAppSelector from '@/hooks/useSelector'
 import useWindowWidth from '@/hooks/useWindowWidth'
-import { monthDayYearConvert } from '@/utils'
+import { monthDayYearConvert, newMonthDayYearConvert } from '@/utils'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import useAppDispatch from '@/hooks/useDispatch'
@@ -44,8 +44,7 @@ const EditProfilePage = () => {
   } = useEditUserProfileDetails()
 
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false)
-  const { user } = useAppSelector(state => state.profile)
-  const { avatarsData } = useAppSelector(state => state.profile)
+  const { user,avatarsData } = useAppSelector(state => state.profile)
   const [currentImage, setCurrentImage] = useState<string>('')
   const [userData, setUserData] = useState<IUserData>({
     avatar_id: 0,
@@ -152,7 +151,7 @@ const EditProfilePage = () => {
         name: name,
         email: email,
         phone: phone_number,
-        dob: dob ? monthDayYearConvert(dob) : '',
+        dob: dob ? dob : '',
         gender
       })
     }
@@ -177,17 +176,20 @@ const EditProfilePage = () => {
   const submitHandler = () => {
     if (isFormValid()) {
       const { name, dob, gender, avatar_id, email } = userData
+      console.log(dob, 'dob')
       const payload = {
         name,
-        dob: dob ? monthDayYearConvert(dob) : '',
+        dob: dob ? newMonthDayYearConvert(dob) : '',
         email,
         gender,
         avatar_id,
         pfImage: pfImage ? pfImage : undefined
       }
+      console.log(payload, 'payload')
       editUserProfileDetails(payload)
     }
   }
+
 
   const [generalError, setGeneralError] = useState<string>('')
 
@@ -204,6 +206,8 @@ const EditProfilePage = () => {
         setGeneralError(message)
     }
   }, [editUserProfileDetailsData])
+
+  console.log(userData, 'userData')
 
   return (
     <div onClick={handleContainerClick} className='flex flex-col gap-3'>

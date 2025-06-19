@@ -44,6 +44,16 @@ const AddressModal: React.FC<IAddressModal> = ({
     city: '',
     default: false
   })
+  const [initialEditData, setInitialEditData] = useState<IAddressData>({
+    address_line_1: '',
+    address_line_2: '',
+    nearest_landmark: '',
+    alternate_phone_number: '',
+    pincode: '',
+    state: '',
+    city: '',
+    default: false
+  })
 
   const [error, setError] = useState<IAddressError>({
     address_line_1: '',
@@ -176,6 +186,16 @@ const AddressModal: React.FC<IAddressModal> = ({
       const address = addresses?.find((address: any) => address.id === addressId)
       if (address) {
         setData({
+          address_line_1: address?.address1 || '',
+          address_line_2: address?.address2 || '',
+          nearest_landmark: address?.nearest_landmark || '',
+          alternate_phone_number: address?.shipping_mobile || '',
+          pincode: address?.pincode.toString() || '',
+          state: address?.state || '',
+          city: address?.city || '',
+          default: address?.is_default || false
+        })
+        setInitialEditData({
           address_line_1: address?.address1 || '',
           address_line_2: address?.address2 || '',
           nearest_landmark: address?.nearest_landmark || '',
@@ -347,6 +367,7 @@ const AddressModal: React.FC<IAddressModal> = ({
             <Checkbox
               checked={data.default}
               name='default'
+              disabled={type !== AddressModalType.ADD && initialEditData?.default}
               onCheckedChange={() => {
                 handleChange('default', !data.default)
               }}
