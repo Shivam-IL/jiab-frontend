@@ -212,7 +212,6 @@ const ContestSurpriseModal: React.FC<ContestSurpriseModalProps> = ({
             controls
             autoPlay
             muted
-            loop
             poster={joke?.thumbnail_url ?? ""}
           >
             <source src={joke?.url ?? ""} type="video/mp4" />

@@ -238,6 +238,8 @@ export type TCMSResponse = {
       user: string;
       statu_s: string;
       send_reminder: string;
+      my_referrals: string;
+      refer_another: string;
     };
     comic_coins: {
       id: number;

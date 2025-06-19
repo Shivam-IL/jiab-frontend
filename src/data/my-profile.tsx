@@ -15,6 +15,8 @@ export interface MyProfileData {
   user: string;
   sendReminder: string;
   status: string;
+  myReferrals: string;
+  referAnother: string;
 }
 
 export const mapMyProfileData = (
@@ -39,6 +41,8 @@ export const mapMyProfileData = (
     user: myProfileCMS?.user ?? "User",
     sendReminder: myProfileCMS?.send_reminder ?? "Send Reminder",
     status: myProfileCMS?.statu_s ?? "Status",
+    myReferrals: myProfileCMS?.my_referrals ?? "My Referrals",
+    referAnother: myProfileCMS?.refer_another ?? "Refer Another",
   };
 };
 
@@ -58,4 +62,6 @@ export const defaultMyProfileData: MyProfileData = {
   user: "User",
   sendReminder: "Send Reminder",
   status: "Status",
+  myReferrals: "My Referrals",
+  referAnother: "Refer Another",
 };

@@ -266,7 +266,7 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
             className="p-2 cursor-pointer bg-transparent hover:bg-gray-100 rounded-full border-none outline-none"
             type="button"
           >
-            <SvgIcons name={ICONS_NAMES.CROSS} className="w-[14px] h-[14px]" />
+            <SvgIcons name={ICONS_NAMES.CROSS} className="w-[12.29px] h-[12.64px]" />
           </button>
         </div>
         <div className="w-full px-[22px] md:px-[16px] pt-[12px] pb-[23px] flex flex-col gap-[16px] mt-[-30px]">

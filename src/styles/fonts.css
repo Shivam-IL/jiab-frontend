@@ -1,0 +1,174 @@
+/* Font optimization for cross-platform compatibility */
+
+/* Modern font loading with font-display: swap for better performance */
+@font-face {
+  font-family: 'AktivGroteskCorp';
+  src: url('/fonts/AktivGroteskCorp-Regular.woff2') format('woff2'),
+    url('/fonts/AktivGroteskCorp-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'AktivGroteskCorp';
+  src: url('/fonts/AktivGroteskCorp-Light.woff2') format('woff2'),
+    url('/fonts/AktivGroteskCorp-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'AktivGroteskCorp';
+  src: url('/fonts/AktivGroteskCorp-Medium.woff2') format('woff2'),
+    url('/fonts/AktivGroteskCorp-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'AktivGroteskCorp';
+  src: url('/fonts/AktivGroteskCorp-Bold.woff2') format('woff2'),
+    url('/fonts/AktivGroteskCorp-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Italic variants */
+@font-face {
+  font-family: 'AktivGroteskCorp';
+  src: url('/fonts/AktivGroteskCorp-Italic.woff2') format('woff2'),
+    url('/fonts/AktivGroteskCorp-Italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'AktivGroteskCorp';
+  src: url('/fonts/AktivGroteskCorp-LightItalic.woff2') format('woff2'),
+    url('/fonts/AktivGroteskCorp-LightItalic.woff') format('woff');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'AktivGroteskCorp';
+  src: url('/fonts/AktivGroteskCorp-MediumItalic.woff2') format('woff2'),
+    url('/fonts/AktivGroteskCorp-MediumItalic.woff') format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'AktivGroteskCorp';
+  src: url('/fonts/AktivGroteskCorp-BoldItalic.woff2') format('woff2'),
+    url('/fonts/AktivGroteskCorp-BoldItalic.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Cross-platform font optimization */
+.font-optimized {
+  /* Enable font features */
+  font-feature-settings:
+    "kern" 1,
+    /* Kerning */
+    "liga" 1,
+    /* Ligatures */
+    "calt" 1,
+    /* Contextual alternates */
+    "ss01" 1;
+  /* Stylistic sets */
+
+  /* Optical sizing for variable fonts */
+  font-optical-sizing: auto;
+
+  /* Better text rendering */
+  text-rendering: optimizeLegibility;
+
+  /* Font smoothing for Mac */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Font synthesis control */
+  font-synthesis: none;
+
+  /* Ligatures */
+  font-variant-ligatures: common-ligatures;
+}
+
+/* Platform-specific optimizations */
+@supports (-webkit-appearance: none) {
+
+  /* Safari/Webkit optimizations */
+  .font-optimized {
+    -webkit-font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Windows-specific optimizations */
+@media screen and (-ms-high-contrast: active),
+(-ms-high-contrast: none) {
+  .font-optimized {
+    /* Disable expensive font features on older Windows */
+    font-feature-settings: normal;
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+  }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 2dppx) {
+  .font-optimized {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .font-optimized {
+    /* Lighter font smoothing for mobile */
+    text-rendering: optimizeSpeed;
+  }
+}
+
+/* Utility classes for different font optimization levels */
+.font-optimize-performance {
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  font-feature-settings: normal;
+}
+
+.font-optimize-quality {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+.font-optimize-balance {
+  text-rendering: auto;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+  font-feature-settings: "kern" 1;
+}
