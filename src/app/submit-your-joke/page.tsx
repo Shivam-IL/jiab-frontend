@@ -28,6 +28,9 @@ import { IGenre, IJokeFormat, ILanguage } from '@/store/reference'
 import { useSubmitJoke } from '@/api/hooks/JokeHooks'
 import { TSubmitJokeParams } from '@/api/types/JokeTypes'
 import { useRouter } from 'next/navigation'
+import { useGlobalLoader } from '@/hooks/useGlobalLoader'
+import { useCoinAnimation } from '@/components/common/CoinAnimation'
+import BottleAnimation from '@/components/common/BottleAnimation'
 
 interface FileContainerProps {
   title: string
@@ -312,6 +315,7 @@ const SubmitYourJoke = () => {
       file: jokeData.file as unknown as FileList,
       jokeText: jokeData.jokeText
     }
+    triggerAnimation()
     submitJoke(payload)
   }
 
@@ -372,6 +376,9 @@ const SubmitYourJoke = () => {
       setLanguageData(modifiedLanguages)
     }
   }, [languages])
+
+  const { isAnimating, triggerAnimation, animationKey, hideAnimation } =
+    useCoinAnimation()
 
   useEffect(() => {
     if (jokesFormats?.length > 0 && FORMAT_OPTIONS?.length > 0) {
@@ -642,7 +649,7 @@ const SubmitYourJoke = () => {
                     value={jokeData.jokeText}
                     placeholder={cmsData.pjChallenge.textClickablePlaceholder}
                     errorClassName='md:text-center'
-                    />
+                  />
                 </div>
                 <AktivGroteskText
                   text={cmsData.pjChallenge.textClickableTextLimit}
@@ -823,6 +830,13 @@ const SubmitYourJoke = () => {
             setOpenJokeNotGoodEnoughPopup(false)
             setOpenJokeOffensivePopup(true)
           }}
+        />
+      )}
+      {isAnimating && isPending && (
+        <BottleAnimation
+          onAnimationEnd={hideAnimation}
+          isVisible={isAnimating}
+          animationKey={animationKey}
         />
       )}
       {openJokeOffensivePopup && (

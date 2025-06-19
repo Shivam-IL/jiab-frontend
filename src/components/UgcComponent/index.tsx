@@ -57,8 +57,8 @@ const UgcComponent: React.FC<IUgcComponent> = ({
             text={isLoadingGluedinFeedList ? 'Loading...' : 'Load More'}
             disabled={isLoadingGluedinFeedList}
             className='leading-tight'
-            paddingClass='md:py-[16px] md:px-[50px] px-[20px] py-[10px]'
-            fontSize='md:text-[28px] text-[16px]'
+            paddingClass='px-[36px] py-[8px] md:py-[8px] md:px-[16px] border-[1px]'
+            fontSize='md:text-[16px] text-[14px]'
             fontWeight='font-[700]'
             onClick={() => {
               if (filterChnageId !== '') {

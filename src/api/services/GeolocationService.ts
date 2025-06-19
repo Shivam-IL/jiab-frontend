@@ -39,7 +39,7 @@ export class GeolocationService {
           postal: geoData.postal || "",
         };
         const localGeoData: ILocalGeoData = {
-          geo_country_code: geoData?.countryCode,
+          geo_country_code: geoData?.countryCode ?? "IN",
           geo_state_province_code: geoData?.region,
           geo_city_name: geoData?.city,
           geo_postal_code: geoData?.postal ?? "",

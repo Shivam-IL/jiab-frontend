@@ -26,10 +26,21 @@ import SvgIcons from "../SvgIcons";
 import { GA_EVENTS, ICONS_NAMES, TOKEN_TYPE } from "@/constants";
 import { MainService } from "@/api/services/MainService";
 import { LOCAL_STORAGE_KEYS } from "@/api/client/config";
-import { removeLocalStorageItem, setLocalStorageItem } from "@/utils";
+import {
+  getLocalStorageItem,
+  removeLocalStorageItem,
+  setLocalStorageItem
+} from "@/utils";
 
 import { triggerGAEvent } from "@/utils/gTagEvents";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
+import {
+  CDPEventPayloadBuilder,
+  LandingPageCDPEventPayload,
+  LoginCDPEventPayload
+} from '@/api/utils/cdpEvents'
+import { ILocalGeoData } from '@/api/types/GeolocationTypes'
+import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 
 const OtpModal = () => {
   const [otp, setOtp] = useState<string>("");
@@ -39,6 +50,7 @@ const OtpModal = () => {
   const mainServiceInstance = MainService.getInstance();
 
   const { phoneNumber } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector(state => state.profile)
   const { mutate: requestOTP } = useMutateRequestOTP();
   const {
     mutate: verifyOTP,
@@ -51,6 +63,8 @@ const OtpModal = () => {
 
   const [counter, setCounter] = useState<string>("59");
   const [counterEnd, setCounterEnd] = useState<boolean>(false);
+  const [otpVerified, setOtpVerified] = useState<boolean>(false)
+  const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   const dispatch = useAppDispatch();
 
@@ -111,6 +125,19 @@ const OtpModal = () => {
     }
   }, [isPending]);
 
+  const triggerLoginCDPEvent = (userIdentifier: string) => {
+    const geoLocationData = JSON.parse(
+      getLocalStorageItem(LOCAL_STORAGE_KEYS.USER_GEOLOCATION) ?? '{}'
+    ) as ILocalGeoData
+    const payload: LoginCDPEventPayload =
+      CDPEventPayloadBuilder.buildLoginPayload({
+        phone_with_countrycode: `+91${phoneNumber}`,
+        user_identifier: userIdentifier,
+        ...geoLocationData
+      })
+    sendCDPEvent(payload)
+  }
+
   useEffect(() => {
     if (verifyOTPData?.ok) {
       const { data: verifyTokenData } = verifyOTPData;
@@ -126,6 +153,8 @@ const OtpModal = () => {
         dispatch(updateIsFirstLogin({ isFirstLogin: false }));
         setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
         dispatch(updateSurpriseMe({ surpriseMe: true }));
+        //TODO: Have to Add user Id
+        triggerLoginCDPEvent(user?.id ?? '')
       }
       mainServiceInstance.setAccessToken(token);
       dispatch(updateOtpFilled({ otpFilled: true }));

@@ -203,14 +203,71 @@ const SurpriseMeModal = ({
           video::-webkit-media-controls {
             z-index: 9999 !important;
           }
-          /* Ensure playback speed dropdown is visible */
+          /* Fix playback speed dropdown scrolling */
           video::-webkit-media-controls-playback-rate-menu-button {
             z-index: 10000 !important;
+            position: relative !important;
           }
           video::-webkit-media-controls-playback-rate-menu-button ul {
             z-index: 10000 !important;
+            position: absolute !important;
+            bottom: 100% !important;
+            left: 0 !important;
             max-height: 200px !important;
             overflow-y: auto !important;
+            overflow-x: hidden !important;
+            background: rgba(0, 0, 0, 0.9) !important;
+            border-radius: 4px !important;
+            padding: 8px 0 !important;
+            margin-bottom: 8px !important;
+            min-width: 80px !important;
+            scroll-behavior: smooth !important;
+            -webkit-overflow-scrolling: touch !important;
+          }
+          /* Force scrolling behavior */
+          video::-webkit-media-controls-playback-rate-menu-button ul:hover {
+            overflow-y: auto !important;
+          }
+          video::-webkit-media-controls-playback-rate-menu-button ul:focus {
+            overflow-y: auto !important;
+          }
+          /* Alternative approach for better scrolling */
+          video::-webkit-media-controls-playback-rate-menu-button ul {
+            display: block !important;
+            max-height: 200px !important;
+            overflow-y: scroll !important;
+            scrollbar-width: thin !important;
+            scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1) !important;
+          }
+          /* Ensure modal doesn't clip video controls */
+          [data-radix-dialog-content] {
+            overflow: visible !important;
+          }
+          /* Video container overflow fix */
+          .relative {
+            overflow: visible !important;
+          }
+          /* Additional fixes for playback rate menu */
+          video::-webkit-media-controls-playback-rate-menu-button ul li {
+            padding: 4px 12px !important;
+            color: white !important;
+            cursor: pointer !important;
+            white-space: nowrap !important;
+          }
+          video::-webkit-media-controls-playback-rate-menu-button ul li:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+          }
+          /* Force scrollbar to be visible */
+          video::-webkit-media-controls-playback-rate-menu-button ul::-webkit-scrollbar {
+            width: 6px !important;
+          }
+          video::-webkit-media-controls-playback-rate-menu-button ul::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 3px !important;
+          }
+          video::-webkit-media-controls-playback-rate-menu-button ul::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3) !important;
+            border-radius: 3px !important;
           }
         `}</style>
         <DialogContent className="border-none md:max-w-[353px] px-[12px] max-w-[277px] shadow-none p-0 rounded-[20px]">
