@@ -18,6 +18,11 @@ import { AddressModalType } from '@/types'
 import { editAddress, updateAddresses } from '@/store/profile/profile.slice'
 import useAppSelector from '@/hooks/useSelector'
 import { useCMSData } from '@/data'
+import {
+  AddressCDPEventPayload,
+  CDPEventPayloadBuilder
+} from '@/api/utils/cdpEvents'
+import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 
 const AddressModal: React.FC<IAddressModal> = ({
   open,
@@ -33,6 +38,8 @@ const AddressModal: React.FC<IAddressModal> = ({
   }, [])
 
   const cmsData = useCMSData(mounted)
+  const { user } = useAppSelector(state => state.profile)
+  const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   const [data, setData] = useState<IAddressData>({
     address_line_1: '',
@@ -92,6 +99,33 @@ const AddressModal: React.FC<IAddressModal> = ({
       setData({ ...data, [key]: valueString ?? '' })
     } else {
       setData({ ...data, [key]: value })
+    }
+  }
+
+  const trigger_CDP_ADD_ADDRESS = ({
+    address_line_1,
+    address_line_2,
+    pincode,
+    state,
+    city
+  }: {
+    address_line_1: string
+    address_line_2?: string
+    pincode: string
+    state: string
+    city: string
+  }) => {
+    if (address_line_1 && pincode && state && city && user?.id) {
+      const payload: AddressCDPEventPayload =
+        CDPEventPayloadBuilder.buildAddAddressPayload({
+          address_line1: address_line_1,
+          address_line2: address_line_2 ?? '',
+          address_city: city,
+          address_state: state,
+          geo_postal_code: pincode,
+          user_identifier: user.id ?? ''
+        })
+      sendCDPEvent(payload)
     }
   }
 
@@ -157,6 +191,13 @@ const AddressModal: React.FC<IAddressModal> = ({
   useEffect(() => {
     if (!isPending && addNewAddressData?.ok) {
       const { data } = addNewAddressData ?? {}
+      trigger_CDP_ADD_ADDRESS({
+        address_line_1: data?.address1,
+        address_line_2: data?.address2 ?? '',
+        pincode: data?.pincode.toString(),
+        state: data?.state,
+        city: data?.city
+      })
       dispatch(
         updateAddresses({
           type: REDUX_UPDATION_TYPES.SINGLE_ADDED,
@@ -170,6 +211,13 @@ const AddressModal: React.FC<IAddressModal> = ({
   useEffect(() => {
     if (editNewAddressData?.ok && addressId) {
       const { data } = editNewAddressData ?? {}
+      trigger_CDP_ADD_ADDRESS({
+        address_line_1: data?.address1,
+        address_line_2: data?.address2 ?? '',
+        pincode: data?.pincode.toString(),
+        state: data?.state,
+        city: data?.city
+      })
       dispatch(
         editAddress({
           addressId: addressId,
@@ -183,7 +231,9 @@ const AddressModal: React.FC<IAddressModal> = ({
   useEffect(() => {
     if (addressId && type === AddressModalType.EDIT) {
       console.log('addressId', addressId)
-      const address = addresses?.find((address: any) => address.id === addressId)
+      const address = addresses?.find(
+        (address: any) => address.id === addressId
+      )
       if (address) {
         setData({
           address_line_1: address?.address1 || '',
@@ -367,7 +417,9 @@ const AddressModal: React.FC<IAddressModal> = ({
             <Checkbox
               checked={data.default}
               name='default'
-              disabled={type !== AddressModalType.ADD && initialEditData?.default}
+              disabled={
+                type !== AddressModalType.ADD && initialEditData?.default
+              }
               onCheckedChange={() => {
                 handleChange('default', !data.default)
               }}

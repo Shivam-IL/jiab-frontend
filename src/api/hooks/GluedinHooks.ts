@@ -8,6 +8,7 @@ import {
   TGludeinHallOfLame,
   TGludeinJokes,
   TGludeinLogin,
+  TGludeinReport,
   TGludeinUserReaction,
   TGludeinUserVote,
 } from "../types/GluedinTypes";
@@ -70,7 +71,7 @@ const useGetGluedinUserVoteList = (params: any) => {
 
 const useSendGluedinUserReaction = () => {
   const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
-  
+
   return useMutation({
     mutationFn: (data: TGludeinUserReaction) =>
       gluedinInstance.sendGluedinUserReaction(data),
@@ -84,7 +85,7 @@ const useSendGluedinUserReaction = () => {
 
 const useSendVoteToGluedinAssets = () => {
   const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
-  
+
   return useMutation({
     mutationFn: (data: TGludeinUserVote) =>
       gluedinInstance.sendVoteToGluedinAssets(data),
@@ -126,12 +127,19 @@ const useGetHallOfLames = (data: TGludeinHallOfLame) => {
   const { isAuthenticated, token, gludeinIsAuthenticated } = useAppSelector(
     (state) => state.auth
   );
-  
+
   return useQuery({
     queryKey: [...keys.gluedin.getHallOfLame(), { ...data }],
     queryFn: () => gluedinInstance.getHallOfLame(data),
     enabled: isAuthenticated && token && gludeinIsAuthenticated ? true : false,
     staleTime: 0,
+  });
+};
+
+const useSendReportToGluedin = () => {
+  return useMutation({
+    mutationFn: (data: TGludeinReport) =>
+      gluedinInstance.sendReportToGluedin(data),
   });
 };
 
@@ -145,4 +153,5 @@ export {
   useGetGluedinAssetById,
   useViewGludeinJokes,
   useGetHallOfLames,
+  useSendReportToGluedin,
 };

@@ -1,57 +1,77 @@
-import InviteCodePopupWrapper from "@/components/InviteCodePopus";
+import InviteCodePopupWrapper from '@/components/InviteCodePopus'
 import {
   GA_EVENTS,
   INVITE_CODE_POPUP_DATA,
-  INVITE_CODE_STATUS,
-} from "@/constants/";
-import React, { useEffect, useState } from "react";
-import { useVerifyReferral } from "@/api/hooks/ReferralHooks";
-import { triggerGAEvent } from "@/utils/gTagEvents";
+  INVITE_CODE_STATUS
+} from '@/constants/'
+import React, { useEffect, useState } from 'react'
+import { useVerifyReferral } from '@/api/hooks/ReferralHooks'
+import { triggerGAEvent } from '@/utils/gTagEvents'
 import {
   CoinAnimation,
-  useCoinAnimation,
-} from "@/components/common/CoinAnimation";
+  useCoinAnimation
+} from '@/components/common/CoinAnimation'
+import {
+  BaseCDPEventPayload,
+  CDPEventPayloadBuilder
+} from '@/api/utils/cdpEvents'
+import useAppSelector from '@/hooks/useSelector'
+import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 
 const InviteCodeComponent = ({
   open,
   setOpen,
-  onClose,
+  onClose
 }: {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  onClose: () => void;
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  onClose: () => void
 }) => {
-  const [invite2, setInvite2] = useState<boolean>(false);
-  const [inviteCode, setInviteCode] = useState<string>("");
+  const [invite2, setInvite2] = useState<boolean>(false)
+  const [inviteCode, setInviteCode] = useState<string>('')
 
   const { mutate: verifyReferral, data: verifyReferralData } =
-    useVerifyReferral();
-  const [inviteCodeStatus, setInviteCodeStatus] = useState<string>("");
+    useVerifyReferral()
+  const [inviteCodeStatus, setInviteCodeStatus] = useState<string>('')
+  const { user } = useAppSelector(state => state.profile)
 
   // Coin animation hook
-  const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation();
+  const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation()
+  const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   const handleChangeInvite = (key: string, value: string) => {
-    setInviteCode(value);
-  };
+    setInviteCode(value)
+  }
 
   const handleVerifyReferral = () => {
-    verifyReferral({ referral_code: inviteCode });
-  };
+    verifyReferral({ referral_code: inviteCode })
+  }
 
+  const triggerCDPInviteCodeEvent = () => {
+    if (user?.id) {
+      const payload: BaseCDPEventPayload =
+        CDPEventPayloadBuilder.buildUseInviteCodePayload({
+          user_identifier: user.id
+        })
+      sendCDPEvent(payload)
+    }
+  }
+
+  console.log('verifyReferralData', verifyReferralData)
   useEffect(() => {
     if (verifyReferralData?.ok) {
-      const { status } = verifyReferralData?.data as { status?: string };
-      setInviteCodeStatus(status as string);
+      const { status } = verifyReferralData?.data as { status?: string }
+      setInviteCodeStatus(status as string)
       if (status === INVITE_CODE_STATUS.SUCCESS) {
-        setOpen(false);
-        triggerAnimation();
+        triggerCDPInviteCodeEvent()
+        setOpen(false)
+        triggerAnimation()
       } else if (status === INVITE_CODE_STATUS.INVALID_REFERRAL_CODE) {
-        setInvite2(true);
-        setOpen(false);
+        setInvite2(true)
+        setOpen(false)
       }
     }
-  }, [verifyReferralData]);
+  }, [verifyReferralData])
 
   return (
     <>
@@ -64,12 +84,12 @@ const InviteCodeComponent = ({
           onChange={handleChangeInvite}
           open={open}
           onSubmit={() => {
-            triggerGAEvent(GA_EVENTS.SPRITE_24_REFERRAL_CODE_SUBMIT);
-            handleVerifyReferral();
+            triggerGAEvent(GA_EVENTS.SPRITE_24_REFERRAL_CODE_SUBMIT)
+            handleVerifyReferral()
           }}
           onClose={() => {
-            setOpen(false);
-            setInviteCode("");
+            setOpen(false)
+            setInviteCode('')
           }}
         />
       )}
@@ -83,12 +103,12 @@ const InviteCodeComponent = ({
             onChange={handleChangeInvite}
             open={invite2}
             onSubmit={() => {
-              handleVerifyReferral();
+              handleVerifyReferral()
             }}
             onClose={() => {
-              setInvite2(false);
-              setInviteCode("");
-              setInviteCodeStatus("");
+              setInvite2(false)
+              setInviteCode('')
+              setInviteCodeStatus('')
             }}
           />
         )}
@@ -96,7 +116,7 @@ const InviteCodeComponent = ({
       {/* Coin Animation */}
       <CoinAnimation isVisible={isAnimating} animationKey={animationKey} />
     </>
-  );
-};
+  )
+}
 
-export default InviteCodeComponent;
+export default InviteCodeComponent

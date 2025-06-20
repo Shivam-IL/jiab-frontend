@@ -13,6 +13,8 @@ interface CalendarDialogProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   onDateSelect?: (range: DateRange | undefined) => void;
+  fromDate?: number;
+  toDate?: number;
 }
 const currentYear = new Date().getFullYear();
 
@@ -37,6 +39,8 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
   open,
   setOpen,
   onDateSelect,
+  fromDate,
+  toDate,
 }) => {
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>();
   const [viewMode, setViewMode] = React.useState<"calendar" | "year" | "month">(
@@ -47,10 +51,36 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
     return currentYear - 6;
   });
 
+  // Clear date range when dialog opens to start fresh
+  React.useEffect(() => {
+    if (open) {
+      setViewMode("calendar");
+    }
+  }, [open]);
+
   const handleDateSelect = (range: DateRange | undefined) => {
-    setDateRange(range);
-    if (onDateSelect) {
-      onDateSelect(range);
+    // If user clicks on a date and we have a previous complete range, change start date first
+    console.log("range", range);
+    if (fromDate && toDate) {
+      console.log("range", range);
+      // User is changing the selection, always start with the clicked date as start date
+      const newRange = { from: range?.from ?? range?.to, to: undefined };
+      console.log("newRange", newRange);
+      setDateRange(newRange);
+      if (onDateSelect) {
+        onDateSelect(newRange);
+      }
+    } else {
+      // Normal range selection behavior
+      setDateRange(range);
+      if (onDateSelect) {
+        onDateSelect(range);
+      }
+      
+      // Close the dialog when a complete range is selected (both from and to dates)
+      if (range?.from && range?.to) {
+        setOpen(false);
+      }
     }
   };
 

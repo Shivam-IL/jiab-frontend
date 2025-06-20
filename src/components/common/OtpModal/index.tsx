@@ -131,7 +131,7 @@ const OtpModal = () => {
     ) as ILocalGeoData;
     const payload: LoginCDPEventPayload =
       CDPEventPayloadBuilder.buildLoginPayload({
-        phone_with_countrycode: `+91${phoneNumber}`,
+        phone_e164: `+91${phoneNumber}`,
         user_identifier: userIdentifier,
         ...geoLocationData,
       });

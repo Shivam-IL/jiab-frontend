@@ -90,3 +90,10 @@ export type TGludeinHallOfLame = {
   toDate?:number;
   fromDate?:number;
 }
+
+export type TGludeinReport = {
+  userId: string,
+  actingUserId: string,
+  assetId: string,
+  reason: string,
+}

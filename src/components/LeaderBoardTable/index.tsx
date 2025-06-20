@@ -79,7 +79,7 @@ export const DisplayTable = ({
                 } border-none mt-[12px] relative`}
               >
                 <td
-                  className={`${aktivGrotesk.className} overflow-hidden relative text-[12px] md:text-[16px] font-[400] text-center py-[12px] md:py-[19px] pl-[22px] md:rounded-l-[10px] rounded-l-[5px]`}
+                  className={`${aktivGrotesk.className} overflow-hidden relative text-[12px] md:text-[16px] font-[400] text-center py-[6px] md:py-[19px] pl-[22px] md:rounded-l-[10px] rounded-l-[5px]`}
                 >
                   {(item?.user_id === rankData?.user_id || myRank) && (
                     <div className='h-[17px] md:h-[26px] w-[100px] md:w-[120px] bg-black absolute top-0  left-[-30px]  bottom-0 rotate-[135deg]'>
@@ -94,7 +94,7 @@ export const DisplayTable = ({
                   {item?.user_rank}
                 </td>
                 <td
-                  className={`min-h-full  relative font-[400]  md:py-[19px]  text-center py-[12px]`}
+                  className={`min-h-full  relative font-[400]  md:py-[19px]  text-center py-[6px]`}
                 >
                   <div className='flex justify-center items-center'>
                     <div className='w-[24px] h-[24px]  md:w-[40px] md:h-[40px] flex flex-col justify-center items-center rounded-full bg-[#11A64B]'>
@@ -116,17 +116,17 @@ export const DisplayTable = ({
                   </div>
                 </td>
                 <td
-                  className={`${aktivGrotesk.className} text-[12px] md:text-[16px] font-[400]  md:py-[19px]  text-center py-[12px]`}
+                  className={`${aktivGrotesk.className} text-[12px] md:text-[16px] font-[400]  md:py-[19px]  text-center py-[6px]`}
                 >
                   xxxxxx{item.mobile?.slice(6)}
                 </td>
                 <td
-                  className={`${aktivGrotesk.className} text-[12px] md:text-[16px] font-[400]  md:py-[19px]  text-center py-[12px]`}
+                  className={`${aktivGrotesk.className} text-[12px] md:text-[16px] font-[400]  md:py-[19px]  text-center py-[6px]`}
                 >
                   {item.coins}
                 </td>
                 <td
-                  className={`${aktivGrotesk.className} text-[12px] md:rounded-r-[10px]  font-[500] text-center py-[12px] pr-[22px] rounded-r-[5px]`}
+                  className={`${aktivGrotesk.className} text-[12px] md:rounded-r-[10px]  font-[500] text-center py-[6px] pr-[22px] rounded-r-[5px]`}
                 >
                   <div className='flex justify-center items-center'>
                     {item.winner_reward?.image_url ? (

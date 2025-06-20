@@ -51,6 +51,11 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
     if (onDateSelect) {
       onDateSelect(date);
     }
+
+    // Close the dialog when a date is selected
+    if (date) {
+      setOpen(false);
+    }
   };
 
   const handleYearSelect = (year: number) => {

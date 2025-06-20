@@ -72,7 +72,7 @@ export const useFCM = (): FCMHookResult => {
       setPermission(permission);
       
       if (permission === 'granted') {
-        console.log('Notification permission granted');
+        console.log('Notification permission granted by Ishaan');
         await getRegistrationToken();
         return true;
       } else {

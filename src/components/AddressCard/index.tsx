@@ -12,6 +12,12 @@ import { useDeleteAddress, useEditAddress } from '@/api/hooks/ProfileHooks'
 import useAppDispatch from '@/hooks/useDispatch'
 import { AddressModalType } from '@/types'
 import AddressModal from '../common/AddressModal/index'
+import {
+  AddressCDPEventPayload,
+  CDPEventPayloadBuilder
+} from '@/api/utils/cdpEvents'
+import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
+import useAppSelector from '@/hooks/useSelector'
 
 const AddressCard = ({
   index,
@@ -27,6 +33,8 @@ const AddressCard = ({
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false)
   const [addressId, setAddressId] = useState<number | null>(null)
   const dispatch = useAppDispatch()
+  const { user } = useAppSelector(state => state.profile)
+  const { mutate: sendCDPEvent } = useSendCDPEvent()
   const {
     mutate: deleteAddess,
     isPending,
@@ -49,15 +57,46 @@ const AddressCard = ({
     }
   }, [deleteAddressData])
 
+  const trigger_CDP_UPDATE_ADDRESS = ({
+    address_line_1,
+    address_line_2,
+    pincode,
+    state,
+    city
+  }: {
+    address_line_1: string
+    address_line_2?: string
+    pincode: string
+    state: string
+    city: string
+  }) => {
+    if (address_line_1 && pincode && state && city && user?.id) {
+      const payload: AddressCDPEventPayload =
+        CDPEventPayloadBuilder.buildUpdateAddressPayload({
+          address_line1: address_line_1,
+          address_line2: address_line_2 ?? '',
+          address_city: city,
+          address_state: state,
+          geo_postal_code: pincode,
+          user_identifier: user.id ?? ''
+        })
+      sendCDPEvent(payload)
+    }
+  }
+
   useEffect(() => {
     if (editAddressData?.ok) {
-      console.log(editAddressData)
-      dispatch(
-        updateDefaultAddress({ addressId: address?.id })
-      )
+      const { data } = editAddressData ?? {}
+      trigger_CDP_UPDATE_ADDRESS({
+        address_line_1: data?.address1,
+        address_line_2: data?.address2 ?? '',
+        pincode: data?.pincode.toString(),
+        state: data?.state,
+        city: data?.city
+      })
+      dispatch(updateDefaultAddress({ addressId: address?.id }))
     }
   }, [editAddressData])
-
 
   return (
     <div
@@ -131,7 +170,8 @@ const AddressCard = ({
         </div>
         <button
           onClick={() => {
-            if (!address?.id || addressLength === 1 || address?.is_default) return
+            if (!address?.id || addressLength === 1 || address?.is_default)
+              return
             handleDeleteAddress(address.id)
           }}
         >

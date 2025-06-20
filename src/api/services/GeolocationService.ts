@@ -2,6 +2,7 @@ import { setLocalStorageItem } from "@/utils";
 import { IGeolocationData, ILocalGeoData } from "../types/GeolocationTypes";
 import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
 import { LOCAL_STORAGE_KEYS } from "../client/config";
+import { IP_URL } from "@/config";
 
 export class GeolocationService {
   private static instance: GeolocationService;
@@ -16,7 +17,7 @@ export class GeolocationService {
   public async getUserGeolocation() {
     try {
       // First get the IP address
-      const ipResponse = await fetch("https://api.ipify.org?format=json");
+      const ipResponse = await fetch(IP_URL);
       const ipData = await ipResponse.json();
       const userIP = ipData.ip;
 

@@ -39,6 +39,7 @@ const UgcComponent: React.FC<IUgcComponent> = ({
             item={item}
             key={index}
             onVoteSuccess={onVoteSuccess}
+            voteCDP={true}
           />
         ))}
       </div>

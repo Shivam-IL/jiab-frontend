@@ -21,6 +21,7 @@ export interface IInput {
   type: string;
   value: string;
   placeholder: string;
+  onBlur?: () => void;
   onChange: (key: string, value: any) => void;
   name: string;
   error?: string;
@@ -370,4 +371,5 @@ export interface UgcCardProps {
   onReactSuccess?: () => void
   home?: boolean
   animation?: boolean
+  voteCDP?: boolean
 }

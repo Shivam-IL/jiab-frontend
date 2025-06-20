@@ -62,6 +62,7 @@ const Calendar: React.FC<CalendarProps> = ({
   const [yearViewStartYear, setYearViewStartYear] = useState(() => {
     return new Date().getFullYear() - 6
   })
+  const [isOpen, setIsOpen] = useState(false)
 
   // Parse date string to Date object
   const parseDateString = (dateString: string): Date | null => {
@@ -155,6 +156,7 @@ const Calendar: React.FC<CalendarProps> = ({
     if (date) {
       const formattedDate = formatDateToString(date)
       onChange(name, formattedDate)
+      setIsOpen(false)
     }
   }
 
@@ -364,7 +366,7 @@ const Calendar: React.FC<CalendarProps> = ({
 
   return (
     <div className='flex flex-col gap-[6px] w-full'>
-      <Popover>
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <div
             className={`w-full cursor-pointer flex items-center justify-between ${
@@ -377,15 +379,18 @@ const Calendar: React.FC<CalendarProps> = ({
               {displayValue || placeholder}
             </span>
             <div className='flex items-center gap-2'>
-              {value && (
+              {value ?(
                 <button
                   onClick={handleClearDate}
                   className='w-6 h-6 bg-[#11A64B] rounded-[50%] flex items-center justify-center hover:bg-[#0E8A3F] transition-colors'
                 >
                   <X className='h-3 w-3 text-white' />
                 </button>
-              )}
+                ):(
+                
               <CalendarIcon className='h-5 w-5' />
+              )}
+              
             </div>
           </div>
         </PopoverTrigger>

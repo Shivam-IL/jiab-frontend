@@ -119,8 +119,10 @@ const PickMood: React.FC = () => {
       {/* Genre-specific Surprise Me Modal */}
       {genreSurpriseModal && isAuthenticated && (
         <SurpriseMeModal
+          category={genres?.find(genre => genre.id === selectedGenreId)?.genre ?? ''}
           genreId={selectedGenreId}
           languageId={1}
+          pullJoke={true}
           onClose={() => {
             closeGenreSurpriseMe()
             setGenreSurpriseModal(false)

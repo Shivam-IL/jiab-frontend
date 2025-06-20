@@ -9,11 +9,18 @@ import { ChevronDown } from 'lucide-react'
 import AktivGroteskText from '../common/AktivGroteskText'
 import GreenCTA from '../GreenCTA'
 import useAppSelector from '@/hooks/useSelector'
+import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
+import {
+  CDPEventPayloadBuilder,
+  JokeCategoryCDPEventPayload,
+  UGCFilterCDPEventPayload
+} from '@/api/utils/cdpEvents'
 
 export interface IOption {
   id: number
   value: string
   label: string
+  languageCode?: string
 }
 
 const UgcFilterModal: React.FC<IUgcFilterModal> = ({
@@ -29,12 +36,15 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
   const [categoryOptions, setCategoryOptions] = useState<IOption[]>([])
 
   const { genres, languages } = useAppSelector(state => state.reference)
+  const { user } = useAppSelector(state => state.profile)
+  const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   useEffect(() => {
     const modifiedLanguages = languages?.map(language => ({
       id: language.id,
       value: language.name,
-      label: language.vernacual_name
+      label: language.vernacual_name,
+      languageCode: language.language_key
     }))
     setLanguageOptions(modifiedLanguages)
   }, [languages])
@@ -48,8 +58,24 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
     setCategoryOptions(modifiedGenres)
   }, [genres])
 
+  const trigger_CDP_UGC_FILTER = (language?: string, category?: string) => {
+    if (language && category) {
+      const languageCode =
+        languageOptions.find(opt => opt.value === language)?.languageCode ?? ''
+      const payload: UGCFilterCDPEventPayload =
+        CDPEventPayloadBuilder.buildUGCFilterPayload(
+          languageCode,
+          language,
+          category,
+          user?.id
+        )
+      sendCDPEvent(payload)
+    }
+  }
+
   const handleApply = () => {
     if (onApply) {
+      trigger_CDP_UGC_FILTER(selectedLanguage, selectedCategory)
       onApply({
         language: selectedLanguage,
         category: selectedCategory
