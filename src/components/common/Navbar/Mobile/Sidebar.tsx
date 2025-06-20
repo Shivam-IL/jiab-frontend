@@ -15,7 +15,7 @@ import InviteCodeComponent from "../../InviteCodeComponent";
 import { triggerGAEvent } from "@/utils/gTagEvents";
 import { usePathname, useRouter } from "next/navigation";
 import { useGetComicCoins } from "@/api/hooks/JokeHooks";
-import { INFOBIP_WHATSAPP_URL } from '@/config'
+import { INFOBIP_WHATSAPP_URL } from "@/config";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -168,7 +168,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                     </h3>
                     <div className="flex items-center">
                       <span className="text-2xl font-bold text-gray-800 mr-1 leading-[28px]">
-                        {current_balance ? current_balance : '--'}
+                        {current_balance ? current_balance : "--"}
                       </span>
                       {coinImage && (
                         <Image
@@ -211,7 +211,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center py-[12px]">
                   <div className="ml-3">
-                    <h3 className="font-bold text-gray-800">Login</h3>
+                    <h3 className="font-bold text-gray-800">
+                      {cmsData.navBar.login}
+                    </h3>
                   </div>
                 </div>
                 <div className="px-[4px] py-[4px] bg-white mr-[8px] rounded-full">
@@ -423,7 +425,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
             {/* Text me, Maybe? */}
             <a
               href={`${INFOBIP_WHATSAPP_URL}&text=Hi,+I+am+here+for+Sprite+Joke-In-A-Bottle!+By+pressing+Send+on+this,+I+give+my+consent+to+sharing+my+mobile+number+and+display+name+with+Sprite.`}
-              target='_blank'
+              target="_blank"
               className={`transition-all duration-300 ease-out ${
                 isOpen
                   ? "opacity-100 translate-x-0"
