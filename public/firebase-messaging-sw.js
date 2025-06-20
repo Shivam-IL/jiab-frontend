@@ -143,6 +143,7 @@ self.addEventListener("notificationclick", (event) => {
     "[firebase-messaging-sw.js] Notification clicked:",
     event.notification
   );
+  
 
   event.notification.close();
 

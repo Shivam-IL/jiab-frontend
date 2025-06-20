@@ -31,6 +31,12 @@ import { useRouter } from 'next/navigation'
 import { useGlobalLoader } from '@/hooks/useGlobalLoader'
 import { useCoinAnimation } from '@/components/common/CoinAnimation'
 import BottleAnimation from '@/components/common/BottleAnimation'
+import {
+  CDPEventPayloadBuilder,
+  JOKE_FORMATS,
+  UGCSubmissionCDPEventPayload
+} from '@/api/utils/cdpEvents'
+import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 
 interface FileContainerProps {
   title: string
@@ -167,6 +173,7 @@ const SubmitYourJoke = () => {
   const { languages, genres, jokesFormats } = useAppSelector(
     state => state.reference
   )
+  const { user } = useAppSelector(state => state.profile)
 
   const {
     mutate: submitJoke,
@@ -240,6 +247,7 @@ const SubmitYourJoke = () => {
   ]
 
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   const isFormValid = () => {
     let formValid = true
@@ -321,26 +329,39 @@ const SubmitYourJoke = () => {
 
   useEffect(() => {
     if (submitJokeData?.ok) {
+      let format = ''
       if (
         jokeData.format.toLowerCase() ===
         cmsData.pjChallenge.image.toLowerCase()
       ) {
         triggerGAEvent(GA_EVENTS.SPRITE_J24_IMAGE_JOKE_SUBMIT)
+        format = JOKE_FORMATS.IMAGE as string
       } else if (
         jokeData.format.toLowerCase() === cmsData.pjChallenge.text.toLowerCase()
       ) {
         triggerGAEvent(GA_EVENTS.SPRITE_J24_TEXT_JOKE_SUBMIT)
+        format = JOKE_FORMATS.TEXT as string
       } else if (
         jokeData.format.toLowerCase() ===
         cmsData.pjChallenge.audio.toLowerCase()
       ) {
         triggerGAEvent(GA_EVENTS.SPRITE_J24_AUDIO_JOKE_SUBMIT)
+        format = JOKE_FORMATS.AUDIO as string
       } else if (
         jokeData.format.toLowerCase() ===
         cmsData.pjChallenge.video.toLowerCase()
       ) {
         triggerGAEvent(GA_EVENTS.SPRITE_J24_VIDEO_JOKE_SUBMIT)
+        format = JOKE_FORMATS.VIDEO as string
       }
+      const payload = CDPEventPayloadBuilder.buildUGCSubmissionPayload({
+        format,
+        languageCode: jokeData.language,
+        firstName: user?.name ?? '',
+        user_identifier: user?.id ?? ''
+      })
+      console.log('payload', payload)
+      sendCDPEvent(payload)
       setOpenApproveJokePopup(true)
     } else if (submitJokeData?.message) {
       setErrorMessage(submitJokeData?.message)
@@ -423,10 +444,10 @@ const SubmitYourJoke = () => {
     value: string | boolean | FileList | null | number
   ) => {
     if (key === 'title') {
-      const valueString = value?.toString()?.slice(0, 30)
+      const valueString = value?.toString()?.slice(0, 30)?.trimStart()
       setJokeData(prev => ({ ...prev, [key]: valueString ?? '' }))
     } else if (key === 'jokeText') {
-      const valueString = value?.toString()?.slice(0, 200)
+      const valueString = value?.toString()?.slice(0, 200)?.trimStart()
       setJokeData(prev => ({ ...prev, [key]: valueString ?? '' }))
     } else if (key === 'category') {
       setJokeData(prev => {
@@ -494,6 +515,21 @@ const SubmitYourJoke = () => {
       }))
     }
   }, [jokeData])
+
+  const handleBlur = () => {
+    if (jokeData.jokeText) {
+      setJokeData(prev => ({
+        ...prev,
+        jokeText: prev.jokeText.trimEnd()
+      }))
+    }
+    if (jokeData.title) {
+      setJokeData(prev => ({
+        ...prev,
+        title: prev.title.trimEnd()
+      }))
+    }
+  }
 
   return (
     <div className='flex flex-col gap-3'>
@@ -617,6 +653,7 @@ const SubmitYourJoke = () => {
                   hidden
                   type='file'
                   accept={jokeData.acceptedFormats}
+                  onBlur={handleBlur}
                   onChange={event => {
                     if (event.target.files?.length === 0) {
                       return
@@ -649,6 +686,7 @@ const SubmitYourJoke = () => {
                     value={jokeData.jokeText}
                     placeholder={cmsData.pjChallenge.textClickablePlaceholder}
                     errorClassName='md:text-center'
+                    onBlur={handleBlur}
                   />
                 </div>
                 <AktivGroteskText

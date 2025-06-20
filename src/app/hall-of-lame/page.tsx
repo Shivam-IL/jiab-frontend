@@ -84,6 +84,8 @@ const HallOfLameLeaderboard = () => {
             offset={offset}
             setToDate={setToDate}
             setFromDate={setFromDate}
+            fromDate={fromDate}
+            toDate={toDate}
           />
         </div>
       </ScreenWrapper>

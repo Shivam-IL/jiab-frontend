@@ -10,6 +10,7 @@ import {
   TGludeinFeedList,
   TGludeinHallOfLame,
   TGludeinJokes,
+  TGludeinReport,
   TModifiedUGCContent,
 } from "../types/GluedinTypes";
 import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
@@ -377,6 +378,34 @@ export class GluedinService extends MainService {
       );
     } catch (error: any) {
       throw new Error(error?.message || "Failed to get Hall of Lame");
+    }
+  }
+
+  public async sendReportToGluedin({
+    assetId,
+    reason,
+    userId,
+    actingUserId,
+  }: TGludeinReport) {
+    try {
+      const feedModuleObj = new gluedin.GluedInFeedModule();
+      const payload = {
+        userId: userId,
+        actingUserId: actingUserId,
+        assetId: assetId,
+        reason: reason,
+        event: "report",
+      };
+      const response = await feedModuleObj.Report(payload);
+      const responseData = response?.data ?? {};
+      if (responseData?.success) {
+        return SuccessResponse(responseData?.result);
+      }
+      return ErrorResponse(
+        responseData?.statusMessage || "Failed to send report to Gluedin"
+      );
+    } catch (error: any) {
+      throw new Error(error?.message || "Failed to send report to Gluedin");
     }
   }
 }

@@ -16,6 +16,7 @@ const CDP_USER_IDENTIFIER_SUB_TYPE: string =
   process.env.NEXT_PUBLIC_CDP_USER_IDENTIFIER_SUB_TYPE || "";
 const CDP_API_URL: string = process.env.NEXT_PUBLIC_CDP_API_URL || "";
 const CDP_API_KEY: string = process.env.NEXT_PUBLIC_CDP_API_KEY || "";
+const IP_URL: string = process.env.NEXT_PUBLIC_IP_URL || "";
 
 
 export {
@@ -32,4 +33,5 @@ export {
   CDP_USER_IDENTIFIER_SUB_TYPE,
   CDP_API_URL,
   CDP_API_KEY,
+  IP_URL,
 };

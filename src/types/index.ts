@@ -67,6 +67,8 @@ export interface IHallOfLameLeaderboardTableProps {
   offset: number;
   setToDate: React.Dispatch<React.SetStateAction<number>>;
   setFromDate: React.Dispatch<React.SetStateAction<number>>;
+  fromDate: number;
+  toDate: number;
 }
 
 

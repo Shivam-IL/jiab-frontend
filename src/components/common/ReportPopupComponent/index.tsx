@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomPopupWrapper from '../CustomPopupWrapper'
 import { GA_EVENTS, ICONS_NAMES, REFERRAL_CODE } from '@/constants'
 import ReferNowModal from '../ReferNowModal'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import ReportPopup from '../ReportPopup'
 import { useRouter } from 'next/navigation'
+import { useSendReportToGluedin } from '@/api/hooks/GluedinHooks'
+import {
+  BaseCDPEventPayload,
+  CDPEventPayloadBuilder
+} from '@/api/utils/cdpEvents'
+import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 
 const isValidUrl = (url: string) => {
   const regex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/
@@ -14,19 +20,28 @@ const isValidUrl = (url: string) => {
 const ReportPopupComponent = ({
   open,
   onClose,
-  setOpen
+  setOpen,
+  assetId,
+  userId,
+  actingUserId
 }: {
   open: boolean
   onClose: () => void
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>
+  assetId: string
+  userId: string
+  actingUserId: string
 }) => {
   const [refferalLink, setRefferalLink] = useState<string>('')
   const [error, setError] = useState<string>('')
   const [open2, setOpen2] = useState<boolean>(false)
+  const { mutate: sendReportToGluedin, data: reportData } =
+    useSendReportToGluedin()
 
   const handleChange = (key: string, value: string) => {
     setRefferalLink(value)
   }
+  const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   const submitReport = () => {
     //validate refferal link
@@ -40,9 +55,33 @@ const ReportPopupComponent = ({
       setError('Please enter a valid URL')
       return
     }
+    sendReportToGluedin({
+      assetId,
+      reason: refferalLink,
+      userId: userId,
+      actingUserId: actingUserId
+    })
     setOpen2(true)
     setOpen?.(false)
   }
+
+  const triggerReportCDPEvent = () => {
+    if (userId) {
+      const payload: BaseCDPEventPayload =
+        CDPEventPayloadBuilder.buildJokeReportedPayload({
+          user_identifier: userId
+        })
+      sendCDPEvent(payload)
+    }
+  }
+
+  useEffect(() => {
+    if (reportData?.ok) {
+      triggerReportCDPEvent()
+      setOpen2(true)
+      setOpen?.(false)
+    }
+  }, [reportData])
 
   const router = useRouter()
 

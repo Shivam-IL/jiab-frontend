@@ -14,25 +14,19 @@ export class CDPService {
 
   public async sendCDPEvent(payload: any): Promise<any> {
     try {
-        const url = new URL(`${CDP_API_URL}.gif`);
-        Object.entries(payload).forEach(([key, value]) => {
-          if(key !== 'user_identifiers'){
-            url.searchParams.set(key, value as string);
-          }
-        });
-        url.searchParams.set(
-          "user_identifiers",
-          JSON.stringify([
-            {
-              user_identifier_type: "COKE_COOKIE",
-              user_identifier_sub_type: "CDS_PIXEL_COOKIE",
-              user_identifier: "bd84705a-91df-55a8-a41e-4b412334145e",
-            },
-          ])
-        );      
-        const img = new Image();
-        img.src = url.toString();
-     
+      console.log("payload", payload);
+      const url = new URL(`${CDP_API_URL}.gif`);
+      Object.entries(payload).forEach(([key, value]) => {
+        if (key !== "user_identifiers") {
+          url.searchParams.set(key, value as string);
+        }
+      });
+      url.searchParams.set(
+        "user_identifiers",
+        JSON.stringify(payload.user_identifiers)
+      );
+      const img = new Image();
+      img.src = url.toString();
     } catch (error) {
       if (error instanceof AxiosError) {
       }

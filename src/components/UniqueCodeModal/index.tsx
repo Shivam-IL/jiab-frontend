@@ -7,6 +7,9 @@ import Input from "@/components/Input";
 import GreenCTA from "@/components/GreenCTA";
 import Image from "next/image";
 import { useRedeemMixCode, MIX_CODE_STATUS } from "@/api";
+import useAppSelector from "@/hooks/useSelector";
+import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
+import { CDPEventPayloadBuilder, TransactionCodeCDPEventPayload } from "@/api/utils/cdpEvents";
 
 interface UniqueCodeModalProps {
   open: boolean;
@@ -27,6 +30,8 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
   const [isDailyLimitReached, setIsDailyLimitReached] = useState(false);
   const [coinsCollected, setCoinsCollected] = useState(20);
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useAppSelector(state => state.profile)
+  const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   const redeemMixCodeMutation = useRedeemMixCode();
 
@@ -40,6 +45,20 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
       setError("");
     }
   };
+
+  const trigger_CDP_REDEEM_MIX_CODE = (mixCode:string) => {
+    if (user?.id && mixCode && user?.phone_number) {
+      const phoneNumber = `+91${user.phone_number}`
+      const payload: TransactionCodeCDPEventPayload = CDPEventPayloadBuilder.buildTransactionCodePayload(
+        phoneNumber,
+        mixCode,
+        user.id
+      );
+      sendCDPEvent(payload);
+    }
+  }
+
+
 
   const handleSubmit = async () => {
     if (!uniqueCode.trim()) {
@@ -60,6 +79,7 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
 
         switch (data.status) {
           case MIX_CODE_STATUS.SUCCESS:
+            trigger_CDP_REDEEM_MIX_CODE(uniqueCode)
             setCoinsCollected(20); // Default coins for successful redemption
             setIsSuccess(true);
             break;

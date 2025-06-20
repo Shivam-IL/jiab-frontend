@@ -17,6 +17,11 @@ import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import useAppDispatch from '@/hooks/useDispatch'
 import { triggerGAEvent } from '@/utils/gTagEvents'
+import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
+import {
+  CDPEventPayloadBuilder,
+  ProfileCDPEventPayload
+} from '@/api/utils/cdpEvents'
 
 interface IUserData {
   avatar_id: number
@@ -44,7 +49,7 @@ const EditProfilePage = () => {
   } = useEditUserProfileDetails()
 
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false)
-  const { user,avatarsData } = useAppSelector(state => state.profile)
+  const { user, avatarsData } = useAppSelector(state => state.profile)
   const [currentImage, setCurrentImage] = useState<string>('')
   const [userData, setUserData] = useState<IUserData>({
     avatar_id: 0,
@@ -60,6 +65,7 @@ const EditProfilePage = () => {
     name: '',
     dob: ''
   })
+  const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   const validateName = (name: string) => {
     if (!name.trim()) {
@@ -139,6 +145,46 @@ const EditProfilePage = () => {
     }
   }, [user, params?.userId])
 
+  const convertDateToDdMmYyyy = (date: string) => {
+    const dateObj = new Date(date)
+    const day = dateObj.getDate()
+    const month = dateObj.getMonth() + 1
+    const year = dateObj.getFullYear()
+
+    const newDay = day < 10 ? `0${day}` : day 
+    const newMonth = month < 10 ? `0${month}` : month
+    return `${newDay}/${newMonth}/${year}`
+  }
+
+  const trigger_CDP_EDIT_PROFILE = (
+    name: string,
+    dob: string,
+    email: string,
+    gender: number
+  ) => {
+    if ((name || dob || email || gender) && user?.id) {
+      let genderValue = ''
+      if (gender===1) {
+        genderValue = 'M'
+      } else if (gender===2) {
+        genderValue = 'F'
+      } else if (gender===3) {
+        genderValue = 'O'
+      } else if (gender===4) {
+        genderValue = 'P'
+      }
+      const payload: ProfileCDPEventPayload =
+        CDPEventPayloadBuilder.buildEditProfilePayload({
+          first_name: name ?? '',
+          email: email,
+          dob: dob && dob !== '' ? convertDateToDdMmYyyy(dob) : '',
+          gender: genderValue,
+          user_identifier: user.id ?? ''
+        })
+      sendCDPEvent(payload)
+    }
+  }
+
   useEffect(() => {
     if (user?.id === params?.userId) {
       const { name, email, phone_number, dob, gender } = user
@@ -190,20 +236,22 @@ const EditProfilePage = () => {
     }
   }
 
-
   const [generalError, setGeneralError] = useState<string>('')
 
   useEffect(() => {
     if (editUserProfileDetailsData?.ok) {
       const { data } = editUserProfileDetailsData?.data ?? {}
       dispatch(updateUser({ user: { ...data } }))
+      trigger_CDP_EDIT_PROFILE(data?.name, data?.dob, data?.email, data?.gender)
       if (data?.profile_percentage === 100) {
         triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)
       }
       router.push('/profile')
     } else if (editUserProfileDetailsData?.ok === false) {
-        const message = (editUserProfileDetailsData as { message?: string })?.message || 'Something went wrong'
-        setGeneralError(message)
+      const message =
+        (editUserProfileDetailsData as { message?: string })?.message ||
+        'Something went wrong'
+      setGeneralError(message)
     }
   }, [editUserProfileDetailsData])
 
@@ -307,7 +355,12 @@ const EditProfilePage = () => {
                 { id: 1, name: 'male', value: 'male', label: 'Male' },
                 { id: 2, name: 'female', value: 'female', label: 'Female' },
                 { id: 3, name: 'other', value: 'other', label: 'Others' },
-                { id: 4, name: 'perfer_not_to_say', value: 'perfer_not_to_say', label: 'Prefer not to say' }
+                {
+                  id: 4,
+                  name: 'perfer_not_to_say',
+                  value: 'perfer_not_to_say',
+                  label: 'Prefer not to say'
+                }
               ]}
               value={userData.gender}
               onChange={handleChange}

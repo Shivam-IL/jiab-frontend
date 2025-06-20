@@ -79,18 +79,19 @@ export const CDP_EVENT_SUB_TYPES = {
   CONSUME_NEVER: "Consume_Never",
 
   // Consideration Questions
-  CONSIDER_FIRST_CHOICE: "Consider_FirstChoice",
-  CONSIDER_SERIOUSLY: "Consider_Seriously",
-  CONSIDER_MAYBE: "Consider_Maybe",
-  CONSIDER_NOT: "Consider_Not",
+  CONSIDER_FIRST_CHOICE: "Consider_4",
+  CONSIDER_SERIOUSLY: "Consider_3",
+  CONSIDER_MAYBE: "Consider_2",
+  CONSIDER_NOT: "Consider_1",
 
   // Feeling Questions
-  FEEL_LOVE: "Feel_Love",
-  FEEL_NICE: "Feel_Nice",
-  FEEL_EXCELLENT: "Feel_Excellent",
-  FEEL_NEUTRAL: "Feel_Neutral",
-  FEEL_BAD: "Feel_Bad",
-  FEEL_VERY_BAD: "Feel_VeryBad",
+  FEEL_LOVE: "BrandPerception_3",
+  FEEL_NICE: "BrandPerception_2",
+  FEEL_EXCELLENT: "BrandPerception_1",
+  FEEL_NEUTRAL: "BrandPerception_0",
+  FEEL_BAD: "BrandPerception_-1",
+  FEEL_VERY_BAD: "BrandPerception_-2",
+  FEEL_HATE: "BrandPerception_-3",
 
   // Transaction Events
   SUBMIT_TRANSACTION_CODE: "Submit_Transaction_Code",
@@ -155,9 +156,29 @@ export interface BaseCDPEventPayload {
   }>;
 }
 
+export enum ReactionType {
+  HAHA = "haha",
+  MEH = "meh",
+  GRR = "grr",
+}
+
+// Helper function to convert from types ReactionType to CDP ReactionType
+export const convertReactionType = (reactionType: string): ReactionType => {
+  switch (reactionType) {
+    case "laugh":
+      return ReactionType.HAHA;
+    case "neutral":
+      return ReactionType.MEH;
+    case "sad":
+      return ReactionType.GRR;
+    default:
+      return ReactionType.HAHA;
+  }
+};
+
 // Extended CDP Event Payload Interfaces
 export interface LandingPageCDPEventPayload extends BaseCDPEventPayload {
-  phone_with_countrycode?: string;
+  phone_e164?: string;
   geo_country_code?: string;
   geo_state_province_code?: string;
   geo_city_name?: string;
@@ -166,7 +187,7 @@ export interface LandingPageCDPEventPayload extends BaseCDPEventPayload {
 }
 
 export interface RegistrationCDPEventPayload extends BaseCDPEventPayload {
-  phone_with_countrycode: string;
+  phone_e164: string;
   email: string;
   first_name: string;
   targeting_age_from: number;
@@ -181,7 +202,7 @@ export interface RegistrationCDPEventPayload extends BaseCDPEventPayload {
 }
 
 export interface LoginCDPEventPayload extends BaseCDPEventPayload {
-  phone_with_countrycode: string;
+  phone_e164: string;
   geo_country_code: string;
   geo_state_province_code: string;
   geo_city_name: string;
@@ -192,23 +213,21 @@ export interface LanguageCDPEventPayload extends BaseCDPEventPayload {
   language_code: string;
 }
 
-export interface SocialMediaCDPEventPayload extends BaseCDPEventPayload {
-  social_media_platform: string;
-}
+export interface SocialMediaCDPEventPayload extends BaseCDPEventPayload {}
 
 export interface ReactionCDPEventPayload extends BaseCDPEventPayload {
-  joke_id: string;
+  joke_id?: string;
 }
 
 export interface UGCSubmissionCDPEventPayload extends BaseCDPEventPayload {
   language_code: string;
-  joke_category: string;
-  name: string;
   first_name: string;
 }
 
-export interface JokeCategoryCDPEventPayload extends BaseCDPEventPayload {
-  mood_type: string;
+export interface JokeCategoryCDPEventPayload extends BaseCDPEventPayload {}
+
+export interface UGCFilterCDPEventPayload extends BaseCDPEventPayload {
+  language_code: string;
 }
 
 export interface ReferralCompletedCDPEventPayload extends BaseCDPEventPayload {
@@ -232,11 +251,11 @@ export interface ProfileCDPEventPayload extends BaseCDPEventPayload {
 
 export interface ConsumptionQuestionCDPEventPayload
   extends BaseCDPEventPayload {
-  phone_with_countrycode: string;
+  phone_e164: string;
 }
 
 export interface TransactionCodeCDPEventPayload extends BaseCDPEventPayload {
-  phone_with_countrycode: string;
+  phone_e164: string;
   transaction_code: string;
 }
 
@@ -276,7 +295,7 @@ export class CDPEventPayloadBuilder {
 
   // Landing Page Events
   public static buildLandingPageFromWAPayload(data: {
-    phone_with_countrycode?: string;
+    phone_e164?: string;
     geo_country_code?: string;
     geo_state_province_code?: string;
     geo_city_name?: string;
@@ -315,7 +334,7 @@ export class CDPEventPayloadBuilder {
 
   // Registration Event
   public static buildRegistrationPayload(data: {
-    phone_with_countrycode: string;
+    phone_e164: string;
     email: string;
     first_name: string;
     geo_country_code: string;
@@ -331,14 +350,14 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_SUB_TYPES.SUBMIT_REG,
         data.user_identifier
       ),
-      phone_with_countrycode: data.phone_with_countrycode,
+      phone_e164: data.phone_e164,
       email: data.email,
       first_name: data.first_name,
       targeting_age_from: 18,
-      [COMMUNICATION_PREFERENCES.SMS_MESSAGE]:1,
-      [COMMUNICATION_PREFERENCES.PHONE_CALL]:1,
-      [COMMUNICATION_PREFERENCES.EMAIL]:1,
-      [COMMUNICATION_PREFERENCES.WHATSAPP]:1,
+      [COMMUNICATION_PREFERENCES.SMS_MESSAGE]: 1,
+      [COMMUNICATION_PREFERENCES.PHONE_CALL]: 1,
+      [COMMUNICATION_PREFERENCES.EMAIL]: 1,
+      [COMMUNICATION_PREFERENCES.WHATSAPP]: 1,
       geo_country_code: data.geo_country_code,
       geo_state_province_code: data.geo_state_province_code,
       geo_city_name: data.geo_city_name,
@@ -349,7 +368,7 @@ export class CDPEventPayloadBuilder {
 
   // Login Event
   public static buildLoginPayload(data: {
-    phone_with_countrycode: string;
+    phone_e164: string;
     geo_country_code: string;
     geo_state_province_code: string;
     geo_city_name: string;
@@ -363,7 +382,12 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_SUB_TYPES.LOGIN,
         data.user_identifier
       ),
-      ...data,
+      phone_e164: data.phone_e164,
+      geo_country_code: data.geo_country_code,
+      geo_state_province_code: data.geo_state_province_code,
+      geo_city_name: data.geo_city_name,
+      geo_postal_code: data.geo_postal_code,
+      ip_address: data.ip_address,
     };
   }
 
@@ -395,46 +419,37 @@ export class CDPEventPayloadBuilder {
 
   // Social Media Events
   public static buildSocialMediaPayload(
-    platform: string,
+    eventSubType: string,
     user_identifier: string
   ): SocialMediaCDPEventPayload {
-    const eventSubTypeMap = {
-      [SOCIAL_MEDIA_PLATFORMS.TWITTER]: CDP_EVENT_SUB_TYPES.FOLLOW_JIAB_TWITTER,
-      [SOCIAL_MEDIA_PLATFORMS.FACEBOOK]: CDP_EVENT_SUB_TYPES.FOLLOW_JIAB_FB,
-      [SOCIAL_MEDIA_PLATFORMS.WHATSAPP]: CDP_EVENT_SUB_TYPES.FOLLOW_JIAB_WA,
-      [SOCIAL_MEDIA_PLATFORMS.INSTAGRAM]: CDP_EVENT_SUB_TYPES.FOLLOW_JIAB_INSTA,
-      [SOCIAL_MEDIA_PLATFORMS.YOUTUBE]: CDP_EVENT_SUB_TYPES.FOLLOW_JIAB_YT,
-    };
-
     return {
       ...this.getBasePayload(
         CDP_EVENT_TYPES.CLICK,
-        eventSubTypeMap[platform as keyof typeof eventSubTypeMap],
+        eventSubType,
         user_identifier
       ),
-      social_media_platform: platform,
     };
   }
 
   // Reaction Events
   public static buildReactionPayload(
     jokeId: string,
-    reactionType: "haha" | "meh" | "grr",
+    reactionType: string,
     user_identifier: string
   ): ReactionCDPEventPayload {
+    const cdpReactionType = convertReactionType(reactionType);
     const eventSubTypeMap = {
-      haha: `${CDP_EVENT_SUB_TYPES.HAHA_REACTION}_${jokeId}`,
-      meh: `${CDP_EVENT_SUB_TYPES.MEH_REACTION}_${jokeId}`,
-      grr: `${CDP_EVENT_SUB_TYPES.GRR_REACTION}_${jokeId}`,
+      [ReactionType.HAHA]: `${CDP_EVENT_SUB_TYPES.HAHA_REACTION}_${jokeId}`,
+      [ReactionType.MEH]: `${CDP_EVENT_SUB_TYPES.MEH_REACTION}_${jokeId}`,
+      [ReactionType.GRR]: `${CDP_EVENT_SUB_TYPES.GRR_REACTION}_${jokeId}`,
     };
 
     return {
       ...this.getBasePayload(
         CDP_EVENT_TYPES.CLICK,
-        eventSubTypeMap[reactionType],
+        eventSubTypeMap[cdpReactionType],
         user_identifier
       ),
-      joke_id: jokeId,
     };
   }
 
@@ -505,16 +520,14 @@ export class CDPEventPayloadBuilder {
   public static buildUGCSubmissionPayload(data: {
     format: string;
     languageCode: string;
-    category: string;
-    name: string;
     firstName: string;
     user_identifier: string;
   }): UGCSubmissionCDPEventPayload {
     const eventSubTypeMap = {
-      [JOKE_FORMATS.AUDIO]: `${CDP_EVENT_SUB_TYPES.SUBMIT_AUDIO_JOKE}_${data.languageCode}_${data.category}`,
-      [JOKE_FORMATS.VIDEO]: `${CDP_EVENT_SUB_TYPES.SUBMIT_VIDEO_JOKE}_${data.languageCode}_${data.category}`,
-      [JOKE_FORMATS.IMAGE]: `${CDP_EVENT_SUB_TYPES.SUBMIT_IMAGE_JOKE}_${data.languageCode}_${data.category}`,
-      [JOKE_FORMATS.TEXT]: `${CDP_EVENT_SUB_TYPES.SUBMIT_TEXT_JOKE}_${data.languageCode}_${data.category}`,
+      [JOKE_FORMATS.AUDIO]: `${CDP_EVENT_SUB_TYPES.SUBMIT_AUDIO_JOKE}_Language_Genre`,
+      [JOKE_FORMATS.VIDEO]: `${CDP_EVENT_SUB_TYPES.SUBMIT_VIDEO_JOKE}_Language_Genre`,
+      [JOKE_FORMATS.IMAGE]: `${CDP_EVENT_SUB_TYPES.SUBMIT_IMAGE_JOKE}_Language_Genre`,
+      [JOKE_FORMATS.TEXT]: `${CDP_EVENT_SUB_TYPES.SUBMIT_TEXT_JOKE}_Language_Genre`,
     };
 
     return {
@@ -523,15 +536,13 @@ export class CDPEventPayloadBuilder {
         eventSubTypeMap[data.format as keyof typeof eventSubTypeMap],
         data.user_identifier
       ),
-      language_code: data.languageCode,
-      joke_category: data.category,
-      name: data.name,
+      language_code: data.languageCode.toUpperCase(),
       first_name: data.firstName,
     };
   }
 
   // Joke Events
-  public  static buildPullJokePayload(
+  public static buildPullJokePayload(
     category: string,
     user_identifier: string
   ): JokeCategoryCDPEventPayload {
@@ -541,7 +552,6 @@ export class CDPEventPayloadBuilder {
         `${CDP_EVENT_SUB_TYPES.PULL_JOKE}_${category}`,
         user_identifier
       ),
-      mood_type: category,
     };
   }
 
@@ -555,7 +565,6 @@ export class CDPEventPayloadBuilder {
         `${CDP_EVENT_SUB_TYPES.VIEW_JOKE}_${jokeId}`,
         user_identifier
       ),
-      joke_id: jokeId,
     };
   }
 
@@ -566,25 +575,26 @@ export class CDPEventPayloadBuilder {
     return {
       ...this.getBasePayload(
         CDP_EVENT_TYPES.CLICK,
-        `${CDP_EVENT_SUB_TYPES.VOTE_JOKE}${jokeId}`,
+        `${CDP_EVENT_SUB_TYPES.VOTE_JOKE}_${jokeId}`,
         user_identifier
       ),
-      joke_id: jokeId,
     };
   }
 
   // UGC Filter Event
   public static buildUGCFilterPayload(
     languageCode: string,
+    language: string,
     category: string,
     user_identifier: string
-  ): BaseCDPEventPayload {
+  ): UGCFilterCDPEventPayload {
     return {
       ...this.getBasePayload(
         CDP_EVENT_TYPES.CLICK,
-        `${CDP_EVENT_SUB_TYPES.UGC_FILTER}_${languageCode}_${category}`,
+        `${CDP_EVENT_SUB_TYPES.UGC_FILTER}_${language}_${category}`,
         user_identifier
       ),
+      language_code: languageCode.toUpperCase() ?? "",
     };
   }
 
@@ -615,7 +625,10 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_SUB_TYPES.EDIT_PROFILE,
         data.user_identifier
       ),
-      ...data,
+      first_name: data.first_name,
+      email: data.email,
+      dob: data.dob,
+      gender: data.gender,
     };
   }
 
@@ -634,7 +647,11 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_SUB_TYPES.ADD_ADDRESS,
         data.user_identifier
       ),
-      ...data,
+      address_line1: data.address_line1,
+      address_line2: data.address_line2,
+      address_city: data.address_city,
+      address_state: data.address_state,
+      geo_postal_code: data.geo_postal_code,
     };
   }
 
@@ -652,7 +669,11 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_SUB_TYPES.UPDATE_ADDRESS,
         data.user_identifier
       ),
-      ...data,
+      address_line1: data.address_line1,
+      address_line2: data.address_line2,
+      address_city: data.address_city,
+      address_state: data.address_state,
+      geo_postal_code: data.geo_postal_code,
     };
   }
 
@@ -675,7 +696,7 @@ export class CDPEventPayloadBuilder {
         eventSubTypeMap[consumptionType],
         user_identifier
       ),
-      phone_with_countrycode: phoneNumber,
+      phone_e164: phoneNumber,
     };
   }
 
@@ -698,13 +719,20 @@ export class CDPEventPayloadBuilder {
         eventSubTypeMap[considerationType],
         user_identifier
       ),
-      phone_with_countrycode: phoneNumber,
+      phone_e164: phoneNumber,
     };
   }
 
   // Feeling Question Events
   public static buildFeelingQuestionPayload(
-    feelingType: "love" | "nice" | "excellent" | "neutral" | "bad" | "veryBad",
+    feelingType:
+      | "love"
+      | "nice"
+      | "excellent"
+      | "neutral"
+      | "bad"
+      | "veryBad"
+      | "hate",
     phoneNumber: string,
     user_identifier: string
   ): ConsumptionQuestionCDPEventPayload {
@@ -715,6 +743,7 @@ export class CDPEventPayloadBuilder {
       neutral: CDP_EVENT_SUB_TYPES.FEEL_NEUTRAL,
       bad: CDP_EVENT_SUB_TYPES.FEEL_BAD,
       veryBad: CDP_EVENT_SUB_TYPES.FEEL_VERY_BAD,
+      hate: CDP_EVENT_SUB_TYPES.FEEL_HATE,
     };
 
     return {
@@ -723,12 +752,12 @@ export class CDPEventPayloadBuilder {
         eventSubTypeMap[feelingType],
         user_identifier
       ),
-      phone_with_countrycode: phoneNumber,
+      phone_e164: phoneNumber,
     };
   }
 
   // Transaction Code Event
-  public  static buildTransactionCodePayload(
+  public static buildTransactionCodePayload(
     phoneNumber: string,
     transactionCode: string,
     user_identifier: string
@@ -739,7 +768,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_SUB_TYPES.SUBMIT_TRANSACTION_CODE,
         user_identifier
       ),
-      phone_with_countrycode: phoneNumber,
+      phone_e164: phoneNumber,
       transaction_code: transactionCode,
     };
   }

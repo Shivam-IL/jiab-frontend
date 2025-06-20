@@ -22,7 +22,8 @@ const Input: React.FC<IInput> = ({
   className = '',
   borderRadius = 'rounded-[100px]',
   rows,
-  errorClassName = ''
+  errorClassName = '',
+  onBlur
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -179,6 +180,7 @@ const Input: React.FC<IInput> = ({
           placeholder={placeholder}
           name={name}
           {...(rows ? { rows } : {})}
+          onBlur={onBlur}
         />
       )}
       {type === 'textarea' && (

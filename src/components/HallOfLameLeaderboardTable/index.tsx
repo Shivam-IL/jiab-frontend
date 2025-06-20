@@ -146,7 +146,9 @@ const HallOfLameLeaderboardTable = ({
   totalPages,
   offset,
   setToDate,
-  setFromDate
+  setFromDate,
+  fromDate,
+  toDate
 }: IHallOfLameLeaderboardTableProps) => {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState(false)
 
@@ -187,6 +189,8 @@ const HallOfLameLeaderboardTable = ({
           open={isCalendarOpen}
           setOpen={setIsCalendarOpen}
           onDateSelect={handleDateRangeSelect}
+          fromDate={fromDate}
+          toDate={toDate}
         />
       </div>
       <div className='w-full flex flex-col gap-[28px] md:gap-[40px]'>

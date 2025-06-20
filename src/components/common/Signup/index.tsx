@@ -189,9 +189,10 @@ const Signup = () => {
     const geoLocationData = JSON.parse(
       getLocalStorageItem(LOCAL_STORAGE_KEYS.USER_GEOLOCATION) ?? '{}'
     ) as ILocalGeoData
+    // TODO: Need to add user id from backend
     const payload: RegistrationCDPEventPayload =
       CDPEventPayloadBuilder.buildRegistrationPayload({
-        phone_with_countrycode: userData.number,
+        phone_e164: userData.number,
         email: userData.email,
         first_name: userData.name,
         ...geoLocationData,
