@@ -362,6 +362,7 @@ const SurpriseMeModal = ({
               disablePictureInPicture
               controlsList='nodownload'
               playsInline
+              muted={false}
               webkit-playsinline=''
               x5-playsinline=''
               style={{

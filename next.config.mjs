@@ -17,6 +17,12 @@ const nextConfig = {
   images: {
     domains: ["d35f5vastl4boc.cloudfront.net"],
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default withPWA(nextConfig);

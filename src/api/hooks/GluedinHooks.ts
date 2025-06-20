@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { GLUEDIN_LOGIN_SECRET_KEY } from "@/config";
 import { encryptData } from "@/utils";

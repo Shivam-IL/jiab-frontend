@@ -24,9 +24,9 @@ const ChillGuyBanner = () => {
         return "/assets/images/home-banner-4.jpg";
       case LANGUAGE_MNEMONICS.BENGALI:
         return "/assets/images/home-banner-5.jpg";
-      case LANGUAGE_MNEMONICS.MARATHI:
-        return "/assets/images/home-banner-6.jpg";
       case LANGUAGE_MNEMONICS.KANNADA:
+        return "/assets/images/home-banner-6.jpg";
+      case LANGUAGE_MNEMONICS.MARATHI:
         return "/assets/images/home-banner-7.jpg";
       case LANGUAGE_MNEMONICS.BHOJPURI:
         return "/assets/images/home-banner-8.jpg";
