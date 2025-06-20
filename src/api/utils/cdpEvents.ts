@@ -450,6 +450,7 @@ export class CDPEventPayloadBuilder {
         eventSubTypeMap[cdpReactionType],
         user_identifier
       ),
+      joke_id: jokeId,
     };
   }
 
@@ -669,11 +670,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_SUB_TYPES.UPDATE_ADDRESS,
         data.user_identifier
       ),
-      address_line1: data.address_line1,
-      address_line2: data.address_line2,
-      address_city: data.address_city,
-      address_state: data.address_state,
-      geo_postal_code: data.geo_postal_code,
+      ...data,
     };
   }
 

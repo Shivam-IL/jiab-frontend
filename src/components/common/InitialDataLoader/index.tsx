@@ -69,7 +69,8 @@ const mainServiceInstance = MainService.getInstance()
 const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const dispatch = useAppDispatch()
   const pathname = usePathname()
-  const { isAuthenticated,otpVerified,isFirstLogin,surpriseMe } = useAppSelector(state => state.auth)
+  const { isAuthenticated, otpVerified, isFirstLogin, surpriseMe } =
+    useAppSelector(state => state.auth)
   const [tokenUpdated, setTokenUpdated] = useState(false)
   const { data: userProfileData } = useGetUserProfileDetails()
   const { data: userAddressesData } = useGetUserAddresses()
@@ -120,7 +121,14 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
     }
   }, [pathname])
 
-  console.log('InitialDataLoader: pathname', pathname,isAuthenticated,otpVerified,isFirstLogin,surpriseMe)
+  console.log(
+    'InitialDataLoader: pathname',
+    pathname,
+    isAuthenticated,
+    otpVerified,
+    isFirstLogin,
+    surpriseMe
+  )
 
   useEffect(() => {
     const refreshToken =
@@ -144,9 +152,12 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         dispatch(setLanguage(langKey))
       }
     } else {
-      if(getSessionStorageItem(SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE) && pathname === '/'){
+      if (
+        getSessionStorageItem(SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE) &&
+        pathname === '/'
+      ) {
         dispatch(updateIsAuthenticated({ isAuthenticated: true }))
-      }else{
+      } else {
         dispatch(updateIsAuthenticated({ isAuthenticated: false }))
       }
       dispatch(updateToken({ token: '' }))
@@ -203,14 +214,16 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         const payload: LandingPageCDPEventPayload =
           CDPEventPayloadBuilder.buildLandingPageFromWAPayload({
             user_identifier: data?.user?.id,
-            ...geoLocationData
+            ...geoLocationData,
+            referrer: window.location.href,
+            phone_e164: `+91${data?.user?.phone_number}`
           })
         sendCDPEvent(payload)
       } else {
         const payload: LandingPageCDPEventPayload =
           CDPEventPayloadBuilder.buildLandingPagePayload({
             user_identifier: data?.user?.id,
-            ...geoLocationData
+            ...geoLocationData,
           })
         sendCDPEvent(payload)
       }
