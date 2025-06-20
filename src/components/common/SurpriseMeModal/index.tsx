@@ -314,10 +314,10 @@ const SurpriseMeModal = ({
           }
         `}</style>
         <DialogContent className='border-none md:max-w-[353px] px-[12px] max-w-[277px] shadow-none p-0 rounded-[20px]'>
-          <div className='absolute border-none outline-none top-[-105px] md:top-[-125px] left-0 flex justify-center items-center w-full'>
+          <div className='absolute border-none outline-none top-[-105px] md:top-[-100px] left-0 flex justify-center items-center w-full'>
             <SvgIcons
               name={ICONS_NAMES.SURPRISE_ME}
-              className='w-[145px] h-[102px] md:w-[182px] md:h-[114px]'
+              className='w-[145px] h-[102px] md:w-[136px] md:h-[97px]'
             />
           </div>
           <div className='flex justify-between items-start p-[12px]'>
@@ -364,7 +364,6 @@ const SurpriseMeModal = ({
               disablePictureInPicture
               controlsList='nodownload'
               playsInline
-              muted={true}
               webkit-playsinline=''
               x5-playsinline=''
               style={{

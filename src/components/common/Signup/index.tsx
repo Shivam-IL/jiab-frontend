@@ -18,10 +18,23 @@ import {
   updateEnableCoachMarks
 } from '@/store/auth/auth.slice'
 import SvgIcons from '../SvgIcons'
-import { GA_EVENTS, ICONS_NAMES, LOCAL_KEYS, TOKEN_TYPE } from '@/constants'
+import {
+  GA_EVENTS,
+  ICONS_NAMES,
+  LOCAL_KEYS,
+  SESSION_STORAGE_KEYS,
+  TOKEN_TYPE
+} from '@/constants'
 import { MainService } from '@/api/services/MainService'
 import { useMutateSignUp } from '@/api/hooks/LoginHooks'
-import { getLocalStorageItem, setLocalStorageItem } from '@/utils'
+import {
+  clearSessionStorage,
+  getLocalStorageItem,
+  getSessionStorageItem,
+  removeSessionStorageItem,
+  setLocalStorageItem,
+  setSessionStorageItem
+} from '@/utils'
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import { messaging, getToken } from '@/lib/firebase'
@@ -31,6 +44,7 @@ import {
 } from '@/api/utils/cdpEvents'
 import { ILocalGeoData } from '@/api/types/GeolocationTypes'
 import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
+import { useRouter } from 'next/navigation'
 
 interface IUserData {
   avatar: string
@@ -104,6 +118,8 @@ const Signup = () => {
 
     return () => clearTimeout(timeoutId)
   }, [userData.name])
+
+  const router = useRouter()
 
   // Email validation
   useEffect(() => {
@@ -185,18 +201,17 @@ const Signup = () => {
     }
   }, [otpVerified])
 
-  const trigerrSignupCDP = () => {
+  const trigerrSignupCDP = (userId: string, phoneNumber: string) => {
     const geoLocationData = JSON.parse(
       getLocalStorageItem(LOCAL_STORAGE_KEYS.USER_GEOLOCATION) ?? '{}'
     ) as ILocalGeoData
-    // TODO: Need to add user id from backend
     const payload: RegistrationCDPEventPayload =
       CDPEventPayloadBuilder.buildRegistrationPayload({
-        phone_e164: userData.number,
+        phone_e164: `+91${phoneNumber}`,
         email: userData.email,
         first_name: userData.name,
         ...geoLocationData,
-        user_identifier: `${userData.number}`
+        user_identifier: userId
       })
     sendCDPEvent(payload)
   }
@@ -285,13 +300,29 @@ const Signup = () => {
         dispatch(updateEnableCoachMarks({ enableCoachMarks: true }))
         setLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR, 'true')
         setOpen(false)
-        trigerrSignupCDP()
+        removeSessionStorageItem(SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE)
+        trigerrSignupCDP(data?.user_id ?? '', data?.phone_number ?? '')
       }
     } else if (signupData?.ok === false) {
       const { message } = signupData as any
       setError(message)
     }
   }, [signupData])
+
+  useEffect(() => {
+    if (getSessionStorageItem(SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE)) {
+      const data = JSON.parse(
+        getSessionStorageItem(SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE) ?? '{}'
+      )
+      if (data.phoneNumber) {
+        setUserData({
+          ...userData,
+          number: `+91-${data.phoneNumber}`
+        })
+        dispatch(updatePhoneNumber({ phoneNumber: data.phoneNumber }))
+      }
+    }
+  }, [])
 
   return (
     <LoginSignupWrapper
@@ -316,6 +347,7 @@ const Signup = () => {
               if (isFirstLogin) {
                 removeAuthentication()
               }
+              clearSessionStorage()
             }}
           >
             <SvgIcons name={ICONS_NAMES.CROSS} className='w-[16px] h-[16px]' />
@@ -384,25 +416,61 @@ const Signup = () => {
           <div className='flex items-start gap-[8px]'>
             <input
               name='agree'
+              id='agree'
               checked={userData.agree}
               onChange={e => handleChange('agree', e.target.checked)}
               className='relative top-[2px] w-4 h-4 cursor-pointer accent-[#003087]'
               type='checkbox'
             />
-            <span
-              className={`${aktivGrotesk.className} font-[400] text-[12px]`}
+            <label
+              htmlFor='agree'
+              className={`${aktivGrotesk.className} font-[400] text-[12px] cursor-pointer`}
             >
               I hereby state that I am older than 18 years of age and agree to
               the{' '}
               <span className='text-[#003087] font-[700] cursor-pointer'>
-                Terms and Conditions
+                <button
+                  type='button'
+                  onClick={() => {
+                    const data = {
+                      accessToken: getLocalStorageItem(
+                        LOCAL_STORAGE_KEYS.ACCESS_TOKEN
+                      ),
+                      phoneNumber: phoneNumber
+                    }
+                    setSessionStorageItem(
+                      SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE,
+                      JSON.stringify(data)
+                    )
+                    router.push('/terms-and-conditions')
+                  }}
+                >
+                  Terms and Conditions
+                </button>
               </span>{' '}
               and{' '}
               <span className='font-[700] text-[#003087] cursor-pointer'>
-                Privacy Policy
+                <button
+                  type='button'
+                  onClick={() => {
+                    const data = {
+                      accessToken: getLocalStorageItem(
+                        LOCAL_STORAGE_KEYS.ACCESS_TOKEN
+                      ),
+                      phoneNumber: phoneNumber
+                    }
+                    setSessionStorageItem(
+                      SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE,
+                      JSON.stringify(data)
+                    )
+                    router.push('/privacy-policy')
+                  }}
+                >
+                  Privacy Policy
+                </button>
               </span>
               .
-            </span>
+            </label>
           </div>
           {acceptTermsError && (
             <span className='text-[#FD0202] font-[400] text-[12px]'>

@@ -69,7 +69,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
     return newLabel
   }
 
-  const trigger_CDP_VOTE_JOKES = (jokeId:string) => {
+  const trigger_CDP_VOTE_JOKES = (jokeId: string) => {
     console.log('jokeId', jokeId)
     console.log('user?.id', user?.id)
     console.log('voteCDP', voteCDP)
@@ -166,7 +166,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
               </div>
               <div className='flex gap-[6px]'>
                 <button
-                  className='cursor-pointer border-none outline-none'
+                  className='cursor-pointer flex gap-[6px] border-none outline-none'
                   onClick={() => setReportPopup(true)}
                 >
                   <AktivGroteskText
@@ -174,11 +174,11 @@ const UgcCard: React.FC<UgcCardProps> = ({
                     fontSize='text-[12px] text-[#FD0202]'
                     fontWeight='font-[400]'
                   />
+                  <SvgIcons
+                    name={ICONS_NAMES.REPORT}
+                    className='w-[20px] h-[20px]'
+                  />
                 </button>
-                <SvgIcons
-                  name={ICONS_NAMES.REPORT}
-                  className='w-[20px] h-[20px]'
-                />
               </div>
             </div>
             <AktivGroteskText

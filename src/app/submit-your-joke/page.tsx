@@ -516,20 +516,7 @@ const SubmitYourJoke = () => {
     }
   }, [jokeData])
 
-  const handleBlur = () => {
-    if (jokeData.jokeText) {
-      setJokeData(prev => ({
-        ...prev,
-        jokeText: prev.jokeText.trimEnd()
-      }))
-    }
-    if (jokeData.title) {
-      setJokeData(prev => ({
-        ...prev,
-        title: prev.title.trimEnd()
-      }))
-    }
-  }
+  
 
   return (
     <div className='flex flex-col gap-3'>
@@ -653,7 +640,6 @@ const SubmitYourJoke = () => {
                   hidden
                   type='file'
                   accept={jokeData.acceptedFormats}
-                  onBlur={handleBlur}
                   onChange={event => {
                     if (event.target.files?.length === 0) {
                       return
@@ -686,7 +672,6 @@ const SubmitYourJoke = () => {
                     value={jokeData.jokeText}
                     placeholder={cmsData.pjChallenge.textClickablePlaceholder}
                     errorClassName='md:text-center'
-                    onBlur={handleBlur}
                   />
                 </div>
                 <AktivGroteskText
@@ -765,16 +750,20 @@ const SubmitYourJoke = () => {
             <Checkbox
               className='w-[16px] h-[16px] md:top-[3px] relative'
               name='agreeToTerms'
+              id='agreeToTerms'
               checked={jokeData.agreeToTerms}
               onCheckedChange={() =>
                 handleChange('agreeToTerms', !jokeData.agreeToTerms)
               }
             />
+            <label htmlFor='agreeToTerms' className='cursor-pointer'>  
+
             <AktivGroteskText
               text={cmsData.pjChallenge.termsAndConditions}
               fontSize='text-[12px] md:text-[16px]'
               fontWeight='font-[400]'
-            />
+              />
+              </label>
           </div>
           {formError.agreeToTerms !== '' && (
             <span className='text-[#FD0202] font-[400] text-start text-[12px] md:text-center'>

@@ -35,6 +35,7 @@ interface IUserData {
 interface IErrors {
   name: string
   dob: string
+  email: string
 }
 
 const EditProfilePage = () => {
@@ -63,7 +64,8 @@ const EditProfilePage = () => {
 
   const [errors, setErrors] = useState<IErrors>({
     name: '',
-    dob: ''
+    dob: '',
+    email: ''
   })
   const { mutate: sendCDPEvent } = useSendCDPEvent()
 
@@ -76,6 +78,16 @@ const EditProfilePage = () => {
     }
     if (!/^[a-zA-Z\s]*$/.test(name)) {
       return 'Name should only contain letters and spaces'
+    }
+    return ''
+  }
+
+  const validateEmail = (email: string) => {
+    if (!email) {
+      return 'Email is required'
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return 'Invalid email address'
     }
     return ''
   }
@@ -206,17 +218,23 @@ const EditProfilePage = () => {
   const isFormValid = () => {
     const nameError = validateName(userData.name)
     let dobError = ''
+    let emailError = ''
     if (userData.dob) {
       dobError = validateDOB(userData.dob)
     }
+    if(userData.email){
+      emailError = validateEmail(userData.email)
+    }
+
 
     setErrors(prev => ({
       ...prev,
       name: nameError,
-      dob: dobError
+      dob: dobError,
+      email: emailError
     }))
 
-    return !nameError && !dobError
+    return !nameError && !dobError && !emailError
   }
 
   const submitHandler = () => {
@@ -327,6 +345,7 @@ const EditProfilePage = () => {
               paddingClass='md:py-[10px] md:px-[17px] pl-[16px] pr-[16px] py-[16px] '
               name={'email'}
               type='email'
+              error={errors.email}
               value={userData.email}
               onChange={handleChange}
               placeholder='Enter your email'

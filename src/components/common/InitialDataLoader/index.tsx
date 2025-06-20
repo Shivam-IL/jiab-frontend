@@ -15,7 +15,10 @@ import {
   updateToken,
   updateGludeinIsAuthenticated,
   updateRefreshTokenNotVerified,
-  updateLoginModal
+  updateLoginModal,
+  updateIsFirstLogin,
+  updateOtpVerified,
+  updateOtpFilled
 } from '@/store/auth/auth.slice'
 import {
   updateAddresses,
@@ -30,7 +33,8 @@ import {
 import {
   getLocalStorageItem,
   removeSessionStorageItem,
-  setLocalStorageItem
+  setLocalStorageItem,
+  getSessionStorageItem
 } from '@/utils'
 import { ReactNode, useEffect, useState } from 'react'
 import { useGetAllReferrals } from '@/api/hooks/ReferralHooks'
@@ -65,7 +69,7 @@ const mainServiceInstance = MainService.getInstance()
 const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const dispatch = useAppDispatch()
   const pathname = usePathname()
-  const { isAuthenticated } = useAppSelector(state => state.auth)
+  const { isAuthenticated,otpVerified,isFirstLogin,surpriseMe } = useAppSelector(state => state.auth)
   const [tokenUpdated, setTokenUpdated] = useState(false)
   const { data: userProfileData } = useGetUserProfileDetails()
   const { data: userAddressesData } = useGetUserAddresses()
@@ -99,6 +103,26 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   useEffect(() => {
+    const signupKeepAlive = getSessionStorageItem(
+      SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE
+    )
+    if (signupKeepAlive && pathname === '/') {
+      const { accessToken } = JSON.parse(signupKeepAlive)
+      if (accessToken) {
+        dispatch(updateOtpFilled({ otpFilled: true }))
+        mainServiceInstance.setAccessToken(accessToken)
+        dispatch(updateToken({ token: accessToken }))
+        setLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, accessToken)
+        dispatch(updateIsFirstLogin({ isFirstLogin: true }))
+        dispatch(updateOtpVerified({ otpVerified: true }))
+        dispatch(updateIsAuthenticated({ isAuthenticated: true }))
+      }
+    }
+  }, [pathname])
+
+  console.log('InitialDataLoader: pathname', pathname,isAuthenticated,otpVerified,isFirstLogin,surpriseMe)
+
+  useEffect(() => {
     const refreshToken =
       getLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN) ??
       refreshTokenFromParams
@@ -120,7 +144,11 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         dispatch(setLanguage(langKey))
       }
     } else {
-      dispatch(updateIsAuthenticated({ isAuthenticated: false }))
+      if(getSessionStorageItem(SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE) && pathname === '/'){
+        dispatch(updateIsAuthenticated({ isAuthenticated: true }))
+      }else{
+        dispatch(updateIsAuthenticated({ isAuthenticated: false }))
+      }
       dispatch(updateToken({ token: '' }))
       dispatch(updateRefreshTokenNotVerified({ refreshTokenNotVerified: true }))
     }
