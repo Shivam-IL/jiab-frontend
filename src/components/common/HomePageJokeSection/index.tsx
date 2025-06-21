@@ -206,6 +206,7 @@ const HomePageJokeSection = ({
                             item={item}
                             onVoteSuccess={onVoteSuccess}
                             onReactSuccess={onReactSuccess}
+                            voteCDP={true}
                           />
                         </div>
                       </CarouselItem>
@@ -238,6 +239,7 @@ const HomePageJokeSection = ({
                                 item={item}
                                 onVoteSuccess={onVoteSuccess}
                                 onReactSuccess={onReactSuccess}
+                                voteCDP={true}
                               />
                             </div>
                           </CarouselItem>

@@ -66,6 +66,7 @@ const InviteCodeComponent = ({
         triggerCDPInviteCodeEvent()
         setOpen(false)
         triggerAnimation()
+        triggerGAEvent(GA_EVENTS.SPRITE_24_REFERRAL_CODE_SUBMIT)
       } else if (status === INVITE_CODE_STATUS.INVALID_REFERRAL_CODE) {
         setInvite2(true)
         setOpen(false)
@@ -84,7 +85,6 @@ const InviteCodeComponent = ({
           onChange={handleChangeInvite}
           open={open}
           onSubmit={() => {
-            triggerGAEvent(GA_EVENTS.SPRITE_24_REFERRAL_CODE_SUBMIT)
             handleVerifyReferral()
           }}
           onClose={() => {

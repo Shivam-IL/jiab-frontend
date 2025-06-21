@@ -1,49 +1,51 @@
-"use client";
+'use client'
 
-import HelpUsToKnowYourBetter from "@/components/common/HelpUsToKnowYourBetter";
-import ReferAFriend from "@/components/common/ReferAFriend";
-import ScreenWrapper from "@/components/common/ScreenWrapper";
-import UserAddressCard from "@/components/common/UserAddressCard";
-import UserComicsCoinsAndRankCard from "@/components/common/UserComicsCoinsAndRankCard";
-import ProfileCard from "@/components/ProfileCard";
-import UserGeneratedJokecComponent from "@/components/UserGeneratedJokecComponent";
-import React, { useEffect, useState, useRef } from "react";
-import useAppSelector from "@/hooks/useSelector";
-import { useCMSData } from "@/data";
+import HelpUsToKnowYourBetter from '@/components/common/HelpUsToKnowYourBetter'
+import ReferAFriend from '@/components/common/ReferAFriend'
+import ScreenWrapper from '@/components/common/ScreenWrapper'
+import UserAddressCard from '@/components/common/UserAddressCard'
+import UserComicsCoinsAndRankCard from '@/components/common/UserComicsCoinsAndRankCard'
+import ProfileCard from '@/components/ProfileCard'
+import UserGeneratedJokecComponent from '@/components/UserGeneratedJokecComponent'
+import React, { useEffect, useState, useRef } from 'react'
+import useAppSelector from '@/hooks/useSelector'
+import { useCMSData } from '@/data'
 import {
   CoinAnimation,
-  useCoinAnimation,
-} from "@/components/common/CoinAnimation";
+  useCoinAnimation
+} from '@/components/common/CoinAnimation'
+import { triggerGAEvent } from '@/utils/gTagEvents'
+import { GA_EVENTS } from '@/constants'
 
 const ProfilePage = () => {
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false)
 
   // Ref to track previous profile percentage
-  const prevProfilePercentageRef = useRef<number | null>(null);
+  const prevProfilePercentageRef = useRef<number | null>(null)
 
-  const cmsData = useCMSData(mounted);
-
-  // Coin animation hook
-  const { user } = useAppSelector((state) => state.profile);
+  const cmsData = useCMSData(mounted)
 
   // Coin animation hook
-  const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation();
+  const { user } = useAppSelector(state => state.profile)
+
+  // Coin animation hook
+  const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation()
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
   // Handle profile completion animation
   useEffect(() => {
-    if (!mounted || !user?.id) return;
+    if (!mounted || !user?.id) return
 
-    const currentProfilePercentage = user.profile_percentage;
-    const previousProfilePercentage = prevProfilePercentageRef.current;
+    const currentProfilePercentage = user.profile_percentage
+    const previousProfilePercentage = prevProfilePercentageRef.current
 
     // Check if animation has already been shown for this user
-    const animationShownKey = `profile_completion_animation_shown_${user.id}`;
+    const animationShownKey = `profile_completion_animation_shown_${user.id}`
     const hasAnimationBeenShown =
-      localStorage.getItem(animationShownKey) === "true";
+      localStorage.getItem(animationShownKey) === 'true'
 
     // Trigger animation if:
     // 1. Current percentage is 100%
@@ -56,56 +58,62 @@ const ProfilePage = () => {
     ) {
       // Small delay to ensure smooth animation
       setTimeout(() => {
-        triggerAnimation();
+        triggerAnimation()
         // Mark animation as shown for this user
-        localStorage.setItem(animationShownKey, "true");
-      }, 500);
+        localStorage.setItem(animationShownKey, 'true')
+      }, 500)
     }
 
     // Update the ref with current percentage
-    prevProfilePercentageRef.current = currentProfilePercentage;
-  }, [user?.profile_percentage, user?.id, mounted, triggerAnimation]);
+    prevProfilePercentageRef.current = currentProfilePercentage
+  }, [user?.profile_percentage, user?.id, mounted, triggerAnimation])
 
   // Handle fragment scrolling when page loads
   useEffect(() => {
     const handleFragmentScroll = () => {
-      const hash = window.location.hash;
+      const hash = window.location.hash
       if (hash) {
-        const element = document.getElementById(hash.slice(1)); // Remove the '#'
+        const element = document.getElementById(hash.slice(1)) // Remove the '#'
         if (element) {
           // Add a small delay to ensure all components are rendered
           setTimeout(() => {
             element.scrollIntoView({
-              behavior: "smooth",
-              block: "start",
-              inline: "nearest",
-            });
-          }, 300);
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'nearest'
+            })
+          }, 300)
         }
       }
-    };
+    }
 
     // Check for fragment on initial load
-    handleFragmentScroll();
+    handleFragmentScroll()
 
     // Also listen for hash changes (in case user navigates back/forward)
-    window.addEventListener("hashchange", handleFragmentScroll);
+    window.addEventListener('hashchange', handleFragmentScroll)
 
     return () => {
-      window.removeEventListener("hashchange", handleFragmentScroll);
-    };
-  }, [mounted]); // Depend on mounted to ensure DOM is ready
+      window.removeEventListener('hashchange', handleFragmentScroll)
+    }
+  }, [mounted]) // Depend on mounted to ensure DOM is ready
+
+  useEffect(() => {
+    if (user?.id && user?.profile_percentage === 100) {
+      triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)
+    }
+  }, [user?.profile_percentage])
 
   return (
     <ScreenWrapper>
-      <div className="flex flex-col gap-2">
+      <div className='flex flex-col gap-2'>
         <ProfileCard />
         <UserComicsCoinsAndRankCard
           comicCoins={cmsData?.myProfile?.comicCoins}
           ranks={cmsData?.myProfile?.rank}
           leaderboardButtonText={cmsData?.myProfile?.leaderboardButtonText}
         />
-        <div className="flex flex-col gap-[24px] md:gap-[40px]">
+        <div className='flex flex-col gap-[24px] md:gap-[40px]'>
           <UserAddressCard
             addressTextField={cmsData?.myProfile?.addressTextField}
             addClickableText={cmsData?.myProfile?.addClickableText}
@@ -133,7 +141,7 @@ const ProfilePage = () => {
       {/* Coin Animation for Profile Completion */}
       <CoinAnimation isVisible={isAnimating} animationKey={animationKey} />
     </ScreenWrapper>
-  );
-};
+  )
+}
 
-export default ProfilePage;
+export default ProfilePage

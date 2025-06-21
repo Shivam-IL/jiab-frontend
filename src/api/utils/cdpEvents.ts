@@ -322,7 +322,11 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_SUB_TYPES.LANDING_PAGE_LOAD,
         data.user_identifier
       ),
-      ...data,
+      geo_country_code: data.geo_country_code,
+      geo_state_province_code: data.geo_state_province_code,
+      geo_city_name: data.geo_city_name,
+      geo_postal_code: data.geo_postal_code,
+      ip_address: data.ip_address,
     };
   }
 
@@ -579,14 +583,14 @@ export class CDPEventPayloadBuilder {
   // UGC Filter Event
   public static buildUGCFilterPayload(
     languageCode: string,
-    language: string,
-    category: string,
-    user_identifier: string
+    user_identifier: string,
+    language?: string,
+    category?: string,
   ): UGCFilterCDPEventPayload {
     return {
       ...this.getBasePayload(
         CDP_EVENT_TYPES.CLICK,
-        `${CDP_EVENT_SUB_TYPES.UGC_FILTER}_${language}_${category}`,
+        `${CDP_EVENT_SUB_TYPES.UGC_FILTER}_${language ?? ''}_${category ?? ''}`,
         user_identifier
       ),
       language_code: languageCode.toUpperCase() ?? "",

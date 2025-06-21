@@ -198,7 +198,7 @@ const SurpriseMeModal = ({
   }
 
   const triggerCDPEvent = (reactionType: ReactionType) => {
-    if (reactionType && joke?.id && user?.id && surpriseMeCheck) {
+    if (reactionType && joke?.id && user?.id) {
       const payload: ReactionCDPEventPayload =
         CDPEventPayloadBuilder.buildReactionPayload(
           joke?.id,
