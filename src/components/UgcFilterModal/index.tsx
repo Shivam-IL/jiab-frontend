@@ -59,15 +59,15 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
   }, [genres])
 
   const trigger_CDP_UGC_FILTER = (language?: string, category?: string) => {
-    if (language && category) {
+    if (language || category) {
       const languageCode =
         languageOptions.find(opt => opt.value === language)?.languageCode ?? ''
       const payload: UGCFilterCDPEventPayload =
         CDPEventPayloadBuilder.buildUGCFilterPayload(
-          languageCode,
-          language,
-          category,
-          user?.id
+          languageCode ? languageCode : 'EN',
+          user?.id,
+          language ?? '',
+          category ?? '',
         )
       sendCDPEvent(payload)
     }

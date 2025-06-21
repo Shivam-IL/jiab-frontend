@@ -141,6 +141,16 @@ const Signup = () => {
     return () => clearTimeout(timeoutId)
   }, [userData.email])
 
+  const triggerCDPInviteCodeEvent = (userId: string) => {
+    if (userId) {
+      const payload: BaseCDPEventPayload =
+        CDPEventPayloadBuilder.buildUseInviteCodePayload({
+          user_identifier: userId
+        })
+      sendCDPEvent(payload)
+    }
+  }
+
   useEffect(() => {
     if (avatarsData?.length > 0) {
       const avatar = avatarsData.find(
@@ -322,6 +332,7 @@ const Signup = () => {
             data?.referral_phone_number,
             data?.user_id
           )
+          triggerCDPInviteCodeEvent(data?.user_id ?? '')
         }
       }
     } else if (signupData?.ok === false) {
