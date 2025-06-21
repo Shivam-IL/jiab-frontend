@@ -188,7 +188,7 @@ export class ProfileService extends MainService {
     }
   }
 
-  public async submitUserQuestions({ questions, language_id }: TSubmitQuestions) {
+  public async submitUserQuestions({ questions }: TSubmitQuestions) {
     try {
       const endpoint = `${API_ROUTES.USER.QUESTIONS.POST}`;
 

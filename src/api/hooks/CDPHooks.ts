@@ -5,9 +5,9 @@ const cdpService = CDPService.getInstance();
 
 const useSendCDPEvent = () => {
   return useMutation({
-    mutationFn: (payload: any) => cdpService.sendCDPEvent(payload),
+    mutationFn: (payload: Record<string, unknown>) =>
+      cdpService.sendCDPEvent(payload),
   });
 };
 
 export { useSendCDPEvent };
-

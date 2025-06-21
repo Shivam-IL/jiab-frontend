@@ -13,7 +13,7 @@ export class CMSService {
     return CMSService.instance;
   }
 
-  public async getHomePageContent(): Promise<any> {
+  public async getHomePageContent() {
     try {
       const response = await cmsClient.get(API_ROUTES.CMS.GET_HOME_PAGE_CONTENT());
       const data = response.data;

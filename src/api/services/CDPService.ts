@@ -1,5 +1,4 @@
 import { AxiosError } from "axios";
-import apiClient from "../client";
 import { CDP_API_URL } from "@/config";
 
 export class CDPService {
@@ -12,7 +11,7 @@ export class CDPService {
     return CDPService.instance;
   }
 
-  public async sendCDPEvent(payload: any): Promise<any> {
+  public async sendCDPEvent(payload: Record<string, unknown>) {
     try {
       console.log("payload", payload);
       const url = new URL(`${CDP_API_URL}.gif`);

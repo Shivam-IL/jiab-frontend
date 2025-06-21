@@ -1,4 +1,3 @@
-import { AxiosError, AxiosResponse } from "axios";
 import apiClient from "../client";
 import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
 import { API_ROUTES, LOCAL_STORAGE_KEYS } from "../client/config";
@@ -141,7 +140,7 @@ export class JokeService extends MainService {
         return data;
       }
       const keysArr: string[] = []
-       Object.entries(responseData?.details?.validation_errors ?? {}).map(([key, value]) => {
+       Object.entries(responseData?.details?.validation_errors ?? {}).map(([key]) => {
         keysArr.push(key)
       })
       const message = `Invalid ${keysArr?.[0]}`
