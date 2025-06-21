@@ -59,6 +59,7 @@ import { setLanguage } from '@/store/language/language.slice'
 import { useGetUserGeolocation } from '@/api/hooks/GeolocationHooks'
 import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 import {
+  BaseCDPEventPayload,
   CDPEventPayloadBuilder,
   LandingPageCDPEventPayload
 } from '@/api/utils/cdpEvents'
@@ -94,7 +95,6 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const { data: jokesFormatsData } = useGetJokesFormats()
   const { data: userSubmittedJokesData } = useGetUserSubmittedJokes()
   const { data: userGeolocationDataResponse } = useGetUserGeolocation()
-  const cdpEventsPayload = CDPEventPayloadBuilder.getInstance()
 
   const {
     mutate: mutateRefreshToken,
@@ -102,6 +102,16 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
     isPending: refreshTokenLoading
   } = useMutateRefreshToken()
   const { mutate: sendCDPEvent } = useSendCDPEvent()
+
+  const trigerConsentPush = (userId: string) => {
+    if (userId && Notification.permission === 'granted') {
+      const payload: BaseCDPEventPayload =
+        CDPEventPayloadBuilder.buildPushConsentPayload({
+          user_identifier: userId
+        })
+      sendCDPEvent(payload)
+    }
+  }
 
   useEffect(() => {
     const signupKeepAlive = getSessionStorageItem(
@@ -120,15 +130,6 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       }
     }
   }, [pathname])
-
-  console.log(
-    'InitialDataLoader: pathname',
-    pathname,
-    isAuthenticated,
-    otpVerified,
-    isFirstLogin,
-    surpriseMe
-  )
 
   useEffect(() => {
     const refreshToken =
@@ -210,6 +211,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         current_balance: data?.current_balance,
         user: { ...data?.user }
       }
+      trigerConsentPush(data?.user?.id)
       if (refreshTokenFromParams) {
         const payload: LandingPageCDPEventPayload =
           CDPEventPayloadBuilder.buildLandingPageFromWAPayload({
@@ -223,7 +225,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         const payload: LandingPageCDPEventPayload =
           CDPEventPayloadBuilder.buildLandingPagePayload({
             user_identifier: data?.user?.id,
-            ...geoLocationData,
+            ...geoLocationData
           })
         sendCDPEvent(payload)
       }
