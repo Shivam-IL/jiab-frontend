@@ -12,33 +12,33 @@ const UserGeneratedJokeCard: React.FC<IUserGeneratedJokeCard> = ({
   status
 }) => {
   return (
-    <div className='w-full bg-white rounded-[5px] md:rounded-[20px] px-[8px] py-[12px] md:px-[24px] md:py-[24px] flex items-center  gap-[16px] md:gap-[40px]'>
+    <div className='w-full md:w-[49%] bg-white rounded-[5px] px-[8px] py-[12px] md:p-[12px] flex items-center  gap-[16px] md:gap-[40px]'>
       <div
-        className={`min-w-[57px] max-w-[57px] w-full h-full md:min-w-[153px] md:max-w-[153px] md:min-h-[153px] md:max-h-[153px] rounded-[3px] md:rounded-[8px] relative bg-[#11A64B]`}
+        className={`min-w-[57px] max-w-[57px] w-full h-full md:min-w-[108px] md:max-w-[108px] md:min-h-[108px] md:max-h-[108px] rounded-[3px] md:rounded-[8px] relative bg-[#11A64B]`}
       >
         {image && (
           <img
-            className='rounded-[3px] md:rounded-[8px] object-cover w-full h-full relative'
+            className='rounded-[3px] md:rounded-[5px] object-cover w-full h-full relative'
             src={generateImageurl(LOCAL_IMAGES.USER_JOKE_IMAGE)}
             alt='joke'
           />
         )}
       </div>
-      <div className='w-full flex flex-col gap-[9px] md:gap-[20px]'>
+      <div className='w-full flex flex-col gap-[9px] md:gap-[16px]'>
         <AktivGroteskText
           text={title}
-          fontSize='text-[12px] md:text-[32px]'
+          fontSize='text-[12px] md:text-[20px]'
           fontWeight='font-[700]'
         />
         <div className='flex justify-between items-center'>
           <AktivGroteskText
             text={`Date: ${date}`}
-            fontSize='text-[10px] md:text-[24px]'
+            fontSize='text-[10px] md:text-[14px]'
             fontWeight='font-[400]'
           />
           <AktivGroteskText
             text={status ?? PENDING}
-            fontSize='text-[10px] capitalize md:text-[24px]'
+            fontSize='text-[10px] capitalize md:text-[14px]'
             fontWeight='font-[400]'
           />
         </div>

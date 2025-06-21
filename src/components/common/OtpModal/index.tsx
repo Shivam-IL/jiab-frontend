@@ -126,6 +126,7 @@ const OtpModal = () => {
     const geoLocationData = JSON.parse(
       getLocalStorageItem(LOCAL_STORAGE_KEYS.USER_GEOLOCATION) ?? '{}'
     ) as ILocalGeoData
+    console.log('geoLocationData', geoLocationData)
     const payload: LoginCDPEventPayload =
       CDPEventPayloadBuilder.buildLoginPayload({
         phone_e164: `+91${phoneNumber}`,

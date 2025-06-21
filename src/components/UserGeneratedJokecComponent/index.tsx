@@ -64,7 +64,7 @@ const UserGeneratedJokecComponent = () => {
           />
         </button>
       </div>
-      <div className='relative flex flex-col gap-[12px] md:gap-[20px]'>
+      <div className='relative flex flex-col md:flex-row md:justify-between flex-wrap gap-[12px] md:gap-[20px]'>
         {currentJokes?.length > 0 &&
           currentJokes?.map((joke: IUserSubmittedJoke) => (
             <UserGeneratedJokeCard

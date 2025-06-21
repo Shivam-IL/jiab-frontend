@@ -94,7 +94,10 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const { data: languagesData } = useGetLanguages()
   const { data: jokesFormatsData } = useGetJokesFormats()
   const { data: userSubmittedJokesData } = useGetUserSubmittedJokes()
-  const { data: userGeolocationDataResponse } = useGetUserGeolocation()
+  const { data: userGeolocationDataResponse } = useGetUserGeolocation({
+    enabled: true,
+    params: 'userGeolocation'
+  })
 
   const {
     mutate: mutateRefreshToken,
@@ -202,6 +205,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       const geoLocationData = JSON.parse(
         getLocalStorageItem(LOCAL_STORAGE_KEYS.USER_GEOLOCATION) ?? '{}'
       ) as ILocalGeoData
+      console.log('geoLocationData', geoLocationData)
       const { data } = userProfileData?.data ?? {}
       dispatch(updateRank({ rank: data?.rank }))
       dispatch(updateBalance({ current_balance: data?.current_balance }))

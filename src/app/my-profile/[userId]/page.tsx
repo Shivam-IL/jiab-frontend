@@ -163,7 +163,7 @@ const EditProfilePage = () => {
     const month = dateObj.getMonth() + 1
     const year = dateObj.getFullYear()
 
-    const newDay = day < 10 ? `0${day}` : day 
+    const newDay = day < 10 ? `0${day}` : day
     const newMonth = month < 10 ? `0${month}` : month
     return `${newDay}/${newMonth}/${year}`
   }
@@ -176,13 +176,13 @@ const EditProfilePage = () => {
   ) => {
     if ((name || dob || email || gender) && user?.id) {
       let genderValue = ''
-      if (gender===1) {
+      if (gender === 1) {
         genderValue = 'M'
-      } else if (gender===2) {
+      } else if (gender === 2) {
         genderValue = 'F'
-      } else if (gender===3) {
+      } else if (gender === 3) {
         genderValue = 'O'
-      } else if (gender===4) {
+      } else if (gender === 4) {
         genderValue = 'P'
       }
       const payload: ProfileCDPEventPayload =
@@ -203,6 +203,10 @@ const EditProfilePage = () => {
       const currentImage = avatarsData?.find(
         (item: any) => item?.id === user?.avatar_id
       )
+      let genderNew = gender
+      if (gender === 'Prefer not to say') {
+        genderNew = 'perfer_not_to_say'
+      }
       setCurrentImage(currentImage?.image ?? '')
       setUserData({
         avatar_id: 0,
@@ -210,10 +214,12 @@ const EditProfilePage = () => {
         email: email,
         phone: phone_number,
         dob: dob ? dob : '',
-        gender
+        gender: genderNew
       })
     }
   }, [user, params?.userId])
+
+  console.log(userData, 'userData')
 
   const isFormValid = () => {
     const nameError = validateName(userData.name)
@@ -222,10 +228,9 @@ const EditProfilePage = () => {
     if (userData.dob) {
       dobError = validateDOB(userData.dob)
     }
-    if(userData.email){
+    if (userData.email) {
       emailError = validateEmail(userData.email)
     }
-
 
     setErrors(prev => ({
       ...prev,
