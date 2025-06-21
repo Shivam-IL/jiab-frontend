@@ -26,11 +26,15 @@ const DonTstealThunderExitPopup = ({
 const MakeLaughExitPopup = ({
   open,
   onClose,
-  setOpen
+  setOpen,
+  yesButtonClick  ,
+  noButtonClick
 }: {
   open: boolean
   onClose: () => void
-  setOpen?: (open: boolean) => void
+  setOpen?: (open: boolean) => void,
+  yesButtonClick:()=>void,
+  noButtonClick:()=>void
 }) => {
   const { didThatMakeYouLaugh } = useCMSData()
   return (
@@ -45,6 +49,8 @@ const MakeLaughExitPopup = ({
       noButtonText={didThatMakeYouLaugh?.didThatMakeYouLaughNoButton}
       doubleButton={true}
       setOpen={setOpen}
+      yesButtonClick={yesButtonClick}
+      noButtonClick={noButtonClick}
     />
   )
 }

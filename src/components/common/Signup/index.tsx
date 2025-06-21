@@ -39,6 +39,7 @@ import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import { messaging, getToken } from '@/lib/firebase'
 import {
+  BaseCDPEventPayload,
   CDPEventPayloadBuilder,
   RegistrationCDPEventPayload
 } from '@/api/utils/cdpEvents'
@@ -279,6 +280,20 @@ const Signup = () => {
     }
   }
 
+  const trigerReferCompleteCDpEvent = (
+    referee_mobile_number: string,
+    userId: string
+  ) => {
+    if (referee_mobile_number && userId) {
+      const payload: BaseCDPEventPayload =
+        CDPEventPayloadBuilder.buildReferralCompletedPayload(
+          referee_mobile_number,
+          userId
+        )
+      sendCDPEvent(payload)
+    }
+  }
+
   useEffect(() => {
     if (signupData?.ok) {
       const { data } = signupData
@@ -302,6 +317,12 @@ const Signup = () => {
         setOpen(false)
         removeSessionStorageItem(SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE)
         trigerrSignupCDP(data?.user_id ?? '', data?.phone_number ?? '')
+        if (data?.referral_phone_number) {
+          trigerReferCompleteCDpEvent(
+            data?.referral_phone_number,
+            data?.user_id
+          )
+        }
       }
     } else if (signupData?.ok === false) {
       const { message } = signupData as any

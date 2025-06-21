@@ -18,6 +18,11 @@ import { updateBalance, updateUser } from '@/store/profile/profile.slice'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import useAppDispatch from '@/hooks/useDispatch'
 import useAppSelector from '@/hooks/useSelector'
+import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
+import {
+  CDPEventPayloadBuilder,
+  QuestionCDPPayload
+} from '@/api/utils/cdpEvents'
 
 interface IOption {
   id: number
@@ -44,6 +49,7 @@ const HelpUsToKnowYourBetter = ({
   nextButtonText: string
   id: string
 }) => {
+  const { user } = useAppSelector(state => state.profile)
   const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
     null
   )
@@ -65,6 +71,7 @@ const HelpUsToKnowYourBetter = ({
   })
   const { mutate: submitUserQuestions, data: submitQuestionResponse } =
     useSubmitUserQuestions()
+  const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   useEffect(() => {
     if (selectedLanguage) {
@@ -79,25 +86,32 @@ const HelpUsToKnowYourBetter = ({
   useEffect(() => {
     if (userProfileQuestions?.ok && !mountRef.current) {
       mountRef.current = true
-      setAllQuestions(userProfileQuestions?.data)
-      setSelectedQuestion(userProfileQuestions?.data[0])
+      const modifiedData = userProfileQuestions?.data?.map(
+        (item: IQuestion) => {
+          // Sort options based on display_order
+          const sortedOptions =
+            item?.options?.sort((a, b) => a.display_order - b.display_order) ||
+            []
+          return {
+            ...item,
+            options: sortedOptions
+          }
+        }
+      )
+      setAllQuestions(modifiedData)
+      setSelectedQuestion(modifiedData[0])
       setCurrentQuestionNumber(1)
 
       let isSubmitted = false
       let isSaved = false
-      userProfileQuestions?.data?.forEach(
-        (question: IQuestion, index: number) => {
-          if (question?.selected_option && index === 0) {
-            isSaved = true
-          }
-          if (
-            question?.selected_option &&
-            index === userProfileQuestions?.data?.length - 1
-          ) {
-            isSubmitted = true
-          }
+      modifiedData?.forEach((question: IQuestion, index: number) => {
+        if (question?.selected_option && index === 0) {
+          isSaved = true
         }
-      )
+        if (question?.selected_option && index === modifiedData?.length - 1) {
+          isSubmitted = true
+        }
+      })
       setSubmittedCheck(isSubmitted)
       setSavedCheck(isSaved)
     }
@@ -136,8 +150,23 @@ const HelpUsToKnowYourBetter = ({
     }
   }, [userProfileData])
 
+  const trigerQuestionCDPEvent = (optionId: number) => {
+    if (user?.id && user?.phone_number && optionId) {
+      const payload: QuestionCDPPayload =
+        CDPEventPayloadBuilder.buildQuestionPayload(
+          optionId,
+          user?.phone_number,
+          user?.id
+        )
+      sendCDPEvent(payload)
+    }
+  }
+
   useEffect(() => {
     if (submitQuestionResponse?.ok) {
+      if (selectedQuestion?.selected_option) {
+        trigerQuestionCDPEvent(selectedQuestion?.selected_option)
+      }
       setAllQuestions(prev => {
         const newQuestions = [...prev]
         newQuestions[currentQuestionNumber - 1].selected_option =
@@ -149,7 +178,7 @@ const HelpUsToKnowYourBetter = ({
       } else {
         setSavedCheck(true)
       }
-      if(currentQuestionNumber < allQuestions?.length){
+      if (currentQuestionNumber < allQuestions?.length) {
         setCurrentQuestionNumber(prev => prev + 1)
         setSelectedQuestion(allQuestions[currentQuestionNumber])
       }

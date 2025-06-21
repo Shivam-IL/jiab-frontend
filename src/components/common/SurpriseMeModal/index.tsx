@@ -37,9 +37,9 @@ const SurpriseMeModal = ({
   forceShow = false,
   genreId,
   languageId,
-  surpriseMeCheck=false,
-  pullJoke=false,
-  category=''
+  surpriseMeCheck = false,
+  pullJoke = false,
+  category = ''
 }: {
   onClose: () => void
   forceShow?: boolean
@@ -91,12 +91,10 @@ const SurpriseMeModal = ({
   //   }
   // }, [shouldShow, hasChecked, onClose]);
 
-  const trigger_CDP_Pull_Joke = ()=>{
-    if(pullJoke && category && user?.id){
-      const payload:BaseCDPEventPayload = CDPEventPayloadBuilder.buildPullJokePayload(
-        category,
-        user?.id
-      )
+  const trigger_CDP_Pull_Joke = () => {
+    if (pullJoke && category && user?.id) {
+      const payload: BaseCDPEventPayload =
+        CDPEventPayloadBuilder.buildPullJokePayload(category, user?.id)
       sendCDPEvent(payload)
     }
   }
@@ -437,6 +435,13 @@ const SurpriseMeModal = ({
 
         {makeLaughExitPopup && (
           <MakeLaughExitPopup
+            yesButtonClick={() => {
+              setMakeLaughExitPopup(false)
+              setOpen(false)
+            }}
+            noButtonClick={() => {
+              setMakeLaughExitPopup(false)
+            }}
             open={makeLaughExitPopup}
             onClose={() => {
               setMakeLaughExitPopup(false)

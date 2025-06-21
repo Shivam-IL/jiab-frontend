@@ -13,6 +13,24 @@ export const CDP_EVENT_TYPES = {
   ONLOAD: "OnLoad",
 } as const;
 
+export const QUESTION_ID_ANSWER_MAPPING: Record<number, string> = {
+  1: "Consume_Monthly",
+  2: "Consume_Occasional",
+  3: "Consume_Never",
+  4: "Consume_Weekly",
+  5: "Consider_4",
+  6: "Consider_3",
+  7: "Consider_2",
+  8: "Consider_1",
+  9: "BrandPerception_3",
+  10: "BrandPerception_2",
+  11: "BrandPerception_1",
+  12: "BrandPerception_1",
+  13: "BrandPerception_-1",
+  14: "BrandPerception_-2",
+  15: "BrandPerception_-3",
+};
+
 // CDP Event Sub Types
 export const CDP_EVENT_SUB_TYPES = {
   // Landing Page Events
@@ -72,27 +90,6 @@ export const CDP_EVENT_SUB_TYPES = {
   ADD_ADDRESS: "Add_Address",
   UPDATE_ADDRESS: "Update_Address",
 
-  // Consumption Questions
-  CONSUME_MONTHLY: "Consume_Monthly",
-  CONSUME_WEEKLY: "Consume_Weekly",
-  CONSUME_OCCASIONAL: "Consume_Occasional",
-  CONSUME_NEVER: "Consume_Never",
-
-  // Consideration Questions
-  CONSIDER_FIRST_CHOICE: "Consider_4",
-  CONSIDER_SERIOUSLY: "Consider_3",
-  CONSIDER_MAYBE: "Consider_2",
-  CONSIDER_NOT: "Consider_1",
-
-  // Feeling Questions
-  FEEL_LOVE: "BrandPerception_3",
-  FEEL_NICE: "BrandPerception_2",
-  FEEL_EXCELLENT: "BrandPerception_1",
-  FEEL_NEUTRAL: "BrandPerception_0",
-  FEEL_BAD: "BrandPerception_-1",
-  FEEL_VERY_BAD: "BrandPerception_-2",
-  FEEL_HATE: "BrandPerception_-3",
-
   // Transaction Events
   SUBMIT_TRANSACTION_CODE: "Submit_Transaction_Code",
 
@@ -147,7 +144,6 @@ export interface BaseCDPEventPayload {
   event_type: string;
   event_sub_type: string;
   brand_name: string;
-  created_dt: string;
   ip_address?: string;
   user_identifiers: Array<{
     user_identifier_type: string;
@@ -249,8 +245,7 @@ export interface ProfileCDPEventPayload extends BaseCDPEventPayload {
   gender: string;
 }
 
-export interface ConsumptionQuestionCDPEventPayload
-  extends BaseCDPEventPayload {
+export interface QuestionCDPPayload extends BaseCDPEventPayload {
   phone_e164: string;
 }
 
@@ -282,7 +277,6 @@ export class CDPEventPayloadBuilder {
       event_type: eventType,
       event_sub_type: eventSubType,
       brand_name: this.BRAND_NAME,
-      created_dt: getCurrentEpopTime(),
       user_identifiers: [
         {
           user_identifier_type: CDP_USER_IDENTIFIER_TYPE,
@@ -675,81 +669,19 @@ export class CDPEventPayloadBuilder {
   }
 
   // Consumption Question Events
-  public static buildConsumptionQuestionPayload(
-    consumptionType: "monthly" | "weekly" | "occasional" | "never",
+  public static buildQuestionPayload(
+    optionId: number,
     phoneNumber: string,
     user_identifier: string
-  ): ConsumptionQuestionCDPEventPayload {
-    const eventSubTypeMap = {
-      monthly: CDP_EVENT_SUB_TYPES.CONSUME_MONTHLY,
-      weekly: CDP_EVENT_SUB_TYPES.CONSUME_WEEKLY,
-      occasional: CDP_EVENT_SUB_TYPES.CONSUME_OCCASIONAL,
-      never: CDP_EVENT_SUB_TYPES.CONSUME_NEVER,
-    };
-
+  ): QuestionCDPPayload {
+    const eventSubType = QUESTION_ID_ANSWER_MAPPING[optionId];
     return {
       ...this.getBasePayload(
         CDP_EVENT_TYPES.CLICK,
-        eventSubTypeMap[consumptionType],
+        eventSubType,
         user_identifier
       ),
-      phone_e164: phoneNumber,
-    };
-  }
-
-  // Consideration Question Events
-  public static buildConsiderationQuestionPayload(
-    considerationType: "firstChoice" | "seriously" | "maybe" | "not",
-    phoneNumber: string,
-    user_identifier: string
-  ): ConsumptionQuestionCDPEventPayload {
-    const eventSubTypeMap = {
-      firstChoice: CDP_EVENT_SUB_TYPES.CONSIDER_FIRST_CHOICE,
-      seriously: CDP_EVENT_SUB_TYPES.CONSIDER_SERIOUSLY,
-      maybe: CDP_EVENT_SUB_TYPES.CONSIDER_MAYBE,
-      not: CDP_EVENT_SUB_TYPES.CONSIDER_NOT,
-    };
-
-    return {
-      ...this.getBasePayload(
-        CDP_EVENT_TYPES.CLICK,
-        eventSubTypeMap[considerationType],
-        user_identifier
-      ),
-      phone_e164: phoneNumber,
-    };
-  }
-
-  // Feeling Question Events
-  public static buildFeelingQuestionPayload(
-    feelingType:
-      | "love"
-      | "nice"
-      | "excellent"
-      | "neutral"
-      | "bad"
-      | "veryBad"
-      | "hate",
-    phoneNumber: string,
-    user_identifier: string
-  ): ConsumptionQuestionCDPEventPayload {
-    const eventSubTypeMap = {
-      love: CDP_EVENT_SUB_TYPES.FEEL_LOVE,
-      nice: CDP_EVENT_SUB_TYPES.FEEL_NICE,
-      excellent: CDP_EVENT_SUB_TYPES.FEEL_EXCELLENT,
-      neutral: CDP_EVENT_SUB_TYPES.FEEL_NEUTRAL,
-      bad: CDP_EVENT_SUB_TYPES.FEEL_BAD,
-      veryBad: CDP_EVENT_SUB_TYPES.FEEL_VERY_BAD,
-      hate: CDP_EVENT_SUB_TYPES.FEEL_HATE,
-    };
-
-    return {
-      ...this.getBasePayload(
-        CDP_EVENT_TYPES.CLICK,
-        eventSubTypeMap[feelingType],
-        user_identifier
-      ),
-      phone_e164: phoneNumber,
+      phone_e164: `+91${phoneNumber}`,
     };
   }
 
