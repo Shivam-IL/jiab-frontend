@@ -57,7 +57,7 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
       <>
         <div
           ref={ref}
-          className='w-full mt-[24px] relative h-[147px] md:h-[195px] flex flex-col justify-center items-center bg-[#9BD4B1] border-[1px] border-[#11A64B] rounded-[10px] cursor-pointer'
+          className='w-full md:mt-[24px] mt-[8px] relative h-[110px] md:h-[195px] flex flex-col justify-center items-center bg-[#9BD4B1] border-[1px] border-[#11A64B] rounded-[10px] cursor-pointer'
         >
           {file && (
             <div
@@ -72,7 +72,7 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
           )}
           <div
             onClick={handleClick}
-            className='flex flex-col w-full justify-center items-center gap-[16px]'
+            className='flex flex-col w-full justify-center items-center gap-[8px] md:gap-[16px]'
           >
             <SvgIcons
               className='w-[40px] h-[40px] md:w-[69px] md:h-[69px]'
@@ -83,12 +83,12 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
                 <>
                   <AktivGroteskText
                     text={title}
-                    fontSize='text-[16px] md:text-[20px]'
+                    fontSize='text-[14px] md:text-[20px]'
                     fontWeight='font-[700]'
                   />
                   <AktivGroteskText
                     text={subtitle}
-                    fontSize='text-[12px] md:text-[16px]'
+                    fontSize='text-[10px] md:text-[16px]'
                     fontWeight='font-[400]'
                   />
                 </>
@@ -97,12 +97,12 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
                 <>
                   <AktivGroteskText
                     text={'File Name'}
-                    fontSize='text-[16px] md:text-[20px]'
+                    fontSize='text-[14px] md:text-[20px]'
                     fontWeight='font-[700]'
                   />
                   <AktivGroteskText
                     text={file?.[0]?.name ?? ''}
-                    fontSize='text-[16px] md:text-[20px]'
+                    fontSize='text-[14px] md:text-[20px]'
                     fontWeight='font-[700]'
                     className='text-center'
                   />
@@ -569,7 +569,7 @@ const SubmitYourJoke = () => {
             label={cmsData.pjChallenge.selectFormat}
           >
             <div className='flex w-full  md:flex-row md:justify-center'>
-              <div className='flex w-full md:w-[600px] gap-[8px]  justify-between'>
+              <div className='flex w-full md:w-[600px]   justify-between'>
                 {formatData?.length > 0 &&
                   formatData?.map(item => {
                     return (
@@ -592,18 +592,18 @@ const SubmitYourJoke = () => {
                           key={item.label}
                           boxWidth=''
                           image={''}
-                          itemsGapClass='gap-[8px]'
-                          fontSize='text-[12px] md:text-[14px]'
-                          fontWeight='font-[400]'
+                          itemsGapClass='md:gap-[0px]'
+                          fontSize='text-[10px] md:text-[14px]'
+                          fontWeight='font-[500] md:font-[400]'
                           iconClassName={
                             'w-[31px] h-[39px] md:w-[43px] md:h-[56px]'
                           }
                           className={`${
                             item?.label?.toLowerCase() ===
                             jokeData?.format?.toLowerCase()
-                              ? 'border-[1px] border-[#11A64B]'
+                              ? 'border-[2px] border-[#009639]'
                               : ''
-                          } max-w-[80px] box-border min-h-[80px] md:min-w-[120px] md:min-h-[120px] flex flex-col justify-center items-center bg-white px-[24px] py-[9px] rounded-[10px]`}
+                          } max-w-[86px] box-border min-h-[86px] md:min-w-[120px] md:min-h-[120px] flex flex-col justify-center items-center bg-white px-[24px] py-[9px] rounded-[10px]`}
                           icon={item.icon}
                           text={item.label}
                         />

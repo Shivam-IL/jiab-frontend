@@ -56,7 +56,7 @@ export const useUserLocation = (autoFetch: boolean = true): UseUserLocationRetur
     isLoading,
     error: geolocationError,
     refetch
-  } = useGetUserGeolocation(autoFetch);
+  } = useGetUserGeolocation({enabled: autoFetch,params: 'userGeolocation'});
 
   useEffect(() => {
     if (geolocationResponse?.ok && geolocationResponse.data) {
