@@ -1,6 +1,5 @@
 'use client'
 
-import AnnouncingWinnerTimer from '@/components/AnnouncingWinnerTimer'
 import AktivGroteskText from '@/components/common/AktivGroteskText'
 import MobileTempNavBar from '@/components/common/MobileTempNavBar'
 import ScreenWrapper from '@/components/common/ScreenWrapper'

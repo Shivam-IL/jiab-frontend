@@ -6,7 +6,6 @@ import HallOfLameLeaderboardTable from '@/components/HallOfLameLeaderboardTable'
 import useWindowWidth from '@/hooks/useWindowWidth'
 import React, { useState, useEffect } from 'react'
 import { useCMSData } from '@/data'
-import { TGludeinHallOfLame } from '@/api/types/GluedinTypes'
 import { useGetHallOfLames } from '@/api/hooks/GluedinHooks'
 import { IHallOfLameData } from '@/types'
 

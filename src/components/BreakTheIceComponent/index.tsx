@@ -30,7 +30,6 @@ const BreakTheIceComponent = () => {
     }
   }, [pathname, isAuthenticated])
 
-  const handleStayOnPage = () => setShowExitPopup(false)
   const { user } = useAppSelector(state => state.profile)
   const router = useRouter()
 

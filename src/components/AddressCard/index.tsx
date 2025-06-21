@@ -20,7 +20,6 @@ import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 import useAppSelector from '@/hooks/useSelector'
 
 const AddressCard = ({
-  index,
   allowBottomBorder = false,
   address,
   addressLength
@@ -37,13 +36,11 @@ const AddressCard = ({
   const { mutate: sendCDPEvent } = useSendCDPEvent()
   const {
     mutate: deleteAddess,
-    isPending,
     data: deleteAddressData
   } = useDeleteAddress()
 
   const {
     mutate: editAddressApi,
-    isPending: editAddressPending,
     data: editAddressData
   } = useEditAddress()
 

@@ -2,7 +2,6 @@ import {
   CDP_USER_IDENTIFIER_SUB_TYPE,
   CDP_USER_IDENTIFIER_TYPE,
 } from "@/config";
-import { getCurrentEpopTime } from "@/utils/epopTimeUtils";
 
 // CDP Event Types
 export const CDP_EVENT_TYPES = {

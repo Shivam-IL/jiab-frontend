@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AktivGroteskText from "../common/AktivGroteskText";
-import { ANNOUNCING_WINNER_TIMER_TEXT, ICONS_NAMES } from "@/constants";
-import TimerBox from "../common/TimerBox";
-import SvgIcons from "../common/SvgIcons";
+import { ANNOUNCING_WINNER_TIMER_TEXT } from "@/constants";
+
 
 interface TimeLeft {
   hours: number;
@@ -10,20 +9,7 @@ interface TimeLeft {
   seconds: number;
 }
 
-const TIMER_DATA: { key: string; text: string }[] = [
-  {
-    key: "hours",
-    text: "Hours",
-  },
-  {
-    key: "minutes",
-    text: "Minutes",
-  },
-  {
-    key: "seconds",
-    text: "Seconds",
-  },
-];
+
 
 const AnnouncingWinnerTimer = () => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({

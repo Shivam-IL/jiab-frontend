@@ -2,10 +2,10 @@
 
 import MobileTempNavBar from '@/components/common/MobileTempNavBar'
 import ScreenWrapper from '@/components/common/ScreenWrapper'
-import { GA_EVENTS, ICONS_NAMES, LANGUAGE_OPTIONS } from '@/constants'
+import { GA_EVENTS, ICONS_NAMES } from '@/constants'
 import useWindowWidth from '@/hooks/useWindowWidth'
 import { FileType, IJokeData } from '@/types'
-import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import Input from '@/components/Input'
 import LabeledInput from '@/components/LabeledInput'
 import ImageIconCard from '@/components/common/ImageIconCard'
@@ -28,13 +28,11 @@ import { IGenre, IJokeFormat, ILanguage } from '@/store/reference'
 import { useSubmitJoke } from '@/api/hooks/JokeHooks'
 import { TSubmitJokeParams } from '@/api/types/JokeTypes'
 import { useRouter } from 'next/navigation'
-import { useGlobalLoader } from '@/hooks/useGlobalLoader'
 import { useCoinAnimation } from '@/components/common/CoinAnimation'
 import BottleAnimation from '@/components/common/BottleAnimation'
 import {
   CDPEventPayloadBuilder,
-  JOKE_FORMATS,
-  UGCSubmissionCDPEventPayload
+  JOKE_FORMATS
 } from '@/api/utils/cdpEvents'
 import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 
@@ -178,7 +176,6 @@ const SubmitYourJoke = () => {
   const {
     mutate: submitJoke,
     isPending,
-    isSuccess,
     data: submitJokeData
   } = useSubmitJoke()
   const [formError, setFormError] = useState<{
@@ -195,13 +192,6 @@ const SubmitYourJoke = () => {
     agreeToTerms: ''
   })
 
-  const [newFormatData, setNewFormatData] = useState<
-    {
-      id: number
-      name: string
-      value: string
-    }[]
-  >([])
 
   const FORMAT_OPTIONS = [
     {

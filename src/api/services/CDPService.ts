@@ -1,5 +1,22 @@
 import { AxiosError } from "axios";
 import { CDP_API_URL } from "@/config";
+import {
+  BaseCDPEventPayload,
+  LandingPageCDPEventPayload,
+  RegistrationCDPEventPayload,
+  LoginCDPEventPayload,
+  LanguageCDPEventPayload,
+  SocialMediaCDPEventPayload,
+  ReactionCDPEventPayload,
+  UGCSubmissionCDPEventPayload,
+  JokeCategoryCDPEventPayload,
+  UGCFilterCDPEventPayload,
+  ReferralCompletedCDPEventPayload,
+  AddressCDPEventPayload,
+  ProfileCDPEventPayload,
+  QuestionCDPPayload,
+  TransactionCodeCDPEventPayload,
+} from "../utils/cdpEvents";
 
 export class CDPService {
   private static instance: CDPService;
@@ -11,7 +28,24 @@ export class CDPService {
     return CDPService.instance;
   }
 
-  public async sendCDPEvent(payload: Record<string, unknown>) {
+  public async sendCDPEvent(
+    payload:
+      | BaseCDPEventPayload
+      | LandingPageCDPEventPayload
+      | RegistrationCDPEventPayload
+      | LoginCDPEventPayload
+      | LanguageCDPEventPayload
+      | SocialMediaCDPEventPayload
+      | ReactionCDPEventPayload
+      | UGCSubmissionCDPEventPayload
+      | JokeCategoryCDPEventPayload
+      | UGCFilterCDPEventPayload
+      | ReferralCompletedCDPEventPayload
+      | AddressCDPEventPayload
+      | ProfileCDPEventPayload
+      | QuestionCDPPayload
+      | TransactionCodeCDPEventPayload
+  ) {
     try {
       console.log("payload", payload);
       const url = new URL(`${CDP_API_URL}.gif`);
