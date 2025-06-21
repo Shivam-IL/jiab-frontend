@@ -6,7 +6,6 @@ import { Separator } from "@/components/ui/separator";
 import GreenCTA from "@/components/GreenCTA";
 import { useRouter } from "next/navigation";
 import useAppSelector from "@/hooks/useSelector";
-import SvgIcons from "../SvgIcons";
 import { useGetComicCoins } from "@/api/hooks/JokeHooks";
 
 const UserComicsCoinsAndRankCard = ({
@@ -25,7 +24,6 @@ const UserComicsCoinsAndRankCard = ({
   const {
     data: comicCoinsData,
     isLoading: isComicCoinsLoading,
-    isError: isComicCoinsError,
   } = useGetComicCoins();
 
   // Get comic coins value with fallback
@@ -59,7 +57,7 @@ const UserComicsCoinsAndRankCard = ({
         <Separator className="w-[1px] md:w-[2px] bg-[#EBEBEB] h-full mx-0 px-0" />
         <div className="relative w-[48%] md:w-[35%]  flex flex-col items-center justify-between gap-[6px] md:gap-[8px]">
           <AktivGroteskText
-            text={rank?.toString() || "0"}
+            text={rank?.toString() || "--"}
             className="text-black"
             fontSize="text-[16px] md:text-[32px]"
             fontWeight="font-[700]"
@@ -90,12 +88,7 @@ const UserComicsCoinsAndRankCard = ({
             router.push("/leaderboard");
           }}
           childrenPosition="left"
-        >
-          <SvgIcons
-            name={ICONS_NAMES.STAIRS}
-            className="w-[13px] h-[12px] md:w-[25px] self-center md:h-[24px] text-white"
-          />
-        </GreenCTA>
+        />
       </div>
     </div>
   );
