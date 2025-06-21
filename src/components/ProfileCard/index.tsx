@@ -182,7 +182,7 @@ const ProfileCard = () => {
         <div className='relative h-[23px] md:h-fit flex justify-center'>
           <AktivGroteskText
             text={name ?? ''}
-            fontSize='text-[16px] md:text-[28px]'
+            fontSize='text-[16px] md:text-[30px]'
             fontWeight='font-[700]'
           />
           <button
@@ -197,7 +197,7 @@ const ProfileCard = () => {
         </div>
       </div>
 
-      <div className='flex flex-row gap-2 justify-between   gap-x-0 px-[16px] md:px-[66px] pt-[16px] md:pt-[66px] pb-[20px] md:pb-[32px] w-full'>
+      <div className='flex flex-row gap-2 justify-between gap-x-0 px-[16px] md:px-[66px] pt-[16px] md:pt-[66px] pb-[20px] md:pb-[32px] w-full'>
         <div className='flex flex-col gap-[10px]'>
           {numberDateArray?.length > 0 &&
             numberDateArray?.map((item, index) => {
