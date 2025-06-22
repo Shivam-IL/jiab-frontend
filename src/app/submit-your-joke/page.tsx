@@ -1,37 +1,37 @@
 "use client";
 
-import MobileTempNavBar from "@/components/common/MobileTempNavBar";
-import ScreenWrapper from "@/components/common/ScreenWrapper";
-import { GA_EVENTS, ICONS_NAMES } from "@/constants";
-import useWindowWidth from "@/hooks/useWindowWidth";
-import { FileType, IJokeData } from "@/types";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
-import Input from "@/components/Input";
-import LabeledInput from "@/components/LabeledInput";
-import ImageIconCard from "@/components/common/ImageIconCard";
-import SvgIcons from "@/components/common/SvgIcons";
-import AktivGroteskText from "@/components/common/AktivGroteskText";
-import CustomCarousel from "@/components/common/CustomCarousel";
-import { Checkbox } from "@/components/ui/checkbox";
-import GreenCTA from "@/components/GreenCTA";
+import MobileTempNavBar from '@/components/common/MobileTempNavBar'
+import ScreenWrapper from '@/components/common/ScreenWrapper'
+import { GA_EVENTS, ICONS_NAMES } from '@/constants'
+import useWindowWidth from '@/hooks/useWindowWidth'
+import { FileType, IJokeData } from '@/types'
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
+import Input from '@/components/Input'
+import LabeledInput from '@/components/LabeledInput'
+import ImageIconCard from '@/components/common/ImageIconCard'
+import SvgIcons from '@/components/common/SvgIcons'
+import AktivGroteskText from '@/components/common/AktivGroteskText'
+import CustomCarousel from '@/components/common/CustomCarousel'
+import { Checkbox } from '@/components/ui/checkbox'
+import GreenCTA from '@/components/GreenCTA'
 import {
   ApproveJokePopup,
   JokeFeaturedPopup,
   JokeNotSuitablePopup,
   JokeNotGoodEnoughPopup,
-  JokeOffensivePopup,
-} from "@/components/JokeSubmissionPopup";
-import { useCMSData } from "@/data";
-import { triggerGAEvent } from "@/utils/gTagEvents";
-import useAppSelector from "@/hooks/useSelector";
-import { IGenre, IJokeFormat, ILanguage } from "@/store/reference";
-import { useSubmitJoke } from "@/api/hooks/JokeHooks";
-import { TSubmitJokeParams } from "@/api/types/JokeTypes";
-import { useRouter } from "next/navigation";
-import { useCoinAnimation } from "@/components/common/CoinAnimation";
-import BottleAnimation from "@/components/common/BottleAnimation";
-import { CDPEventPayloadBuilder, JOKE_FORMATS } from "@/api/utils/cdpEvents";
-import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
+  JokeOffensivePopup
+} from '@/components/JokeSubmissionPopup'
+import { useCMSData } from '@/data'
+import { triggerGAEvent } from '@/utils/gTagEvents'
+import useAppSelector from '@/hooks/useSelector'
+import { IGenre, IJokeFormat, ILanguage } from '@/store/reference'
+import { useSubmitJoke } from '@/api/hooks/JokeHooks'
+import { TSubmitJokeParams } from '@/api/types/JokeTypes'
+import { useRouter } from 'next/navigation'
+import { useCoinAnimation } from '@/components/common/CoinAnimation'
+import BottleAnimation from '@/components/common/BottleAnimation'
+import { CDPEventPayloadBuilder, JOKE_FORMATS } from '@/api/utils/cdpEvents'
+import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 
 interface FileContainerProps {
   title: string;
@@ -163,8 +163,9 @@ const SubmitYourJoke = () => {
       value: string;
       image: string;
     }[]
-  >([]);
+  >([])
 
+  const { selectedLanguage } = useAppSelector(state => state.language)
   const { languages, genres, jokesFormats } = useAppSelector(
     (state) => state.reference
   );
@@ -182,55 +183,58 @@ const SubmitYourJoke = () => {
     joke: string;
     agreeToTerms: string;
   }>({
-    format: "",
-    language: "",
-    title: "",
-    joke: "",
-    agreeToTerms: "",
-  });
+    format: '',
+    language: '',
+    title: '',
+    joke: '',
+    agreeToTerms: ''
+  })
 
-  const FORMAT_OPTIONS = [
-    {
-      icon: ICONS_NAMES.IMAGE,
-      label: cmsData.pjChallenge.image,
-      iconClassName: "w-[31px] h-[39px]",
-      acceptedFormats: ".jpg,.jpeg,.png",
-      title: cmsData.pjChallenge.imageClickableHeading,
-      accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading,
-      name: "Image",
-      size: 1,
-    },
-    {
-      icon: ICONS_NAMES.TEXT,
-      title: cmsData.pjChallenge.textClickableHeading,
-      iconClassName: "w-[39px] h-[40px]",
-      label: cmsData.pjChallenge.text,
-      accptedFormatText: "",
-      acceptedFormats: ".txt",
-      name: "Text",
-      size: 1,
-    },
-    {
-      icon: ICONS_NAMES.HEADPHONE,
-      title: cmsData.pjChallenge.audioClickableHeading,
-      iconClassName: "w-[41px] h-[40px]",
-      label: cmsData.pjChallenge.audio,
-      accptedFormatText: cmsData.pjChallenge.audioClickableSubheading,
-      acceptedFormats: ".mp3,.wav",
-      name: "Audio",
-      size: 50,
-    },
-    {
-      icon: ICONS_NAMES.VIDEO,
-      title: cmsData.pjChallenge.videoHeading,
-      iconClassName: "w-[49px] h-[39px]",
-      accptedFormatText: cmsData.pjChallenge.videoSubHeading,
-      label: cmsData.pjChallenge.video,
-      acceptedFormats: ".mp4",
-      name: "Video",
-      size: 100,
-    },
-  ];
+  const FORMAT_OPTIONS = useMemo(
+    () => [
+      {
+        icon: ICONS_NAMES.IMAGE,
+        label: cmsData.pjChallenge.image,
+        iconClassName: 'w-[31px] h-[39px]',
+        acceptedFormats: '.jpg,.jpeg,.png',
+        title: cmsData.pjChallenge.imageClickableHeading,
+        accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading,
+        name: 'Image',
+        size: 1
+      },
+      {
+        icon: ICONS_NAMES.TEXT,
+        title: cmsData.pjChallenge.textClickableHeading,
+        iconClassName: 'w-[39px] h-[40px]',
+        label: cmsData.pjChallenge.text,
+        accptedFormatText: '',
+        acceptedFormats: '.txt',
+        name: 'Text',
+        size: 1
+      },
+      {
+        icon: ICONS_NAMES.HEADPHONE,
+        title: cmsData.pjChallenge.audioClickableHeading,
+        iconClassName: 'w-[41px] h-[40px]',
+        label: cmsData.pjChallenge.audio,
+        accptedFormatText: cmsData.pjChallenge.audioClickableSubheading,
+        acceptedFormats: '.mp3,.wav',
+        name: 'Audio',
+        size: 50
+      },
+      {
+        icon: ICONS_NAMES.VIDEO,
+        title: cmsData.pjChallenge.videoHeading,
+        iconClassName: 'w-[49px] h-[39px]',
+        accptedFormatText: cmsData.pjChallenge.videoSubHeading,
+        label: cmsData.pjChallenge.video,
+        acceptedFormats: '.mp4',
+        name: 'Video',
+        size: 100
+      }
+    ],
+    [ cmsData]
+  )
 
   const [errorMessage, setErrorMessage] = useState<string>("");
   const { mutate: sendCDPEvent } = useSendCDPEvent();
@@ -404,7 +408,7 @@ const SubmitYourJoke = () => {
       });
       setFormatData(modifiedJokesFormats);
     }
-  }, [jokesFormats, cmsData]);
+  }, [jokesFormats, cmsData, FORMAT_OPTIONS])
 
   useEffect(() => {
     setMounted(true);
@@ -440,12 +444,12 @@ const SubmitYourJoke = () => {
         if (prev.category === value) {
           return { ...prev, category: "" };
         }
-        return { ...prev, category: value as string };
-      });
-    } else if (key === "file") {
-      const MAX_FILE_SIZE_MB = jokeData.size;
-      const file = value as FileList;
-      const fileSizeMB = file?.[0]?.size / (1024 * 1024);
+        return { ...prev, category: value as string }
+      })
+    } else if (key === 'file') {
+      const MAX_FILE_SIZE_MB = jokeData.size
+      const file = value as FileList
+      const fileSizeMB = file?.[0]?.size / (1024 * 1024)
       if (fileSizeMB > MAX_FILE_SIZE_MB) {
         alert(`File size should not exceed ${MAX_FILE_SIZE_MB} MB.`);
         setJokeData((prev) => ({ ...prev, file: null }));
@@ -500,7 +504,7 @@ const SubmitYourJoke = () => {
         joke: "",
       }));
     }
-  }, [jokeData]);
+  }, [jokeData])
 
   return (
     <div className="flex flex-col gap-3">
@@ -741,11 +745,11 @@ const SubmitYourJoke = () => {
                 handleChange("agreeToTerms", !jokeData.agreeToTerms)
               }
             />
-            <label htmlFor="agreeToTerms" className="cursor-pointer">
+            <label htmlFor='agreeToTerms' className='cursor-pointer'>
               <AktivGroteskText
                 text={cmsData.pjChallenge.termsAndConditions}
-                fontSize="text-[12px] md:text-[16px]"
-                fontWeight="font-[400]"
+                fontSize='text-[12px] md:text-[16px]'
+                fontWeight='font-[400]'
               />
             </label>
           </div>

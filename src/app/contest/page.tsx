@@ -280,7 +280,6 @@ const ContestPage: React.FC = () => {
           </div>
         ) : (
           <>
-            {/* <AnnouncingWinnerTimer /> */}
 
             {/* How to participate */}
             <HowToParticipate />

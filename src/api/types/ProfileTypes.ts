@@ -5,7 +5,6 @@ export type TEditProfile = {
   gender?: string;
   name: string;
   is_avatar?: boolean;
-  pfImage?: File;
 };
 
 export type TAddress = {

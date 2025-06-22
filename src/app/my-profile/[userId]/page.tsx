@@ -1,23 +1,23 @@
 "use client";
 
-import { useEditUserProfileDetails } from "@/api/hooks/ProfileHooks";
-import AktivGroteskText from "@/components/common/AktivGroteskText";
-import MobileTempNavBar from "@/components/common/MobileTempNavBar";
-import ScreenWrapper from "@/components/common/ScreenWrapper";
-import EditProfileImage from "@/components/EditProfileImage";
-import GreenCTA from "@/components/GreenCTA";
-import Input from "@/components/Input";
-import { Separator } from "@/components/ui/separator";
-import { GA_EVENTS, MOBILE_TEMP_NAVBAR_DATA } from "@/constants";
-import { updateUser } from "@/store/profile/profile.slice";
-import useAppSelector from "@/hooks/useSelector";
-import useWindowWidth from "@/hooks/useWindowWidth";
-import { newMonthDayYearConvert } from "@/utils";
-import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import useAppDispatch from "@/hooks/useDispatch";
-import { triggerGAEvent } from "@/utils/gTagEvents";
-import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
+import { useEditUserProfileDetails } from '@/api/hooks/ProfileHooks'
+import AktivGroteskText from '@/components/common/AktivGroteskText'
+import MobileTempNavBar from '@/components/common/MobileTempNavBar'
+import ScreenWrapper from '@/components/common/ScreenWrapper'
+import EditProfileImage from '@/components/EditProfileImage'
+import GreenCTA from '@/components/GreenCTA'
+import Input from '@/components/Input'
+import { Separator } from '@/components/ui/separator'
+import { GA_EVENTS, MOBILE_TEMP_NAVBAR_DATA } from '@/constants'
+import { IAvatarsData, updateUser } from '@/store/profile/profile.slice'
+import useAppSelector from '@/hooks/useSelector'
+import useWindowWidth from '@/hooks/useWindowWidth'
+import { newMonthDayYearConvert } from '@/utils'
+import { useParams, useRouter } from 'next/navigation'
+import React, { useCallback, useEffect, useState } from 'react'
+import useAppDispatch from '@/hooks/useDispatch'
+import { triggerGAEvent } from '@/utils/gTagEvents'
+import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 import {
   CDPEventPayloadBuilder,
   ProfileCDPEventPayload,
@@ -54,13 +54,12 @@ const EditProfilePage = () => {
   const [currentImage, setCurrentImage] = useState<string>("");
   const [userData, setUserData] = useState<IUserData>({
     avatar_id: 0,
-    name: "",
-    email: "",
-    phone: "+91-8989898989",
-    dob: "",
-    gender: "",
-  });
-  const [pfImage, setPfImage] = useState<File | null>(null);
+    name: '',
+    email: '',
+    phone: '+91-8989898989',
+    dob: '',
+    gender: ''
+  })
 
   const [errors, setErrors] = useState<IErrors>({
     name: "",
@@ -117,8 +116,16 @@ const EditProfilePage = () => {
     if (age < minAge) {
       return `Sorry, you are below 18 years of age."`;
     }
-    return "";
-  };
+    return ''
+  }
+
+  // const validateGender = (gender: string) => {
+  //   if (!gender) {
+  //     return 'Gender is required'
+  //   }
+  //   return ''
+  // }
+
   const handleChange = (key: string, value: string) => {
     setUserData({ ...userData, [key]: value });
 
@@ -132,10 +139,11 @@ const EditProfilePage = () => {
 
   useEffect(() => {
     const currentImage = avatarsData?.find(
-      (item: any) => item?.id.toString() === userData?.avatar_id.toString()
-    );
-    setCurrentImage(currentImage?.image ?? "");
-  }, [userData?.avatar_id]);
+      (item: IAvatarsData) =>
+        item?.id.toString() === userData?.avatar_id.toString()
+    )
+    setCurrentImage(currentImage?.image ?? '')
+  }, [userData?.avatar_id, avatarsData])
 
   const handleContainerClick = () => {
     if (editProfileImage) {
@@ -147,7 +155,7 @@ const EditProfilePage = () => {
     if (user?.id !== params?.userId) {
       router.push("/");
     }
-  }, [user, params?.userId]);
+  }, [user, params?.userId, router])
 
   const convertDateToDdMmYyyy = (date: string) => {
     const dateObj = new Date(date);
@@ -160,44 +168,42 @@ const EditProfilePage = () => {
     return `${newDay}/${newMonth}/${year}`;
   };
 
-  const trigger_CDP_EDIT_PROFILE = (
-    name: string,
-    dob: string,
-    email: string,
-    gender: number
-  ) => {
-    if ((name || dob || email || gender) && user?.id) {
-      let genderValue = "";
-      if (gender === 1) {
-        genderValue = "M";
-      } else if (gender === 2) {
-        genderValue = "F";
-      } else if (gender === 3) {
-        genderValue = "O";
-      } else if (gender === 4) {
-        genderValue = "P";
+  const trigger_CDP_EDIT_PROFILE = useCallback(
+    (name: string, dob: string, email: string, gender: number) => {
+      if ((name || dob || email || gender) && user?.id) {
+        let genderValue = ''
+        if (gender === 1) {
+          genderValue = 'M'
+        } else if (gender === 2) {
+          genderValue = 'F'
+        } else if (gender === 3) {
+          genderValue = 'O'
+        } else if (gender === 4) {
+          genderValue = 'P'
+        }
+        const payload: ProfileCDPEventPayload =
+          CDPEventPayloadBuilder.buildEditProfilePayload({
+            first_name: name ?? '',
+            email: email,
+            dob: dob && dob !== '' ? convertDateToDdMmYyyy(dob) : '',
+            gender: genderValue,
+            user_identifier: user.id ?? ''
+          })
+        sendCDPEvent(payload)
       }
-      const payload: ProfileCDPEventPayload =
-        CDPEventPayloadBuilder.buildEditProfilePayload({
-          first_name: name ?? "",
-          email: email,
-          dob: dob && dob !== "" ? convertDateToDdMmYyyy(dob) : "",
-          gender: genderValue,
-          user_identifier: user.id ?? "",
-        });
-      sendCDPEvent(payload);
-    }
-  };
+    },
+    [user?.id, sendCDPEvent]
+  )
 
   useEffect(() => {
     if (user?.id === params?.userId) {
       const { name, email, phone_number, dob, gender } = user;
       const currentImage = avatarsData?.find(
-        (item: any) => item?.id === user?.avatar_id
-      );
-      let genderNew = gender;
-      if (gender === "Prefer not to say") {
-        genderNew = "perfer_not_to_say";
+        (item: IAvatarsData) => item?.id === user?.avatar_id
+      )
+      let genderNew = gender
+      if (gender === 'Prefer not to say') {
+        genderNew = 'perfer_not_to_say'
       }
       setCurrentImage(currentImage?.image ?? "");
       setUserData({
@@ -209,9 +215,7 @@ const EditProfilePage = () => {
         gender: genderNew,
       });
     }
-  }, [user, params?.userId]);
-
-  console.log(userData, "userData");
+  }, [user, params?.userId, avatarsData])
 
   const isFormValid = () => {
     const nameError = validateName(userData.name);
@@ -243,11 +247,10 @@ const EditProfilePage = () => {
         dob: dob ? newMonthDayYearConvert(dob) : "",
         email,
         gender,
-        avatar_id,
-        pfImage: pfImage ? pfImage : undefined,
-      };
-      console.log(payload, "payload");
-      editUserProfileDetails(payload);
+        avatar_id
+      }
+      console.log(payload, 'payload')
+      editUserProfileDetails(payload)
     }
   };
 
@@ -255,14 +258,11 @@ const EditProfilePage = () => {
 
   useEffect(() => {
     if (editUserProfileDetailsData?.ok) {
-      const { data } = editUserProfileDetailsData?.data ?? {};
-      dispatch(updateUser({ user: { ...data } }));
-      trigger_CDP_EDIT_PROFILE(
-        data?.name,
-        data?.dob,
-        data?.email,
-        data?.gender
-      );
+      const { data } = editUserProfileDetailsData?.data ?? {}
+      dispatch(updateUser({ user: { ...data } }))
+      if(trigger_CDP_EDIT_PROFILE){
+        trigger_CDP_EDIT_PROFILE(data?.name, data?.dob, data?.email, data?.gender)
+      }
       if (data?.profile_percentage === 100) {
         triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER);
       }
@@ -273,9 +273,7 @@ const EditProfilePage = () => {
         "Something went wrong";
       setGeneralError(message);
     }
-  }, [editUserProfileDetailsData]);
-
-  console.log(userData, "userData");
+  }, [editUserProfileDetailsData, dispatch, router, trigger_CDP_EDIT_PROFILE])
 
   return (
     <div onClick={handleContainerClick} className="flex flex-col gap-3">

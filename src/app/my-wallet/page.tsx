@@ -86,8 +86,6 @@ const ComicCoinsPage = () => {
         </div>
       </div>
       <ScreenWrapper className="mt-0">
-        {/* Announcing Winner Timer */}
-        {/* <AnnouncingWinnerTimer /> */}
 
         {/* Reward Pool */}
         <Header title="My Wins" className="md:mt-8 mt-0 mx-[-19px] md:mx-0" />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import AktivGroteskText from '../common/AktivGroteskText'
 import SvgIcons from '../common/SvgIcons'
 import { ICONS_NAMES } from '@/constants'
@@ -34,15 +34,9 @@ const AddressCard = ({
   const dispatch = useAppDispatch()
   const { user } = useAppSelector(state => state.profile)
   const { mutate: sendCDPEvent } = useSendCDPEvent()
-  const {
-    mutate: deleteAddess,
-    data: deleteAddressData
-  } = useDeleteAddress()
+  const { mutate: deleteAddess, data: deleteAddressData } = useDeleteAddress()
 
-  const {
-    mutate: editAddressApi,
-    data: editAddressData
-  } = useEditAddress()
+  const { mutate: editAddressApi, data: editAddressData } = useEditAddress()
 
   const handleDeleteAddress = (id: number) => {
     if (!id) return
@@ -52,37 +46,40 @@ const AddressCard = ({
     if (deleteAddressData?.ok && address?.id) {
       dispatch(deleteAddress({ addressId: address?.id }))
     }
-  }, [deleteAddressData])
+  }, [deleteAddressData, dispatch, address?.id])
 
-  const trigger_CDP_UPDATE_ADDRESS = ({
-    address_line_1,
-    address_line_2,
-    pincode,
-    state,
-    city
-  }: {
-    address_line_1: string
-    address_line_2?: string
-    pincode: string
-    state: string
-    city: string
-  }) => {
-    if (address_line_1 && pincode && state && city && user?.id) {
-      const payload: AddressCDPEventPayload =
-        CDPEventPayloadBuilder.buildUpdateAddressPayload({
-          address_line1: address_line_1,
-          address_line2: address_line_2 ?? '',
-          address_city: city,
-          address_state: state,
-          geo_postal_code: pincode,
-          user_identifier: user.id ?? ''
-        })
-      sendCDPEvent(payload)
-    }
-  }
+  const trigger_CDP_UPDATE_ADDRESS = useCallback(
+    ({
+      address_line_1,
+      address_line_2,
+      pincode,
+      state,
+      city
+    }: {
+      address_line_1: string
+      address_line_2?: string
+      pincode: string
+      state: string
+      city: string
+    }) => {
+      if (address_line_1 && pincode && state && city && user?.id) {
+        const payload: AddressCDPEventPayload =
+          CDPEventPayloadBuilder.buildUpdateAddressPayload({
+            address_line1: address_line_1,
+            address_line2: address_line_2 ?? '',
+            address_city: city,
+            address_state: state,
+            geo_postal_code: pincode,
+            user_identifier: user.id ?? ''
+          })
+        sendCDPEvent(payload)
+      }
+    },
+    [user?.id]
+  )
 
   useEffect(() => {
-    if (editAddressData?.ok) {
+    if (editAddressData?.ok && address?.id) {
       const { data } = editAddressData ?? {}
       trigger_CDP_UPDATE_ADDRESS({
         address_line_1: data?.address1,
@@ -93,7 +90,7 @@ const AddressCard = ({
       })
       dispatch(updateDefaultAddress({ addressId: address?.id }))
     }
-  }, [editAddressData])
+  }, [editAddressData, dispatch, address?.id, trigger_CDP_UPDATE_ADDRESS])
 
   return (
     <div
