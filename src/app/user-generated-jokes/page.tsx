@@ -12,6 +12,7 @@ import {
   useGetGluedinFeedList,
   useViewGludeinJokes,
 } from "@/api/hooks/GluedinHooks";
+import { TModifiedUGCContent } from "@/api/types/GluedinTypes";
 import { resetUgcData, updateUgcData, updateUgcViewData } from "@/store/ugc";
 import { REDUX_UPDATION_TYPES } from "@/constants";
 import useAppDispatch from "@/hooks/useDispatch";
@@ -29,9 +30,8 @@ const UserGeneratedJokes = () => {
 
   // Track animation state
   const [canShowAnimation, setCanShowAnimation] = useState(false);
-  const [lastLanguage, setLastLanguage] = useState<string>("");
+  const [, setLastLanguage] = useState<string>("");
 
-  const [pages, setPages] = useState(1);
   const { ugcData, offset, limit, ugcFilters, filterChnageId, loadMore } =
     useAppSelector((state) => state.ugc);
   const { data: gluedinFeedList, isLoading: isLoadingGluedinFeedList } =
@@ -58,12 +58,14 @@ const UserGeneratedJokes = () => {
       setIsUnmounting(true);
       dispatch(resetUgcData());
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (gluedinFeedList?.ok) {
       const { data } = gluedinFeedList ?? {};
-      const assetIds = gluedinFeedList?.data?.map((item: any) => item?.videoId);
+      const assetIds = gluedinFeedList?.data?.map(
+        (item: TModifiedUGCContent) => item?.videoId
+      );
       viewGludeinJokes({ assetIds });
 
       if (data?.length === 0) {
@@ -82,14 +84,14 @@ const UserGeneratedJokes = () => {
         })
       );
     }
-  }, [gluedinFeedList, filterChnageId]);
+  }, [gluedinFeedList, filterChnageId, dispatch, viewGludeinJokes, loadMore]);
 
   useEffect(() => {
     if (viewGludeinJokesData?.ok) {
       const { data } = viewGludeinJokesData ?? {};
       dispatch(updateUgcViewData({ assetIds: data }));
     }
-  }, [viewGludeinJokesData]);
+  }, [viewGludeinJokesData, dispatch]);
 
   // Check if animation can be shown (24h cooldown or language change)
   useEffect(() => {

@@ -12,7 +12,6 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({
   isVisible,
   animationKey = 0,
   onAnimationEnd,
-  animation = false,
 }) => {
   if (!isVisible) return null;
 

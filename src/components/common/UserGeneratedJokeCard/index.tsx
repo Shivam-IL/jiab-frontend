@@ -1,50 +1,52 @@
-import React from 'react'
-import { IUserGeneratedJokeCard } from '@/interfaces'
-import Image from 'next/image'
-import AktivGroteskText from '../AktivGroteskText'
-import { LOCAL_IMAGES, PENDING } from '@/constants'
-import { generateImageurl } from '@/utils'
+import React from "react";
+import { IUserGeneratedJokeCard } from "@/interfaces";
+import Image from "next/image";
+import AktivGroteskText from "../AktivGroteskText";
+import { LOCAL_IMAGES, PENDING } from "@/constants";
+import { generateImageurl } from "@/utils";
 
 const UserGeneratedJokeCard: React.FC<IUserGeneratedJokeCard> = ({
   image,
   title,
   date,
-  status
+  status,
 }) => {
   return (
-    <div className='w-full md:w-[49%] bg-white rounded-[5px] px-[8px] py-[12px] md:p-[12px] flex items-center  gap-[16px] md:gap-[40px]'>
+    <div className="w-full md:w-[49%] bg-white rounded-[5px] px-[8px] py-[12px] md:p-[12px] flex items-center  gap-[16px] md:gap-[40px]">
       <div
         className={`min-w-[57px] max-w-[57px] w-full h-full md:min-w-[108px] md:max-w-[108px] md:min-h-[108px] md:max-h-[108px] rounded-[3px] md:rounded-[8px] relative bg-[#11A64B]`}
       >
         {image && (
-          <img
-            className='rounded-[3px] md:rounded-[5px] object-cover w-full h-full relative'
+          <Image
+            className="rounded-[3px] md:rounded-[5px] object-cover w-full h-full relative"
             src={generateImageurl(LOCAL_IMAGES.USER_JOKE_IMAGE)}
-            alt='joke'
+            alt="joke"
+            width={108}
+            height={108}
           />
         )}
       </div>
-      <div className='w-full flex flex-col gap-[9px] md:gap-[16px]'>
+      <div className="w-full flex flex-col gap-[9px] md:gap-[16px]">
         <AktivGroteskText
           text={title}
-          fontSize='text-[12px] md:text-[20px]'
-          fontWeight='font-[700]'
+          fontSize="text-[12px] md:text-[20px]"
+          fontWeight="font-[700]"
         />
-        <div className='flex justify-between items-center'>
+        <div className="flex justify-between items-center">
           <AktivGroteskText
             text={`Date: ${date}`}
-            fontSize='text-[10px] md:text-[14px]'
-            fontWeight='font-[400]'
+            fontSize="text-[10px] md:text-[14px]"
+            fontWeight="font-[400]"
           />
           <AktivGroteskText
             text={status ?? PENDING}
-            fontSize='text-[10px] capitalize md:text-[14px]'
-            fontWeight='font-[400]'
+            fontSize="text-[10px] capitalize md:text-[14px]"
+            fontWeight="font-[400]"
           />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UserGeneratedJokeCard
+export default UserGeneratedJokeCard;

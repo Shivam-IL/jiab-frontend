@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { ILogoAndProfileImageProps } from "@/interfaces";
 import Image from "next/image";
-import { Bell, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import hamburgerMenu from "../../../../../public/other-svgs/hamburger-menu.svg";
 import Sidebar from "./Sidebar";
 import {
@@ -26,7 +26,6 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [hideNavbar, setHideNavbar] = useState<boolean>(false);
   const isVisible = true;
-  const { user } = useAppSelector((state) => state.profile);
   const langDropdownRef = useRef<HTMLDivElement>(null);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 

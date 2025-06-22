@@ -15,7 +15,7 @@ const withPWA = nextPwa({
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ["d35f5vastl4boc.cloudfront.net"],
+    domains: ["d35f5vastl4boc.cloudfront.net", "localhost"],
   },
   typescript: {
     ignoreBuildErrors: true,

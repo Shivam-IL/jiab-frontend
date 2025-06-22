@@ -5,7 +5,6 @@ import SvgIcons from "../SvgIcons";
 import AktivGroteskText from "../AktivGroteskText";
 import GreenCTA from "@/components/GreenCTA";
 import { aktivGrotesk } from "@/app/layout";
-import { on } from "events";
 
 const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
   open,

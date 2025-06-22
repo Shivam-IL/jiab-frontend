@@ -23,9 +23,10 @@ import CircularBoxesModal, {
 import useWindowWidth from "@/hooks/useWindowWidth";
 import SvgIcons from "@/components/common/SvgIcons";
 import { GA_EVENTS, ICONS_NAMES, SESSION_STORAGE_KEYS } from "@/constants";
-import { updateSurpriseMe, updateLoginModal } from "@/store/auth/auth.slice";
+import { updateSurpriseMe } from "@/store/auth/auth.slice";
 import useAppDispatch from "@/hooks/useDispatch";
 import { useGetJokes } from "@/api/hooks/JokeHooks";
+import { IJoke } from "@/api/types/JokeTypes";
 import { useLanguage } from "@/hooks/useLanguage";
 import { triggerGAEvent } from "@/utils/gTagEvents";
 import HomePageJokeSection from "./common/HomePageJokeSection";
@@ -86,7 +87,7 @@ export default function HomePageClient() {
   });
 
   // Map API response to the structure expected by <VideoScroll />
-  const jokesData = jokesResponse?.ok ? (jokesResponse.data as any[]) : [];
+  const jokesData = jokesResponse?.ok ? (jokesResponse.data as IJoke[]) : [];
   const videoData = jokesData.map((joke) => ({
     id: joke.id,
     src: joke.thumbnail_url,
@@ -126,8 +127,6 @@ export default function HomePageClient() {
   // Coin animation state management
   const [canShowVoteAnimation, setCanShowVoteAnimation] = useState(false);
   const [canShowReactAnimation, setCanShowReactAnimation] = useState(false);
-  const [lastLanguageVote, setLastLanguageVote] = useState<string>("");
-  const [lastLanguageReact, setLastLanguageReact] = useState<string>("");
 
   // Coin animation hooks
   const {
@@ -268,8 +267,6 @@ export default function HomePageClient() {
     } else {
       setCanShowVoteAnimation(false);
     }
-
-    setLastLanguageVote(currentLanguage);
   }, [selectedLanguage]);
 
   // Check if react animation can be shown (24h cooldown or language change)
@@ -296,8 +293,6 @@ export default function HomePageClient() {
     } else {
       setCanShowReactAnimation(false);
     }
-
-    setLastLanguageReact(currentLanguage);
   }, [selectedLanguage]);
 
   const handlePJChallengeClick = () => {

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import CustomPopupWrapper from '../CustomPopupWrapper'
 import {
   GA_EVENTS,
-  REFER_NOW_MODAL_DATA,
   REFERRAL_CODE,
   REFFERAL_STATUS_POPUP_DATA
 } from '@/constants'

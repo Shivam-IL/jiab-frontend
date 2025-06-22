@@ -14,9 +14,6 @@ import GlobalLoader from "./common/GlobalLoader";
 import FCMProvider from "./FCMProvider";
 import { pageview } from "@/utils/gTagEvents";
 import BreakTheIceComponent from "./BreakTheIceComponent";
-import useAppSelector from "@/hooks/useSelector";
-import { removeSessionStorageItem } from "@/utils";
-import { SESSION_STORAGE_KEYS } from "@/constants";
 
 interface LayoutClientProps {
   children: ReactNode;

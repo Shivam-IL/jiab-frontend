@@ -48,8 +48,6 @@ const HomePageJokeSection = ({
 
   const {
     data: jokeBoxData,
-    isLoading: jokeBoxLoading,
-    error: jokeBoxError,
     isFetched: isJokeBoxFetched
   } = useGetGluedinFeedList({
     sortBy: activeTab === 'Latest' ? 'latest' : 'popular',
@@ -197,7 +195,7 @@ const HomePageJokeSection = ({
               >
                 <CarouselContent className='w-full'>
                   {ugcData?.length > 0 &&
-                    ugcData?.map((item: TModifiedUGCContent, index: number) => (
+                    ugcData?.map((item: TModifiedUGCContent) => (
                       <CarouselItem key={item._id} className='basis-auto'>
                         <div className='max-w-[350px] flex mx-auto h-full'>
                           <UgcCard
@@ -228,7 +226,7 @@ const HomePageJokeSection = ({
                   <CarouselContent className='w-full'>
                     {ugcData?.length > 0 &&
                       ugcData?.map(
-                        (item: TModifiedUGCContent, index: number) => (
+                        (item: TModifiedUGCContent) => (
                           <CarouselItem key={item._id} className='basis-1/3'>
                             <div className='w-full flex mx-auto h-full'>
                               <UgcCard

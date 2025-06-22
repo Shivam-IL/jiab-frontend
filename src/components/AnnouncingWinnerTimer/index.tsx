@@ -2,17 +2,14 @@ import React, { useState, useEffect } from "react";
 import AktivGroteskText from "../common/AktivGroteskText";
 import { ANNOUNCING_WINNER_TIMER_TEXT } from "@/constants";
 
-
 interface TimeLeft {
   hours: number;
   minutes: number;
   seconds: number;
 }
 
-
-
 const AnnouncingWinnerTimer = () => {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
+  const [, setTimeLeft] = useState<TimeLeft>({
     hours: 24,
     minutes: 0,
     seconds: 15,

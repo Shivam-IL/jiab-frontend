@@ -233,10 +233,7 @@ const NotificationsPage: React.FC = () => {
               title={notification.notification_title}
               description={notification.notification_text}
               timestamp={getTimeAgo(notification.launch_date)}
-              iconBg={notification.is_new ? "bg-primary" : "bg-gray-400"}
               iconUrl={notification.icon_url}
-              isRead={notification.is_read}
-              isNew={notification.is_new}
               onClick={handleNotificationClick}
             />
           ))}

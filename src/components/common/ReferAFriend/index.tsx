@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AktivGroteskText from "../AktivGroteskText";
-import { GA_EVENTS, ICONS_NAMES, SEND_REMINDER } from "@/constants";
+import { ICONS_NAMES } from "@/constants";
 import GreenCTA from "@/components/GreenCTA";
 import SvgIcons from "../SvgIcons";
 import { useRouter } from "next/navigation";

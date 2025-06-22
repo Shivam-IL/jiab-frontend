@@ -1,10 +1,4 @@
-import {
-  updateIsAuthenticated,
-  updateOtpStatus,
-  updateOtpFilled,
-  updateIsFirstLogin,
-  resetAuth,
-} from "@/store/auth/auth.slice";
+import {resetAuth} from "@/store/auth/auth.slice";
 import useAppDispatch from "./useDispatch";
 import { resetProfile } from "@/store/profile/profile.slice";
 import { clearAllModalSessions } from "./useSessionModal";

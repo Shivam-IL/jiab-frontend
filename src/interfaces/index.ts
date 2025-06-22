@@ -1,4 +1,4 @@
-import { AddressModalType, ReactionType } from "@/types";
+import { AddressModalType } from "@/types";
 import { TModifiedUGCContent } from "@/api/types/GluedinTypes";
 
 export interface IQueryClientAndReduxWrapper {
@@ -22,7 +22,7 @@ export interface IInput {
   value: string;
   placeholder: string;
   onBlur?: () => void;
-  onChange: (key: string, value: any) => void;
+  onChange: (key: string, value: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
   error?: string;
   readonly?: boolean;
@@ -223,7 +223,7 @@ export interface IInput {
   type: string;
   value: string;
   placeholder: string;
-  onChange: (key: string, value: any) => void;
+  onChange: (key: string, value: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
   error?: string;
   readonly?: boolean;

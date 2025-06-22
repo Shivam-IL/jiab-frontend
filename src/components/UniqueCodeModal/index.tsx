@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import SvgIcons from "../common/SvgIcons";
-import { ICONS_NAMES, LOCAL_IMAGES } from "@/constants";
+import { ICONS_NAMES } from "@/constants";
 import AktivGroteskText from "../common/AktivGroteskText";
 import Input from "@/components/Input";
 import GreenCTA from "@/components/GreenCTA";
@@ -9,7 +9,10 @@ import Image from "next/image";
 import { useRedeemMixCode, MIX_CODE_STATUS } from "@/api";
 import useAppSelector from "@/hooks/useSelector";
 import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
-import { CDPEventPayloadBuilder, TransactionCodeCDPEventPayload } from "@/api/utils/cdpEvents";
+import {
+  CDPEventPayloadBuilder,
+  TransactionCodeCDPEventPayload,
+} from "@/api/utils/cdpEvents";
 
 interface UniqueCodeModalProps {
   open: boolean;
@@ -17,7 +20,26 @@ interface UniqueCodeModalProps {
   onSuccess?: () => void;
 }
 
-// No longer needed - API validation will handle this
+// Define proper types for API responses
+interface MixCodeRedeemSuccessData {
+  status: MIX_CODE_STATUS;
+  message: string;
+}
+
+interface MixCodeRedeemErrorResponse {
+  ok: false;
+  data: [];
+  message: string;
+}
+
+interface MixCodeRedeemSuccessResponse {
+  ok: true;
+  data: MixCodeRedeemSuccessData;
+}
+
+type MixCodeRedeemResponse =
+  | MixCodeRedeemSuccessResponse
+  | MixCodeRedeemErrorResponse;
 
 const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
   open,
@@ -30,14 +52,20 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
   const [isDailyLimitReached, setIsDailyLimitReached] = useState(false);
   const [coinsCollected, setCoinsCollected] = useState(20);
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useAppSelector(state => state.profile)
-  const { mutate: sendCDPEvent } = useSendCDPEvent()
+  const { user } = useAppSelector((state) => state.profile);
+  const { mutate: sendCDPEvent } = useSendCDPEvent();
 
   const redeemMixCodeMutation = useRedeemMixCode();
 
-  const handleChange = (key: string, value: string) => {
+  const handleChange = (
+    key: string,
+    value: string | React.ChangeEvent<HTMLInputElement>
+  ) => {
+    // Handle both string values and change events from Input component
+    const actualValue = typeof value === "string" ? value : value.target.value;
+
     // Only allow alphanumeric characters and limit to 6 digits
-    const cleanValue = value.replace(/[^A-Za-z0-9]/g, "").slice(0, 6);
+    const cleanValue = actualValue.replace(/[^A-Za-z0-9]/g, "").slice(0, 6);
     setUniqueCode(cleanValue);
 
     // Clear error when user starts typing
@@ -46,19 +74,18 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
     }
   };
 
-  const trigger_CDP_REDEEM_MIX_CODE = (mixCode:string) => {
+  const trigger_CDP_REDEEM_MIX_CODE = (mixCode: string) => {
     if (user?.id && mixCode && user?.phone_number) {
-      const phoneNumber = `+91${user.phone_number}`
-      const payload: TransactionCodeCDPEventPayload = CDPEventPayloadBuilder.buildTransactionCodePayload(
-        phoneNumber,
-        mixCode,
-        user.id
-      );
+      const phoneNumber = `+91${user.phone_number}`;
+      const payload: TransactionCodeCDPEventPayload =
+        CDPEventPayloadBuilder.buildTransactionCodePayload(
+          phoneNumber,
+          mixCode,
+          user.id
+        );
       sendCDPEvent(payload);
     }
-  }
-
-
+  };
 
   const handleSubmit = async () => {
     if (!uniqueCode.trim()) {
@@ -70,16 +97,16 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
     setError("");
 
     try {
-      const result = await redeemMixCodeMutation.mutateAsync({
+      const result = (await redeemMixCodeMutation.mutateAsync({
         mix_code: uniqueCode,
-      });
+      })) as MixCodeRedeemResponse;
 
       if (result.ok) {
-        const data = result.data as any;
+        const data = result.data;
 
         switch (data.status) {
           case MIX_CODE_STATUS.SUCCESS:
-            trigger_CDP_REDEEM_MIX_CODE(uniqueCode)
+            trigger_CDP_REDEEM_MIX_CODE(uniqueCode);
             setCoinsCollected(20); // Default coins for successful redemption
             setIsSuccess(true);
             break;
@@ -96,7 +123,7 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
             setError(data.message ?? "An error occurred");
         }
       } else {
-        const message = (result as any).message ?? "Failed to redeem code";
+        const message = result.message ?? "Failed to redeem code";
         setError(message.charAt(0).toUpperCase() + message.slice(1));
       }
     } catch (error) {
@@ -286,7 +313,10 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
             className="p-2 cursor-pointer bg-transparent hover:bg-gray-100 rounded-full border-none outline-none"
             type="button"
           >
-            <SvgIcons name={ICONS_NAMES.CROSS} className="w-[12.29px] h-[12.64px]" />
+            <SvgIcons
+              name={ICONS_NAMES.CROSS}
+              className="w-[12.29px] h-[12.64px]"
+            />
           </button>
         </div>
         <div className="w-full px-[22px] md:px-[16px] pt-[12px] pb-[23px] flex flex-col gap-[16px] mt-[-30px]">

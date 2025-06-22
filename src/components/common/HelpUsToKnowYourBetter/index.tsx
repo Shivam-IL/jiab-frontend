@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AktivGroteskText from "../AktivGroteskText";
 import {
   GA_EVENTS,
@@ -64,6 +64,7 @@ const HelpUsToKnowYourBetter = ({
   const { selectedLanguage } = useAppSelector((state) => state.language);
   const { languages } = useAppSelector((state) => state.reference);
   const [selectedLanguageId, setSelectedLanguageId] = useState<string>("");
+  const mountRef = useRef(false);
 
   const { data: userProfileQuestions } = useGetUserQuestions({
     language_id: selectedLanguageId,
@@ -83,7 +84,8 @@ const HelpUsToKnowYourBetter = ({
   }, [selectedLanguage]);
 
   useEffect(() => {
-    if (userProfileQuestions?.ok) {
+    if (userProfileQuestions?.ok && !mountRef.current) {
+      mountRef.current = true;
       const modifiedData = userProfileQuestions?.data?.map(
         (item: IQuestion) => {
           // Sort options based on display_order
@@ -96,20 +98,9 @@ const HelpUsToKnowYourBetter = ({
           };
         }
       );
-
       setAllQuestions(modifiedData);
-
-      // Only reset question navigation if we don't have a current question or if the questions have changed
-      if (!selectedQuestion || modifiedData.length !== allQuestions.length) {
-        setSelectedQuestion(modifiedData[0]);
-        setCurrentQuestionNumber(1);
-      } else {
-        // Update the current question with fresh data while maintaining position
-        const currentQuestionIndex = currentQuestionNumber - 1;
-        if (modifiedData[currentQuestionIndex]) {
-          setSelectedQuestion(modifiedData[currentQuestionIndex]);
-        }
-      }
+      setSelectedQuestion(modifiedData[0]);
+      setCurrentQuestionNumber(1);
 
       let isSubmitted = false;
       let isSaved = false;

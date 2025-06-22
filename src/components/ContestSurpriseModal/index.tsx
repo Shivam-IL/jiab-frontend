@@ -9,7 +9,6 @@ import SurpriseMeCTA from "@/components/SurpriseMeCTA";
 import { MakeLaughExitPopup } from "@/components/ExitPopUps";
 import { useGetSurpriseMeJoke } from "@/api/hooks/JokeHooks";
 import { formatNumberToK } from "@/utils";
-import CustomPopupWrapper from "../common/CustomPopupWrapper";
 import {
   useSendGluedinUserReaction,
   useGetGluedinAssetById,
@@ -49,7 +48,6 @@ const ContestSurpriseModal: React.FC<ContestSurpriseModalProps> = ({
   const {
     mutate: mutateSendGluedinUserReaction,
     data: gluedinUserReactionData,
-    isPending: reactionLoading,
   } = useSendGluedinUserReaction();
   const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
     useViewGludeinJokes();
@@ -194,9 +192,9 @@ const ContestSurpriseModal: React.FC<ContestSurpriseModalProps> = ({
             className="flex justify-center items-center cursor-pointer border-none outline-none"
             onClick={() => {
               if (joke?.reactionType) {
-                handleClose()
+                handleClose();
               } else {
-                setMakeLaughExitPopup(true)
+                setMakeLaughExitPopup(true);
               }
             }}
           >
