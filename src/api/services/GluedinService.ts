@@ -304,7 +304,17 @@ export class GluedinService extends MainService {
     }
   }
 
-  public async sendVoteToGluedinAssets({ assetId }: { assetId: string }) {
+  public async sendVoteToGluedinAssets({
+    assetId,
+    genreId,
+    languageId,
+    type,
+  }: {
+    assetId: string;
+    genreId?: string;
+    languageId?: string;
+    type?: string;
+  }) {
     try {
       const authModuleObj = new gluedin.GluedInAuthModule();
       const accessToken = await authModuleObj.getAccessToken();
@@ -312,13 +322,12 @@ export class GluedinService extends MainService {
       if (!accessToken) {
         return ErrorResponse("Please login to react");
       }
-      const actityvityTimelineModule = new gluedin.GluedInActivityTimeline();
-      const gluedinUserVoteList =
-        await actityvityTimelineModule.activityTimelineLike({
-          assetId: assetId,
-        });
-      await apiClient.post(
-        API_ROUTES.JOKES.INCREASE_COMIC_COINS,
+      let endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?type=other`;
+      if (type === "vote" && genreId && languageId) {
+        endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?genre=${genreId}&language=${languageId}&type=vote`;
+      }
+      const coinResponse = await apiClient.post(
+        endpoint,
         {
           deviceId: token,
         },
@@ -328,6 +337,18 @@ export class GluedinService extends MainService {
           },
         }
       );
+      const coinResponseData = coinResponse?.data ?? {};
+      if (!coinResponseData?.success && type === "vote") {
+        return ErrorResponse(
+          coinResponseData?.statusMessage || "Failed to increase comic coins"
+        );
+      }
+      const actityvityTimelineModule = new gluedin.GluedInActivityTimeline();
+      const gluedinUserVoteList =
+        await actityvityTimelineModule.activityTimelineLike({
+          assetId: assetId,
+        });
+
       const response = gluedinUserVoteList?.data ?? {};
       if (response?.success) {
         return SuccessResponse(response?.result);

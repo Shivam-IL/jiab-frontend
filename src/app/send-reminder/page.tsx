@@ -56,9 +56,6 @@ const SendReminderPage = () => {
       const { status } = sendReferralAgainData?.data as { status?: string }
       setSendAgainStatus(status as string)
       setSendReminder(true)
-      setTimeout(() => {
-        setSendReminder(false)
-      }, 3000)
     }
   }, [sendReferralAgainData])
 
@@ -174,15 +171,15 @@ const SendReminderPage = () => {
           onClose={() => {
             setSendReminder(false)
           }}
-          icon={REFFERAL_STATUS_POPUP_DATA.EASY.ICON}
-          subtitle={REFFERAL_STATUS_POPUP_DATA.EASY.SUB_TITLE}
+          icon={REFFERAL_STATUS_POPUP_DATA.SEND_REMINDER.ICON}
+          subtitle={REFFERAL_STATUS_POPUP_DATA.SEND_REMINDER.SUB_TITLE}
         >
           <div className='flex flex-col gap-[20px]'>
             <AktivGroteskText
               fontSize='text-[16px]'
               fontWeight='font-[700]'
               className='text-[#00953B] text-center'
-              text={REFFERAL_STATUS_POPUP_DATA.EASY.SECOND_TEXT}
+              text={'Code'}
             />
             <AktivGroteskText
               fontSize='text-[12px]'

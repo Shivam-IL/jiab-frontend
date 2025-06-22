@@ -231,10 +231,6 @@ const HelpUsToKnowYourBetter = ({
       } else {
         setSavedCheck(true);
       }
-      if (currentQuestionNumber < allQuestions?.length) {
-        setCurrentQuestionNumber((prev) => prev + 1);
-        setSelectedQuestion(allQuestions[currentQuestionNumber]);
-      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitQuestionResponse]);

@@ -83,6 +83,7 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
     onClose()
   }
 
+  console.log('selectedLanguage', languageOptions)
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className='max-w-[343px] md:max-w-[398px] gap-0 rounded-[10px] p-0'>

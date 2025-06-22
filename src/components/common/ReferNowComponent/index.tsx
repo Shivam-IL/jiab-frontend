@@ -141,6 +141,13 @@ const ReferNowComponent = ({
         setReferStatus1(false)
         setReferStatus2(false)
         onClose()
+      } else if (status === REFERRAL_CODE.EXISTING_USER) {
+        setOpen?.(true)
+        setOpen3(false)
+        setReferStatus1(false)
+        setReferStatus2(false)
+        setOpen2?.(true)
+        setError('Cannot refer an existing user')
       }
     }
   }, [

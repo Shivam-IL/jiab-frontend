@@ -72,6 +72,9 @@ export interface TModifiedUGCContent extends TUGCContent {
 
 export interface TGludeinUserVote {
   assetId: string;
+  genreId?: string;
+  languageId?: string;
+  type?: string;
 }
 
 export interface TGludeinUserReaction extends TGludeinUserVote {
