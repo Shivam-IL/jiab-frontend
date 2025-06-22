@@ -320,7 +320,6 @@ export interface IUgcComponent {
   jokesData?: TModifiedUGCContent[];
   onVoteSuccess?: () => void;
   animation?: boolean;
-  onReactSuccess?: () => void;
   isLoadingGluedinFeedList?: boolean;
   noMoreData?: boolean;
 }
@@ -368,7 +367,6 @@ export interface UgcCardProps {
   disclaimerText?: string
   item?: TModifiedUGCContent
   onVoteSuccess?: () => void
-  onReactSuccess?: () => void
   home?: boolean
   animation?: boolean
   voteCDP?: boolean
