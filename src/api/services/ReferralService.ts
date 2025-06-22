@@ -67,6 +67,11 @@ export class ReferralService extends MainService {
           status: REFERRAL_CODE.ALREADY_REFERRED,
         };
         return SuccessResponse(data);
+      } else if (data?.code === 1002) {
+        const data = {
+          status: REFERRAL_CODE.EXISTING_USER,
+        };
+        return SuccessResponse(data);
       }
       return ErrorResponse(data?.message || "Invalid Mobile Number");
     } catch (error) {

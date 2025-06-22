@@ -100,7 +100,7 @@ export const LANGUAGE_MNEMONICS = {
   GUJARATI: "gu",
   PUNJABI: "pa",
   BHOJPURI: "bho",
-  MAITHILI: "mai",
+  MAITHILI: "ma",
   TULU: "tu",
 } as const;
 
@@ -310,7 +310,8 @@ export const LANG_VERNICULAR_MAP = {
   Marathi: "मराठी",
   Kannada: "ಕನ್ನಡ",
   Bhojpuri: "भोजपुरी",
-  Maithili: "मैथिली",
+  Gujarati: "ગુજરાતી",
+  Maithli: "मैथिली",
   Tamil: "தமிழ்",
   tulu: "ತುಳು",
 };
@@ -489,6 +490,7 @@ export const REFERRAL_CODE = {
   ALREADY_REFERRED: "already_referred",
   INVALID_MOBILE_NUMBER: "invalid_mobile_number",
   CANNOT_SEND_TO_SELF: "cannot_send_to_self",
+  EXISTING_USER: "existing_user",
 };
 
 export const SEND_AGAIN_STATUS = {
