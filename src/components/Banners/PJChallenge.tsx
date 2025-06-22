@@ -10,12 +10,23 @@ const PJChallenge: React.FC<{
   const buttonRef = useRef<HTMLButtonElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
   const [fontScale, setFontScale] = useState(1);
+  const [isWindows, setIsWindows] = useState(false);
+
+  useEffect(() => {
+    // Detect Windows OS
+    const detectWindows = () => {
+      if (typeof window !== "undefined") {
+        const userAgent = window.navigator.userAgent;
+        setIsWindows(userAgent.includes("Windows"));
+      }
+    };
+
+    detectWindows();
+  }, []);
 
   useEffect(() => {
     const adjustFontSize = () => {
       if (!buttonRef.current || !textRef.current) return;
-
-      const text = textRef.current;
 
       // Get the current screen width to determine breakpoint
       const screenWidth = window.innerWidth;
@@ -70,8 +81,8 @@ const PJChallenge: React.FC<{
     const screenWidth = window.innerWidth;
     let baseFontSize = 8;
 
-    if (screenWidth >= 1536) baseFontSize = 28; // 2xl
-    else if (screenWidth >= 1280) baseFontSize = 26; // xl
+    if (screenWidth >= 1536) baseFontSize = 24; // 2xl
+    else if (screenWidth >= 1280) baseFontSize = 20; // xl
     else if (screenWidth >= 1024) baseFontSize = 20; // lg
     else if (screenWidth >= 768) baseFontSize = 16; // md
     else if (screenWidth >= 640) baseFontSize = 12; // sm
@@ -140,6 +151,7 @@ const PJChallenge: React.FC<{
               2xl:px-[56px] 2xl:py-[22px]"
               style={{
                 fontSize: `${getCurrentFontSize()}px`,
+                letterSpacing: isWindows ? "-2px" : "normal",
               }}
             >
               <span ref={textRef} className="whitespace-nowrap">
