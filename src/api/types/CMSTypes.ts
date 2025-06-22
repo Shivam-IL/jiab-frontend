@@ -240,6 +240,7 @@ export type TCMSResponse = {
       send_reminder: string;
       my_referrals: string;
       refer_another: string;
+      help_us_know_more: string;
     };
     comic_coins: {
       id: number;
