@@ -40,16 +40,16 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
           <SvgIcons name={icon} className="w-[25px] h-[25px]" />
         </div>
         <div className="flex flex-col text-center items-center px-[27px] w-[90%] justify-center gap-[16px]">
-          <AktivGroteskText
+          {title && <AktivGroteskText
             text={title}
             fontSize="text-[18px]"
             fontWeight="font-[700]"
-          />
-          <AktivGroteskText
+          />}
+          {subtitle && <AktivGroteskText
             text={subtitle}
             fontSize="text-[16px]"
             fontWeight="font-[400]"
-          />
+          />}
           {doubleButton && (
             <AktivGroteskText
               text={sureToExitText || "Are you sure you want to exit?"}
