@@ -187,10 +187,6 @@ const HelpUsToKnowYourBetter = ({
       } else {
         setSavedCheck(true);
       }
-      if (currentQuestionNumber < allQuestions?.length) {
-        setCurrentQuestionNumber((prev) => prev + 1);
-        setSelectedQuestion(allQuestions[currentQuestionNumber]);
-      }
     }
   }, [submitQuestionResponse]);
 

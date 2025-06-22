@@ -29,6 +29,8 @@ const UgcComponent: React.FC<IUgcComponent> = ({
     }
   }, [isUnmounting])
 
+  console.log('jokesData', jokesData)
+
   return (
     <div className='py-[16px] md:py-[24px]'>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[16px] md:gap-x-[94px] md:gap-y-[24px]'>

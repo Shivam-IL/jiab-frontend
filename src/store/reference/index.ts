@@ -60,7 +60,6 @@ const referenceSlice = createSlice({
             language.name as keyof typeof LANG_VERNICULAR_MAP
           ] ?? "",
       }));
-      console.log("modifiedLanguages", modifiedLanguages);
       state.languages = [...modifiedLanguages];
     },
   },
