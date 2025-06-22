@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AktivGroteskText from "../AktivGroteskText";
 import {
   GA_EVENTS,
