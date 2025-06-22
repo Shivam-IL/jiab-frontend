@@ -23,6 +23,7 @@ import {
   CDPEventPayloadBuilder,
   QuestionCDPPayload,
 } from "@/api/utils/cdpEvents";
+import { ILanguage } from "@/store/reference";
 
 interface IOption {
   id: number;
@@ -77,10 +78,11 @@ const HelpUsToKnowYourBetter = ({
     if (selectedLanguage) {
       const languageId =
         languages?.find(
-          (language: any) => language.language_key === selectedLanguage
+          (language: ILanguage) => language.language_key === selectedLanguage
         )?.id ?? "1";
       setSelectedLanguageId(languageId?.toString() ?? "1");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLanguage]);
 
   useEffect(() => {
@@ -133,6 +135,7 @@ const HelpUsToKnowYourBetter = ({
         setSavedCheck(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestionNumber]);
 
   const dispatch = useAppDispatch();
@@ -148,6 +151,7 @@ const HelpUsToKnowYourBetter = ({
         triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfileData]);
 
   const trigerQuestionCDPEvent = (optionId: number) => {
@@ -183,6 +187,7 @@ const HelpUsToKnowYourBetter = ({
         setSelectedQuestion(allQuestions[currentQuestionNumber]);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitQuestionResponse]);
 
   return (

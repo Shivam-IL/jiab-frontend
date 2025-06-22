@@ -5,12 +5,10 @@ import comicCoin from "../../../../../public/other-svgs/comic-coin-footer.svg";
 import { BoxIds } from "../../../common/CircularBoxesModal";
 import { useCMSData } from "@/data";
 import { useGetComicCoins } from "@/api/hooks/JokeHooks";
-import useAppSelector from "@/hooks/useSelector";
 
 const MobileFooter = () => {
   const [currentPath, setCurrentPath] = useState("/");
   const [mounted, setMounted] = useState(false);
-  const { user } = useAppSelector((state) => state.profile);
 
   // Fetch comic coins data
   const { data: comicCoinsData, isLoading: isComicCoinsLoading } =

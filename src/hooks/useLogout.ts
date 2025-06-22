@@ -8,7 +8,7 @@ import { useState } from "react";
 const useLogout = () => {
   const dispatch = useAppDispatch();
   const [uniqueId, setUniqueId] = useState<string>('');
-  const { data: userGeolocationData } = useGetUserGeolocation({
+  useGetUserGeolocation({
     enabled: true,
     params: uniqueId,
   });

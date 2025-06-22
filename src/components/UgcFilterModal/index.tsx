@@ -12,7 +12,6 @@ import useAppSelector from '@/hooks/useSelector'
 import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 import {
   CDPEventPayloadBuilder,
-  JokeCategoryCDPEventPayload,
   UGCFilterCDPEventPayload
 } from '@/api/utils/cdpEvents'
 

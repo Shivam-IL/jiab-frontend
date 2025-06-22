@@ -27,7 +27,6 @@ import {
 import { INotification } from "@/api/types/NotificationTypes";
 import { useQueryClient } from "@tanstack/react-query";
 import { keys } from "@/api/utils";
-import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
 
 const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
@@ -71,7 +70,6 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const notifications = notificationsResponse?.data?.notifications ?? [];
   const notificationCount = notificationCountResponse?.data?.count ?? 0;
 
-  const { mutate: triggerCDPEvent } = useSendCDPEvent();
 
   // Handle notification dropdown toggle and mark as read
   const handleNotificationDropdownToggle = async () => {

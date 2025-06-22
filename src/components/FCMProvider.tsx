@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, ReactNode } from "react";
 import { useFCM, FCMHookResult } from "@/hooks/useFCM";
 
-interface FCMContextType extends FCMHookResult {}
+type FCMContextType = FCMHookResult
 
 const FCMContext = createContext<FCMContextType | null>(null);
 
@@ -43,6 +43,7 @@ export default function FCMProvider({ children }: FCMProviderProps) {
     }, 1000);
 
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fcm.isSupported, fcm.permission]);
 
   // Store token in localStorage when it changes (optional)

@@ -87,7 +87,7 @@ const HomePageJokeSection = ({
   useEffect(() => {
     if (jokeBoxData?.ok && isJokeBoxFetched) {
       const { data } = jokeBoxData ?? {}
-      const assetIds = data?.map((item: any) => item?.videoId)
+      const assetIds = data?.map((item: { videoId: string }) => item?.videoId)
       viewGludeinJokes({ assetIds })
       trigger_CDP_VIEW_JOKES(assetIds)
       dispatch(
@@ -97,6 +97,7 @@ const HomePageJokeSection = ({
         })
       )
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jokeBoxData, isJokeBoxFetched])
 
  
@@ -106,12 +107,14 @@ const HomePageJokeSection = ({
       const { data } = viewGludeinJokesData ?? {}
       dispatch(updateUgcViewData({ assetIds: data }))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewGludeinJokesData])
 
   useEffect(() => {
     return () => {
       dispatch(resetUgcData())
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

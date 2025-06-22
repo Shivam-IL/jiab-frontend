@@ -16,18 +16,21 @@ export const useLanguage = () => {
   const { user } = useAppSelector((state) => state.profile);
   const { mutate: triggerCDPEvent } = useSendCDPEvent();
 
-  const triggerLangChangeCDPEvent = (lang: string) => {
-    console.log("triggerLangChangeCDPEvent", lang, user?.id);
-    if (user?.id && lang) {
-      const langCode = lang.toUpperCase();
-      const payload: LanguageCDPEventPayload =
-        CDPEventPayloadBuilder.buildLanguageChangePayload(
-          langCode,
-          user?.id ?? ""
-        );
-      triggerCDPEvent(payload);
-    }
-  };
+  const triggerLangChangeCDPEvent = useCallback(
+    (lang: string) => {
+      console.log("triggerLangChangeCDPEvent", lang, user?.id);
+      if (user?.id && lang) {
+        const langCode = lang.toUpperCase();
+        const payload: LanguageCDPEventPayload =
+          CDPEventPayloadBuilder.buildLanguageChangePayload(
+            langCode,
+            user?.id ?? ""
+          );
+        triggerCDPEvent(payload);
+      }
+    },
+    [user?.id, triggerCDPEvent]
+  );
 
   const changeLanguage = useCallback(
     (languageCode: string) => {
@@ -40,7 +43,7 @@ export const useLanguage = () => {
         queryClient.invalidateQueries();
       }
     },
-    [dispatch, selectedLanguage, queryClient]
+    [dispatch, selectedLanguage, queryClient, triggerLangChangeCDPEvent]
   );
 
   const getApiLocale = useCallback(() => {

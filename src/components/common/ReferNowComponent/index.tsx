@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import CustomPopupWrapper from '../CustomPopupWrapper'
 import {
   GA_EVENTS,
@@ -43,7 +43,7 @@ const ReferNowComponent = ({
   const { mutate: sendCDPEvent } = useSendCDPEvent()
   const { user } = useAppSelector(state => state.profile)
 
-  const triggerReferCDPEvent = () => {
+  const triggerReferCDPEvent = useCallback(() => {
     if (user?.id) {
       const payload: BaseCDPEventPayload =
         CDPEventPayloadBuilder.buildReferFriendPayload({
@@ -51,7 +51,7 @@ const ReferNowComponent = ({
         })
       sendCDPEvent(payload)
     }
-  }
+  }, [sendCDPEvent, user?.id])
 
   const handleChange = (key: string, value: string) => {
     if (value?.length === 10 && parseInt(value?.[0]) >= 6) {
@@ -110,9 +110,15 @@ const ReferNowComponent = ({
         setOpen2(false)
         setOpen3(false)
 
-        setInviteCode((sendReferralData?.data as any)?.invite_code ?? '')
+        setInviteCode(
+          (sendReferralData?.data as unknown as { invite_code: string })
+            ?.invite_code ?? ''
+        )
         if (setReferralCode) {
-          setReferralCode((sendReferralData?.data as any)?.invite_code ?? '')
+          setReferralCode(
+            (sendReferralData?.data as unknown as { invite_code: string })
+              ?.invite_code ?? ''
+          )
         }
         onClose()
       } else if (status === REFERRAL_CODE.ALREADY_REFERRED) {
@@ -137,7 +143,18 @@ const ReferNowComponent = ({
         onClose()
       }
     }
-  }, [sendReferralData])
+  }, [
+    sendReferralData,
+    triggerReferCDPEvent,
+    setReferStatus,
+    setReferStatus1,
+    setReferStatus2,
+    setOpen2,
+    setOpen3,
+    setInviteCode,
+    setReferralCode,
+    onClose
+  ])
 
   useEffect(() => {
     return () => {

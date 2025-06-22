@@ -23,6 +23,8 @@ const SurpriseMeLockModal = ({
   const [open, setOpen] = useState<boolean>(false);
   useGlobalLoader();
 
+  console.log("forceShow", forceShow);
+
   const dispatch = useAppDispatch();
 
   // // Set open state based on session check

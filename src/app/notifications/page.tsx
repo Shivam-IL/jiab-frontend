@@ -56,6 +56,7 @@ const NotificationsPage: React.FC = () => {
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, queryClient, hasMarkedAsRead]); // Removed markAsReadMutation from dependencies to prevent loops
 
   // Extract notifications data from the response

@@ -73,23 +73,27 @@ export class JokeService extends MainService {
         },
       });
 
-      const videosId = response.data?.data?.map((video: any) => video.id) ?? [];
+      const videosId =
+        response.data?.data?.map((video: { id: string }) => video.id) ?? [];
 
       const feedModule = new gluedin.GluedInFeedModule();
       const getReactionData = await feedModule.Reactions(videosId);
       const reactionResponse = getReactionData?.data ?? {};
       const reactionResult = reactionResponse?.result ?? [];
 
-      const transformedData = response?.data?.data?.map((video: any) => {
-        const reactionType = reactionResult?.find(
-          (item: any) => item?.videoId === video?.id
-        )?.reaction ?? '';
-        return {
-          ...video,
-          reactionType,
-          isReacted: reactionType ? true : false,
-        };
-      });
+      const transformedData = response?.data?.data?.map(
+        (video: { id: string }) => {
+          const reactionType =
+            reactionResult?.find(
+              (item: { videoId: string }) => item?.videoId === video?.id
+            )?.reaction ?? "";
+          return {
+            ...video,
+            reactionType,
+            isReacted: reactionType ? true : false,
+          };
+        }
+      );
 
       const responseData = response.data;
       if (responseData?.success) {
@@ -117,7 +121,7 @@ export class JokeService extends MainService {
           } else if (value instanceof FileList && value.length > 0) {
             formData.append(key, value[0]);
           }
-        } else if(value){
+        } else if (value) {
           formData.append(key, value.toString());
         }
       });
@@ -139,11 +143,13 @@ export class JokeService extends MainService {
         };
         return data;
       }
-      const keysArr: string[] = []
-       Object.entries(responseData?.details?.validation_errors ?? {}).map(([key]) => {
-        keysArr.push(key)
-      })
-      const message = `Invalid ${keysArr?.[0]}`
+      const keysArr: string[] = [];
+      Object.entries(responseData?.details?.validation_errors ?? {}).map(
+        ([key]) => {
+          keysArr.push(key);
+        }
+      );
+      const message = `Invalid ${keysArr?.[0]}`;
       return ErrorResponse(message ?? "Something went wrong");
     } catch (error) {
       throw error;
@@ -188,5 +194,4 @@ export class JokeService extends MainService {
       throw error;
     }
   }
-
 }

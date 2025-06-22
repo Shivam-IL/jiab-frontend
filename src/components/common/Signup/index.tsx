@@ -1,7 +1,7 @@
 import LoginSignupWrapper, {
   AuthHeading
 } from '@/components/LoginSignupWrapper'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { aktivGrotesk } from '@/app/layout'
 import Input from '@/components/Input'
 import GreenCTA from '@/components/GreenCTA'
@@ -46,6 +46,7 @@ import {
 import { ILocalGeoData } from '@/api/types/GeolocationTypes'
 import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 import { useRouter } from 'next/navigation'
+import { IAvatarsData } from '@/store/profile/profile.slice'
 
 interface IUserData {
   avatar: string
@@ -62,7 +63,6 @@ const Signup = () => {
   const [open, setOpen] = useState<boolean>(true)
   const [nameError, setNameError] = useState<string>('')
   const [emailError, setEmailError] = useState<string>('')
-  const [inviteCodeError, setInviteCodeError] = useState<string>('')
   const [acceptTermsError, setAcceptTermsError] = useState<string>('')
   const [editProfileImage, setEditProfileImage] = useState<boolean>(false)
 
@@ -141,7 +141,7 @@ const Signup = () => {
     return () => clearTimeout(timeoutId)
   }, [userData.email])
 
-  const triggerCDPInviteCodeEvent = (userId: string) => {
+  const triggerCDPInviteCodeEvent = useCallback((userId: string) => {
     if (userId) {
       const payload: BaseCDPEventPayload =
         CDPEventPayloadBuilder.buildUseInviteCodePayload({
@@ -149,16 +149,17 @@ const Signup = () => {
         })
       sendCDPEvent(payload)
     }
-  }
+  }, [sendCDPEvent])
 
   useEffect(() => {
     if (avatarsData?.length > 0) {
       const avatar = avatarsData.find(
-        (avatar: any) => avatar?.id?.toString() === userData?.avatar?.toString()
+        (avatar: IAvatarsData) =>
+          avatar?.id?.toString() === userData?.avatar?.toString()
       )
       setSelectedAvatar(avatar?.image ?? '')
     }
-  }, [userData.avatar])
+  }, [userData.avatar, avatarsData])
 
   const isFormValid = () => {
     if (userData?.name === '') {
@@ -186,7 +187,7 @@ const Signup = () => {
     }
   }, [userData?.agree])
 
-  const removeAuthentication = () => {
+  const removeAuthentication = useCallback(() => {
     dispatch(updateIsFirstLogin({ isFirstLogin: false }))
     dispatch(updateIsAuthenticated({ isAuthenticated: false }))
     dispatch(updateOtpFilled({ otpFilled: false }))
@@ -195,7 +196,7 @@ const Signup = () => {
     dispatch(updateToken({ token: '' }))
     dispatch(updateIsFirstLogin({ isFirstLogin: false }))
     mainServiceInstance.setAccessToken('')
-  }
+  }, [dispatch, mainServiceInstance])
 
   useEffect(() => {
     if (isFirstLogin) {
@@ -204,12 +205,14 @@ const Signup = () => {
         number: `+91-${phoneNumber}`
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFirstLogin])
 
   useEffect(() => {
     if (!otpVerified) {
       removeAuthentication()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [otpVerified])
 
   const trigerrSignupCDP = (userId: string, phoneNumber: string) => {
@@ -336,10 +339,11 @@ const Signup = () => {
         }
       }
     } else if (signupData?.ok === false) {
-      const { message } = signupData as any
+      const { message } = signupData as unknown as { message: string }
       setError(message)
     }
-  }, [signupData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signupData, dispatch])
 
   useEffect(() => {
     if (getSessionStorageItem(SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE)) {
@@ -354,6 +358,7 @@ const Signup = () => {
         dispatch(updatePhoneNumber({ phoneNumber: data.phoneNumber }))
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -443,7 +448,6 @@ const Signup = () => {
             placeholder='Referral Invite Code'
             onChange={handleChange}
             type='text'
-            error={inviteCodeError}
           />
           <div className='flex items-start gap-[8px]'>
             <input

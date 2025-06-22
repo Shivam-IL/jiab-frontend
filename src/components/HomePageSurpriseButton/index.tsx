@@ -7,7 +7,6 @@ import SurpriseMeLockModal from "../common/SurpriseMeLockModal";
 import { useCMSData } from "@/data";
 import { triggerGAEvent } from "@/utils/gTagEvents";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
-import { useSessionModal } from "@/hooks/useSessionModal";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
@@ -32,11 +31,7 @@ const HomePageSurpriseButton = () => {
   const { selectedLanguage } = useAppSelector((state) => state.language);
   const { mutate: sendCDPEvent } = useSendCDPEvent();
 
-  const {
-    shouldShow: shouldShowSerialChiller,
-    hasChecked: hasCheckedSerialChiller,
-    markAsShown: markSerialChillerAsShown,
-  } = useSessionModal("hasShownSerialChiller");
+
 
   const closeSurpriseMe = () => {
     forceHideLoader(); // Ensure any loading states are cleared

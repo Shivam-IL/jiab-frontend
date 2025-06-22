@@ -165,7 +165,6 @@ const SubmitYourJoke = () => {
     }[]
   >([])
 
-  const { selectedLanguage } = useAppSelector(state => state.language)
   const { languages, genres, jokesFormats } = useAppSelector(
     (state) => state.reference
   );
@@ -356,6 +355,7 @@ const SubmitYourJoke = () => {
     } else if (submitJokeData?.message) {
       setErrorMessage(submitJokeData?.message);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitJokeData]);
 
   useEffect(() => {

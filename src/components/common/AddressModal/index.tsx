@@ -203,6 +203,7 @@ const AddressModal: React.FC<IAddressModal> = ({
       );
       setOpen(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending, addNewAddressData]);
 
   useEffect(() => {
@@ -223,13 +224,14 @@ const AddressModal: React.FC<IAddressModal> = ({
       );
       setOpen(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editNewAddressData]);
 
   useEffect(() => {
     if (addressId && type === AddressModalType.EDIT) {
       console.log("addressId", addressId);
       const address = addresses?.find(
-        (address: any) => address.id === addressId
+        (address: { id: number }) => address.id === addressId
       );
       if (address) {
         setData({
@@ -254,6 +256,7 @@ const AddressModal: React.FC<IAddressModal> = ({
         });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressId]);
 
   useEffect(() => {
@@ -271,6 +274,7 @@ const AddressModal: React.FC<IAddressModal> = ({
       }));
       getPincodeData(data?.pincode);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.pincode]);
 
   useEffect(() => {
@@ -288,7 +292,6 @@ const AddressModal: React.FC<IAddressModal> = ({
         city: "",
       }));
     } else if (pincodeData?.ok === false) {
-      const { message } = (pincodeData as any) ?? {};
       setError((prev) => ({
         ...prev,
         pincode: "Pincode not found",
