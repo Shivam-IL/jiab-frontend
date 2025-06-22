@@ -42,4 +42,7 @@ export const keys = {
     getGeolocationByIP: (ip: string) => ["get-geolocation-by-ip", ip],
     getUserIP: () => ["get-user-ip"],
   },
+  report: {
+    sendReport: () => ["send-report"],
+  },
 };

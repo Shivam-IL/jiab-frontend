@@ -1,5 +1,4 @@
 import { store } from "@/store";
-import { LANGUAGE_MNEMONICS } from "@/constants";
 
 export const API_CONFIG = {
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -106,5 +105,8 @@ export const API_ROUTES = {
     GET_NOTIFICATION_COUNT: "/notifications/count",
     REGISTER_DEVICE: "/notifications/register-device",
     MARK_AS_READ: "/notifications/mark-as-read",
-  }
+  },
+  REPORT: {
+    SEND_REPORT: "/joke/ugc/plagiarize_content",
+  },
 };
