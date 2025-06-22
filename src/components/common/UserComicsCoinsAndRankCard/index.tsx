@@ -7,6 +7,8 @@ import GreenCTA from "@/components/GreenCTA";
 import { useRouter } from "next/navigation";
 import useAppSelector from "@/hooks/useSelector";
 import { useGetComicCoins } from "@/api/hooks/JokeHooks";
+import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
+import { useEffect } from "react";
 
 const UserComicsCoinsAndRankCard = ({
   comicCoins,
@@ -21,14 +23,24 @@ const UserComicsCoinsAndRankCard = ({
   const { current_balance, rank } = useAppSelector((state) => state.profile);
 
   // Fetch comic coins data
-  const {
-    data: comicCoinsData,
-    isLoading: isComicCoinsLoading,
-  } = useGetComicCoins();
+  const { data: comicCoinsData, isLoading: isComicCoinsLoading } =
+    useGetComicCoins();
+
+  // Get comic coin revalidation methods
+  const { revalidateComicCoins } = useComicCoinRevalidation();
 
   // Get comic coins value with fallback
   const comicCoinsValue =
     comicCoinsData?.data?.comic_coin ?? current_balance ?? 0;
+
+  // Expose revalidateComicCoins method globally for other components to use
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      (
+        window as Window & { refreshComicCoins?: () => void }
+      ).refreshComicCoins = revalidateComicCoins;
+    }
+  }, [revalidateComicCoins]);
 
   return (
     <div className="flex gap-2 md:justify-between py-3 md:pt-[24px]">

@@ -129,9 +129,9 @@ const useSubmitUserQuestions = () => {
     mutationFn: (questions: TSubmitQuestions) =>
       profileService.submitUserQuestions(questions),
     onSuccess: () => {
-      // Revalidate user questions - use predicate to match all getUserQuestions queries regardless of language_id
+      // Revalidate user questions
       queryClient.invalidateQueries({
-        predicate: (query) => query.queryKey[0] === 'get-user-questions'
+        queryKey: [...keys.profile.getUserQuestions()],
       });
       // Also revalidate user profile details in case this contributes to profile completion
       queryClient.invalidateQueries({
