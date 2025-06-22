@@ -52,8 +52,6 @@ const SendReminderPage = () => {
     sendReferralAgain({ referral_id: id })
   }
 
-  console.log(pages,page)
-
   useEffect(() => {
     if (sendReferralAgainData?.ok) {
       const { status } = sendReferralAgainData?.data as { status?: string }
@@ -171,32 +169,32 @@ const SendReminderPage = () => {
           </div>
         </div>
       </ScreenWrapper>
-      {sendReminder &&
-        sendAgainStatus === SEND_AGAIN_STATUS.SUCCESS && (
-          <CustomPopupWrapper
-            open={sendReminder}
-            onClose={() => {
-              setSendReminder(false)
-            }}
-            icon={REFFERAL_STATUS_POPUP_DATA.EASY.ICON}
-            title={REFFERAL_STATUS_POPUP_DATA.EASY.TITLE}
-            subtitle={REFFERAL_STATUS_POPUP_DATA.EASY.SUB_TITLE}
-          >
-            <div className='flex flex-col gap-[20px]'>
-              <AktivGroteskText
-                fontSize='text-[16px]'
-                fontWeight='font-[700]'
-                className='text-[#00953B] text-center'
-                text={REFFERAL_STATUS_POPUP_DATA.EASY.SECOND_TEXT}
-              />
-              <AktivGroteskText
-                fontSize='text-[12px]'
-                fontWeight='font-[400] text-center'
-                text={REFFERAL_STATUS_POPUP_DATA.EASY.THIRD_TEXT}
-              />
-            </div>
-          </CustomPopupWrapper>
-        )}
+      {sendReminder && sendAgainStatus === SEND_AGAIN_STATUS.SUCCESS && (
+        <CustomPopupWrapper
+          open={sendReminder}
+          onClose={() => {
+            setSendReminder(false)
+          }}
+          icon={REFFERAL_STATUS_POPUP_DATA.EASY.ICON}
+          subtitle={REFFERAL_STATUS_POPUP_DATA.EASY.SUB_TITLE}
+        >
+          <div className='flex flex-col gap-[20px]'>
+            <AktivGroteskText
+              fontSize='text-[16px]'
+              fontWeight='font-[700]'
+              className='text-[#00953B] text-center'
+              text={REFFERAL_STATUS_POPUP_DATA.EASY.SECOND_TEXT}
+            />
+            <AktivGroteskText
+              fontSize='text-[12px]'
+              fontWeight='font-[400] text-center'
+              text={
+                'Your points will be credited on successful sign up using the invite code'
+              }
+            />
+          </div>
+        </CustomPopupWrapper>
+      )}
       {sendReminder &&
         sendAgainStatus === SEND_AGAIN_STATUS.CANT_SEND_AGAIN_IN_A_WEEK && (
           <div className='fixed bottom-[10%] w-[100%]  flex justify-center items-center'>

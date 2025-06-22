@@ -461,6 +461,11 @@ export const REFFERAL_STATUS_POPUP_DATA = {
     THIRD_TEXT:
       "Your points will be credited on successful sign up using the invite code",
   },
+  SEND_REMINDER: {
+    ICON: ICONS_NAMES.CROSS,
+    SUB_TITLE:
+      "We've sent your friend a reminder! Your points will be on the way once they join with your code.",
+  },
   PAST_ON_US: {
     ICON: ICONS_NAMES.CALENDAR_NOTIFICATION,
     TITLE: "Trying to get one past us?",
