@@ -16,11 +16,12 @@ interface VideoScrollProps {
 const VideoScroll = ({ videos }: VideoScrollProps) => {
   return (
     <div className="relative w-full overflow-x-auto max-w-full">
-      <div className="flex md:gap-[60px] gap-[12px] md:justify-start justify-start overflow-x-auto md:overflow-x-visible scrollbar-hide md:px-0 px-4">
+      <div className="flex md:gap-[60px] gap-[12px] md:flex-wrap overflow-x-auto md:overflow-x-visible scrollbar-hide md:px-0 px-4">
+        {/* Add commentMore actions */}
         {videos.map((video) => (
           <div
             key={video.id}
-            className="md:aspect-[9/16] flex-shrink-0 w-auto md:w-[354px]"
+            className="md:aspect-[9/16] flex-shrink-0 w-auto md:w-auto md:flex-1"
           >
             <Link href={video.url}>
               <VideoCard src={video.src} />
