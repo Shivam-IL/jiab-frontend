@@ -3,6 +3,7 @@ import { generateImageurl } from '@/utils'
 import React from 'react'
 import SvgIcons from '../SvgIcons'
 import { aktivGrotesk } from '@/app/layout'
+import Image from 'next/image'
 
 const ImageIconCard: React.FC<IImageIconCard> = ({
   text,
@@ -34,17 +35,21 @@ const ImageIconCard: React.FC<IImageIconCard> = ({
       )}
       {image!=='' && !imageUrl && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           className={imageClassName}
           src={image ? generateImageurl(image) : ''}
           alt={text}
+          width={56}
+          height={34}
         />
       )}
       {imageUrl && !image && (
-        <img
+        <Image
           className={imageClassName}
           src={imageUrl}
           alt={text}
+          width={56}
+          height={34}
         />
       )}
       <p

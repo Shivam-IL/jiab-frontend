@@ -28,10 +28,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   title,
   description,
   timestamp,
-  iconBg = "bg-green",
   iconUrl,
-  isRead = false,
-  isNew = false,
   onClick,
   titleFontSize = {
     mobile: "text-[12px]",
@@ -53,7 +50,6 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
       }`}
       onClick={onClick}
     >
-      {/* Icon with SVG support */}
       <div
         className={`md:w-12 md:h-12 w-[38px] h-[38px] rounded-lg flex-shrink-0 flex items-center justify-center relative overflow-hidden`}
       >

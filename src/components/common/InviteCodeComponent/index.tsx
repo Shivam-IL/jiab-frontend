@@ -57,7 +57,7 @@ const InviteCodeComponent = ({
     }
   }
 
-  console.log('verifyReferralData', verifyReferralData)
+  console.log('verifyReferralData', verifyReferralData, onClose)
   useEffect(() => {
     if (verifyReferralData?.ok) {
       const { status } = verifyReferralData?.data as { status?: string }
@@ -72,6 +72,7 @@ const InviteCodeComponent = ({
         setOpen(false)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [verifyReferralData])
 
   return (

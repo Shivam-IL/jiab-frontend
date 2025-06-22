@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { GLUEDIN_LOGIN_SECRET_KEY } from "@/config";
 import { encryptData } from "@/utils";
@@ -56,18 +56,18 @@ const useGetGluedinFeedList = (params: TGludeinFeedList) => {
   });
 };
 
-const useGetGluedinUserVoteList = (params: any) => {
-  const { isAuthenticated, token, gludeinIsAuthenticated } = useAppSelector(
-    (state) => state.auth
-  );
+// const useGetGluedinUserVoteList = (params: any) => {
+//   const { isAuthenticated, token, gludeinIsAuthenticated } = useAppSelector(
+//     (state) => state.auth
+//   );
 
-  return useQuery({
-    queryKey: [...keys.gluedin.getGluedinUserVoteList(), { ...params }],
-    queryFn: () => gluedinInstance.getGluedinUserVoteList(),
-    enabled: isAuthenticated && token && gludeinIsAuthenticated ? true : false,
-    staleTime: 0,
-  });
-};
+//   return useQuery({
+//     queryKey: [...keys.gluedin.getGluedinUserVoteList(), { ...params }],
+//     queryFn: () => gluedinInstance.getGluedinUserVoteList(),
+//     enabled: isAuthenticated && token && gludeinIsAuthenticated ? true : false,
+//     staleTime: 0,
+//   });
+// };
 
 const useSendGluedinUserReaction = () => {
   const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
@@ -146,7 +146,7 @@ const useSendReportToGluedin = () => {
 export {
   useMutateGludeinLogin,
   useGetGluedinFeedList,
-  useGetGluedinUserVoteList,
+  // useGetGluedinUserVoteList,
   useSendGluedinUserReaction,
   useSendVoteToGluedinAssets,
   useGetGluedinCategoryList,

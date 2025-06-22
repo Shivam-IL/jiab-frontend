@@ -166,7 +166,7 @@ const profileSlice = createSlice({
     },
     updateAddresses: (state, action) => {
       const { type, address } = action.payload;
-      let newAddresses = [...state.addresses];
+      const newAddresses = [...state.addresses];
       if (type === REDUX_UPDATION_TYPES.SINGLE_ADDED) {
         const checkDefaultInNewAddresses = address?.[0]?.is_default ?? false;
         if (checkDefaultInNewAddresses) {

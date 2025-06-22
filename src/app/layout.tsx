@@ -3,6 +3,7 @@ import "./globals.css";
 import LayoutClient from "@/components/LayoutClient";
 import { metadata } from "./metadata";
 import LoadGAScript from "@/components/common/LoadGAScript";
+export const dynamic = "force-dynamic";
 
 export const aktivGrotesk = localFont({
   src: [

@@ -6,7 +6,6 @@ import HallOfLameLeaderboardTable from '@/components/HallOfLameLeaderboardTable'
 import useWindowWidth from '@/hooks/useWindowWidth'
 import React, { useState, useEffect } from 'react'
 import { useCMSData } from '@/data'
-import { TGludeinHallOfLame } from '@/api/types/GluedinTypes'
 import { useGetHallOfLames } from '@/api/hooks/GluedinHooks'
 import { IHallOfLameData } from '@/types'
 
@@ -58,7 +57,6 @@ const HallOfLameLeaderboard = () => {
         className={`${width > 750 ? 'mt-[71px] flex justify-center' : 'mt-0'}`}
       >
         <div className='flex flex-col gap-[16.1px]'>
-          {/* <AnnouncingWinnerTimer /> */}
           <div className='md:flex md:flex-col justify-center items-center md:mt-[37px] md:mb-[8px] gap-[12px] hidden'>
             <AktivGroteskText
               text={cmsData.hallOfLame.hallOfLameHeader}

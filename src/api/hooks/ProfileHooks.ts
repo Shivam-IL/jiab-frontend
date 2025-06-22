@@ -13,7 +13,9 @@ import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
 
 const profileService = ProfileService.getInstance();
 
-const useGetUserProfileDetails = (params?: any) => {
+const useGetUserProfileDetails = (
+  params?: Record<string, unknown>
+) => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
 
   return useQuery({
@@ -30,11 +32,11 @@ const useGetUserProfileDetails = (params?: any) => {
 const useEditUserProfileDetails = () => {
   const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: (userData: TEditProfile) =>
       profileService.editUserProfileDetails(userData),
-    onSuccess: (response) => {
+    onSuccess: () => {
       // Revalidate comic coins when profile is completed (profile completion gives coins)
       // Add delay to allow backend to process any potential coin rewards
       revalidateComicCoinsAfterDelay(500);
@@ -60,7 +62,7 @@ const useGetUserAddresses = () => {
 const useAddNewAddress = () => {
   const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: (addressData: TAddress) =>
       profileService.addNewAddress(addressData),
@@ -82,7 +84,7 @@ const useAddNewAddress = () => {
 
 const useEditAddress = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: (addressData: IAddress) =>
       profileService.editAddress(addressData),
@@ -97,7 +99,7 @@ const useEditAddress = () => {
 
 const useDeleteAddress = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: (addressData: TAddessId) =>
       profileService.deleteAddress(addressData),
@@ -124,7 +126,7 @@ const useGetUserQuestions = ({ language_id }: { language_id: string }) => {
 const useSubmitUserQuestions = () => {
   const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: (questions: TSubmitQuestions) =>
       profileService.submitUserQuestions(questions),

@@ -1,7 +1,7 @@
 import LoginSignupWrapper, {
   AuthHeading
 } from '@/components/LoginSignupWrapper'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { aktivGrotesk } from '@/app/layout'
 import Input from '@/components/Input'
@@ -23,17 +23,12 @@ import SvgIcons from '../SvgIcons'
 import { GA_EVENTS, ICONS_NAMES, TOKEN_TYPE } from '@/constants'
 import { MainService } from '@/api/services/MainService'
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
-import {
-  getLocalStorageItem,
-  removeLocalStorageItem,
-  setLocalStorageItem
-} from '@/utils'
+import { getLocalStorageItem, setLocalStorageItem } from '@/utils'
 
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import { useGlobalLoader } from '@/hooks/useGlobalLoader'
 import {
   CDPEventPayloadBuilder,
-  LandingPageCDPEventPayload,
   LoginCDPEventPayload
 } from '@/api/utils/cdpEvents'
 import { ILocalGeoData } from '@/api/types/GeolocationTypes'
@@ -47,7 +42,6 @@ const OtpModal = () => {
   const mainServiceInstance = MainService.getInstance()
 
   const { phoneNumber } = useAppSelector(state => state.auth)
-  const { user } = useAppSelector(state => state.profile)
   const { mutate: requestOTP } = useMutateRequestOTP()
   const {
     mutate: verifyOTP,
@@ -60,7 +54,6 @@ const OtpModal = () => {
 
   const [counter, setCounter] = useState<string>('59')
   const [counterEnd, setCounterEnd] = useState<boolean>(false)
-  const [otpVerified, setOtpVerified] = useState<boolean>(false)
   const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   const dispatch = useAppDispatch()
@@ -120,21 +113,24 @@ const OtpModal = () => {
     if (!isPending) {
       hideLoader()
     }
-  }, [isPending])
+  }, [isPending, hideLoader])
 
-  const triggerLoginCDPEvent = (userIdentifier: string) => {
-    const geoLocationData = JSON.parse(
-      getLocalStorageItem(LOCAL_STORAGE_KEYS.USER_GEOLOCATION) ?? '{}'
-    ) as ILocalGeoData
-    console.log('geoLocationData', geoLocationData)
-    const payload: LoginCDPEventPayload =
-      CDPEventPayloadBuilder.buildLoginPayload({
-        phone_e164: `+91${phoneNumber}`,
-        user_identifier: userIdentifier,
-        ...geoLocationData
-      })
-    sendCDPEvent(payload)
-  }
+  const triggerLoginCDPEvent = useCallback(
+    (userIdentifier: string) => {
+      const geoLocationData = JSON.parse(
+        getLocalStorageItem(LOCAL_STORAGE_KEYS.USER_GEOLOCATION) ?? '{}'
+      ) as ILocalGeoData
+      console.log('geoLocationData', geoLocationData)
+      const payload: LoginCDPEventPayload =
+        CDPEventPayloadBuilder.buildLoginPayload({
+          phone_e164: `+91${phoneNumber}`,
+          user_identifier: userIdentifier,
+          ...geoLocationData
+        })
+      sendCDPEvent(payload)
+    },
+    [sendCDPEvent, phoneNumber]
+  )
 
   useEffect(() => {
     if (verifyOTPData?.ok) {
@@ -163,17 +159,19 @@ const OtpModal = () => {
       const { data } = verifyOTPData
       setError(data?.message ?? 'Invalid OTP')
     }
-  }, [verifyOTPData, isPending])
+  }, [verifyOTPData, dispatch, triggerLoginCDPEvent, mainServiceInstance])
 
   return (
     <LoginSignupWrapper open={open} setOpen={setOpen} logo={true}>
       <div
         className={`absolute top-[-42%] left-1/2 transform -translate-x-1/2`}
       >
-        <img
+        <Image
           src='/assets/images/bottle-sprite-t.gif'
           alt='sprite'
           className='h-[200px] w-[166px]  mt-2'
+          width={166}
+          height={200}
         />
       </div>
       <div className='w-full absolute top-[4px] right-[4px] flex justify-end box-border pt-[10px] pr-[10px]'>

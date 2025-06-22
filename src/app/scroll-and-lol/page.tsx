@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Header from '@/components/common/Header/Header'
 import ReactionEmojies from '@/components/ReactionEmojies'
@@ -8,18 +8,29 @@ import { useCMSData } from '@/data'
 import { useSearchParams } from 'next/navigation'
 import { useGetJokes } from '@/api/hooks/JokeHooks'
 import { useLanguage } from '@/hooks/useLanguage'
-import { IUserReaction } from '@/api/types/JokeTypes'
+import {  IUserReaction } from '@/api/types/JokeTypes'
 import {
   useSendGluedinUserReaction,
   useViewGludeinJokes
 } from '@/api/hooks/GluedinHooks'
 import {
   CDPEventPayloadBuilder,
-  ReactionCDPEventPayload,
-  ReactionType
+  ReactionCDPEventPayload
 } from '@/api/utils/cdpEvents'
 import useAppSelector from '@/hooks/useSelector'
 import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
+
+export interface IModifiedJoke {
+  id: string
+  url: string
+  title: string
+  thumbnail?: string
+  user_reaction: IUserReaction
+  thumbnail_url: string
+  view_count: number
+  reactionType: string
+  isReacted: boolean
+}
 
 // Define a type for the values of ICONS_NAMES (if not already global or imported appropriately)
 // This might be duplicative if ReactionEmojies exports its Reaction type, consider refactoring later.
@@ -80,7 +91,7 @@ const ScrollAndLol: React.FC = () => {
 
   useEffect(() => {
     if (jokesResponse?.ok) {
-      const jokesArr = jokesResponse.data as any[]
+      const jokesArr = jokesResponse.data as IModifiedJoke[]
       const newData = jokesArr.map(joke => ({
         id: joke.id,
         url: joke.url, // assuming backend returns direct video URL here
@@ -157,7 +168,7 @@ const ScrollAndLol: React.FC = () => {
 
   // Initialize play/pause arrays when videos are loaded
   useEffect(() => {
-    if (videos.length) {
+    if (videos?.length) {
       setVideoPlayStates(prev => {
         if (prev.length === videos.length) return prev // already init
         const arr = new Array(videos.length).fill(false)
@@ -337,20 +348,20 @@ const ScrollAndLol: React.FC = () => {
     })
   }
 
-  const triggerCDPEvent = (reactionType: string, jokeId: string) => {
-    console.log('reactionType', reactionType)
-    console.log('jokeId', jokeId)
-    console.log('user?.id', user?.id)
-    if (reactionType && jokeId && user?.id) {
-      const payload: ReactionCDPEventPayload =
-        CDPEventPayloadBuilder.buildReactionPayload(
-          jokeId,
-          reactionType,
-          user?.id
-        )
-      sendCDPEvent(payload)
-    }
-  }
+  const triggerCDPEvent = useCallback(
+    (reactionType: string, jokeId: string) => {
+      if (reactionType && jokeId && user?.id) {
+        const payload: ReactionCDPEventPayload =
+          CDPEventPayloadBuilder.buildReactionPayload(
+            jokeId,
+            reactionType,
+            user?.id
+          )
+        sendCDPEvent(payload)
+      }
+    },
+    [sendCDPEvent, user?.id]
+  )
 
   const triger_CDP_View_Scroll_LOL = (jokeId: string) => {
     if (jokeId && user?.id) {
@@ -383,7 +394,7 @@ const ScrollAndLol: React.FC = () => {
   }
 
   useEffect(() => {
-    if (sendGluedinUserReactionData?.ok) {
+    if (sendGluedinUserReactionData?.ok && activeVideoIndex !== -1) {
       const currentVideoId = videos[activeVideoIndex]?.id
       const reactionType = sendGluedinUserReactionData?.data?.reactionType
       triggerCDPEvent(reactionType, currentVideoId)
@@ -412,7 +423,7 @@ const ScrollAndLol: React.FC = () => {
         return newArr
       })
     }
-  }, [sendGluedinUserReactionData])
+  }, [sendGluedinUserReactionData, triggerCDPEvent, activeVideoIndex, videos])
 
   const togglePlay = (index: number) => {
     if (index === activeVideoIndex) {
@@ -486,7 +497,8 @@ const ScrollAndLol: React.FC = () => {
         assetIds: [getCurrentVideoId]
       })
     }
-  }, [activeVideoIndex])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeVideoIndex, videos])
 
   useEffect(() => {
     if (viewGludeinJokesData?.ok) {
@@ -507,6 +519,7 @@ const ScrollAndLol: React.FC = () => {
         return newArr
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewGludeinJokesData])
 
   useEffect(() => {

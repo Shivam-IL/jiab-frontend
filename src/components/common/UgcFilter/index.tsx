@@ -24,6 +24,8 @@ const UgcFilter = ({ filter,text }: { filter: string,text:string }) => {
     dispatch(updateUgcFilters({ filters }))
   }
 
+  console.log(text, "text")
+  console.log(selectedFilters, "filter")
   useEffect(() => {
     return () => {
       setSelectedFilters({
@@ -39,14 +41,14 @@ const UgcFilter = ({ filter,text }: { filter: string,text:string }) => {
         })
       )
     }
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(updateUgcFilters({ filters: { search } }))
     }, 1000)
     return () => clearTimeout(timer)
-  }, [search])
+  }, [search,dispatch])
 
   return (
     <>

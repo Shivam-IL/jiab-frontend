@@ -31,7 +31,7 @@ const UserAddressCard = ({
         triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER);
       }
     }
-  }, [userProfileData]);
+  }, [userProfileData, dispatch]);
 
   return (
     <div className="bg-white p-[16px] md:py-[25px] md:px-[33px] gap-[10px] flex flex-col md:gap-[32px] rounded-[5px] md:rounded-[20px]">

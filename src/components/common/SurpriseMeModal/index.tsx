@@ -9,7 +9,6 @@ import SurpriseMeCTA from '@/components/SurpriseMeCTA'
 import { MakeLaughExitPopup } from '@/components/ExitPopUps'
 import { useGetSurpriseMeJoke } from '@/api/hooks/JokeHooks'
 import { formatNumberToK } from '@/utils'
-import CustomPopupWrapper from '../CustomPopupWrapper'
 import {
   useSendGluedinUserReaction,
   useGetGluedinAssetById,
@@ -17,7 +16,6 @@ import {
 } from '@/api/hooks/GluedinHooks'
 import { ReactionType } from '@/types'
 import { useGlobalLoader } from '@/hooks/useGlobalLoader'
-import { useSessionModal } from '@/hooks/useSessionModal'
 import SerialChillerPopup from '../SerialChillerPopup'
 import { CoinAnimation, useCoinAnimation } from '../CoinAnimation'
 import { incrementComicCoins } from '@/store/profile/profile.slice'
@@ -25,19 +23,37 @@ import useAppDispatch from '@/hooks/useDispatch'
 import {
   BaseCDPEventPayload,
   CDPEventPayloadBuilder,
-  JokeCategoryCDPEventPayload,
-  ReactionCDPEventPayload,
-  SocialMediaCDPEventPayload
+  ReactionCDPEventPayload
 } from '@/api/utils/cdpEvents'
 import useAppSelector from '@/hooks/useSelector'
 import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 
+export interface ISurpriseMeJoke {
+  artist_id: string
+  id: string
+  joke_creator: string
+  joke_genre: string
+  joke_language: string
+  like_count: number
+  thumbnail_url: string
+  title: string
+  type: string
+  url: string
+  user_reaction: {
+    laugh: number
+    neutral: number
+    sad: number
+  }
+  view_count: number
+  reactionType?: string
+  isReacted?: boolean
+  isLiked: boolean
+}
+
 const SurpriseMeModal = ({
   onClose,
-  forceShow = false,
   genreId,
   languageId,
-  surpriseMeCheck = false,
   pullJoke = false,
   category = ''
 }: {
@@ -55,15 +71,12 @@ const SurpriseMeModal = ({
   // );
   const [open, setOpen] = useState<boolean>(false)
   const [makeLaughExitPopup, setMakeLaughExitPopup] = useState<boolean>(false)
-  const { data: jokeData, isLoading: jokeLoading } = useGetSurpriseMeJoke(
-    genreId,
-    languageId
-  )
-  const [joke, setJoke] = useState<any>(null)
-  const [jokeId, setJokeId] = useState<string>('')
+  const { data: jokeData } = useGetSurpriseMeJoke(genreId, languageId)
+  const [joke, setJoke] = useState<ISurpriseMeJoke | null>(null)
+  const jokeId = ''
   const [reactionType, setReactionType] = useState<string>('')
   const [serialChill, setSerialChill] = useState<boolean>(false)
-  const { forceHideLoader } = useGlobalLoader()
+  useGlobalLoader()
   const { user } = useAppSelector(state => state.profile)
 
   // Coin animation hook
@@ -71,8 +84,7 @@ const SurpriseMeModal = ({
 
   const {
     mutate: mutateSendGluedinUserReaction,
-    data: gluedinUserReactionData,
-    isPending: reactionLoading
+    data: gluedinUserReactionData
   } = useSendGluedinUserReaction()
   const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
     useViewGludeinJokes()
@@ -101,7 +113,6 @@ const SurpriseMeModal = ({
 
   useEffect(() => {
     if (jokeData?.ok) {
-      console.log('jokeData', jokeData)
       viewGludeinJokes({ assetIds: [jokeData?.data?.id] })
       setOpen(true)
       setJoke(jokeData?.data ?? {})
@@ -111,6 +122,7 @@ const SurpriseMeModal = ({
       setJoke(null)
       setSerialChill(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jokeData])
 
   useEffect(() => {
@@ -119,12 +131,16 @@ const SurpriseMeModal = ({
         isLiked: boolean
         reactionType: string
       }
-      setJoke((prev: any) => ({
-        ...prev,
-        isLiked: isLiked,
-        reactionType: reactionType
-      }))
+      setJoke((prev: ISurpriseMeJoke | null) => {
+        if (!prev) return null
+        return {
+          ...prev,
+          isLiked: isLiked,
+          reactionType: reactionType
+        }
+      })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gluedinAssetData])
 
   const handleSendGluedinUserReaction = (
@@ -141,30 +157,41 @@ const SurpriseMeModal = ({
 
   useEffect(() => {
     if (viewGludeinJokesData?.ok && jokeData?.ok) {
-      setJoke((prev: any) => ({
-        ...prev,
-        view_count: prev?.view_count + 1
-      }))
+      setJoke((prev: ISurpriseMeJoke | null) => {
+        if (!prev) return null
+        return {
+          ...prev,
+          view_count: prev?.view_count + 1
+        }
+      })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewGludeinJokesData])
 
   console.log(gluedinUserReactionData, 'gluedinUserReactionData')
   useEffect(() => {
     if (gluedinUserReactionData?.ok) {
       dispatch(incrementComicCoins())
-      setJoke((prev: any) => ({
-        ...prev,
-        isReacted: true,
-        reactionType: reactionType,
-        user_reaction: {
-          ...prev?.user_reaction,
-          [reactionType]: (prev?.user_reaction?.[reactionType] ?? 0) + 1
+      setJoke((prev: ISurpriseMeJoke | null) => {
+        if (!prev) return null
+        return {
+          ...prev,
+          isReacted: true,
+          reactionType: reactionType,
+          user_reaction: {
+            ...prev.user_reaction,
+            [reactionType]:
+              (prev.user_reaction[
+                reactionType as keyof typeof prev.user_reaction
+              ] || 0) + 1
+          }
         }
-      }))
+      })
 
       // Trigger coin animation on successful reaction
       triggerAnimation()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gluedinUserReactionData])
 
   // Handle modal close with proper cleanup
@@ -362,6 +389,7 @@ const SurpriseMeModal = ({
               disablePictureInPicture
               controlsList='nodownload'
               playsInline
+              muted={false}
               webkit-playsinline=''
               x5-playsinline=''
               style={{
@@ -382,9 +410,7 @@ const SurpriseMeModal = ({
                     ? joke?.reactionType !== ReactionType.LAUGH
                     : false
                 }
-                text={formatNumberToK(
-                  parseInt(joke?.user_reaction?.laugh, 10) ?? 0
-                )}
+                text={formatNumberToK(joke?.user_reaction?.laugh ?? 0)}
                 onClick={() => {
                   handleSendGluedinUserReaction(ReactionType.LAUGH, joke?.id)
                   triggerCDPEvent(ReactionType.LAUGH)
@@ -398,9 +424,7 @@ const SurpriseMeModal = ({
                     ? joke?.reactionType !== ReactionType.NEUTRAL
                     : false
                 }
-                text={formatNumberToK(
-                  parseInt(joke?.user_reaction?.neutral, 10) ?? 0
-                )}
+                text={formatNumberToK(joke?.user_reaction?.neutral ?? 0)}
                 onClick={() => {
                   handleSendGluedinUserReaction(ReactionType.NEUTRAL, joke?.id)
                   triggerCDPEvent(ReactionType.NEUTRAL)
@@ -414,9 +438,7 @@ const SurpriseMeModal = ({
                     ? joke?.reactionType !== ReactionType.SAD
                     : false
                 }
-                text={formatNumberToK(
-                  parseInt(joke?.user_reaction?.sad, 10) ?? 0
-                )}
+                text={formatNumberToK(joke?.user_reaction?.sad ?? 0)}
                 onClick={() => {
                   handleSendGluedinUserReaction(ReactionType.SAD, joke?.id)
                   triggerCDPEvent(ReactionType.SAD)
@@ -426,7 +448,7 @@ const SurpriseMeModal = ({
             <div className='pr-[10px]'>
               <SurpriseMeCTA
                 name={ICONS_NAMES.VIEWS}
-                text={formatNumberToK(parseInt(joke?.view_count, 10) ?? 0)}
+                text={formatNumberToK(joke?.view_count ?? 0)}
                 onClick={() => {}}
               />
             </div>

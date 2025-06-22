@@ -105,13 +105,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
   const [isContactCardOpen, setIsContactCardOpen] = useState(false);
 
   // Fetch comic coins data
-  const {
-    data: comicCoinsData,
-    isLoading: isComicCoinsLoading,
-    isError: isComicCoinsError,
-  } = useGetComicCoins();
-
-  // Get comic coins value with fallback
+  const { data: comicCoinsData } = useGetComicCoins();
 
   const pathName = usePathname();
 
@@ -146,10 +140,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                   <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
                     <span className="text-white font-bold text-lg">
                       {user?.userImage ? (
-                        <img
+                        <Image
                           src={user?.userImage}
                           alt="Sprite"
                           className="h-[35px] rounded-full w-[35px] ml-[11px] my-[11px]"
+                          width={35}
+                          height={35}
                         />
                       ) : (
                         <Image
@@ -168,7 +164,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                     </h3>
                     <div className="flex items-center">
                       <span className="text-2xl font-bold text-gray-800 mr-1 leading-[28px]">
-                        {current_balance ? current_balance : "--"}
+                        {comicCoinsData?.data?.comic_coin ??
+                          current_balance ??
+                          "--"}
                       </span>
                       {coinImage && (
                         <Image
@@ -300,7 +298,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
               {/* Explore Sub-items */}
               {isExploreOpen && (
                 <ul className="pt-2">
-                  {exploreSubItems.map((subItem: any, subIndex: any) => {
+                  {exploreSubItems.map((subItem, subIndex) => {
                     if (subItem.label === cmsData.navBar.referAFriend) {
                       return (
                         <li key={subIndex} className="text-xs ml-8">

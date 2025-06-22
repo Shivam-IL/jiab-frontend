@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { messaging, getToken, onMessage } from '@/lib/firebase';
 import { useRegisterDevice } from '@/api/hooks/NotificationHooks';
 import useAppSelector from '@/hooks/useSelector';
@@ -13,6 +13,15 @@ interface FCMTokenState {
   permissionStatus: NotificationPermission | null;
   serviceWorkerRegistered: boolean;
   isAuthenticated: boolean;
+}
+
+interface ErrorWithResponse {
+  response?: {
+    status?: number;
+    data?: {
+      message?: string;
+    };
+  };
 }
 
 const useFCMToken = () => {
@@ -36,7 +45,7 @@ const useFCMToken = () => {
     setFcmState(prev => ({ ...prev, isAuthenticated }));
   }, [isAuthenticated]);
 
-  const checkServiceWorkerRegistration = async (): Promise<boolean> => {
+  const checkServiceWorkerRegistration = useCallback(async (): Promise<boolean> => {
     try {
       if ('serviceWorker' in navigator) {
         const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
@@ -61,9 +70,9 @@ const useFCMToken = () => {
       }));
       return false;
     }
-  };
+  }, []);
 
-  const requestNotificationPermission = async (): Promise<boolean> => {
+  const requestNotificationPermission = useCallback(async (): Promise<boolean> => {
     try {
       const permission = await Notification.requestPermission();
       console.log('Notification permission:', permission);
@@ -74,9 +83,9 @@ const useFCMToken = () => {
       setFcmState(prev => ({ ...prev, permissionStatus: 'denied' }));
       return false;
     }
-  };
+  }, []);
 
-  const setupForegroundMessageListener = () => {
+  const setupForegroundMessageListener = useCallback(() => {
     if (!messaging) return;
 
     const unsubscribe = onMessage(messaging, (payload) => {
@@ -108,9 +117,9 @@ const useFCMToken = () => {
     });
 
     return unsubscribe;
-  };
+  }, [queryClient]);
 
-  const generateFCMToken = async (): Promise<string | null> => {
+  const generateFCMToken = useCallback(async (): Promise<string | null> => {
     if (!messaging) {
       console.error('Firebase messaging not initialized');
       setFcmState(prev => ({ 
@@ -181,9 +190,9 @@ const useFCMToken = () => {
       }));
       return null;
     }
-  };
+  }, [checkServiceWorkerRegistration, requestNotificationPermission, setupForegroundMessageListener]);
 
-  const registerDeviceWithToken = async (token: string): Promise<boolean> => {
+  const registerDeviceWithToken = useCallback(async (token: string): Promise<boolean> => {
     // Check authentication before attempting registration
     if (!isAuthenticated || !authToken) {
       console.error('User not authenticated, cannot register device');
@@ -224,7 +233,7 @@ const useFCMToken = () => {
       
       // Handle specific authentication errors
       if (error && typeof error === 'object' && 'response' in error) {
-        const responseError = error as any;
+        const responseError = error as ErrorWithResponse;
         if (responseError.response?.status === 401 || responseError.response?.status === 403) {
           errorMessage = 'Authentication failed. Please login again.';
         } else if (responseError.response?.data?.message) {
@@ -238,9 +247,9 @@ const useFCMToken = () => {
       }));
       return false;
     }
-  };
+  }, [isAuthenticated, authToken, registerDeviceMutation]);
 
-  const initializeFCM = async () => {
+  const initializeFCM = useCallback(async () => {
     console.log('Initializing FCM...');
     console.log('Auth state:', { isAuthenticated, hasAuthToken: !!authToken });
     
@@ -305,7 +314,7 @@ const useFCMToken = () => {
     if (token) {
       await registerDeviceWithToken(token);
     }
-  };
+  }, [isAuthenticated, authToken, generateFCMToken, registerDeviceWithToken, checkServiceWorkerRegistration, setupForegroundMessageListener]);
 
   const refreshToken = async () => {
     console.log('Refreshing FCM token...');
@@ -357,7 +366,7 @@ const useFCMToken = () => {
         error: 'Please login to enable push notifications'
       }));
     }
-  }, [isAuthenticated, authToken]);
+  }, [isAuthenticated, authToken, initializeFCM]);
 
   return {
     ...fcmState,

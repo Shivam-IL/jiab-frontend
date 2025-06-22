@@ -24,7 +24,6 @@ import {
   updateAddresses,
   updateAvatarsData,
   updateBalance,
-  updateBreakTheIceModal,
   updateRank,
   updateReferralData,
   updateUser,
@@ -32,7 +31,6 @@ import {
 } from '@/store/profile/profile.slice'
 import {
   getLocalStorageItem,
-  removeSessionStorageItem,
   setLocalStorageItem,
   getSessionStorageItem
 } from '@/utils'
@@ -63,15 +61,14 @@ import {
   CDPEventPayloadBuilder,
   LandingPageCDPEventPayload
 } from '@/api/utils/cdpEvents'
-import { IGeolocationData, ILocalGeoData } from '@/api/types/GeolocationTypes'
+import { ILocalGeoData } from '@/api/types/GeolocationTypes'
 
 const mainServiceInstance = MainService.getInstance()
 
 const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const dispatch = useAppDispatch()
   const pathname = usePathname()
-  const { isAuthenticated, otpVerified, isFirstLogin, surpriseMe } =
-    useAppSelector(state => state.auth)
+  const { isAuthenticated } = useAppSelector(state => state.auth)
   const [tokenUpdated, setTokenUpdated] = useState(false)
   const { data: userProfileData } = useGetUserProfileDetails()
   const { data: userAddressesData } = useGetUserAddresses()
@@ -82,7 +79,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const refreshTokenFromParams = searchParams.get('refresh')
   const langKey = searchParams.get('lang')
 
-  let gluedInSDKInitilize = new gluedin.GluedInSDKInitilize()
+  const gluedInSDKInitilize = new gluedin.GluedInSDKInitilize()
   gluedInSDKInitilize.initialize({
     apiKey: process.env.NEXT_PUBLIC_GLUEDIN_API_KEY || '',
     secretKey: process.env.NEXT_PUBLIC_GLUEDIN_SECRET_KEY || ''
@@ -94,7 +91,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const { data: languagesData } = useGetLanguages()
   const { data: jokesFormatsData } = useGetJokesFormats()
   const { data: userSubmittedJokesData } = useGetUserSubmittedJokes()
-  const { data: userGeolocationDataResponse } = useGetUserGeolocation({
+  useGetUserGeolocation({
     enabled: true,
     params: 'userGeolocation'
   })
@@ -132,7 +129,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         dispatch(updateIsAuthenticated({ isAuthenticated: true }))
       }
     }
-  }, [pathname])
+  }, [pathname, dispatch])
 
   useEffect(() => {
     const refreshToken =
@@ -167,6 +164,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       dispatch(updateToken({ token: '' }))
       dispatch(updateRefreshTokenNotVerified({ refreshTokenNotVerified: true }))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshTokenFromParams])
 
   useEffect(() => {
@@ -188,7 +186,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       dispatch(updateToken({ token: '' }))
       clearAllModalSessions()
     }
-  }, [refreshTokenLoading, refreshTokenData])
+  }, [refreshTokenLoading, refreshTokenData, dispatch, refreshTokenFromParams])
 
   useEffect(() => {
     if (tokenUpdated) {
@@ -197,7 +195,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         setTokenUpdated(false)
       }, 1000)
     }
-  }, [tokenUpdated])
+  }, [tokenUpdated, dispatch])
 
   // Handle profile data changes
   useEffect(() => {
@@ -242,7 +240,8 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         JSON.stringify(localData)
       )
     }
-  }, [userProfileData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userProfileData, dispatch])
 
   useEffect(() => {
     if (userAddressesData?.ok) {
@@ -261,7 +260,8 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         JSON.stringify(localData)
       )
     }
-  }, [userAddressesData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userAddressesData, dispatch])
 
   useEffect(() => {
     if (referralData?.ok) {
@@ -273,24 +273,27 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         })
       )
     }
-  }, [referralData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [referralData, dispatch])
 
   useEffect(() => {
     if (avatarsData?.ok) {
-      const modifiedData = avatarsData?.data?.map((item: any) => ({
-        id: item.id,
-        name: item.name,
-        image: item.image_url
-      }))
+      const modifiedData = avatarsData?.data?.map(
+        (item: { id: number; name: string; image_url: string }) => ({
+          id: item.id,
+          name: item.name,
+          image: item.image_url
+        })
+      )
       dispatch(updateAvatarsData({ avatarsData: modifiedData ?? [] }))
     }
-  }, [avatarsData])
+  }, [avatarsData, dispatch])
 
   useEffect(() => {
     if (gluedinLoginData?.ok) {
       dispatch(updateGludeinIsAuthenticated({ gludeinIsAuthenticated: true }))
     }
-  }, [gluedinLoginData])
+  }, [gluedinLoginData, dispatch])
 
   useEffect(() => {
     if (leaderboardData?.ok) {
@@ -302,35 +305,35 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         })
       )
     }
-  }, [leaderboardData])
+  }, [leaderboardData, dispatch])
 
   useEffect(() => {
     if (genresData?.ok) {
       const { data } = genresData ?? {}
       dispatch(updateGenres({ genres: data?.data?.genres ?? [] }))
     }
-  }, [genresData])
+  }, [genresData, dispatch])
 
   useEffect(() => {
     if (languagesData?.ok) {
       const { data } = languagesData ?? {}
       dispatch(updateLanguages({ languages: data?.languages ?? [] }))
     }
-  }, [languagesData])
+  }, [languagesData, dispatch])
 
   useEffect(() => {
     if (userSubmittedJokesData?.ok) {
       const { data } = userSubmittedJokesData ?? {}
       dispatch(updateUserSubmittedJokes({ userSubmittedJokes: data ?? [] }))
     }
-  }, [userSubmittedJokesData])
+  }, [userSubmittedJokesData, dispatch])
 
   useEffect(() => {
     if (jokesFormatsData?.ok) {
       const { data } = jokesFormatsData ?? {}
       dispatch(updateJokesFormats({ jokesFormats: data?.formats ?? [] }))
     }
-  }, [jokesFormatsData])
+  }, [jokesFormatsData, dispatch])
 
   useEffect(() => {
     if (!isAuthenticated) {

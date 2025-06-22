@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import { CirclePlay } from "lucide-react";
 
 const VideoCard = ({ src }: { src: string }) => {
   return (

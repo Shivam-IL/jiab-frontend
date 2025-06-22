@@ -6,7 +6,6 @@ import MobileTempNavBar from '@/components/common/MobileTempNavBar'
 import AktivGroteskText from '@/components/common/AktivGroteskText'
 import Image from 'next/image'
 import useAppSelector from '@/hooks/useSelector'
-import GenreSurpriseMeModal from '@/components/common/GenreSurpriseMeModal'
 import SurpriseMeLockModal from '@/components/common/SurpriseMeLockModal'
 import useAppDispatch from '@/hooks/useDispatch'
 import { updateLoginModal } from '@/store/auth/auth.slice'
@@ -128,15 +127,6 @@ const PickMood: React.FC = () => {
             setGenreSurpriseModal(false)
           }}
         />
-        // <GenreSurpriseMeModal
-        //   open={genreSurpriseModal}
-        //   onClose={() => {
-        //     closeGenreSurpriseMe()
-        //     setGenreSurpriseModal(false)
-        //   }}
-        //   genreId={selectedGenreId}
-        //   languageId={1} // Default language, can be made dynamic later
-        // />
       )}
 
       {/* Show login modal for unauthenticated users */}

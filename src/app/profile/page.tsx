@@ -102,7 +102,7 @@ const ProfilePage = () => {
     if (user?.id && user?.profile_percentage === 100) {
       triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)
     }
-  }, [user?.profile_percentage])
+  }, [user?.profile_percentage,user?.id])
 
   return (
     <ScreenWrapper>

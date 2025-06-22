@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { messaging, getToken, onMessage } from '@/lib/firebase';
-import { sendTokenToServer, getStoredToken } from '@/utils/fcmUtils';
+import { sendTokenToServer } from '@/utils/fcmUtils';
 import { useQueryClient } from '@tanstack/react-query';
 import { keys } from '@/api/utils';
 

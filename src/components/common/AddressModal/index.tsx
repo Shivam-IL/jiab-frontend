@@ -1,450 +1,450 @@
-import { Dialog, DialogContent } from '@/components/ui/dialog'
-import React, { useEffect, useState } from 'react'
-import SvgIcons from '../SvgIcons'
-import { ICONS_NAMES, REDUX_UPDATION_TYPES } from '@/constants'
-import AktivGroteskText from '../AktivGroteskText'
-import Input from '@/components/Input'
-import GreenCTA from '@/components/GreenCTA'
-import { Checkbox } from '@/components/ui/checkbox'
-import useAppDispatch from '@/hooks/useDispatch'
-import { IAddressData, IAddressError, IAddressModal } from '@/interfaces'
-import { validateInput } from '@/utils/inputValidation'
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import React, { useEffect, useState } from "react";
+import SvgIcons from "../SvgIcons";
+import { ICONS_NAMES, REDUX_UPDATION_TYPES } from "@/constants";
+import AktivGroteskText from "../AktivGroteskText";
+import Input from "@/components/Input";
+import GreenCTA from "@/components/GreenCTA";
+import { Checkbox } from "@/components/ui/checkbox";
+import useAppDispatch from "@/hooks/useDispatch";
+import { IAddressData, IAddressError, IAddressModal } from "@/interfaces";
 import {
   useAddNewAddress,
   useEditAddress,
-  useGetPincodeData
-} from '@/api/hooks/ProfileHooks'
-import { AddressModalType } from '@/types'
-import { editAddress, updateAddresses } from '@/store/profile/profile.slice'
-import useAppSelector from '@/hooks/useSelector'
-import { useCMSData } from '@/data'
+  useGetPincodeData,
+} from "@/api/hooks/ProfileHooks";
+import { AddressModalType } from "@/types";
+import { editAddress, updateAddresses } from "@/store/profile/profile.slice";
+import useAppSelector from "@/hooks/useSelector";
+import { useCMSData } from "@/data";
 import {
   AddressCDPEventPayload,
-  CDPEventPayloadBuilder
-} from '@/api/utils/cdpEvents'
-import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
+  CDPEventPayloadBuilder,
+} from "@/api/utils/cdpEvents";
+import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
 
 const AddressModal: React.FC<IAddressModal> = ({
   open,
   setOpen,
   type,
   addressId,
-  addressLength
+  addressLength,
 }) => {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  const cmsData = useCMSData(mounted)
-  const { user } = useAppSelector(state => state.profile)
-  const { mutate: sendCDPEvent } = useSendCDPEvent()
+  const cmsData = useCMSData(mounted);
+  const { user } = useAppSelector((state) => state.profile);
+  const { mutate: sendCDPEvent } = useSendCDPEvent();
 
   const [data, setData] = useState<IAddressData>({
-    address_line_1: '',
-    address_line_2: '',
-    nearest_landmark: '',
-    alternate_phone_number: '',
-    pincode: '',
-    state: '',
-    city: '',
-    default: false
-  })
+    address_line_1: "",
+    address_line_2: "",
+    nearest_landmark: "",
+    alternate_phone_number: "",
+    pincode: "",
+    state: "",
+    city: "",
+    default: false,
+  });
   const [initialEditData, setInitialEditData] = useState<IAddressData>({
-    address_line_1: '',
-    address_line_2: '',
-    nearest_landmark: '',
-    alternate_phone_number: '',
-    pincode: '',
-    state: '',
-    city: '',
-    default: false
-  })
+    address_line_1: "",
+    address_line_2: "",
+    nearest_landmark: "",
+    alternate_phone_number: "",
+    pincode: "",
+    state: "",
+    city: "",
+    default: false,
+  });
 
   const [error, setError] = useState<IAddressError>({
-    address_line_1: '',
-    pincode: '',
-    state: '',
-    city: ''
-  })
+    address_line_1: "",
+    pincode: "",
+    state: "",
+    city: "",
+  });
 
-  const { addresses } = useAppSelector(state => state.profile)
-  const dispatch = useAppDispatch()
+  const { addresses } = useAppSelector((state) => state.profile);
+  const dispatch = useAppDispatch();
   const {
     mutate: addNewAddress,
     isPending,
-    data: addNewAddressData
-  } = useAddNewAddress()
+    data: addNewAddressData,
+  } = useAddNewAddress();
   const {
     mutate: editNewAddress,
-    isPending: isEditAddressPending,
-    data: editNewAddressData
-  } = useEditAddress()
+    data: editNewAddressData,
+  } = useEditAddress();
 
   const {
     mutate: getPincodeData,
-    isPending: isGetPincodePending,
-    data: pincodeData
-  } = useGetPincodeData()
+    data: pincodeData,
+  } = useGetPincodeData();
 
   const handleChange = (key: string, value: string | boolean) => {
-    if (key === 'pincode') {
-      const numericValue = value?.toString()?.replace(/[^0-9]/g, '')
-      const valueString = numericValue?.slice(0, 6)
-      setData({ ...data, [key]: valueString })
-    } else if (key === 'alternate_phone_number') {
-      const numericValue = value?.toString()?.replace(/[^0-9]/g, '')
-      const valueString = numericValue?.slice(0, 10)
-      setData({ ...data, [key]: valueString ?? '' })
+    if (key === "pincode") {
+      const numericValue = value?.toString()?.replace(/[^0-9]/g, "");
+      const valueString = numericValue?.slice(0, 6);
+      setData({ ...data, [key]: valueString });
+    } else if (key === "alternate_phone_number") {
+      const numericValue = value?.toString()?.replace(/[^0-9]/g, "");
+      const valueString = numericValue?.slice(0, 10);
+      setData({ ...data, [key]: valueString ?? "" });
     } else {
-      setData({ ...data, [key]: value })
+      setData({ ...data, [key]: value });
     }
-  }
+  };
 
   const trigger_CDP_ADD_ADDRESS = ({
     address_line_1,
     address_line_2,
     pincode,
     state,
-    city
+    city,
   }: {
-    address_line_1: string
-    address_line_2?: string
-    pincode: string
-    state: string
-    city: string
+    address_line_1: string;
+    address_line_2?: string;
+    pincode: string;
+    state: string;
+    city: string;
   }) => {
     if (address_line_1 && pincode && state && city && user?.id) {
       const payload: AddressCDPEventPayload =
         CDPEventPayloadBuilder.buildAddAddressPayload({
           address_line1: address_line_1,
-          address_line2: address_line_2 ?? '',
+          address_line2: address_line_2 ?? "",
           address_city: city,
           address_state: state,
           geo_postal_code: pincode,
-          user_identifier: user.id ?? ''
-        })
-      sendCDPEvent(payload)
+          user_identifier: user.id ?? "",
+        });
+      sendCDPEvent(payload);
     }
-  }
+  };
 
   const submitAddress = () => {
-    let errorValidation = false
-    if (data?.address_line_1 === '') {
-      setError(prev => ({
+    let errorValidation = false;
+    if (data?.address_line_1 === "") {
+      setError((prev) => ({
         ...prev,
-        address_line_1: 'Address Line 1 is required'
-      }))
-      errorValidation = true
+        address_line_1: "Address Line 1 is required",
+      }));
+      errorValidation = true;
     }
     if (data?.pincode?.length < 6) {
-      setError(prev => ({ ...prev, pincode: 'Invalid Pincode' }))
-      errorValidation = true
+      setError((prev) => ({ ...prev, pincode: "Invalid Pincode" }));
+      errorValidation = true;
     }
-    if (data?.state === '') {
-      setError(prev => ({ ...prev, state: 'State is required' }))
-      errorValidation = true
+    if (data?.state === "") {
+      setError((prev) => ({ ...prev, state: "State is required" }));
+      errorValidation = true;
     }
-    if (data?.city === '') {
-      setError(prev => ({ ...prev, city: 'City is required' }))
-      errorValidation = true
+    if (data?.city === "") {
+      setError((prev) => ({ ...prev, city: "City is required" }));
+      errorValidation = true;
     }
 
     if (errorValidation) {
-      return
+      return;
     }
-    console.log('data', error, errorValidation)
+    console.log("data", error, errorValidation);
     if (!errorValidation) {
       const addressData = {
-        address1: data?.address_line_1 || '',
-        address2: data?.address_line_2 || '',
-        city: data?.city || '',
+        address1: data?.address_line_1 || "",
+        address2: data?.address_line_2 || "",
+        city: data?.city || "",
         is_default: data?.default || false,
-        nearest_landmark: data?.nearest_landmark || '',
+        nearest_landmark: data?.nearest_landmark || "",
         pincode: parseInt(data?.pincode) ?? 0,
-        shipping_mobile: data?.alternate_phone_number || '',
-        state: data?.state || ''
-      }
+        shipping_mobile: data?.alternate_phone_number || "",
+        state: data?.state || "",
+      };
       if (type === AddressModalType.ADD) {
         if (addressLength === 0) {
-          addressData.is_default = true
+          addressData.is_default = true;
         }
-        addNewAddress(addressData)
+        addNewAddress(addressData);
       } else {
         if (addressId) {
-          editNewAddress({ ...addressData, address_id: addressId })
+          editNewAddress({ ...addressData, address_id: addressId });
         }
       }
     }
-  }
+  };
 
   useEffect(() => {
-    if (data?.address_line_1 !== '') {
-      setError(prev => ({
+    if (data?.address_line_1 !== "") {
+      setError((prev) => ({
         ...prev,
-        address_line_1: ''
-      }))
+        address_line_1: "",
+      }));
     }
-  }, [data?.address_line_1])
+  }, [data?.address_line_1]);
 
   useEffect(() => {
     if (!isPending && addNewAddressData?.ok) {
-      const { data } = addNewAddressData ?? {}
+      const { data } = addNewAddressData ?? {};
       trigger_CDP_ADD_ADDRESS({
         address_line_1: data?.address1,
-        address_line_2: data?.address2 ?? '',
+        address_line_2: data?.address2 ?? "",
         pincode: data?.pincode.toString(),
         state: data?.state,
-        city: data?.city
-      })
+        city: data?.city,
+      });
       dispatch(
         updateAddresses({
           type: REDUX_UPDATION_TYPES.SINGLE_ADDED,
-          address: [data]
+          address: [data],
         })
-      )
-      setOpen(false)
+      );
+      setOpen(false);
     }
-  }, [isPending, addNewAddressData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPending, addNewAddressData]);
 
   useEffect(() => {
     if (editNewAddressData?.ok && addressId) {
-      const { data } = editNewAddressData ?? {}
+      const { data } = editNewAddressData ?? {};
       trigger_CDP_ADD_ADDRESS({
         address_line_1: data?.address1,
-        address_line_2: data?.address2 ?? '',
+        address_line_2: data?.address2 ?? "",
         pincode: data?.pincode.toString(),
         state: data?.state,
-        city: data?.city
-      })
+        city: data?.city,
+      });
       dispatch(
         editAddress({
           addressId: addressId,
-          address: data
+          address: data,
         })
-      )
-      setOpen(false)
+      );
+      setOpen(false);
     }
-  }, [editNewAddressData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editNewAddressData]);
 
   useEffect(() => {
     if (addressId && type === AddressModalType.EDIT) {
-      console.log('addressId', addressId)
+      console.log("addressId", addressId);
       const address = addresses?.find(
-        (address: any) => address.id === addressId
-      )
+        (address: { id: number }) => address.id === addressId
+      );
       if (address) {
         setData({
-          address_line_1: address?.address1 || '',
-          address_line_2: address?.address2 || '',
-          nearest_landmark: address?.nearest_landmark || '',
-          alternate_phone_number: address?.shipping_mobile || '',
-          pincode: address?.pincode.toString() || '',
-          state: address?.state || '',
-          city: address?.city || '',
-          default: address?.is_default || false
-        })
+          address_line_1: address?.address1 || "",
+          address_line_2: address?.address2 || "",
+          nearest_landmark: address?.nearest_landmark || "",
+          alternate_phone_number: address?.shipping_mobile || "",
+          pincode: address?.pincode.toString() || "",
+          state: address?.state || "",
+          city: address?.city || "",
+          default: address?.is_default || false,
+        });
         setInitialEditData({
-          address_line_1: address?.address1 || '',
-          address_line_2: address?.address2 || '',
-          nearest_landmark: address?.nearest_landmark || '',
-          alternate_phone_number: address?.shipping_mobile || '',
-          pincode: address?.pincode.toString() || '',
-          state: address?.state || '',
-          city: address?.city || '',
-          default: address?.is_default || false
-        })
+          address_line_1: address?.address1 || "",
+          address_line_2: address?.address2 || "",
+          nearest_landmark: address?.nearest_landmark || "",
+          alternate_phone_number: address?.shipping_mobile || "",
+          pincode: address?.pincode.toString() || "",
+          state: address?.state || "",
+          city: address?.city || "",
+          default: address?.is_default || false,
+        });
       }
     }
-  }, [addressId])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addressId]);
 
   useEffect(() => {
     if (data?.pincode?.length === 6) {
-      setData(prev => ({
+      setData((prev) => ({
         ...prev,
-        state: '',
-        city: ''
-      }))
-      setError(prev => ({
+        state: "",
+        city: "",
+      }));
+      setError((prev) => ({
         ...prev,
-        pincode: '',
-        state: '',
-        city: ''
-      }))
-      getPincodeData(data?.pincode)
+        pincode: "",
+        state: "",
+        city: "",
+      }));
+      getPincodeData(data?.pincode);
     }
-  }, [data?.pincode])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.pincode]);
 
   useEffect(() => {
     if (pincodeData?.ok) {
-      const { data } = pincodeData ?? {}
-      setData(prev => ({
+      const { data } = pincodeData ?? {};
+      setData((prev) => ({
         ...prev,
         state: data?.state,
-        city: data?.city
-      }))
-      setError(prev => ({
+        city: data?.city,
+      }));
+      setError((prev) => ({
         ...prev,
-        pincode: '',
-        state: '',
-        city: ''
-      }))
+        pincode: "",
+        state: "",
+        city: "",
+      }));
     } else if (pincodeData?.ok === false) {
-      const { message } = (pincodeData as any) ?? {}
-      setError(prev => ({
+      setError((prev) => ({
         ...prev,
-        pincode: 'Pincode not found'
-      }))
+        pincode: "Pincode not found",
+      }));
     }
-  }, [pincodeData])
+  }, [pincodeData]);
 
   useEffect(() => {
     return () => {
       setError({
-        address_line_1: '',
-        pincode: '',
-        state: '',
-        city: ''
-      })
+        address_line_1: "",
+        pincode: "",
+        state: "",
+        city: "",
+      });
       setData({
-        address_line_1: '',
-        address_line_2: '',
-        nearest_landmark: '',
-        alternate_phone_number: '',
-        pincode: '',
-        state: '',
-        city: '',
-        default: false
-      })
-    }
-  }, [])
+        address_line_1: "",
+        address_line_2: "",
+        nearest_landmark: "",
+        alternate_phone_number: "",
+        pincode: "",
+        state: "",
+        city: "",
+        default: false,
+      });
+    };
+  }, []);
 
-  console.log('data', data)
+  console.log("data", data);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className='rounded-[5px] md:max-w-[401px] flex flex-col px-0 gap-[18px] md:gap-[28px]  py-[20px] md:pt-[28px] md:pb-[20px] max-w-[358px]'>
-        <div className='w-full flex px-[15px] md:px-[19px] justify-between items-center box-border '>
+      <DialogContent className="rounded-[5px] md:max-w-[401px] flex flex-col px-0 gap-[18px] md:gap-[28px]  py-[20px] md:pt-[28px] md:pb-[20px] max-w-[358px]">
+        <div className="w-full flex px-[15px] md:px-[19px] justify-between items-center box-border ">
           <AktivGroteskText
             text={
-              type === AddressModalType.ADD ? 'Add Address' : 'Edit Address'
+              type === AddressModalType.ADD ? "Add Address" : "Edit Address"
             }
-            className='leading-tight'
-            fontSize='text-[16px] md:text-[20px]'
-            fontWeight='font-[700]'
+            className="leading-tight"
+            fontSize="text-[16px] md:text-[20px]"
+            fontWeight="font-[700]"
           />
           <button
-            className='flex justify-center items-center'
+            className="flex justify-center items-center"
             onClick={() => {
-              setOpen(false)
+              setOpen(false);
             }}
           >
-            <SvgIcons name={ICONS_NAMES.CROSS} className='w-[13px] h-[13px]' />
+            <SvgIcons name={ICONS_NAMES.CROSS} className="w-[13px] h-[13px]" />
           </button>
         </div>
         <form
-          onSubmit={event => {
-            event.preventDefault()
+          onSubmit={(event) => {
+            event.preventDefault();
           }}
-          className='flex flex-col px-[8px] md:px-[16px] gap-[20px]'
+          className="flex flex-col px-[8px] md:px-[16px] gap-[20px]"
         >
-          <div className='flex flex-col gap-[24px]'>
+          <div className="flex flex-col gap-[24px]">
             <Input
-              name='address_line_1'
-              type='text'
+              name="address_line_1"
+              type="text"
               placeholder={cmsData?.plusAddInsideProfile?.addressLine1}
               value={data.address_line_1}
               onChange={handleChange}
               error={error.address_line_1}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass="py-[16px] px-[20px] md:py-[14px]"
             />
             <Input
-              name='address_line_2'
-              type='text'
+              name="address_line_2"
+              type="text"
               placeholder={cmsData?.plusAddInsideProfile?.addressLine2}
               value={data.address_line_2}
               onChange={handleChange}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass="py-[16px] px-[20px] md:py-[14px]"
             />
             <Input
-              name='nearest_landmark'
-              type='text'
+              name="nearest_landmark"
+              type="text"
               placeholder={cmsData?.plusAddInsideProfile?.nearestLandmark}
               value={data.nearest_landmark}
               onChange={handleChange}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass="py-[16px] px-[20px] md:py-[14px]"
             />
             <Input
-              name='alternate_phone_number'
-              type='text'
+              name="alternate_phone_number"
+              type="text"
               placeholder={cmsData?.plusAddInsideProfile?.altMobileNumber}
               value={data.alternate_phone_number}
               onChange={handleChange}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass="py-[16px] px-[20px] md:py-[14px]"
             />
             <Input
-              name='pincode'
-              type='text'
+              name="pincode"
+              type="text"
               placeholder={cmsData?.plusAddInsideProfile?.pincode}
               value={data.pincode}
               error={error.pincode}
               onChange={handleChange}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass="py-[16px] px-[20px] md:py-[14px]"
             />
             <Input
-              name='state'
-              type='text'
+              name="state"
+              type="text"
               placeholder={cmsData?.plusAddInsideProfile?.state}
               value={data.state}
               error={error.state}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass="py-[16px] px-[20px] md:py-[14px]"
               onChange={handleChange}
               readonly={true}
             />
             <Input
-              name='city'
-              type='text'
+              name="city"
+              type="text"
               placeholder={cmsData?.plusAddInsideProfile?.city}
               value={data.city}
               error={error.city}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass="py-[16px] px-[20px] md:py-[14px]"
               onChange={handleChange}
               readonly={true}
             />
           </div>
-          <div className='px-[8px] flex gap-3'>
+          <div className="px-[8px] flex gap-3">
             <Checkbox
               checked={data.default}
-              name='default'
+              name="default"
               disabled={
                 type !== AddressModalType.ADD && initialEditData?.default
               }
               onCheckedChange={() => {
-                handleChange('default', !data.default)
+                handleChange("default", !data.default);
               }}
             />
             <AktivGroteskText
               text={cmsData?.plusAddInsideProfile?.setAsDefault}
-              fontSize='text-[12px]'
-              fontWeight='font-[400]'
+              fontSize="text-[12px]"
+              fontWeight="font-[400]"
             />
           </div>
-          <div className='px-[8px] flex justify-between items-center box-border py-[10px]'>
+          <div className="px-[8px] flex justify-between items-center box-border py-[10px]">
             <GreenCTA
               disabled={isPending}
-              paddingClass='py-[13px]'
-              fontSize='text-[16px] md:text-[18px]'
-              fontWeight='font-[700]'
+              paddingClass="py-[13px]"
+              fontSize="text-[16px] md:text-[18px]"
+              fontWeight="font-[700]"
               text={cmsData?.plusAddInsideProfile?.saveAddress}
-              className='leading-tight w-full'
+              className="leading-tight w-full"
               onClick={submitAddress}
             />
           </div>
         </form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default AddressModal
+export default AddressModal;

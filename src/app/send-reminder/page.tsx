@@ -27,7 +27,6 @@ const SendReminderPage = () => {
   const width = useWindowWidth()
 
   const [sendReminder, setSendReminder] = useState<boolean>(false)
-  const [sendReminderCount, setSendReminderCount] = useState<number>(0)
 
   const [page, setPage] = useState<number>(1)
   const [pages, setPages] = useState<number>(1)

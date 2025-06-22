@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { keys } from "@/api/utils";
 import { useCallback } from "react";
+import { IComicCoinsResponse } from "@/api/types/JokeTypes";
 
 /**
  * Custom hook to handle comic coin revalidation
@@ -25,7 +26,7 @@ export const useComicCoinRevalidation = () => {
     }, delay);
   }, [queryClient]);
 
-  const setComicCoinsQueryData = useCallback((newData: any) => {
+  const setComicCoinsQueryData = useCallback((newData: IComicCoinsResponse) => {
     // Optimistically update the comic coins data
     queryClient.setQueryData([...keys.joke.getComicCoins()], newData);
   }, [queryClient]);

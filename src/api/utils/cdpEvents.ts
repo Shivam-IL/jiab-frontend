@@ -2,8 +2,6 @@ import {
   CDP_USER_IDENTIFIER_SUB_TYPE,
   CDP_USER_IDENTIFIER_TYPE,
 } from "@/config";
-import { getCurrentEpopTime } from "@/utils/epopTimeUtils";
-import { getLocalStorageItem } from "@/utils/";
 
 // CDP Event Types
 export const CDP_EVENT_TYPES = {
@@ -209,7 +207,7 @@ export interface LanguageCDPEventPayload extends BaseCDPEventPayload {
   language_code: string;
 }
 
-export interface SocialMediaCDPEventPayload extends BaseCDPEventPayload {}
+export type SocialMediaCDPEventPayload = BaseCDPEventPayload;
 
 export interface ReactionCDPEventPayload extends BaseCDPEventPayload {
   joke_id?: string;
@@ -220,15 +218,14 @@ export interface UGCSubmissionCDPEventPayload extends BaseCDPEventPayload {
   first_name: string;
 }
 
-export interface JokeCategoryCDPEventPayload extends BaseCDPEventPayload {}
+export type JokeCategoryCDPEventPayload = BaseCDPEventPayload;
 
 export interface UGCFilterCDPEventPayload extends BaseCDPEventPayload {
   language_code: string;
 }
 
-export interface ReferralCompletedCDPEventPayload extends BaseCDPEventPayload {
-  // The phone number is embedded in the event_sub_type
-}
+export type ReferralCompletedCDPEventPayload = BaseCDPEventPayload;
+
 
 export interface AddressCDPEventPayload extends BaseCDPEventPayload {
   address_line1: string;

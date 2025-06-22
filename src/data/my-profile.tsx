@@ -17,6 +17,7 @@ export interface MyProfileData {
   status: string;
   myReferrals: string;
   referAnother: string;
+  helpUsKnowMore: string;
 }
 
 export const mapMyProfileData = (
@@ -43,6 +44,7 @@ export const mapMyProfileData = (
     status: myProfileCMS?.statu_s ?? "Status",
     myReferrals: myProfileCMS?.my_referrals ?? "My Referrals",
     referAnother: myProfileCMS?.refer_another ?? "Refer Another",
+    helpUsKnowMore: myProfileCMS?.help_us_know_more ?? "Help Us Know More",
   };
 };
 
@@ -64,4 +66,5 @@ export const defaultMyProfileData: MyProfileData = {
   status: "Status",
   myReferrals: "My Referrals",
   referAnother: "Refer Another",
+  helpUsKnowMore: "Help Us Know More",
 };

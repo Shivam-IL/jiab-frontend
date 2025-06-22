@@ -39,7 +39,7 @@ export interface TUGCContent {
   hashtags: string[];
   labels: string[];
   taggedUsers: string[];
-  products: any[];
+  products: unknown[];
   artistsDetail: {
     fullName: string;
     userId: string;

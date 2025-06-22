@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AktivGroteskText from "../AktivGroteskText";
-import {
-  GA_EVENTS,
-  HELP_US_TO_KNOW_YOUR_BETTER,
-  ICONS_NAMES,
-  SAVE,
-} from "@/constants";
+import { GA_EVENTS, ICONS_NAMES, SAVE } from "@/constants";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import GreenCTA from "@/components/GreenCTA";
 import SvgIcons from "../SvgIcons";
@@ -23,6 +18,8 @@ import {
   CDPEventPayloadBuilder,
   QuestionCDPPayload,
 } from "@/api/utils/cdpEvents";
+import { ILanguage } from "@/store/reference";
+import { useCMSData } from "@/data";
 
 interface IOption {
   id: number;
@@ -40,6 +37,43 @@ interface IQuestion {
   selected_option?: number;
 }
 
+// Utility function to map and transform API question response
+const mapQuestionResponse = (
+  questions: IQuestion[],
+  languageId: string
+): IQuestion[] => {
+  return questions.map((item: IQuestion) => {
+    // Sort options based on display_order
+    const sortedOptions =
+      item?.options?.sort((a, b) => a.display_order - b.display_order) || [];
+
+    return {
+      ...item,
+      options: sortedOptions,
+      language_id: languageId,
+      // Preserve selected_option if it exists, otherwise set as undefined
+      selected_option: item.selected_option || undefined,
+    };
+  });
+};
+
+// Utility function to check submission status
+const checkSubmissionStatus = (questions: IQuestion[]) => {
+  let isSubmitted = false;
+  let isSaved = false;
+
+  questions.forEach((question: IQuestion, index: number) => {
+    if (question?.selected_option && index === 0) {
+      isSaved = true;
+    }
+    if (question?.selected_option && index === questions.length - 1) {
+      isSubmitted = true;
+    }
+  });
+
+  return { isSubmitted, isSaved };
+};
+
 const HelpUsToKnowYourBetter = ({
   prevButtonText,
   nextButtonText,
@@ -49,6 +83,15 @@ const HelpUsToKnowYourBetter = ({
   nextButtonText: string;
   id: string;
 }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Get mapped CMS data using our data layer
+  const cmsData = useCMSData(mounted);
+
   const { user } = useAppSelector((state) => state.profile);
   const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
     null
@@ -64,6 +107,7 @@ const HelpUsToKnowYourBetter = ({
   const { selectedLanguage } = useAppSelector((state) => state.language);
   const { languages } = useAppSelector((state) => state.reference);
   const [selectedLanguageId, setSelectedLanguageId] = useState<string>("");
+  const mountRef = useRef(false);
 
   const { data: userProfileQuestions } = useGetUserQuestions({
     language_id: selectedLanguageId,
@@ -72,59 +116,62 @@ const HelpUsToKnowYourBetter = ({
     useSubmitUserQuestions();
   const { mutate: sendCDPEvent } = useSendCDPEvent();
 
+  const dispatch = useAppDispatch();
+  const { data: userProfileData } = useGetUserProfileDetails({
+    questionIdSubmitted,
+  });
+
   useEffect(() => {
     if (selectedLanguage) {
       const languageId =
         languages?.find(
-          (language: any) => language.language_key === selectedLanguage
+          (language: ILanguage) => language.language_key === selectedLanguage
         )?.id ?? "1";
-      setSelectedLanguageId(languageId?.toString() ?? "1");
-    }
-  }, [selectedLanguage]);
+      const newLanguageId = languageId?.toString() ?? "1";
 
+      if (newLanguageId !== selectedLanguageId) {
+        setSelectedLanguageId(newLanguageId);
+        setAllQuestions([]);
+        setSelectedQuestion(null);
+        setCurrentQuestionNumber(0);
+        setSubmittedCheck(false);
+        setSavedCheck(false);
+        setQuestionIdSubmitted(null);
+        mountRef.current = false;
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLanguage, languages]);
+
+  // Re-map API response when userProfileQuestions data changes
   useEffect(() => {
-    if (userProfileQuestions?.ok) {
-      const modifiedData = userProfileQuestions?.data?.map(
-        (item: IQuestion) => {
-          // Sort options based on display_order
-          const sortedOptions =
-            item?.options?.sort((a, b) => a.display_order - b.display_order) ||
-            [];
-          return {
-            ...item,
-            options: sortedOptions,
-          };
-        }
+    if (
+      userProfileQuestions?.ok &&
+      userProfileQuestions?.data &&
+      selectedLanguageId
+    ) {
+      // Transform and map the API response using utility function
+      const modifiedData = mapQuestionResponse(
+        userProfileQuestions.data,
+        selectedLanguageId
       );
 
       setAllQuestions(modifiedData);
 
-      // Only reset question navigation if we don't have a current question or if the questions have changed
-      if (!selectedQuestion || modifiedData.length !== allQuestions.length) {
+      // Set the first question as selected if available
+      if (modifiedData.length > 0) {
         setSelectedQuestion(modifiedData[0]);
         setCurrentQuestionNumber(1);
-      } else {
-        // Update the current question with fresh data while maintaining position
-        const currentQuestionIndex = currentQuestionNumber - 1;
-        if (modifiedData[currentQuestionIndex]) {
-          setSelectedQuestion(modifiedData[currentQuestionIndex]);
-        }
       }
 
-      let isSubmitted = false;
-      let isSaved = false;
-      modifiedData?.forEach((question: IQuestion, index: number) => {
-        if (question?.selected_option && index === 0) {
-          isSaved = true;
-        }
-        if (question?.selected_option && index === modifiedData?.length - 1) {
-          isSubmitted = true;
-        }
-      });
+      // Check submission and save status using utility function
+      const { isSubmitted, isSaved } = checkSubmissionStatus(modifiedData);
+
       setSubmittedCheck(isSubmitted);
       setSavedCheck(isSaved);
+      mountRef.current = true;
     }
-  }, [userProfileQuestions]);
+  }, [userProfileQuestions, selectedLanguageId]);
 
   useEffect(() => {
     if (currentQuestionNumber === allQuestions?.length) {
@@ -142,12 +189,8 @@ const HelpUsToKnowYourBetter = ({
         setSavedCheck(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestionNumber]);
-
-  const dispatch = useAppDispatch();
-  const { data: userProfileData } = useGetUserProfileDetails({
-    questionIdSubmitted,
-  });
 
   useEffect(() => {
     if (userProfileData?.ok) {
@@ -157,6 +200,7 @@ const HelpUsToKnowYourBetter = ({
         triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfileData]);
 
   const trigerQuestionCDPEvent = (optionId: number) => {
@@ -188,6 +232,7 @@ const HelpUsToKnowYourBetter = ({
         setSavedCheck(true);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitQuestionResponse]);
 
   return (
@@ -196,7 +241,7 @@ const HelpUsToKnowYourBetter = ({
       id={id}
     >
       <AktivGroteskText
-        text={HELP_US_TO_KNOW_YOUR_BETTER}
+        text={cmsData?.myProfile?.helpUsKnowMore}
         fontSize="text-[16px] md:text-[28px]"
         fontWeight="font-[700]"
       />

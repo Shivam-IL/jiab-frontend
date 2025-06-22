@@ -3,7 +3,6 @@ import AktivGroteskText from '../common/AktivGroteskText'
 import { HALL_OF_LAME, MY_JOKES, PENDING } from '@/constants'
 import UserGeneratedJokeCard from '../common/UserGeneratedJokeCard'
 import { useRouter } from 'next/navigation'
-import useAppSelector from '@/hooks/useSelector'
 import useAppDispatch from '@/hooks/useDispatch'
 import { useGetUserSubmittedJokes } from '@/api/hooks/JokeHooks'
 import {
@@ -16,7 +15,6 @@ import GreenCTA from '../GreenCTA'
 const UserGeneratedJokecComponent = () => {
   const router = useRouter()
   const dispatch = useAppDispatch()
-  const { userSubmittedJokes } = useAppSelector(state => state.profile)
 
   const [currentItems, setCurrentItems] = useState<number>(4)
   const [allJokes, setAllJokes] = useState<IUserSubmittedJoke[]>([])
@@ -30,7 +28,7 @@ const UserGeneratedJokecComponent = () => {
       dispatch(updateUserSubmittedJokes({ userSubmittedJokes: data ?? [] }))
       setAllJokes(data ?? [])
     }
-  }, [userSubmittedJokesData])
+  }, [userSubmittedJokesData, dispatch])
 
   useEffect(() => {
     if (allJokes?.length > 0) {

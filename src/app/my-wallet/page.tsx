@@ -26,11 +26,8 @@ const ComicCoinsPage = () => {
   const [isRedeemed, setIsRedeemed] = useState(true);
 
   // Fetch comic coins data
-  const {
-    data: comicCoinsData,
-    isLoading: isComicCoinsLoading,
-    isError: isComicCoinsError,
-  } = useGetComicCoins();
+  const { data: comicCoinsData, isLoading: isComicCoinsLoading } =
+    useGetComicCoins();
 
   useEffect(() => {
     setMounted(true);
@@ -89,8 +86,6 @@ const ComicCoinsPage = () => {
         </div>
       </div>
       <ScreenWrapper className="mt-0">
-        {/* Announcing Winner Timer */}
-        {/* <AnnouncingWinnerTimer /> */}
 
         {/* Reward Pool */}
         <Header title="My Wins" className="md:mt-8 mt-0 mx-[-19px] md:mx-0" />
@@ -115,7 +110,7 @@ const ComicCoinsPage = () => {
                   />
                 </div>
                 <p className="text-[#313131] md:text-[20px] text-[16px] text-center max-w-[355px]">
-                  Here's a pocket-sized perk just for you. Grab this Rs.10
+                  Here&apos;s a pocket-sized perk just for you. Grab this Rs.10
                   PhonePe voucher now!
                 </p>
               </div>

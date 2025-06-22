@@ -49,7 +49,7 @@ export class ProfileService extends MainService {
     try {
       const formData = new FormData();
       formData.append("name", userData.name);
-        formData.append("dob", userData?.dob ?? '');
+      formData.append("dob", userData?.dob ?? "");
       if (userData?.gender) {
         formData.append("gender", userData.gender);
       }
@@ -60,10 +60,7 @@ export class ProfileService extends MainService {
         formData.append("email", userData.email);
       }
 
-      if (userData?.pfImage) {
-        formData.append("profile_image", userData.pfImage);
-        formData.append("is_profile", "true");
-      } else if (userData?.avatar_id) {
+      if (userData?.avatar_id) {
         formData.append("is_avatar", "true");
       }
 
@@ -188,7 +185,7 @@ export class ProfileService extends MainService {
     }
   }
 
-  public async submitUserQuestions({ questions, language_id }: TSubmitQuestions) {
+  public async submitUserQuestions({ questions }: TSubmitQuestions) {
     try {
       const endpoint = `${API_ROUTES.USER.QUESTIONS.POST}`;
 

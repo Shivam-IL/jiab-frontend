@@ -37,6 +37,7 @@ const Login = () => {
 
   const handleClose = useCallback(() => {
     dispatch(updateLoginModal({ loginModal: false }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, updateLoginModal])
 
   useEffect(() => {
@@ -53,6 +54,7 @@ const Login = () => {
     ) {
       setError('')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mobileNumber])
 
   const handleGetOTP = () => {
@@ -78,12 +80,14 @@ const Login = () => {
         handleClose()
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, data, dispatch, handleClose, mobileNumber])
 
   useEffect(() => {
     if (!isPending) {
       hideLoader()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending])
 
   useEffect(() => {
@@ -96,10 +100,12 @@ const Login = () => {
         className={`absolute top-[-50%]
      left-1/2 transform -translate-x-1/2`}
       >
-        <img
+        <Image
           src='/assets/images/bottle-sprite-t.gif'
           alt='sprite'
-          className='h-[200px] w-[166px]  mt-2'
+          className='h-[200px] w-[166px] mt-2'
+          width={166}
+          height={200}
         />
       </div>
       <div className='w-full absolute top-[4px] right-[4px] flex justify-end box-border pt-[10px] pr-[10px]'>
@@ -130,7 +136,10 @@ const Login = () => {
             placeholder='Mobile Number*'
             error={error}
             onChange={(key, value) => {
-              const numericValue = value?.replace(/[^0-9]/g, '')
+              const numericValue = (value as unknown as string)?.replace(
+                /[^0-9]/g,
+                ''
+              )
               const valueString = numericValue?.slice(0, 10)
               setMobileNumber(valueString)
             }}

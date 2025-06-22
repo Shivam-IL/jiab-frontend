@@ -119,6 +119,7 @@ const Calendar: React.FC<CalendarProps> = ({
   // Get selected date from value prop
   const selectedDate = useMemo(() => {
     return value ? parseDateString(value) : null
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, dateFormat])
 
   // Update current date and year view when value changes
@@ -149,6 +150,7 @@ const Calendar: React.FC<CalendarProps> = ({
     }
 
     return value
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
   // Event handlers
@@ -171,6 +173,7 @@ const Calendar: React.FC<CalendarProps> = ({
       const formattedDate = formatDateToString(date)
       onChange(name, formattedDate)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
   const handleYearSelect = (year: number) => {

@@ -1,5 +1,5 @@
+import { IViewData } from "../services/GluedinService";
 import { TModifiedUGCContent, TUGCContent } from "../types/GluedinTypes";
-import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
 
 const JOKES = [
   "What is fast, loud and crunchy? A rocket chip",
@@ -12,7 +12,7 @@ const JOKES = [
 
 const gluedinFeedListTransformer = (
   feedData: TUGCContent[],
-  voteData: any[],
+  voteData: string[],
   reactionData: { reaction: string; videoId: string }[],
   contentData: {
     content: string;
@@ -50,7 +50,9 @@ const gluedinFeedListTransformer = (
         reactions,
         isReacted: isReacted,
         reactionType: reactionType,
-        content: getContent?.content ?? JOKES[Math.floor(Math.random() * JOKES.length)],
+        content:
+          getContent?.content ??
+          JOKES[Math.floor(Math.random() * JOKES.length)],
       };
       newFeedData.push(modifiedItem);
     });
@@ -58,33 +60,21 @@ const gluedinFeedListTransformer = (
   return newFeedData;
 };
 
-const gluedinAssetByIdTransformer = (voteData: any[], reactionData: any[]) => {
+const gluedinAssetByIdTransformer = (
+  voteData: string[],
+  reactionData: Record<string, string>[]
+) => {
   return {
     isLiked: voteData?.length > 0 ? true : false,
     reactionType: reactionData?.length > 0 ? reactionData?.[0]?.reaction : "",
   };
 };
 
-const gluedinViewTransformer = (data: any) => {
-  const newData = data?.map((item: any) => {
-    return item?.data;
+const gluedinViewTransformer = (data: IViewData[]) => {
+  const newData = data?.map((item: IViewData) => {
+    return item?.assetId;
   });
-  let success = false;
-  const modifiedViewData = newData
-    ?.filter((item: any) => {
-      if (item?.success) {
-        success = true;
-        return true;
-      }
-      return false;
-    })
-    ?.map((item: any) => {
-      return item?.result?.assetId;
-    });
-  if (success) {
-    return SuccessResponse(modifiedViewData);
-  }
-  return ErrorResponse("Failed to view Gluedin jokes");
+  return newData;
 };
 
 export {

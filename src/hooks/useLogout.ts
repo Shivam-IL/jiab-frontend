@@ -1,10 +1,4 @@
-import {
-  updateIsAuthenticated,
-  updateOtpStatus,
-  updateOtpFilled,
-  updateIsFirstLogin,
-  resetAuth,
-} from "@/store/auth/auth.slice";
+import {resetAuth} from "@/store/auth/auth.slice";
 import useAppDispatch from "./useDispatch";
 import { resetProfile } from "@/store/profile/profile.slice";
 import { clearAllModalSessions } from "./useSessionModal";
@@ -14,7 +8,7 @@ import { useState } from "react";
 const useLogout = () => {
   const dispatch = useAppDispatch();
   const [uniqueId, setUniqueId] = useState<string>('');
-  const { data: userGeolocationData } = useGetUserGeolocation({
+  useGetUserGeolocation({
     enabled: true,
     params: uniqueId,
   });

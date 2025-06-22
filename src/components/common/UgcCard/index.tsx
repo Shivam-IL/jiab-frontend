@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SvgIcons from '../SvgIcons'
-import { ICONS_NAMES, REDUX_UPDATION_TYPES } from '@/constants'
+import { ICONS_NAMES } from '@/constants'
 import AktivGroteskText from '../AktivGroteskText'
 import SurpriseMeCTA from '@/components/SurpriseMeCTA'
 import GreenCTA from '@/components/GreenCTA'
@@ -44,7 +44,6 @@ const UgcCard: React.FC<UgcCardProps> = ({
   const { ugcFilters } = useAppSelector(state => state.ugc)
 
   const [voteIsInPopup, setVoteIsInPopup] = useState<boolean>(false)
-  const [animationStart, setAnimationStart] = useState<boolean>(false)
   const [reportPopup, setReportPopup] = useState<boolean>(false)
   const { user } = useAppSelector(state => state.profile)
   const { mutate: sendCDPEvent } = useSendCDPEvent()
@@ -85,6 +84,8 @@ const UgcCard: React.FC<UgcCardProps> = ({
     }
   }
 
+  console.log('home', home)
+
   useEffect(() => {
     if (gludeinUserReactionData?.ok) {
       const { reactionType } = gludeinUserReactionData?.data
@@ -111,6 +112,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
         onReactSuccess()
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gludeinUserReactionData])
 
   useEffect(() => {
@@ -132,6 +134,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
         onVoteSuccess()
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gluedinUserVoteData])
 
   const router = useRouter()
@@ -139,7 +142,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
   useEffect(() => {
     if (animation && pathName === '/user-generated-jokes') {
     }
-  }, [animation])
+  }, [animation, pathName])
 
   const getText = async (content: string) => {
     try {

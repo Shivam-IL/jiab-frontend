@@ -84,7 +84,7 @@ export class LoginService extends MainService {
 
   public async SignUp(data: TSignUp) {
     try {
-      const formData:any = {} 
+      const formData: Record<string, string | number | boolean> = {} 
      if(data?.avatar){
       formData['avatar_id'] = data.avatar;
       formData['is_avatar'] = "true";

@@ -12,11 +12,17 @@ import {
   TGludeinJokes,
   TGludeinReport,
   TModifiedUGCContent,
+  TUGCContent,
 } from "../types/GluedinTypes";
 import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
 import { MainService } from "./MainService";
 import gluedin from "gluedin";
 import { messaging, getToken } from "@/lib/firebase";
+
+export interface IViewData {
+  userId: string;
+  assetId: string;
+}
 
 export class GluedinService extends MainService {
   private static instance: GluedinService;
@@ -101,8 +107,10 @@ export class GluedinService extends MainService {
           response?.statusMessage || "Failed to login with GluedIn"
         );
       }
-    } catch (error: any) {
-      throw new Error(error?.message || "Failed to login with Gluedin");
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to login with Gluedin";
+      throw new Error(errorMessage);
     }
   }
 
@@ -123,7 +131,7 @@ export class GluedinService extends MainService {
       labels.push(category);
     }
     try {
-      let payload = {
+      const payload = {
         c_type: "UGC",
         offset: offset,
         limit: limit,
@@ -140,7 +148,9 @@ export class GluedinService extends MainService {
       }
       const response = gluedinFeedList?.data ?? {};
 
-      const videoIds = response?.result?.map((item: any) => item?.videoId);
+      const videoIds = response?.result?.map(
+        (item: TUGCContent) => item?.videoId
+      );
       const gluedinUserVoteList = await feedModule.Like(videoIds);
       const gluedinUserVoteListResponse = gluedinUserVoteList?.data ?? {};
 
@@ -173,8 +183,12 @@ export class GluedinService extends MainService {
       return ErrorResponse(
         response?.statusMessage || "Failed to get Gluedin feed list"
       );
-    } catch (error: any) {
-      throw new Error(error?.message || "Failed to get Gluedin feed list");
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to get Gluedin feed list";
+      throw new Error(errorMessage);
     }
   }
 
@@ -204,8 +218,12 @@ export class GluedinService extends MainService {
           gluedinUserReactionList?.statusMessage ||
           "Failed to get Gluedin asset by id"
       );
-    } catch (error: any) {
-      throw new Error(error?.message || "Failed to get Gluedin asset by id");
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to get Gluedin asset by id";
+      throw new Error(errorMessage);
     }
   }
 
@@ -225,8 +243,12 @@ export class GluedinService extends MainService {
       return ErrorResponse(
         response?.statusMessage || "Failed to get Gluedin user vote list"
       );
-    } catch (error: any) {
-      throw new Error(error?.message || "Failed to get Gluedin user vote list");
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to get Gluedin user vote list";
+      throw new Error(errorMessage);
     }
   }
 
@@ -240,8 +262,8 @@ export class GluedinService extends MainService {
     increaseComicCoin?: boolean;
   }) {
     try {
-      let authModuleObj = new gluedin.GluedInAuthModule();
-      let accessToken = await authModuleObj.getAccessToken();
+      const authModuleObj = new gluedin.GluedInAuthModule();
+      const accessToken = await authModuleObj.getAccessToken();
       if (!accessToken) {
         return ErrorResponse("Please login to react");
       }
@@ -273,10 +295,12 @@ export class GluedinService extends MainService {
       return ErrorResponse(
         response?.statusMessage || "Failed to get Gluedin user reaction list"
       );
-    } catch (error: any) {
-      throw new Error(
-        error?.message || "Failed to get Gluedin user reaction list"
-      );
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to get Gluedin user reaction list";
+      throw new Error(errorMessage);
     }
   }
 
@@ -292,8 +316,8 @@ export class GluedinService extends MainService {
     type?: string;
   }) {
     try {
-      let authModuleObj = new gluedin.GluedInAuthModule();
-      let accessToken = await authModuleObj.getAccessToken();
+      const authModuleObj = new gluedin.GluedInAuthModule();
+      const accessToken = await authModuleObj.getAccessToken();
       const token = await this.generateFCMToken();
       if (!accessToken) {
         return ErrorResponse("Please login to react");
@@ -332,10 +356,12 @@ export class GluedinService extends MainService {
       return ErrorResponse(
         response?.statusMessage || "Failed to send vote to Gluedin assets"
       );
-    } catch (error: any) {
-      throw new Error(
-        error?.message || "Failed to send vote to Gluedin assets"
-      );
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to send vote to Gluedin assets";
+      throw new Error(errorMessage);
     }
   }
 
@@ -350,25 +376,36 @@ export class GluedinService extends MainService {
       return ErrorResponse(
         response?.statusMessage || "Failed to get Gluedin category list"
       );
-    } catch (error: any) {
-      throw new Error(error?.message || "Failed to get Gluedin category list");
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to get Gluedin category list";
+      throw new Error(errorMessage);
     }
   }
 
   public async viewGludeinJokes(data: TGludeinJokes) {
     try {
       const gluedinActivityTimeline = new gluedin.GluedInActivityTimeline();
-      const promiseArr = [];
-      for (const assetId of data.assetIds) {
-        promiseArr.push(
-          gluedinActivityTimeline.activityTimelineView({ assetId })
-        );
+      const promiseArr: IViewData[] = [];
+      for await (const assetId of data.assetIds) {
+        const gluedinViewResponse =
+          await gluedinActivityTimeline.activityTimelineView({ assetId });
+        const obj = {
+          userId: gluedinViewResponse?.data?.result?.userId,
+          assetId: gluedinViewResponse?.data?.result?.assetId,
+        };
+        console.log("obj", obj);
+        promiseArr.push(obj);
       }
-      const gluedinViewResponse = await Promise.all(promiseArr);
-      const response = gluedinViewTransformer(gluedinViewResponse);
-      return response;
-    } catch (error: any) {
-      throw new Error(error?.message || "Failed to view Gluedin jokes");
+      console.log("promiseArr", promiseArr);
+      const response = gluedinViewTransformer(promiseArr);
+      return SuccessResponse(response);
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to view Gluedin jokes";
+      throw new Error(errorMessage);
     }
   }
 
@@ -397,8 +434,10 @@ export class GluedinService extends MainService {
       return ErrorResponse(
         response?.statusMessage || "Failed to get Hall of Lame"
       );
-    } catch (error: any) {
-      throw new Error(error?.message || "Failed to get Hall of Lame");
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to get Hall of Lame";
+      throw new Error(errorMessage);
     }
   }
 
@@ -425,8 +464,12 @@ export class GluedinService extends MainService {
       return ErrorResponse(
         responseData?.statusMessage || "Failed to send report to Gluedin"
       );
-    } catch (error: any) {
-      throw new Error(error?.message || "Failed to send report to Gluedin");
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to send report to Gluedin";
+      throw new Error(errorMessage);
     }
   }
 }

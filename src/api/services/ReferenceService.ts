@@ -23,8 +23,9 @@ export class ReferenceService extends MainService {
       return ErrorResponse(
         responseData?.statusMessage || "Failed to get genres"
       );
-    } catch (error: any) {
-      throw new Error(error?.message || "Failed to get genres");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to get genres";
+      throw new Error(errorMessage);
     }
   }
 
@@ -38,8 +39,9 @@ export class ReferenceService extends MainService {
       return ErrorResponse(
         responseData?.statusMessage || "Failed to get Jokes formats"
       );
-    } catch (error: any) {
-      throw new Error(error?.message || "Failed to get Jokes formats");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to get Jokes formats";
+      throw new Error(errorMessage);
     }
   }
 
@@ -53,8 +55,9 @@ export class ReferenceService extends MainService {
       return ErrorResponse(
         responseData?.statusMessage || "Failed to get Languages"
       );
-    } catch (error: any) {
-      throw new Error(error?.message || "Failed to get Languages");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to get Languages";
+      throw new Error(errorMessage);
     }
   }
 }

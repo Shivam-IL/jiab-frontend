@@ -10,6 +10,7 @@ const LoadGAScript = () => {
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
       />
       <Script
+        id='ga-script'
         strategy='afterInteractive'
         dangerouslySetInnerHTML={{
           __html: `
