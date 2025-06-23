@@ -118,6 +118,7 @@ export default function GlobalLoader() {
           alt="loader"
           width={200}
           height={200}
+          unoptimized
         />
       </div>
     </div>
