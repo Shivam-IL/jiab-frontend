@@ -63,6 +63,7 @@ export const API_ROUTES = {
       POST: "/profile/questions",
       GET: "/profile/questions",
     },
+    CHANGE_CHAT_LANG: "/profile/change-chat-language",
   },
   REFERRAL: {
     SEND_REFERRAL: "/referral/",
