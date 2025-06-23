@@ -86,6 +86,8 @@ if (typeof window !== "undefined") {
   CLIENT_URL = process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000";
 }
 
+export const LIMIT_EXCEED = 'Limit Exceed'
+
 export const LANGUAGE_IDS = {
   1: "en",
   2: "hi",

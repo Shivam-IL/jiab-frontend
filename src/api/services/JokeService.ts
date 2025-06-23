@@ -6,6 +6,7 @@ import { getLocalStorageItem } from "@/utils";
 import { AUTHORIZATION_TYPES } from "../client/constant";
 import { TSubmitJokeParams } from "../types/JokeTypes";
 import gluedin from "gluedin";
+import { LIMIT_EXCEED } from "@/constants";
 
 export class JokeService extends MainService {
   private static instance: JokeService;
@@ -142,6 +143,15 @@ export class JokeService extends MainService {
           ok: true,
         };
         return data;
+      } else if (!responseData?.success && responseData?.code === 1002) {
+        const data = {
+          message: responseData?.message,
+          type: LIMIT_EXCEED,
+        };
+        return {
+          ok: false,
+          data: data,
+        };
       }
       const keysArr: string[] = [];
       Object.entries(responseData?.details?.validation_errors ?? {}).map(

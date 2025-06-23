@@ -165,9 +165,6 @@ const Signup = () => {
     if (userData?.name === '') {
       setNameError('Please enter a valid name.')
     }
-    if (userData?.email === '') {
-      setEmailError('Please enter a valid Email ID.')
-    }
     if (!userData?.agree) {
       setAcceptTermsError('Please accept the terms and conditions')
       return false
@@ -175,9 +172,7 @@ const Signup = () => {
 
     return (
       userData.name.length > 0 &&
-      userData.email.length > 0 &&
-      !nameError &&
-      !emailError
+      !nameError
     )
   }
 
@@ -222,7 +217,7 @@ const Signup = () => {
     const payload: RegistrationCDPEventPayload =
       CDPEventPayloadBuilder.buildRegistrationPayload({
         phone_e164: `+91${phoneNumber}`,
-        email: userData.email,
+        email: userData.email ?? '',
         first_name: userData.name,
         ...geoLocationData,
         user_identifier: userId
@@ -283,7 +278,7 @@ const Signup = () => {
     if (isFormValid()) {
       const formData = {
         avatar: userData.avatar,
-        email: userData.email,
+        email: userData.email ?? '',
         full_name: userData.name,
         mobile_number: phoneNumber,
         referral_code: userData.invite_code ?? '',
