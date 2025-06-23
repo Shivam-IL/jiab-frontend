@@ -4,13 +4,18 @@ import { keys } from "../utils";
 import useAppSelector from "@/hooks/useSelector";
 import { TGetJokesParams, TSubmitJokeParams } from "../types/JokeTypes";
 import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
+import { MNEMONICS_TO_ID } from "@/constants";
 
 const jokeInstance = JokeService.getInstance();
 const useGetSurpriseMeJoke = (genreId?: number, languageId?: number) => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
+  const { selectedLanguage } = useAppSelector((state) => state.language);
+  const languageNewId =
+    MNEMONICS_TO_ID[selectedLanguage as keyof typeof MNEMONICS_TO_ID] ?? 1;
+  console.log("languageNewId", languageNewId, languageId);
   return useQuery({
-    queryKey: [...keys.joke.getSurpriseMeJoke(), genreId, languageId],
-    queryFn: () => jokeInstance.GetSurpriseMe(genreId, languageId),
+    queryKey: [...keys.joke.getSurpriseMeJoke(), genreId, languageNewId],
+    queryFn: () => jokeInstance.GetSurpriseMe(genreId, languageNewId),
     enabled: !!(isAuthenticated && token),
     staleTime: 0,
   });
@@ -18,7 +23,6 @@ const useGetSurpriseMeJoke = (genreId?: number, languageId?: number) => {
 
 // Hook to fetch list of jokes for Scroll & LOL screen
 const useGetJokes = (params: TGetJokesParams = {}) => {
-
   return useQuery({
     queryKey: [...keys.joke.getJokes(), params],
     queryFn: () => jokeInstance.GetJokes(params),
@@ -29,7 +33,7 @@ const useGetJokes = (params: TGetJokesParams = {}) => {
 const useSubmitJoke = () => {
   const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: (data: TSubmitJokeParams) => jokeInstance.SubmitJoke(data),
     onSuccess: () => {
@@ -67,8 +71,6 @@ const useGetComicCoins = () => {
     refetchOnReconnect: true, // Refetch when reconnecting to internet
   });
 };
-
-
 
 export {
   useGetSurpriseMeJoke,
