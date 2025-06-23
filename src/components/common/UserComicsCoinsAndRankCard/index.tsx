@@ -23,15 +23,27 @@ const UserComicsCoinsAndRankCard = ({
   const { current_balance, rank } = useAppSelector((state) => state.profile);
 
   // Fetch comic coins data
-  const { data: comicCoinsData, isLoading: isComicCoinsLoading } =
-    useGetComicCoins();
+  const {
+    data: comicCoinsData,
+    isLoading: isComicCoinsLoading,
+    error,
+  } = useGetComicCoins();
 
   // Get comic coin revalidation methods
-  const { revalidateComicCoins } = useComicCoinRevalidation();
+  const { revalidateComicCoins, revalidateWithSync } =
+    useComicCoinRevalidation();
 
-  // Get comic coins value with fallback
-  const comicCoinsValue =
-    comicCoinsData?.data?.comic_coin ?? current_balance ?? 0;
+  // Get comic coins value with improved fallback logic
+  const getComicCoinsValue = () => {
+    // If API data is available and recent, use it
+    if (comicCoinsData?.data?.comic_coin !== undefined && !error) {
+      return comicCoinsData.data.comic_coin;
+    }
+    // Otherwise fall back to Redux state
+    return current_balance ?? 0;
+  };
+
+  const comicCoinsValue = getComicCoinsValue();
 
   // Check if rank should have reduced opacity
   const shouldReduceRankOpacity =
@@ -45,6 +57,19 @@ const UserComicsCoinsAndRankCard = ({
       ).refreshComicCoins = revalidateComicCoins;
     }
   }, [revalidateComicCoins]);
+
+  // Auto-revalidate comic coins when current_balance changes in Redux
+  // This ensures API data stays in sync with local increments
+  useEffect(() => {
+    if (current_balance > 0 && !isComicCoinsLoading) {
+      // Add a small delay to avoid too frequent API calls
+      const timeoutId = setTimeout(() => {
+        revalidateWithSync(100); // Use sync version to keep Redux and API in sync
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [current_balance, revalidateWithSync, isComicCoinsLoading]);
 
   return (
     <div className="flex gap-2 md:justify-between py-3 md:pt-[24px]">

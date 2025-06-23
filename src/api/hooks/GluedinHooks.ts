@@ -70,7 +70,7 @@ const useGetGluedinFeedList = (params: TGludeinFeedList) => {
 // };
 
 const useSendGluedinUserReaction = () => {
-  const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
+  const { revalidateWithSync } = useComicCoinRevalidation();
 
   return useMutation({
     mutationFn: (data: TGludeinUserReaction) =>
@@ -78,13 +78,13 @@ const useSendGluedinUserReaction = () => {
     onSuccess: () => {
       // Revalidate comic coins when reaction is successful (reactions give coins)
       // Add delay to allow backend to process the coin increment
-      revalidateComicCoinsAfterDelay(500);
+      revalidateWithSync(500);
     },
   });
 };
 
 const useSendVoteToGluedinAssets = () => {
-  const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
+  const { revalidateWithSync } = useComicCoinRevalidation();
 
   return useMutation({
     mutationFn: (data: TGludeinUserVote) =>
@@ -92,7 +92,7 @@ const useSendVoteToGluedinAssets = () => {
     onSuccess: () => {
       // Revalidate comic coins when vote is successful (votes give coins)
       // Add delay to allow backend to process the coin increment
-      revalidateComicCoinsAfterDelay(500);
+      revalidateWithSync(500);
     },
   });
 };

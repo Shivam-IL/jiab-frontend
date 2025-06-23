@@ -31,7 +31,7 @@ const useGetJokes = (params: TGetJokesParams = {}) => {
 };
 
 const useSubmitJoke = () => {
-  const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
+  const { revalidateWithSync } = useComicCoinRevalidation();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -39,7 +39,7 @@ const useSubmitJoke = () => {
     onSuccess: () => {
       // Revalidate comic coins when joke submission is successful
       // Add delay to allow backend to process any potential coin rewards
-      revalidateComicCoinsAfterDelay(500);
+      revalidateWithSync(500);
       // Also invalidate user submitted jokes list
       queryClient.invalidateQueries({
         queryKey: [...keys.joke.getUserSubmittedJokes()],
