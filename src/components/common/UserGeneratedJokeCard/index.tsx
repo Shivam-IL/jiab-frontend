@@ -1,9 +1,7 @@
 import React from "react";
 import { IUserGeneratedJokeCard } from "@/interfaces";
-import Image from "next/image";
 import AktivGroteskText from "../AktivGroteskText";
-import { LOCAL_IMAGES, PENDING } from "@/constants";
-import { generateImageurl } from "@/utils";
+import {  PENDING } from "@/constants";
 
 const UserGeneratedJokeCard: React.FC<IUserGeneratedJokeCard> = ({
   image,
@@ -14,15 +12,14 @@ const UserGeneratedJokeCard: React.FC<IUserGeneratedJokeCard> = ({
   return (
     <div className="w-full md:w-[49%] bg-white rounded-[5px] px-[8px] py-[12px] md:p-[12px] flex items-center  gap-[16px] md:gap-[40px]">
       <div
-        className={`min-w-[57px] max-w-[57px] w-full h-full md:min-w-[108px] md:max-w-[108px] md:min-h-[108px] md:max-h-[108px] rounded-[3px] md:rounded-[8px] relative bg-[#11A64B]`}
+        className={`min-w-[57px] max-w-[57px] min-h-[57px] max-h-[57px] md:min-w-[108px] md:max-w-[108px] md:min-h-[108px] md:max-h-[108px] rounded-[3px] md:rounded-[8px] relative bg-[#11A64B]`}
       >
         {image && (
-          <Image
-            className="rounded-[3px] md:rounded-[5px] object-cover w-full h-full relative"
-            src={generateImageurl(LOCAL_IMAGES.USER_JOKE_IMAGE)}
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className="rounded-[3px] md:rounded-[5px] object-fit min-w-[57px] max-w-[57px] min-h-[57px] max-h-[57px] md:min-w-[108px] md:max-w-[108px] md:min-h-[108px] md:max-h-[108px]  relative"
+            src={image}
             alt="joke"
-            width={108}
-            height={108}
           />
         )}
       </div>
