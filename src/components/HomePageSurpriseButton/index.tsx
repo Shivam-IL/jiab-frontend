@@ -14,6 +14,7 @@ import {
   BaseCDPEventPayload,
   CDPEventPayloadBuilder
 } from '@/api/utils/cdpEvents'
+import { usePathname } from 'next/navigation'
 
 const HomePageSurpriseButton = () => {
   const { isAuthenticated, token, enableCoachMarks } = useAppSelector(
@@ -21,6 +22,7 @@ const HomePageSurpriseButton = () => {
   )
   const [mounted, setMounted] = useState(false)
   const cmsData = useCMSData(mounted)
+  const pathname = usePathname()
   const { forceHideLoader } = useGlobalLoader()
 
   useEffect(() => {
@@ -54,12 +56,20 @@ const HomePageSurpriseButton = () => {
     trigerCDPSurpriseMeClick()
   }
 
-  console.log(surpriseMeModal, 'surpriseMeModal')
+  if (pathname === '/refresh-rings') {
+    return null
+  }
+
+
+
   return (
     <>
       <button
+        style={{
+          filter: 'drop-shadow(0 4px 4px rgba(0, 0, 0, .25))'
+        }}
         onClick={openSurpriseMe}
-        className='fixed shadow-xl cursor-pointer md:top-[50%] top-[68%] right-[10px] border-[1px] border-[#11A64B] rounded-[100px] max-w-[98px] md:max-w-[180px] py-[8px] pl-[5px] pr-[8px] md:pl-[4px] md:pr-[18px] md:py-[4px] flex items-center gap-[5px] bg-yellow'
+        className='fixed  cursor-pointer md:top-[50%] top-[68%] right-[10px] border-[1px] border-[#11A64B] rounded-[100px] max-w-[98px] md:max-w-[180px] py-[8px] pl-[5px] pr-[8px] md:pl-[4px] md:pr-[18px] md:py-[4px] flex items-center gap-[5px] bg-yellow'
       >
         <div className='relative  min-w-[25px] min-h-[25px] md:min-w-[42px]  md:min-h-[42px]  rounded-full bg-white flex items-center justify-center'>
           <Image
