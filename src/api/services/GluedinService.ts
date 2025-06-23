@@ -327,7 +327,7 @@ export class GluedinService extends MainService {
         endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?genre=${genreId}&language=${languageId}&type=vote`;
       }
       if (type === "vote" && assetId) {
-        endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?assetId=${assetId}&type=vote`;
+        endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?asset_id=${assetId}&type=vote`;
       }
       const coinResponse = await apiClient.post(
         endpoint,
