@@ -327,6 +327,17 @@ export type TCMSResponse = {
       publishedAt: string;
       locale: string;
     };
+    login: {
+      id: number;
+      documentId: string;
+      login_heading: string;
+      login_otp_button: string;
+      mobile_number_placeholder: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
     ahem_ahem_pop_up: {
       id: number;
       documentId: string;
