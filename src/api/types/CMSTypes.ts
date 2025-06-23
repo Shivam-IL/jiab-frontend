@@ -425,6 +425,34 @@ export type TCMSResponse = {
       locale: string;
       privacy_policy: string;
       privacy_policy_heading: string;
+    };
+    otp: {
+      id: number;
+      documentId: string;
+      otp_verification: string;
+      please_otp_enter: string;
+      resend: string;
+      sumbit: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+      try_again_in: string;
+    };
+    signup: {
+      id: number;
+      documentId: string;
+      full_name: string;
+      email_id: string;
+      referral_invite_code: string;
+      term_condition_privacy_policy: string;
+      submit: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+      sign_up: string;
+      let_break_the_ice: string;
     },
     localizations: Array<{
       id: number;

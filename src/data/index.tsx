@@ -146,6 +146,8 @@ import {
   mapEasyPeasyPopupData,
 } from "./easy_peasy";
 import { defaultLoginData, mapLoginData, type LoginData } from "./login";
+import { defaultOtpData, mapOtpData, type OtpData } from "./otp";
+import { defaultSignupData, mapSignupData, type SignupData } from "./signup";
 
 // Combined interface for all CMS data
 export interface AllCMSData {
@@ -176,6 +178,8 @@ export interface AllCMSData {
   easyPeasy: EasyPeasyPopupData;
   privacyPolicy: PrivacyPolicyData;
   login: LoginData;
+  otp: OtpData;
+  signup: SignupData;
 }
 
 // Hook to get all mapped CMS data
@@ -213,6 +217,8 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
         easyPeasy: defaultEasyPeasyPopupData,
         privacyPolicy: defaultPrivacyPolicyData,
         login: defaultLoginData,
+        otp: defaultOtpData,
+        signup: defaultSignupData,
       };
     }
 
@@ -245,6 +251,8 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
       easyPeasy: mapEasyPeasyPopupData(homePageContent),
       privacyPolicy: mapPrivacyPolicyData(homePageContent),
       login: mapLoginData(homePageContent),
+      otp: mapOtpData(homePageContent),
+      signup: mapSignupData(homePageContent),
     };
   }, [homePageContent, mounted]);
 };
@@ -281,5 +289,7 @@ export const mapAllCMSData = (
     easyPeasy: mapEasyPeasyPopupData(cmsData),
     privacyPolicy: mapPrivacyPolicyData(cmsData),
     login: mapLoginData(cmsData),
+    otp: mapOtpData(cmsData),
+    signup: mapSignupData(cmsData),
   };
 };

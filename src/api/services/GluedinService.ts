@@ -326,6 +326,9 @@ export class GluedinService extends MainService {
       if (type === "vote" && genreId && languageId) {
         endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?genre=${genreId}&language=${languageId}&type=vote`;
       }
+      if (type === "vote" && assetId) {
+        endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?assetId=${assetId}&type=vote`;
+      }
       const coinResponse = await apiClient.post(
         endpoint,
         {
@@ -338,11 +341,29 @@ export class GluedinService extends MainService {
         }
       );
       const coinResponseData = coinResponse?.data ?? {};
-      if (!coinResponseData?.success && type === "vote") {
-        return ErrorResponse(
-          coinResponseData?.statusMessage || "Failed to increase comic coins"
-        );
+      
+      // For voting, we need to check coin increment success
+      let coinIncrementSuccess = false;
+      if (type === "vote") {
+        // If response status is 400, don't proceed with voting
+        if (coinResponse?.status === 400) {
+          return ErrorResponse(
+            coinResponseData?.statusMessage || "Bad request - voting not allowed"
+          );
+        }
+        
+        if (!coinResponseData?.success) {
+          return ErrorResponse(
+            coinResponseData?.statusMessage || "Failed to increase comic coins"
+          );
+        }
+        
+        // Trigger coin animation only when response status is exactly 200
+        if (coinResponse?.status === 200) {
+          coinIncrementSuccess = true;
+        }
       }
+      
       const actityvityTimelineModule = new gluedin.GluedInActivityTimeline();
       const gluedinUserVoteList =
         await actityvityTimelineModule.activityTimelineLike({
@@ -351,7 +372,11 @@ export class GluedinService extends MainService {
 
       const response = gluedinUserVoteList?.data ?? {};
       if (response?.success) {
-        return SuccessResponse(response?.result);
+        // Return success with coin increment status for proper coin animation triggering
+        return SuccessResponse({
+          ...response?.result,
+          coinIncrementSuccess,
+        });
       }
       return ErrorResponse(
         response?.statusMessage || "Failed to send vote to Gluedin assets"
