@@ -305,17 +305,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
     }
   }, [gluedinLoginData, dispatch]);
 
-  useEffect(() => {
-    if (leaderboardData?.ok) {
-      const { data } = leaderboardData ?? {};
-      dispatch(
-        updateLeaderboard({
-          my_rank: data?.my_rank,
-          leaderboard: data?.top_users ?? [],
-        })
-      );
-    }
-  }, [leaderboardData, dispatch]);
+
 
   useEffect(() => {
     if (genresData?.ok) {
