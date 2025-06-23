@@ -86,6 +86,19 @@ if (typeof window !== "undefined") {
   CLIENT_URL = process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000";
 }
 
+export const LANGUAGE_IDS = {
+  1: "en",
+  2: "hi",
+  3: "te",
+  4: "or",
+  5: "be",
+  6: "ma",
+  7: "ka",
+  8: "gu",
+  9: "bh",
+  10: "mai",
+};
+
 // Language mnemonics constant
 export const LANGUAGE_MNEMONICS = {
   ENGLISH: "en",
