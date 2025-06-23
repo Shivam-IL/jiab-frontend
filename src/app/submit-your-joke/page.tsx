@@ -441,6 +441,22 @@ const SubmitYourJoke = () => {
 
   const fileRef = useRef<HTMLInputElement>(null)
 
+  // Helper function to validate file format
+  const validateFileFormat = (file: File, acceptedFormats: string): boolean => {
+    if (!acceptedFormats) return true
+    
+    const fileName = file.name.toLowerCase()
+    const fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase()
+    
+    // Parse accepted formats (e.g., ".jpg,.jpeg,.png" or ".mp3,.wav")
+    const allowedExtensions = acceptedFormats
+      .split(',')
+      .map(format => format.trim().toLowerCase())
+      .filter(format => format.startsWith('.'))
+    
+    return allowedExtensions.some(ext => fileExtension === ext)
+  }
+
   const handleChange = (
     key: string,
     value: string | boolean | FileList | null | number
@@ -461,12 +477,29 @@ const SubmitYourJoke = () => {
     } else if (key === 'file') {
       const MAX_FILE_SIZE_MB = jokeData.size
       const file = value as FileList
-      const fileSizeMB = file?.[0]?.size / (1024 * 1024)
+      
+      if (!file || file.length === 0) {
+        setJokeData(prev => ({ ...prev, file: null }))
+        return
+      }
+      
+      const selectedFile = file[0]
+      const fileSizeMB = selectedFile.size / (1024 * 1024)
+      
+      // Check file size
       if (fileSizeMB > MAX_FILE_SIZE_MB) {
         alert(`File size should not exceed ${MAX_FILE_SIZE_MB} MB.`)
         setJokeData(prev => ({ ...prev, file: null }))
         return
       }
+      
+      // Check file format
+      if (!validateFileFormat(selectedFile, jokeData.acceptedFormats)) {
+        alert(`Please select a file with one of these formats: ${jokeData.acceptedFormats}`)
+        setJokeData(prev => ({ ...prev, file: null }))
+        return
+      }
+      
       setJokeData(prev => ({ ...prev, file: file }))
     } else {
       setJokeData(prev => ({ ...prev, [key]: value ?? '' }))
