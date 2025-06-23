@@ -7,7 +7,11 @@ import {
 } from '@/api/hooks/ProfileHooks'
 import gluedin from 'gluedin'
 import { MainService } from '@/api/services/MainService'
-import { REDUX_UPDATION_TYPES, SESSION_STORAGE_KEYS } from '@/constants'
+import {
+  LANGUAGE_IDS,
+  REDUX_UPDATION_TYPES,
+  SESSION_STORAGE_KEYS
+} from '@/constants'
 import useAppDispatch from '@/hooks/useDispatch'
 import {
   updateIsAuthenticated,
@@ -150,7 +154,9 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         dispatch(updateAddresses({ addresses: data?.addresses }))
       }
       if (langKey) {
-        dispatch(setLanguage(langKey))
+        const langCode =
+          LANGUAGE_IDS[langKey as unknown as keyof typeof LANGUAGE_IDS]
+        dispatch(setLanguage(langCode))
       }
     } else {
       if (
