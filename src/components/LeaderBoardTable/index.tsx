@@ -103,6 +103,8 @@ export const DisplayTable = ({
                           src={item.avatar}
                           alt="avatar"
                           className="w-[24px] h-[24px] md:w-[40px] md:h-[40px] rounded-full object-cover"
+                          width={40}
+                          height={40}
                         />
                       ) : (
                         <Image
