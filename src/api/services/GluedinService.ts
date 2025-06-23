@@ -352,15 +352,13 @@ export class GluedinService extends MainService {
           );
         }
         
-        if (!coinResponseData?.success) {
+        // Only trigger coin animation when response.status === 200
+        if (coinResponse?.status === 200) {
+          coinIncrementSuccess = true;
+        } else {
           return ErrorResponse(
             coinResponseData?.statusMessage || "Failed to increase comic coins"
           );
-        }
-        
-        // Trigger coin animation only when response status is exactly 200
-        if (coinResponse?.status === 200) {
-          coinIncrementSuccess = true;
         }
       }
       
