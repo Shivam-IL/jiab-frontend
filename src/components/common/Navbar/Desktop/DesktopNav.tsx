@@ -70,7 +70,6 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const notifications = notificationsResponse?.data?.notifications ?? [];
   const notificationCount = notificationCountResponse?.data?.count ?? 0;
 
-
   // Handle notification dropdown toggle and mark as read
   const handleNotificationDropdownToggle = async () => {
     const newState = !isNotificationDropdownOpen;

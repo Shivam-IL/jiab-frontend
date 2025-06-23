@@ -15,11 +15,15 @@ const withPWA = nextPwa({
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: [
-      "d35f5vastl4boc.cloudfront.net",
-      "localhost",
-      "jiab-staging.infinitelocus.com",
-      "il-stage-jiab.s3.ap-south-1.amazonaws.com",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "**",
+      },
     ],
   },
   typescript: {
