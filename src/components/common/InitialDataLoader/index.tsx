@@ -3,12 +3,14 @@ import { useMutateRefreshToken } from '@/api/hooks/LoginHooks'
 import {
   useGetUserAddresses,
   useGetAvatarsData,
-  useGetUserProfileDetails
+  useGetUserProfileDetails,
+  useChangeChatLanguage
 } from '@/api/hooks/ProfileHooks'
 import gluedin from 'gluedin'
 import { MainService } from '@/api/services/MainService'
 import {
   LANGUAGE_IDS,
+  MNEMONICS_TO_ID,
   REDUX_UPDATION_TYPES,
   SESSION_STORAGE_KEYS
 } from '@/constants'
@@ -96,6 +98,8 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
     enabled: true,
     params: 'userGeolocation'
   })
+  const { mutate: mutateChangeChatLanguage } = useChangeChatLanguage()
+  const { selectedLanguage } = useAppSelector(state => state.language)
 
   const {
     mutate: mutateRefreshToken,
@@ -328,6 +332,17 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       dispatch(updateJokesFormats({ jokesFormats: data?.formats ?? [] }))
     }
   }, [jokesFormatsData, dispatch])
+
+  useEffect(() => {
+    if (selectedLanguage && isAuthenticated) {
+      const languageId =
+        MNEMONICS_TO_ID[selectedLanguage as keyof typeof MNEMONICS_TO_ID]
+      if (languageId) {
+        mutateChangeChatLanguage(languageId.toString())
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLanguage, isAuthenticated])
 
   useEffect(() => {
     if (!isAuthenticated) {

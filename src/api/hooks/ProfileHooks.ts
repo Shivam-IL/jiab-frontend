@@ -13,9 +13,7 @@ import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
 
 const profileService = ProfileService.getInstance();
 
-const useGetUserProfileDetails = (
-  params?: Record<string, unknown>
-) => {
+const useGetUserProfileDetails = (params?: Record<string, unknown>) => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
 
   return useQuery({
@@ -160,6 +158,13 @@ const useGetPincodeData = () => {
   });
 };
 
+const useChangeChatLanguage = () => {
+  return useMutation({
+    mutationFn: (language_id: string) =>
+      profileService.changeChatLanguage(language_id),
+  });
+};
+
 export {
   useGetUserProfileDetails,
   useEditUserProfileDetails,
@@ -171,4 +176,5 @@ export {
   useSubmitUserQuestions,
   useGetAvatarsData,
   useGetPincodeData,
+  useChangeChatLanguage,
 };

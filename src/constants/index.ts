@@ -86,8 +86,7 @@ if (typeof window !== "undefined") {
   CLIENT_URL = process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000";
 }
 
-export const LIMIT_EXCEED = 'Limit Exceed'
-
+export const LIMIT_EXCEED = "Limit Exceed";
 
 export const LANGUAGE_IDS = {
   1: "en",
@@ -100,6 +99,19 @@ export const LANGUAGE_IDS = {
   8: "gu",
   9: "bho",
   10: "mai",
+};
+
+export const MNEMONICS_TO_ID = {
+  en: 1,
+  hi: 2,
+  te: 3,
+  or: 4,
+  bn: 5,
+  mr: 6,
+  kn: 7,
+  gu: 8,
+  bho: 9,
+  mai: 10,
 };
 
 // Language mnemonics constant
@@ -116,7 +128,7 @@ export const LANGUAGE_MNEMONICS = {
   GUJARATI: "gu",
   PUNJABI: "pa",
   BHOJPURI: "bho",
-  MAITHILI: "ma",
+  MAITHILI: "mai",
   TULU: "tu",
 } as const;
 

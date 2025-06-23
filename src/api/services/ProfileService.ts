@@ -234,4 +234,25 @@ export class ProfileService extends MainService {
       throw new Error(error as string);
     }
   }
+
+  public async changeChatLanguage(language_id: string) {
+    try {
+      const endpoint = `${API_ROUTES.USER.CHANGE_CHAT_LANG}?languageId=${language_id}`;
+      const response = await apiClient.post(
+        endpoint,
+        {},
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
+      const data = response.data;
+      if (data?.success) {
+        return SuccessResponse(data?.data);
+      } else {
+        throw new Error(data?.message || "Invalid Language Id");
+      }
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
 }
