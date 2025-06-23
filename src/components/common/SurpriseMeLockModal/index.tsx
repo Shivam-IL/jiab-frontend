@@ -57,7 +57,7 @@ const SurpriseMeLockModal = ({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="rounded-[5px] h-fit p-0 max-w-[301px]">
+      <DialogContent className="rounded-[5px] h-fit p-0 max-w-[301px] ">
         <div className="absolute top-[-105px] md:top-[-100px] left-0 flex justify-center items-center w-full">
           <SvgIcons
             name={ICONS_NAMES.SURPRISE_ME}

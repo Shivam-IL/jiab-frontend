@@ -122,6 +122,18 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#11A64B" />
+        <meta
+          name="description"
+          content="Listen to your favorite comedians as per your mood with Sprite's refreshing humor hub! Submit your own joke and stand a chance to win fabulous prizes. Enjoy a laughter bonanza."
+        />
+        <link
+          rel="apple-touch-icon"
+          href="./assets/img/favicons/apple-touch-icon.png"
+        />
+        <link
+          rel="canonical"
+          href="https://sprite-joke-in-a-bottle.coke2home.com/"
+        />
 
         {/* Font preload hints for better performance */}
         <link

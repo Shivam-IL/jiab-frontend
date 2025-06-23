@@ -327,7 +327,32 @@ export class GluedinService extends MainService {
         endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?genre=${genreId}&language=${languageId}&type=vote`;
       }
       if (type === "vote" && assetId) {
-        endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?asset_id=${assetId}&type=vote`;
+        // Fetch content data to get the correct asset_id
+        const getContentByIds = await apiClient.post(
+          API_ROUTES.JOKES.GET_CONTENT_BY_IDS,
+          {
+            ids: [assetId],
+          },
+          {
+            headers: {
+              ...this.getAuthHeaders(),
+            },
+          }
+        );
+        const contentResponse = getContentByIds?.data ?? {};
+        const contentData = contentResponse?.data ?? [];
+        
+        // Find the content with matching id (videoId) to get the asset_id
+        const matchingContent = contentData.find(
+          (content: { content: string; id: string }) => content.id === assetId
+        );
+        
+        if (matchingContent) {
+          endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?asset_id=${matchingContent.id}&type=vote`;
+        } else {
+          // Fallback to original logic if content not found
+          endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?asset_id=${assetId}&type=vote`;
+        }
       }
       const coinResponse = await apiClient.post(
         endpoint,
