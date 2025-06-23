@@ -37,7 +37,7 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
   setOpen,
   onDateSelect,
 }) => {
-  const [selectedDate, setSelectedDate] = React.useState<Date | undefined>();
+  const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(date);
   const [viewMode, setViewMode] = React.useState<"calendar" | "year" | "month">(
     "calendar"
   );
