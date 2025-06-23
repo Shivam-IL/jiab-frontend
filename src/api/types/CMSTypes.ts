@@ -453,7 +453,25 @@ export type TCMSResponse = {
       locale: string;
       sign_up: string;
       let_break_the_ice: string;
-    },
+    };
+    leaderboard: {
+      id: number;
+      documentId: string;
+      leaderboard_heading: string;
+      leaderboard_sub_heading: string;
+      leaderboard_daily_winner: string;
+      avatar: string;
+      comic_coin: string;
+      mobile_no: string;
+      prize: string;
+      rank: string;
+      your_rank: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+      no_data_found: string;
+    };
     localizations: Array<{
       id: number;
       documentId: string;

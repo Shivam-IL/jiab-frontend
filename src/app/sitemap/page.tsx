@@ -17,7 +17,7 @@ const homepageLinks = [
 
 // Footer links data
 const footerLinks = [
-  { href: "/faq", label: "FAQ's", id: 1 },
+  { href: "/faqs", label: "FAQs", id: 1 },
   { href: "/privacy-policy", label: "Privacy Policy", id: 2 },
   { href: "/terms-and-conditions", label: "Terms & Conditions", id: 3 },
   { href: "", label: "Contact Us", isContactUs: true, id: 4 },
@@ -50,10 +50,7 @@ const Sitemap = () => {
             {footerLinks.map((link) => (
               <li key={link.id}>
                 {link.isContactUs ? (
-                  <button
-                    onClick={handleContactUsClick}
-                    className="text-left"
-                  >
+                  <button onClick={handleContactUsClick} className="text-left">
                     {link.label}
                   </button>
                 ) : (

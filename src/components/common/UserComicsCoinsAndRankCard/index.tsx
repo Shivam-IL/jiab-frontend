@@ -33,6 +33,10 @@ const UserComicsCoinsAndRankCard = ({
   const comicCoinsValue =
     comicCoinsData?.data?.comic_coin ?? current_balance ?? 0;
 
+  // Check if rank should have reduced opacity
+  const shouldReduceRankOpacity =
+    !rank || rank === 0 || rank?.toString() === "--";
+
   // Expose revalidateComicCoins method globally for other components to use
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -67,7 +71,11 @@ const UserComicsCoinsAndRankCard = ({
           </div>
         </div>
         <Separator className="w-[1px] md:w-[2px] bg-[#EBEBEB] h-full mx-0 px-0" />
-        <div className="relative w-[48%] md:w-[35%]  flex flex-col items-center justify-between gap-[6px] md:gap-[8px]">
+        <div
+          className={`relative w-[48%] md:w-[35%]  flex flex-col items-center justify-between gap-[6px] md:gap-[8px] ${
+            shouldReduceRankOpacity ? "opacity-40" : ""
+          }`}
+        >
           <AktivGroteskText
             text={rank?.toString() || "--"}
             className="text-black"

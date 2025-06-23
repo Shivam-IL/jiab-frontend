@@ -21,6 +21,7 @@ export * from "./vote_is_in";
 export * from "./serial_chiller";
 export * from "./privacy";
 export * from "./login";
+export * from "./leaderboard";
 
 // Import all the mapping functions
 import {
@@ -148,6 +149,11 @@ import {
 import { defaultLoginData, mapLoginData, type LoginData } from "./login";
 import { defaultOtpData, mapOtpData, type OtpData } from "./otp";
 import { defaultSignupData, mapSignupData, type SignupData } from "./signup";
+import {
+  defaultLeaderboardData,
+  LeaderboardData,
+  mapLeaderboardData,
+} from "./leaderboard";
 
 // Combined interface for all CMS data
 export interface AllCMSData {
@@ -180,6 +186,7 @@ export interface AllCMSData {
   login: LoginData;
   otp: OtpData;
   signup: SignupData;
+  leaderboard: LeaderboardData;
 }
 
 // Hook to get all mapped CMS data
@@ -219,6 +226,7 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
         login: defaultLoginData,
         otp: defaultOtpData,
         signup: defaultSignupData,
+        leaderboard: defaultLeaderboardData,
       };
     }
 
@@ -253,6 +261,7 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
       login: mapLoginData(homePageContent),
       otp: mapOtpData(homePageContent),
       signup: mapSignupData(homePageContent),
+      leaderboard: mapLeaderboardData(homePageContent),
     };
   }, [homePageContent, mounted]);
 };
@@ -291,5 +300,6 @@ export const mapAllCMSData = (
     login: mapLoginData(cmsData),
     otp: mapOtpData(cmsData),
     signup: mapSignupData(cmsData),
+    leaderboard: mapLeaderboardData(cmsData),
   };
 };
