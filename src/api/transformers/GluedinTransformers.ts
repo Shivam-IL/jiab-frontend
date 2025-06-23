@@ -53,6 +53,7 @@ const gluedinFeedListTransformer = (
         content:
           getContent?.content ??
           JOKES[Math.floor(Math.random() * JOKES.length)],
+        contentDataId: getContent?.id,
       };
       newFeedData.push(modifiedItem);
     });

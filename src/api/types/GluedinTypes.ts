@@ -68,6 +68,7 @@ export interface TModifiedUGCContent extends TUGCContent {
   isReacted?: boolean;
   reactionType?: string;
   content?: string;
+  contentDataId?: string;
 }
 
 export interface TGludeinUserVote {

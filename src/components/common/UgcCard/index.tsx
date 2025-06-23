@@ -343,14 +343,14 @@ const UgcCard: React.FC<UgcCardProps> = ({
 
                   if (ugcFilters?.language && ugcFilters?.category) {
                     sendVoteToGluedinAssets({
-                      assetId: item.videoId ?? "",
+                      assetId: item.contentDataId ?? item.videoId ?? "",
                       languageId: ugcFilters?.language ?? "",
                       genreId: ugcFilters?.category ?? "",
                       type: "vote",
                     });
                   } else {
                     sendVoteToGluedinAssets({
-                      assetId: item.videoId ?? "",
+                      assetId: item.contentDataId ?? item.videoId ?? "",
                       type: "vote",
                     });
                   }
