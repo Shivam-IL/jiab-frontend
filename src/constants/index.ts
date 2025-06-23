@@ -88,16 +88,17 @@ if (typeof window !== "undefined") {
 
 export const LIMIT_EXCEED = 'Limit Exceed'
 
+
 export const LANGUAGE_IDS = {
   1: "en",
   2: "hi",
   3: "te",
   4: "or",
-  5: "be",
-  6: "ma",
+  5: "bn",
+  6: "mr",
   7: "kn",
   8: "gu",
-  9: "bh",
+  9: "bho",
   10: "mai",
 };
 
