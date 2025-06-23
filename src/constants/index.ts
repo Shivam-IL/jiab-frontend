@@ -95,7 +95,7 @@ export const LANGUAGE_IDS = {
   4: "or",
   5: "be",
   6: "ma",
-  7: "ka",
+  7: "kn",
   8: "gu",
   9: "bh",
   10: "mai",

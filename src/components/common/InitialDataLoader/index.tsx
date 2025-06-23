@@ -40,8 +40,6 @@ import {
 } from '@/utils'
 import { ReactNode, useEffect, useState } from 'react'
 import { useGetAllReferrals } from '@/api/hooks/ReferralHooks'
-import { useGetLeaderBoard } from '@/api/hooks/LeaderBoardHooks'
-import { updateLeaderboard } from '@/store/leaderboard'
 import { useMutateGludeinLogin } from '@/api/hooks/GluedinHooks'
 import {
   useGetGenres,
@@ -90,7 +88,6 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   })
   const { data: referralData } = useGetAllReferrals({ page: 1 })
   const { data: avatarsData } = useGetAvatarsData()
-  const { data: leaderboardData } = useGetLeaderBoard({})
   const { data: genresData } = useGetGenres()
   const { data: languagesData } = useGetLanguages()
   const { data: jokesFormatsData } = useGetJokesFormats()

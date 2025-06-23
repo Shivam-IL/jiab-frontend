@@ -205,7 +205,7 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
               onSelect={handleDateSelect}
               numberOfMonths={1}
               className="w-full space-y-[7px]"
-              defaultMonth={currentDate}
+              defaultMonth={selectedDate || currentDate}
               captionLayout="buttons"
               components={{
                 IconLeft: () => <ChevronLeft className="h-4 w-4" />,
@@ -216,13 +216,13 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
                       onClick={() => setViewMode("month")}
                       className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
                     >
-                      {format(displayMonth, "MMM")}
+                      {selectedDate ? format(selectedDate, "MMM") : format(displayMonth, "MMM")}
                     </span>
                     <span
                       onClick={() => setViewMode("year")}
                       className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
                     >
-                      {format(displayMonth, "yyyy")}
+                      {selectedDate ? format(selectedDate, "yyyy") : format(displayMonth, "yyyy")}
                     </span>
                   </div>
                 ),
