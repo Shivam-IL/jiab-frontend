@@ -423,7 +423,8 @@ const ScrollAndLol: React.FC = () => {
         return newArr
       })
     }
-  }, [sendGluedinUserReactionData, triggerCDPEvent, activeVideoIndex, videos])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sendGluedinUserReactionData])
 
   const togglePlay = (index: number) => {
     if (index === activeVideoIndex) {
@@ -498,7 +499,7 @@ const ScrollAndLol: React.FC = () => {
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeVideoIndex, videos])
+  }, [activeVideoIndex])
 
   useEffect(() => {
     if (viewGludeinJokesData?.ok) {
@@ -532,6 +533,7 @@ const ScrollAndLol: React.FC = () => {
         setCurrentVideoData(currentVideoData)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeVideoIndex, videos])
 
   return (

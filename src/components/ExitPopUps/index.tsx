@@ -27,7 +27,7 @@ const MakeLaughExitPopup = ({
   open,
   onClose,
   setOpen,
-  yesButtonClick  ,
+  yesButtonClick,
   noButtonClick
 }: {
   open: boolean
@@ -49,8 +49,8 @@ const MakeLaughExitPopup = ({
       noButtonText={didThatMakeYouLaugh?.didThatMakeYouLaughNoButton}
       doubleButton={true}
       setOpen={setOpen}
-      yesButtonClick={yesButtonClick}
-      noButtonClick={noButtonClick}
+      yesButtonClick={()=>yesButtonClick()}
+      noButtonClick={()=>noButtonClick()}
     />
   )
 }

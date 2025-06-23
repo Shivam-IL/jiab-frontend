@@ -236,9 +236,21 @@ const SurpriseMeModal = ({
     }
   }
 
+  console.log(joke, 'joke', open)
+
   if (joke) {
     return (
-      <Dialog open={open} onOpenChange={handleClose}>
+      <Dialog
+        open={open}
+        onOpenChange={() => {
+          if (joke?.reactionType) {
+            //modal is clicking 2
+            handleClose()
+          } else {
+            setMakeLaughExitPopup(true)
+          }
+        }}
+      >
         <style jsx>{`
           video:fullscreen {
             object-fit: contain !important;
@@ -368,6 +380,7 @@ const SurpriseMeModal = ({
               className='flex justify-center items-center cursor-pointer border-none outline-none'
               onClick={() => {
                 if (joke?.reactionType) {
+                  //modal is clicking 2
                   handleClose()
                 } else {
                   setMakeLaughExitPopup(true)
@@ -458,10 +471,13 @@ const SurpriseMeModal = ({
         {makeLaughExitPopup && (
           <MakeLaughExitPopup
             yesButtonClick={() => {
+              console.log('yesButtonClick')
               setMakeLaughExitPopup(false)
               setOpen(false)
+              onClose()
             }}
             noButtonClick={() => {
+              console.log('noButtonClick')
               setMakeLaughExitPopup(false)
             }}
             open={makeLaughExitPopup}
