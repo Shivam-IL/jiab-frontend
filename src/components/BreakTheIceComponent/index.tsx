@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { BreakTheIceExitPopup } from '../ExitPopUps'
-import { SESSION_STORAGE_KEYS } from '@/constants'
+import { LOCAL_KEYS, SESSION_STORAGE_KEYS } from '@/constants'
 import useAppSelector from '@/hooks/useSelector'
-import { removeSessionStorageItem } from '@/utils'
+import { getLocalStorageItem, removeSessionStorageItem } from '@/utils'
 
 const BreakTheIceComponent = () => {
   // ...existing code...
   const [showExitPopup, setShowExitPopup] = useState(false)
   const pathname = usePathname()
   const { isAuthenticated, token } = useAppSelector(state => state.auth)
+
+  const { user } = useAppSelector(state => state.profile)
+  const router = useRouter()
+
+  const pathName = usePathname()
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -30,10 +35,22 @@ const BreakTheIceComponent = () => {
     }
   }, [pathname, isAuthenticated])
 
-  const { user } = useAppSelector(state => state.profile)
-  const router = useRouter()
+  useEffect(() => {
+    if (
+      pathname.startsWith('/contest') &&
+      getLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR) === 'true'
+    ) {
+      removeSessionStorageItem(SESSION_STORAGE_KEYS.PREVIOUS_PATH)
+      removeSessionStorageItem(SESSION_STORAGE_KEYS.CURRENT_PATH)
+    }
+  }, [pathname])
 
-  const pathName = usePathname()
+  useEffect(() => {
+    if (!isAuthenticated) {
+      removeSessionStorageItem(SESSION_STORAGE_KEYS.CURRENT_PATH)
+      removeSessionStorageItem(SESSION_STORAGE_KEYS.PREVIOUS_PATH)
+    }
+  }, [isAuthenticated, pathName])
 
   if (!isAuthenticated || !token || user?.profile_percentage === 100)
     return null
@@ -41,6 +58,13 @@ const BreakTheIceComponent = () => {
   if (pathName.startsWith('/my-profile')) return null
 
   if (pathName.startsWith('/profile')) return null
+
+  if (
+    pathName.startsWith('/contest') &&
+    getLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR) === 'true'
+  ) {
+    return null
+  }
 
   return (
     <>

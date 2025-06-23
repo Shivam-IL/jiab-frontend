@@ -222,7 +222,6 @@ const ContestPage: React.FC = () => {
     const contestTour = getLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR)
     if (contestTour === 'true') {
       setRunTour(true)
-      removeLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR)
     }
   }, [])
 
@@ -259,6 +258,7 @@ const ContestPage: React.FC = () => {
   useEffect(() => {
     return () => {
       setRunTour(false)
+      removeLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR)
     }
   }, [])
 
@@ -267,7 +267,10 @@ const ContestPage: React.FC = () => {
       <CustomJoyride
         steps={steps as Step[]}
         run={runTour}
-        onComplete={() => setRunTour(false)}
+        onComplete={() => {
+          setRunTour(false)
+          removeLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR)
+        }}
         onSkip={() => setRunTour(false)}
         showProgress={false}
         showSkipButton={false}
