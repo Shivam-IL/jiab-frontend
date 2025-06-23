@@ -21,6 +21,7 @@ interface CustomJoyrideProps {
   continuous?: boolean
   disableOverlayClose?: boolean
   disableScrolling?: boolean
+  scrollOffset?: number
 }
 
 const CustomJoyride: React.FC<CustomJoyrideProps> = ({
@@ -33,7 +34,8 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
   spotlightClicks = false,
   continuous = false,
   disableOverlayClose = false,
-  disableScrolling = false
+  disableScrolling = false,
+  scrollOffset = 100
 }) => {
   const [stepIndex, setStepIndex] = useState(0)
 
@@ -58,8 +60,43 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
     }
   }, [run])
 
+  // Function to scroll element to specific height
+  const scrollToElement = (target: string) => {
+    if (typeof window !== 'undefined') {
+      const element = document.querySelector(target)
+      if (element) {
+        // Use different scroll offset for mobile vs desktop
+        const currentScrollOffset = width < 768 ? 120 : scrollOffset
+        
+        const elementRect = element.getBoundingClientRect()
+        const elementTop = elementRect.top + window.pageYOffset
+        const targetScrollPosition = elementTop - currentScrollOffset
+
+        window.scrollTo({
+          top: targetScrollPosition,
+          behavior: 'smooth'
+        })
+
+        // Recalculate position after scroll animation completes
+        setTimeout(() => {
+          const newElementRect = element.getBoundingClientRect()
+          const newElementTop = newElementRect.top + window.pageYOffset
+          const newTargetScrollPosition = newElementTop - currentScrollOffset
+          
+          // If position is still not correct, adjust it
+          if (Math.abs(window.pageYOffset - newTargetScrollPosition) > 10) {
+            window.scrollTo({
+              top: newTargetScrollPosition,
+              behavior: 'smooth'
+            })
+          }
+        }, 500) // Wait for scroll animation to complete
+      }
+    }
+  }
+
   const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status, type, index, action } = data
+    const { status, type, index, action, step } = data
 
     // Handle tour completion
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
@@ -72,7 +109,7 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
       return
     }
 
-    // Handle step changes
+    // Handle step changes and scroll to highlighted element
     if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
       const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
 
@@ -82,7 +119,24 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
         setStepIndex(0)
       } else {
         setStepIndex(nextStepIndex)
+        
+        // Scroll to the next step's target element
+        const nextStep = steps[nextStepIndex]
+        if (nextStep && nextStep.target) {
+          // Add a small delay to ensure the step is rendered
+          setTimeout(() => {
+            scrollToElement(nextStep.target as string)
+          }, 100)
+        }
       }
+    }
+
+    // Handle step start - scroll to current step's target
+    if (type === EVENTS.STEP_BEFORE && step && step.target) {
+      // Add a small delay to ensure the step is rendered
+      setTimeout(() => {
+        scrollToElement(step.target as string)
+      }, 100)
     }
   }
 
