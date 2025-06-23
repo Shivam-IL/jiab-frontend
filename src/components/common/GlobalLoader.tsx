@@ -61,7 +61,7 @@ export default function GlobalLoader() {
       if (isGlobalApiLoading) {
         dispatch(setGlobalApiLoading(false));
       }
-    }, 100); // 10 second safety timeout
+    }, 10000); // 10 second safety timeout
 
     return () => clearTimeout(safetyTimeout);
   }, [isRouteLoading, isGlobalApiLoading, dispatch]);
@@ -111,7 +111,7 @@ export default function GlobalLoader() {
   if (!shouldShowLoader) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/30">
       <div className="flex flex-col items-center justify-center">
         <Image
           src="/videos/loading.gif"
