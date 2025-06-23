@@ -256,6 +256,12 @@ const ContestPage: React.FC = () => {
     }
   }, [mounted]) // Depend on mounted to ensure DOM is ready
 
+  useEffect(() => {
+    return () => {
+      setRunTour(false)
+    }
+  }, [])
+
   return (
     <>
       <CustomJoyride
@@ -269,7 +275,7 @@ const ContestPage: React.FC = () => {
         continuous={true}
         disableOverlayClose={false}
         disableScrolling={false}
-      />
+      />{' '}
       <ScreenWrapper className='overflow-hidden pt-20'>
         {isContestOver ? (
           <div className='md:w-full h-auto md:mt-[40px] mt-[18px] '>
@@ -280,7 +286,6 @@ const ContestPage: React.FC = () => {
           </div>
         ) : (
           <>
-
             {/* How to participate */}
             <HowToParticipate />
 
@@ -389,7 +394,6 @@ const ContestPage: React.FC = () => {
           </div>
         </div>
       </ScreenWrapper>
-
       {/* Refer Modals */}
       <ReferNowComponent
         setOpen={setRefer1}
@@ -398,7 +402,6 @@ const ContestPage: React.FC = () => {
           setRefer1(false)
         }}
       />
-
       {/* Invite Code Modals */}
       <InviteCodeComponent
         setOpen={setInvite1}
@@ -407,7 +410,6 @@ const ContestPage: React.FC = () => {
           setInvite1(false)
         }}
       />
-
       {/* Unique Code Modal */}
       <UniqueCodeModal
         open={uniqueCodeModalOpen}
@@ -418,7 +420,6 @@ const ContestPage: React.FC = () => {
           triggerAnimation()
         }}
       />
-
       {/* Contest Surprise Modal */}
       {surpriseMeModalOpen && (
         <SurpriseMeModal
@@ -427,7 +428,6 @@ const ContestPage: React.FC = () => {
           }}
         />
       )}
-
       {/* Coin Animation */}
       <CoinAnimation isVisible={isAnimating} animationKey={animationKey} />
     </>
