@@ -27,6 +27,7 @@ const SendReminderPage = () => {
   const width = useWindowWidth()
 
   const [sendReminder, setSendReminder] = useState<boolean>(false)
+  const [referralCode, setReferralCode] = useState<string>('')
 
   const [page, setPage] = useState<number>(1)
   const [pages, setPages] = useState<number>(1)
@@ -53,11 +54,21 @@ const SendReminderPage = () => {
 
   useEffect(() => {
     if (sendReferralAgainData?.ok) {
-      const { status } = sendReferralAgainData?.data as { status?: string }
+      const { status, code } = sendReferralAgainData?.data as {
+        status?: string
+        code?: string
+      }
       setSendAgainStatus(status as string)
+      setReferralCode(code as string)
       setSendReminder(true)
     }
   }, [sendReferralAgainData])
+
+  useEffect(() => {
+    return () => {
+      setReferralCode('')
+    }
+  }, [])
 
   return (
     <div className='flex flex-col gap-3'>
@@ -171,7 +182,7 @@ const SendReminderPage = () => {
           onClose={() => {
             setSendReminder(false)
           }}
-          icon={REFFERAL_STATUS_POPUP_DATA.SEND_REMINDER.ICON}
+          icon={ICONS_NAMES.CHECK}
           subtitle={REFFERAL_STATUS_POPUP_DATA.SEND_REMINDER.SUB_TITLE}
         >
           <div className='flex flex-col gap-[20px]'>
@@ -179,7 +190,7 @@ const SendReminderPage = () => {
               fontSize='text-[16px]'
               fontWeight='font-[700]'
               className='text-[#00953B] text-center'
-              text={'Code'}
+              text={referralCode}
             />
             <AktivGroteskText
               fontSize='text-[12px]'

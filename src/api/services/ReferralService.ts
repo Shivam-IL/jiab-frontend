@@ -112,6 +112,7 @@ export class ReferralService extends MainService {
       if (data?.success) {
         const responseData = {
           status: SEND_AGAIN_STATUS.SUCCESS,
+          code: data?.data?.referralCode ?? "",
         };
         return SuccessResponse(responseData);
       } else if (data?.code === 1002) {
