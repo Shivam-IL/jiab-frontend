@@ -195,6 +195,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
     }
   }
 
+
   return (
     <div className='relative w-full flex-grow-1 p-[16px] md:px-[12px] flex flex-col justify-between gap-[10px] md:rounded-[10px] rounded-[5px] bg-[#FFFFFF]'>
       <div className='flex justify-between items-center md:items-start'>
@@ -338,7 +339,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
               }
               name={ICONS_NAMES.MAD}
               text={formatNumberToK(item?.reactions?.neutral ?? 0)}
-              onClick={() =>{
+              onClick={() => {
                 handlerUserReaction(ReactionType.NEUTRAL, item?.videoId ?? '')
                 triggerReactionCDPEvent(UGCReactionType.MEH)
               }}
@@ -350,7 +351,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
               }
               name={ICONS_NAMES.ANGRY}
               text={formatNumberToK(item?.reactions?.sad ?? 0)}
-                onClick={() => {
+              onClick={() => {
                 handlerUserReaction(ReactionType.SAD, item?.videoId ?? '')
                 triggerReactionCDPEvent(UGCReactionType.GRR)
               }}

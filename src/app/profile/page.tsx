@@ -59,7 +59,6 @@ const ProfilePage = () => {
     ) {
       // Small delay to ensure smooth animation
 
-  
       if (
         user?.id &&
         getSessionStorageItem(
