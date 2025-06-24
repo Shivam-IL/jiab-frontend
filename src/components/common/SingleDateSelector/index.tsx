@@ -46,6 +46,14 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
     return currentYear - 6;
   });
 
+  // Sync currentDate with selectedDate when dialog opens
+  React.useEffect(() => {
+    if (open && selectedDate) {
+      setCurrentDate(selectedDate);
+      setYearViewStartYear(selectedDate.getFullYear() - 6);
+    }
+  }, [open, selectedDate]);
+
   const handleDateSelect = (date: Date | undefined) => {
     setSelectedDate(date);
     if (onDateSelect) {
@@ -62,6 +70,14 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
     const newDate = new Date(currentDate);
     newDate.setFullYear(year);
     setCurrentDate(newDate);
+    
+    // Update selectedDate to reflect the new year
+    if (selectedDate) {
+      const updatedSelectedDate = new Date(selectedDate);
+      updatedSelectedDate.setFullYear(year);
+      setSelectedDate(updatedSelectedDate);
+    }
+    
     setViewMode("month");
   };
 
@@ -69,6 +85,14 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
     const newDate = new Date(currentDate);
     newDate.setMonth(monthIndex);
     setCurrentDate(newDate);
+    
+    // Update selectedDate to reflect the new month
+    if (selectedDate) {
+      const updatedSelectedDate = new Date(selectedDate);
+      updatedSelectedDate.setMonth(monthIndex);
+      setSelectedDate(updatedSelectedDate);
+    }
+    
     setViewMode("calendar");
   };
 
@@ -200,6 +224,7 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
         {viewMode === "calendar" ? (
           <div className="w-full py-[10.5px] px-[8px]">
             <Calendar
+              key={`${currentDate.getFullYear()}-${currentDate.getMonth()}`}
               mode="single"
               selected={selectedDate}
               onSelect={handleDateSelect}

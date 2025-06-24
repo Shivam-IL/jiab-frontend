@@ -80,7 +80,6 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
       const payload: TransactionCodeCDPEventPayload =
         CDPEventPayloadBuilder.buildTransactionCodePayload(
           phoneNumber,
-          mixCode,
           user.id
         );
       sendCDPEvent(payload);

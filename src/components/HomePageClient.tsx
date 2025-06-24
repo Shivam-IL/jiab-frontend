@@ -128,6 +128,7 @@ export default function HomePageClient() {
   const [canShowVoteAnimation, setCanShowVoteAnimation] = useState(false);
   const [canShowReactAnimation, setCanShowReactAnimation] = useState(false);
 
+
   // Coin animation hooks
   const {
     isAnimating: isVoteAnimating,
@@ -320,22 +321,22 @@ export default function HomePageClient() {
   }, [canShowVoteAnimation, selectedLanguage, triggerVoteAnimation]);
 
   // Function to handle successful react animation
-  const handleReactSuccess = useCallback(() => {
-    if (canShowReactAnimation) {
-      const currentLanguage = selectedLanguage || "default";
-      const now = Date.now();
+  // const handleReactSuccess = useCallback(() => {
+  //   if (canShowReactAnimation) {
+  //     const currentLanguage = selectedLanguage || "default";
+  //     const now = Date.now();
 
-      // Update localStorage with current time and language
-      localStorage.setItem("shared_react_animation_time", now.toString());
-      localStorage.setItem("shared_react_animation_language", currentLanguage);
+  //     // Update localStorage with current time and language
+  //     localStorage.setItem("shared_react_animation_time", now.toString());
+  //     localStorage.setItem("shared_react_animation_language", currentLanguage);
 
-      // Disable further animations until next cooldown/language change
-      setCanShowReactAnimation(false);
+  //     // Disable further animations until next cooldown/language change
+  //     setCanShowReactAnimation(false);
 
-      // Trigger the animation
-      triggerReactAnimation();
-    }
-  }, [canShowReactAnimation, selectedLanguage, triggerReactAnimation]);
+  //     // Trigger the animation
+  //     triggerReactAnimation();
+  //   }
+  // }, [canShowReactAnimation, selectedLanguage, triggerReactAnimation]);
 
   const closeGenreSurpriseMe = () => {
     forceHideLoader();

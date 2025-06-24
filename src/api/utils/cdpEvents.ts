@@ -1,4 +1,5 @@
 import {
+  CDP_CLIENT_ID,
   CDP_USER_IDENTIFIER_SUB_TYPE,
   CDP_USER_IDENTIFIER_TYPE,
 } from "@/config";
@@ -12,21 +13,21 @@ export const CDP_EVENT_TYPES = {
 } as const;
 
 export const QUESTION_ID_ANSWER_MAPPING: Record<number, string> = {
-  1: "Consume_Monthly",
-  2: "Consume_Occasional",
-  3: "Consume_Never",
-  4: "Consume_Weekly",
-  5: "Consider_4",
-  6: "Consider_3",
-  7: "Consider_2",
-  8: "Consider_1",
-  9: "BrandPerception_3",
-  10: "BrandPerception_2",
-  11: "BrandPerception_1",
-  12: "BrandPerception_1",
-  13: "BrandPerception_-1",
-  14: "BrandPerception_-2",
-  15: "BrandPerception_-3",
+  308: "Consume_Monthly",
+  309: "Consume_Occasional",
+  310: "Consume_Never",
+  311: "Consume_Weekly",
+  312: "ConsiderNextTime_4",
+  313: "ConsiderNextTime_3",
+  314: "ConsiderNextTime_2",
+  315: "ConsiderNextTime_1",
+  316: "BrandPerception_3",
+  317: "BrandPerception_2",
+  318: "BrandPerception_1",
+  319: "BrandPerception_0",
+  320: "BrandPerception_-1",
+  321: "BrandPerception_-2",
+  322: "BrandPerception_-3",
 };
 
 // CDP Event Sub Types
@@ -226,7 +227,6 @@ export interface UGCFilterCDPEventPayload extends BaseCDPEventPayload {
 
 export type ReferralCompletedCDPEventPayload = BaseCDPEventPayload;
 
-
 export interface AddressCDPEventPayload extends BaseCDPEventPayload {
   address_line1: string;
   address_line2: string;
@@ -248,13 +248,12 @@ export interface QuestionCDPPayload extends BaseCDPEventPayload {
 
 export interface TransactionCodeCDPEventPayload extends BaseCDPEventPayload {
   phone_e164: string;
-  transaction_code: string;
 }
 
 // CDP Event Payload Builders
 export class CDPEventPayloadBuilder {
   private static instance: CDPEventPayloadBuilder;
-  private static readonly CLIENT_ID = "7397d1ab-0f3c-4ed0-a58b-819cd2e62425";
+  private static readonly CLIENT_ID = CDP_CLIENT_ID;
   private static readonly BRAND_NAME = "Sprite";
 
   public static getInstance(): CDPEventPayloadBuilder {
@@ -313,7 +312,7 @@ export class CDPEventPayloadBuilder {
     ip_address?: string;
     user_identifier: string;
   }): LandingPageCDPEventPayload {
-    return {
+    return { 
       ...this.getBasePayload(
         CDP_EVENT_TYPES.PAGE_VIEW,
         CDP_EVENT_SUB_TYPES.LANDING_PAGE_LOAD,
@@ -582,12 +581,12 @@ export class CDPEventPayloadBuilder {
     languageCode: string,
     user_identifier: string,
     language?: string,
-    category?: string,
+    category?: string
   ): UGCFilterCDPEventPayload {
     return {
       ...this.getBasePayload(
         CDP_EVENT_TYPES.CLICK,
-        `${CDP_EVENT_SUB_TYPES.UGC_FILTER}_${language ?? ''}_${category ?? ''}`,
+        `${CDP_EVENT_SUB_TYPES.UGC_FILTER}_${language ?? ""}_${category ?? ""}`,
         user_identifier
       ),
       language_code: languageCode.toUpperCase() ?? "",
@@ -689,7 +688,6 @@ export class CDPEventPayloadBuilder {
   // Transaction Code Event
   public static buildTransactionCodePayload(
     phoneNumber: string,
-    transactionCode: string,
     user_identifier: string
   ): TransactionCodeCDPEventPayload {
     return {
@@ -699,7 +697,6 @@ export class CDPEventPayloadBuilder {
         user_identifier
       ),
       phone_e164: phoneNumber,
-      transaction_code: transactionCode,
     };
   }
 

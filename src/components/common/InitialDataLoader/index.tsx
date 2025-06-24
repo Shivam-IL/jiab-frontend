@@ -38,7 +38,8 @@ import {
 import {
   getLocalStorageItem,
   setLocalStorageItem,
-  getSessionStorageItem
+  getSessionStorageItem,
+  setSessionStorageItem
 } from '@/utils'
 import { ReactNode, useEffect, useState } from 'react'
 import { useGetAllReferrals } from '@/api/hooks/ReferralHooks'
@@ -101,6 +102,8 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const { mutate: mutateChangeChatLanguage } = useChangeChatLanguage()
   const { selectedLanguage } = useAppSelector(state => state.language)
 
+  useEffect(() => {}, [])
+
   const {
     mutate: mutateRefreshToken,
     data: refreshTokenData,
@@ -114,7 +117,16 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         CDPEventPayloadBuilder.buildPushConsentPayload({
           user_identifier: userId
         })
-      sendCDPEvent(payload)
+      const getConsentPushEventTriggered = getSessionStorageItem(
+        SESSION_STORAGE_KEYS.CONSENT_PUSH_EVENT_TRIGGERED
+      )
+      if (getConsentPushEventTriggered !== 'true') {
+        sendCDPEvent(payload)
+        setSessionStorageItem(
+          SESSION_STORAGE_KEYS.CONSENT_PUSH_EVENT_TRIGGERED,
+          'true'
+        )
+      }
     }
   }
 
@@ -239,7 +251,16 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
             user_identifier: data?.user?.id,
             ...geoLocationData
           })
-        sendCDPEvent(payload)
+        const getLandEventTriggered = getSessionStorageItem(
+          SESSION_STORAGE_KEYS.LANDING_PAGE_EVENT_TRIGGERED
+        )
+        if (getLandEventTriggered !== 'true') {
+          sendCDPEvent(payload)
+          setSessionStorageItem(
+            SESSION_STORAGE_KEYS.LANDING_PAGE_EVENT_TRIGGERED,
+            'true'
+          )
+        }
       }
       if (data?.user?.id) {
         const user_id = data.user.id

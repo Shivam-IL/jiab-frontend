@@ -69,6 +69,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
         genres?.[0]?.image_url;
       setGenreImage(imageUrl);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
   const getLabel = (labels: string[]) => {
@@ -172,6 +173,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
     if (item?.contentType === "text" && item?.content) {
       getText(item.content);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
   return (
@@ -179,6 +181,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
       <div className="flex justify-between items-center md:items-start">
         <div className="flex w-full items-start gap-[12px]">
           <div className="min-w-[30px] max-w-[30px] md:max-w-[30px] md:min-w-[28px] min-h-[30px] max-h-[30px] md:min-h-[28px] md:max-h-[28px] flex items-end justify-center rounded-full ">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={genreImage}
               alt="genre"
@@ -261,6 +264,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
             />
           </div> */}
           {item?.contentType === "image" && (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={item?.content}
               alt="image"

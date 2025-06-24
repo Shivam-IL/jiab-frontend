@@ -595,6 +595,8 @@ export const SESSION_STORAGE_KEYS = {
   HAS_SHOWN_LOCK_MODAL: "hasShownLockModal",
   HAS_SHOWN_SERIAL_CHILL_MODAL: "hasShownSerialChiller",
   SIGNUP_KEEP_ALIVE: "signupKeepAlive",
+  LANDING_PAGE_EVENT_TRIGGERED: "landingPageEventTriggered",
+  CONSENT_PUSH_EVENT_TRIGGERED: "consentPushEventTriggered",
 };
 
 export const LOCAL_IMAGES = {
