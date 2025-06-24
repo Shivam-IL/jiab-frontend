@@ -29,7 +29,7 @@ export class JokeService extends MainService {
 
   public async GetSurpriseMe(genreId?: number, languageId?: number) {
     try {
-      const genre = genreId || 1;
+      const genre = genreId || 0;
       const language = languageId || 1;
       const endpoint = `${API_ROUTES.JOKES.GET_SURPRISE_ME}?genre=${genre}&language=${language}`;
       const response = await apiClient.get(endpoint, {
