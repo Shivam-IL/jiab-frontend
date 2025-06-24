@@ -8,7 +8,7 @@ import useAppDispatch from "@/hooks/useDispatch";
 import { updateCrossModal, updateLoginModal } from "@/store/auth/auth.slice";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
 import { generateImageurl } from "@/utils";
-
+import Image from "next/image";
 const SurpriseMeLockModal = ({
   onClose,
   forceShow = false,
@@ -57,11 +57,14 @@ const SurpriseMeLockModal = ({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="rounded-[5px] h-fit p-0 max-w-[301px] ">
+      <DialogContent className="rounded-[5px] p-0 max-w-[301px] max-h-[560px] xxs:max-w-[243px]">
         <div className="absolute top-[-105px] md:top-[-100px] left-0 flex justify-center items-center w-full">
-          <SvgIcons
-            name={ICONS_NAMES.SURPRISE_ME}
+          <Image
+            src="/static/sprite/icons/surprise-me.svg"
+            alt="SURPRISE ME"
             className="w-[145px] h-[102px] md:w-[136px] md:h-[97px]"
+            width={145}
+            height={102}
           />
         </div>
         <div className="w-full relative h-fit flex justify-end box-border pt-[10px] pr-[10px]">
@@ -113,7 +116,7 @@ const SurpriseMeLockModal = ({
                 name={ICONS_NAMES.MULTIPLE_SMILE_MOBILE}
               />
               <SvgIcons
-                className="absolute top-[163px] md:top-[145px] left-[12px] md:left-[21px] w-[115px] h-[300px] md:w-[104px] md:h-[269px]"
+                className="absolute xxs:top-[118px] top-[163px] md:top-[145px] left-[12px] md:left-[21px] xxs:w-[80px] w-[115px] h-[300px] md:w-[104px] md:h-[269px]"
                 name={ICONS_NAMES.SPRITE_BOTTLE}
                 width={115}
                 height={300}

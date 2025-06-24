@@ -13,6 +13,8 @@ export interface PlusAddInsideProfileData {
   tAndC: string;
   privacyPolicy: string;
   trademark: string;
+  addAddress: string;
+  editAddress: string;
 }
 
 export const mapPlusAddInsideProfileData = (
@@ -33,6 +35,8 @@ export const mapPlusAddInsideProfileData = (
     tAndC: plusAddCMS?.t_and_c ?? "T&C",
     privacyPolicy: plusAddCMS?.privacy_policy ?? "Privacy Policy",
     trademark: plusAddCMS?.trademark ?? "Trademark",
+    addAddress: plusAddCMS?.add_address ?? "Add Address",
+    editAddress: plusAddCMS?.edit_address ?? "Edit Address",
   };
 };
 
@@ -50,4 +54,6 @@ export const defaultPlusAddInsideProfileData: PlusAddInsideProfileData = {
   tAndC: "T&C",
   privacyPolicy: "Privacy Policy",
   trademark: "Trademark",
+  addAddress: "Add Address",
+  editAddress: "Edit Address",
 };

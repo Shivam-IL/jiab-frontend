@@ -415,6 +415,8 @@ export type TCMSResponse = {
       updatedAt: string;
       publishedAt: string;
       locale: string;
+      add_address: string;
+      edit_address: string;
     };
     privacy_policy: {
       id: number;
@@ -454,6 +456,24 @@ export type TCMSResponse = {
       sign_up: string;
       let_break_the_ice: string;
     };
+    edit_profile: {
+      id: number;
+      documentId: string;
+      personal_info_heading: string;
+      personal_info_sub_heading: string;
+      full_name_placeholder: string;
+      email_id_placeholder: string;
+      mobile_number_placeholder: string;
+      gender_male: string;
+      gender_female: string;
+      gender_others: string;
+      gender_prefer_not_to_say: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
+    
     leaderboard: {
       id: number;
       documentId: string;

@@ -22,6 +22,7 @@ export * from "./serial_chiller";
 export * from "./privacy";
 export * from "./login";
 export * from "./leaderboard";
+export * from "./edit-profile";
 
 // Import all the mapping functions
 import {
@@ -154,6 +155,11 @@ import {
   LeaderboardData,
   mapLeaderboardData,
 } from "./leaderboard";
+import {
+  EditProfileData,
+  defaultEditProfileData,
+  mapEditProfileData,
+} from "./edit-profile";
 
 // Combined interface for all CMS data
 export interface AllCMSData {
@@ -187,6 +193,7 @@ export interface AllCMSData {
   otp: OtpData;
   signup: SignupData;
   leaderboard: LeaderboardData;
+  editProfile: EditProfileData;
 }
 
 // Hook to get all mapped CMS data
@@ -227,6 +234,7 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
         otp: defaultOtpData,
         signup: defaultSignupData,
         leaderboard: defaultLeaderboardData,
+        editProfile: defaultEditProfileData,
       };
     }
 
@@ -262,6 +270,7 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
       otp: mapOtpData(homePageContent),
       signup: mapSignupData(homePageContent),
       leaderboard: mapLeaderboardData(homePageContent),
+      editProfile: mapEditProfileData(homePageContent),
     };
   }, [homePageContent, mounted]);
 };
@@ -301,5 +310,6 @@ export const mapAllCMSData = (
     otp: mapOtpData(cmsData),
     signup: mapSignupData(cmsData),
     leaderboard: mapLeaderboardData(cmsData),
+    editProfile: mapEditProfileData(cmsData),
   };
 };
