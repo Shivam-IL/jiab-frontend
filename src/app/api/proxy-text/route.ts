@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
+    console.log("error", error);
     return new Response("Error fetching file", { status: 500 });
   }
 }

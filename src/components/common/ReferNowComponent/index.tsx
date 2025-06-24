@@ -103,7 +103,6 @@ const ReferNowComponent = ({
         status: string
         invite_code?: string
       }
-      triggerReferCDPEvent()
       setReferStatus(status)
       if (status === REFERRAL_CODE.SUCCESS) {
         setReferStatus1(true)
@@ -120,6 +119,7 @@ const ReferNowComponent = ({
               ?.invite_code ?? ''
           )
         }
+        triggerReferCDPEvent()
         onClose()
       } else if (status === REFERRAL_CODE.ALREADY_REFERRED) {
         setReferStatus2(true)
