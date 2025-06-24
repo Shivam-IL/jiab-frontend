@@ -124,21 +124,11 @@ export default function HomePageClient() {
     markAsShown: markSerialChillerAsShown,
   } = useSessionModal("hasShownSerialChiller");
 
-  // Coin animation state management
-  const [canShowVoteAnimation, setCanShowVoteAnimation] = useState(false);
-  const [canShowReactAnimation, setCanShowReactAnimation] = useState(false);
-
-
   // Coin animation hooks
   const {
     isAnimating: isVoteAnimating,
     triggerAnimation: triggerVoteAnimation,
     animationKey: voteAnimationKey,
-  } = useCoinAnimation();
-  const {
-    isAnimating: isReactAnimating,
-    triggerAnimation: triggerReactAnimation,
-    animationKey: reactAnimationKey,
   } = useCoinAnimation();
 
   useEffect(() => {
@@ -244,99 +234,16 @@ export default function HomePageClient() {
     markSerialChillerAsShown,
   ]);
 
-  // Check if vote animation can be shown (24h cooldown or language change)
-  useEffect(() => {
-    const currentLanguage = selectedLanguage || "default";
-    const now = Date.now();
-    const lastAnimationTime = localStorage.getItem(
-      "shared_vote_animation_time"
-    );
-    const lastAnimationLanguage = localStorage.getItem(
-      "shared_vote_animation_language"
-    );
-
-    // Check if language changed
-    const languageChanged = lastAnimationLanguage !== currentLanguage;
-
-    // Check if 24 hours passed (24 * 60 * 60 * 1000 = 86400000ms)
-    const twentyFourHoursPassed =
-      !lastAnimationTime || now - parseInt(lastAnimationTime) >= 86400000;
-
-    // Allow animation if either condition is met
-    if (languageChanged || twentyFourHoursPassed) {
-      setCanShowVoteAnimation(true);
-    } else {
-      setCanShowVoteAnimation(false);
-    }
-  }, [selectedLanguage]);
-
-  // Check if react animation can be shown (24h cooldown or language change)
-  useEffect(() => {
-    const currentLanguage = selectedLanguage || "default";
-    const now = Date.now();
-    const lastAnimationTime = localStorage.getItem(
-      "shared_react_animation_time"
-    );
-    const lastAnimationLanguage = localStorage.getItem(
-      "shared_react_animation_language"
-    );
-
-    // Check if language changed
-    const languageChanged = lastAnimationLanguage !== currentLanguage;
-
-    // Check if 24 hours passed (24 * 60 * 60 * 1000 = 86400000ms)
-    const twentyFourHoursPassed =
-      !lastAnimationTime || now - parseInt(lastAnimationTime) >= 86400000;
-
-    // Allow animation if either condition is met
-    if (languageChanged || twentyFourHoursPassed) {
-      setCanShowReactAnimation(true);
-    } else {
-      setCanShowReactAnimation(false);
-    }
-  }, [selectedLanguage]);
+  // Function to handle successful vote animation
+  const handleVoteSuccess = useCallback(() => {
+    triggerVoteAnimation();
+  }, [triggerVoteAnimation]);
 
   const handlePJChallengeClick = () => {
     triggerGAEvent(GA_EVENTS.SPRITE_J24_SUBMIT_JOKE);
     triggerCDP_PJ_Challenge();
     router.push("/submit-your-joke");
   };
-
-  // Function to handle successful vote animation
-  const handleVoteSuccess = useCallback(() => {
-    if (canShowVoteAnimation) {
-      const currentLanguage = selectedLanguage || "default";
-      const now = Date.now();
-
-      // Update localStorage with current time and language
-      localStorage.setItem("shared_vote_animation_time", now.toString());
-      localStorage.setItem("shared_vote_animation_language", currentLanguage);
-
-      // Disable further animations until next cooldown/language change
-      setCanShowVoteAnimation(false);
-
-      // Trigger the animation
-      triggerVoteAnimation();
-    }
-  }, [canShowVoteAnimation, selectedLanguage, triggerVoteAnimation]);
-
-  // Function to handle successful react animation
-  // const handleReactSuccess = useCallback(() => {
-  //   if (canShowReactAnimation) {
-  //     const currentLanguage = selectedLanguage || "default";
-  //     const now = Date.now();
-
-  //     // Update localStorage with current time and language
-  //     localStorage.setItem("shared_react_animation_time", now.toString());
-  //     localStorage.setItem("shared_react_animation_language", currentLanguage);
-
-  //     // Disable further animations until next cooldown/language change
-  //     setCanShowReactAnimation(false);
-
-  //     // Trigger the animation
-  //     triggerReactAnimation();
-  //   }
-  // }, [canShowReactAnimation, selectedLanguage, triggerReactAnimation]);
 
   const closeGenreSurpriseMe = () => {
     forceHideLoader();
@@ -597,10 +504,6 @@ export default function HomePageClient() {
       <CoinAnimation
         isVisible={isVoteAnimating}
         animationKey={voteAnimationKey}
-      />
-      <CoinAnimation
-        isVisible={isReactAnimating}
-        animationKey={reactAnimationKey}
       />
     </div>
   );

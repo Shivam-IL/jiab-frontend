@@ -28,10 +28,6 @@ const UserGeneratedJokes = () => {
   const [mounted, setMounted] = useState(false);
   const dispatch = useAppDispatch();
 
-  // Track animation state
-  const [canShowAnimation, setCanShowAnimation] = useState(false);
-  const [, setLastLanguage] = useState<string>("");
-
   const { ugcData, offset, limit, ugcFilters, filterChnageId, loadMore } =
     useAppSelector((state) => state.ugc);
   const { data: gluedinFeedList, isLoading: isLoadingGluedinFeedList } =
@@ -93,51 +89,10 @@ const UserGeneratedJokes = () => {
     }
   }, [viewGludeinJokesData, dispatch]);
 
-  // Check if animation can be shown (24h cooldown or language change)
-  useEffect(() => {
-    const currentLanguage = ugcFilters.language || "default";
-    const now = Date.now();
-    const lastAnimationTime = localStorage.getItem(
-      "shared_vote_animation_time"
-    );
-    const lastAnimationLanguage = localStorage.getItem(
-      "shared_vote_animation_language"
-    );
-
-    // Check if language changed
-    const languageChanged = lastAnimationLanguage !== currentLanguage;
-
-    // Check if 24 hours passed (24 * 60 * 60 * 1000 = 86400000ms)
-    const twentyFourHoursPassed =
-      !lastAnimationTime || now - parseInt(lastAnimationTime) >= 86400000;
-
-    // Allow animation if either condition is met AND no vote on homepage
-    if ((languageChanged || twentyFourHoursPassed) && !lastAnimationTime) {
-      setCanShowAnimation(true);
-    } else {
-      setCanShowAnimation(false);
-    }
-
-    setLastLanguage(currentLanguage);
-  }, [ugcFilters.language]);
-
   // Function to handle successful vote animation
   const handleVoteSuccess = useCallback(() => {
-    if (canShowAnimation) {
-      const currentLanguage = ugcFilters.language || "default";
-      const now = Date.now();
-
-      // Update localStorage with current time and language
-      localStorage.setItem("shared_vote_animation_time", now.toString());
-      localStorage.setItem("shared_vote_animation_language", currentLanguage);
-
-      // Disable further animations until next cooldown/language change
-      setCanShowAnimation(false);
-
-      // Trigger the animation
-      triggerAnimation();
-    }
-  }, [canShowAnimation, ugcFilters.language, triggerAnimation]);
+    triggerAnimation();
+  }, [triggerAnimation]);
 
   return (
     <ScreenWrapper>
@@ -173,7 +128,6 @@ const UserGeneratedJokes = () => {
         <UgcComponent
           noMoreData={noMoreData}
           isLoadingGluedinFeedList={isLoadingGluedinFeedList}
-          animation={canShowAnimation}
           jokesData={ugcData}
           onVoteSuccess={handleVoteSuccess}
         />
