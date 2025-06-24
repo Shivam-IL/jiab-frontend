@@ -128,6 +128,7 @@ export default function HomePageClient() {
   const [canShowVoteAnimation, setCanShowVoteAnimation] = useState(false);
   const [canShowReactAnimation, setCanShowReactAnimation] = useState(false);
 
+
   // Coin animation hooks
   const {
     isAnimating: isVoteAnimating,
