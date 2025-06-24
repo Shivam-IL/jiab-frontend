@@ -15,7 +15,8 @@ import {
   useCoinAnimation
 } from '@/components/common/CoinAnimation'
 import { triggerGAEvent } from '@/utils/gTagEvents'
-import { GA_EVENTS } from '@/constants'
+import { GA_EVENTS, SESSION_STORAGE_KEYS } from '@/constants'
+import { getSessionStorageItem, setSessionStorageItem } from '@/utils'
 
 const ProfilePage = () => {
   const [mounted, setMounted] = useState(false)
@@ -57,6 +58,20 @@ const ProfilePage = () => {
       !hasAnimationBeenShown
     ) {
       // Small delay to ensure smooth animation
+
+  
+      if (
+        user?.id &&
+        getSessionStorageItem(
+          SESSION_STORAGE_KEYS.PROFILE_GA_EVENT_TRIGGERED
+        ) !== 'true'
+      ) {
+        triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)
+        setSessionStorageItem(
+          SESSION_STORAGE_KEYS.PROFILE_GA_EVENT_TRIGGERED,
+          'true'
+        )
+      }
       setTimeout(() => {
         triggerAnimation()
         // Mark animation as shown for this user
@@ -97,12 +112,6 @@ const ProfilePage = () => {
       window.removeEventListener('hashchange', handleFragmentScroll)
     }
   }, [mounted]) // Depend on mounted to ensure DOM is ready
-
-  useEffect(() => {
-    if (user?.id && user?.profile_percentage === 100) {
-      triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)
-    }
-  }, [user?.profile_percentage,user?.id])
 
   return (
     <ScreenWrapper>

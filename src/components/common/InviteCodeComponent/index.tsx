@@ -57,13 +57,30 @@ const InviteCodeComponent = ({
     }
   }
 
+  const trigerCDPReferralCompletedEvent = (phoneNumber: string) => {
+    if (user?.id && phoneNumber) {
+      const payload: BaseCDPEventPayload =
+        CDPEventPayloadBuilder.buildReferralCompletedPayload(
+          phoneNumber,
+          user.id
+        )
+      sendCDPEvent(payload)
+    }
+  }
+
   console.log('verifyReferralData', verifyReferralData, onClose)
   useEffect(() => {
     if (verifyReferralData?.ok) {
-      const { status } = verifyReferralData?.data as { status?: string }
+      const { status, phone_number } = verifyReferralData?.data as {
+        status?: string
+        phone_number?: string
+      }
       setInviteCodeStatus(status as string)
       if (status === INVITE_CODE_STATUS.SUCCESS) {
         triggerCDPInviteCodeEvent()
+        if (phone_number) {
+          trigerCDPReferralCompletedEvent(phone_number)
+        }
         setOpen(false)
         triggerAnimation()
         triggerGAEvent(GA_EVENTS.SPRITE_24_REFERRAL_CODE_SUBMIT)

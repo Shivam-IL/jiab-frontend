@@ -312,7 +312,7 @@ export class CDPEventPayloadBuilder {
     ip_address?: string;
     user_identifier: string;
   }): LandingPageCDPEventPayload {
-    return { 
+    return {
       ...this.getBasePayload(
         CDP_EVENT_TYPES.PAGE_VIEW,
         CDP_EVENT_SUB_TYPES.LANDING_PAGE_LOAD,
@@ -444,7 +444,6 @@ export class CDPEventPayloadBuilder {
         eventSubTypeMap[cdpReactionType],
         user_identifier
       ),
-      joke_id: jokeId,
     };
   }
 
@@ -718,7 +717,6 @@ export class CDPEventPayloadBuilder {
         eventSubTypeMap[reactionType],
         user_identifier
       ),
-      joke_id: jokeId,
     };
   }
 
@@ -732,7 +730,6 @@ export class CDPEventPayloadBuilder {
         `${CDP_EVENT_SUB_TYPES.SCROLL_LOL_VIEW}${jokeId}`,
         user_identifier
       ),
-      joke_id: jokeId,
     };
   }
 }

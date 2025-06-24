@@ -12,6 +12,10 @@ export type TGludeinFeedList = {
   sortBy?: string;
 };
 
+export type TGludeinHomePageJokeList = {
+  sortBy?: string;
+};
+
 export interface TUGCContent {
   _id: string;
   videoId: string;

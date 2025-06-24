@@ -18,6 +18,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import useAppDispatch from "@/hooks/useDispatch";
 import { triggerGAEvent } from "@/utils/gTagEvents";
 import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
+import {  MOBILE_TEMP_NAVBAR_DATA } from '@/constants'
+
 import {
   CDPEventPayloadBuilder,
   ProfileCDPEventPayload,
@@ -275,10 +277,7 @@ const EditProfilePage = () => {
           data?.gender
         );
       }
-      if (data?.profile_percentage === 100) {
-        triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER);
-      }
-      router.push("/profile");
+      router.push('/profile')
     } else if (editUserProfileDetailsData?.ok === false) {
       const message =
         (editUserProfileDetailsData as { message?: string })?.message ||

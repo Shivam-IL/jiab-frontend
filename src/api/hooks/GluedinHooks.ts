@@ -6,6 +6,7 @@ import { GluedinService } from "../services/GluedinService";
 import {
   TGludeinFeedList,
   TGludeinHallOfLame,
+  TGludeinHomePageJokeList,
   TGludeinJokes,
   TGludeinLogin,
   TGludeinReport,
@@ -56,6 +57,18 @@ const useGetGluedinFeedList = (params: TGludeinFeedList) => {
   });
 };
 
+const useGetHomePageJokeList = (params: TGludeinHomePageJokeList) => {
+  const { isAuthenticated, token, gludeinIsAuthenticated } = useAppSelector(
+    (state) => state.auth
+  );
+
+  return useQuery({
+    queryKey: [...keys.gluedin.getGluedinFeedList(), { ...params }],
+    queryFn: () => gluedinInstance.getHomePageJokeList(params),
+    enabled: isAuthenticated && token && gludeinIsAuthenticated ? true : false,
+    staleTime: 0,
+  });
+};
 // const useGetGluedinUserVoteList = (params: any) => {
 //   const { isAuthenticated, token, gludeinIsAuthenticated } = useAppSelector(
 //     (state) => state.auth
@@ -154,4 +167,5 @@ export {
   useViewGludeinJokes,
   useGetHallOfLames,
   useSendReportToGluedin,
+  useGetHomePageJokeList
 };
