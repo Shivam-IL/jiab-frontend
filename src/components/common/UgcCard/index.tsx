@@ -183,7 +183,8 @@ const UgcCard: React.FC<UgcCardProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item])
 
-  const triggerReactionCDPEvent = (reactionType: UGCReactionType) => {
+  const triggerReactionCDPEvent = (reactionType: ReactionType) => {
+    console.log('reactionType', reactionType)
     if (reactionType && item?.videoId && user?.id) {
       const payload: ReactionCDPEventPayload =
         CDPEventPayloadBuilder.buildReactionPayload(
@@ -191,6 +192,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
           reactionType,
           user?.id
         )
+      console.log('payload', payload)
       sendCDPEvent(payload)
     }
   }
@@ -329,7 +331,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
               text={formatNumberToK(item?.reactions?.laugh ?? 0)}
               onClick={() => {
                 handlerUserReaction(ReactionType.LAUGH, item?.videoId ?? '')
-                triggerReactionCDPEvent(UGCReactionType.HAHA)
+                triggerReactionCDPEvent(ReactionType.LAUGH)
               }}
             />
             <SurpriseMeCTA
@@ -341,7 +343,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
               text={formatNumberToK(item?.reactions?.neutral ?? 0)}
               onClick={() => {
                 handlerUserReaction(ReactionType.NEUTRAL, item?.videoId ?? '')
-                triggerReactionCDPEvent(UGCReactionType.MEH)
+                triggerReactionCDPEvent(ReactionType.NEUTRAL)
               }}
             />
             <SurpriseMeCTA
@@ -353,7 +355,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
               text={formatNumberToK(item?.reactions?.sad ?? 0)}
               onClick={() => {
                 handlerUserReaction(ReactionType.SAD, item?.videoId ?? '')
-                triggerReactionCDPEvent(UGCReactionType.GRR)
+                triggerReactionCDPEvent(ReactionType.SAD)
               }}
             />
           </div>
