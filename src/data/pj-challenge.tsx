@@ -77,7 +77,7 @@ export const mapPjChallengeData = (
       pjChallengeCMS?.title_joketitle_text_space ?? "Joke Title",
     titleJokeTitleCharacterLimitText:
       pjChallengeCMS?.title_joketitle_character_limittext ??
-      "50 characters max",
+      "Max 30 character limit",
     category: pjChallengeCMS?.category ?? "Category",
     termsAndConditions:
       pjChallengeCMS?.terms_and_conditions ??

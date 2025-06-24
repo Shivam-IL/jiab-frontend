@@ -29,7 +29,7 @@ const AddressCard = ({
   allowBottomBorder?: boolean
   address?: IUserAddressData | null
   addressLength?: number
-  setAsDefault: string
+  setAsDefault?: string
 }) => {
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false)
   const [addressId, setAddressId] = useState<number | null>(null)

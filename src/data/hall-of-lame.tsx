@@ -9,6 +9,7 @@ export interface HallOfLameData {
   votesHeading: string;
   nextButtonText: string;
   surpriseMe: string | null;
+  prevButtonText: string;
 }
 
 export const mapHallOfLameData = (
@@ -26,6 +27,7 @@ export const mapHallOfLameData = (
     votesHeading: hallOfLameCMS?.votes_heading ?? "Votes",
     nextButtonText: hallOfLameCMS?.Next_button_text ?? "Next",
     surpriseMe: hallOfLameCMS?.surprise_me ?? "Surprise Me",
+    prevButtonText: hallOfLameCMS?.prev_button_text ?? "Prev",
   };
 };
 
@@ -39,4 +41,5 @@ export const defaultHallOfLameData: HallOfLameData = {
   votesHeading: "Votes",
   nextButtonText: "Next",
   surpriseMe: "Surprise Me",
+  prevButtonText: "Prev",
 };

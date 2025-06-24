@@ -164,6 +164,7 @@ export type TCMSResponse = {
       publishedAt: string;
       locale: string;
       surprise_me: string | null;
+      prev_button_text: string;
     };
     refer_a_friend: {
       id: number;

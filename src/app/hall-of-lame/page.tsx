@@ -71,7 +71,7 @@ const HallOfLameLeaderboard = () => {
           </div>
           <HallOfLameLeaderboardTable
             weeklyTopJokes={cmsData.hallOfLame.weaklyTopJokes}
-            prevButtonText={`Prev`}
+            prevButtonText={cmsData.hallOfLame.prevButtonText}
             data={data}
             setOffset={setOffset}
             nextButtonText={cmsData.hallOfLame.nextButtonText}
