@@ -1,13 +1,14 @@
-import { EXIT_POPUP_DATA } from '@/constants'
-import CustomPopupWrapper from '../common/CustomPopupWrapper'
-import { useCMSData } from '@/data'
+import { EXIT_POPUP_DATA } from "@/constants";
+import CustomPopupWrapper from "../common/CustomPopupWrapper";
+import { useCMSData } from "@/data";
+import { useEffect, useState } from "react";
 
 const DonTstealThunderExitPopup = ({
   open,
-  onClose
+  onClose,
 }: {
-  open: boolean
-  onClose: () => void
+  open: boolean;
+  onClose: () => void;
 }) => {
   return (
     <CustomPopupWrapper
@@ -20,23 +21,23 @@ const DonTstealThunderExitPopup = ({
       singleButtonText={EXIT_POPUP_DATA.DONT_STEAL_THUNDER.SINGLE_BUTTON_TEXT}
       singleButtonOnClick={onClose}
     />
-  )
-}
+  );
+};
 
 const MakeLaughExitPopup = ({
   open,
   onClose,
   setOpen,
   yesButtonClick,
-  noButtonClick
+  noButtonClick,
 }: {
-  open: boolean
-  onClose: () => void
-  setOpen?: (open: boolean) => void,
-  yesButtonClick:()=>void,
-  noButtonClick:()=>void
+  open: boolean;
+  onClose: () => void;
+  setOpen?: (open: boolean) => void;
+  yesButtonClick: () => void;
+  noButtonClick: () => void;
 }) => {
-  const { didThatMakeYouLaugh } = useCMSData()
+  const { didThatMakeYouLaugh } = useCMSData();
   return (
     <CustomPopupWrapper
       open={open}
@@ -49,18 +50,18 @@ const MakeLaughExitPopup = ({
       noButtonText={didThatMakeYouLaugh?.didThatMakeYouLaughNoButton}
       doubleButton={true}
       setOpen={setOpen}
-      yesButtonClick={()=>yesButtonClick()}
-      noButtonClick={()=>noButtonClick()}
+      yesButtonClick={() => yesButtonClick()}
+      noButtonClick={() => noButtonClick()}
     />
-  )
-}
+  );
+};
 
 const FOMOExitPopup = ({
   open,
-  onClose
+  onClose,
 }: {
-  open: boolean
-  onClose: () => void
+  open: boolean;
+  onClose: () => void;
 }) => {
   return (
     <CustomPopupWrapper
@@ -71,22 +72,22 @@ const FOMOExitPopup = ({
       subtitle={EXIT_POPUP_DATA.FOMO.SUB_TITLE}
       doubleButton={true}
     />
-  )
-}
+  );
+};
 
 const BreakTheIceExitPopup = ({
   open,
   yesButtonClick,
   noButtonClick,
-  onClose
+  onClose,
 }: {
-  open: boolean
-  yesButtonClick: () => void
-  noButtonClick: () => void,
-  onClose:()=>void
+  open: boolean;
+  yesButtonClick: () => void;
+  noButtonClick: () => void;
+  onClose: () => void;
 }) => {
-  const { breakTheIce } = useCMSData()
-  console.log('breakTheIce', breakTheIce)
+  const { breakTheIce } = useCMSData();
+  console.log("breakTheIce", breakTheIce);
   return (
     <CustomPopupWrapper
       open={open}
@@ -101,15 +102,15 @@ const BreakTheIceExitPopup = ({
       noButtonText={breakTheIce?.breakTheIceNoButton}
       doubleButton={true}
     />
-  )
-}
+  );
+};
 
 const DontMissOutExitPopup = ({
   open,
-  onClose
+  onClose,
 }: {
-  open: boolean
-  onClose: () => void
+  open: boolean;
+  onClose: () => void;
 }) => {
   return (
     <CustomPopupWrapper
@@ -120,31 +121,35 @@ const DontMissOutExitPopup = ({
       subtitle={EXIT_POPUP_DATA.DONT_MISS_OUT.SUB_TITLE}
       doubleButton={true}
     />
-  )
-}
+  );
+};
 
 const MadeYouLaughExitPopup = ({
   open,
-  onClose
+  onClose,
 }: {
-  open: boolean
-  onClose: () => void
+  open: boolean;
+  onClose: () => void;
 }) => {
-  const { madeYouLoL } = useCMSData()
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const cmsData = useCMSData(mounted);
   return (
     <CustomPopupWrapper
       open={open}
       onClose={onClose}
       icon={EXIT_POPUP_DATA.MADE_YOU_LAUGH.ICON}
-      title={madeYouLoL.made_you_lol_heading}
-      subtitle={madeYouLoL.made_you_lol_sub_heading}
-      sureToExitText={madeYouLoL.made_you_lol_sub_heading_2}
-      yesButtonText={madeYouLoL.made_you_lol_yes_button_text}
-      noButtonText={madeYouLoL.made_you_lol_no_button_text}
+      title={cmsData?.madeYouLoL?.madeYouLolHeading}
+      subtitle={cmsData?.madeYouLoL?.madeYouLolSubHeading}
+      sureToExitText={cmsData?.madeYouLoL?.madeYouLolSubHeading2}
+      yesButtonText={cmsData?.madeYouLoL?.madeYouLolYesButtonText}
+      noButtonText={cmsData?.madeYouLoL?.madeYouLolNoButtonText}
       doubleButton={true}
     />
-  )
-}
+  );
+};
 
 export {
   MakeLaughExitPopup,
@@ -152,5 +157,5 @@ export {
   BreakTheIceExitPopup,
   DontMissOutExitPopup,
   MadeYouLaughExitPopup,
-  DonTstealThunderExitPopup
-}
+  DonTstealThunderExitPopup,
+};

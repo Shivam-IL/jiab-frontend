@@ -18,6 +18,10 @@ export interface MyProfileData {
   myReferrals: string;
   referAnother: string;
   helpUsKnowMore: string;
+  setAsDefault: string;
+  myJokes: string;
+  hallOfLameText: string;
+  sendAgain: string;
 }
 
 export const mapMyProfileData = (
@@ -45,6 +49,10 @@ export const mapMyProfileData = (
     myReferrals: myProfileCMS?.my_referrals ?? "My Referrals",
     referAnother: myProfileCMS?.refer_another ?? "Refer Another",
     helpUsKnowMore: myProfileCMS?.help_us_know_more ?? "Help Us Know More",
+    setAsDefault: myProfileCMS?.set_as_default ?? "Set as Default",
+    myJokes: myProfileCMS?.my_jokes ?? "My Jokes",
+    hallOfLameText: myProfileCMS?.hall_of_lame_text ?? "Hall of Lame",
+    sendAgain: myProfileCMS?.send_again ?? "Send Again",
   };
 };
 
@@ -67,4 +75,8 @@ export const defaultMyProfileData: MyProfileData = {
   myReferrals: "My Referrals",
   referAnother: "Refer Another",
   helpUsKnowMore: "Help Us Know More",
+  setAsDefault: "Set as Default",
+  myJokes: "My Jokes",
+  hallOfLameText: "Hall of Lame",
+  sendAgain: "Send Again",
 };

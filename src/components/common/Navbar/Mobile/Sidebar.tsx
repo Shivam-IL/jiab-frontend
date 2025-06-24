@@ -123,7 +123,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
       <div
         className={`fixed top-0 left-0 h-full w-[258px] bg-white z-[70] transform transition-all duration-300 ease-out shadow-2xl scrollbar-hide ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } overflow-y-auto`}
+        } overflow-y-auto overflow-x-hidden`}
       >
         {/* User Profile Section */}
         {isAuthenticated ? (

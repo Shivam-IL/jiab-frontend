@@ -11,9 +11,11 @@ import { updateUser } from "@/store/profile/profile.slice";
 const UserAddressCard = ({
   addressTextField,
   addClickableText,
+  setAsDefault,
 }: {
   addressTextField: string;
   addClickableText: string;
+  setAsDefault: string;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -53,6 +55,7 @@ const UserAddressCard = ({
               index={index}
               allowBottomBorder={index !== addresses.length - 1}
               key={address?.id}
+              setAsDefault={setAsDefault}
             />
           ))}
         </div>

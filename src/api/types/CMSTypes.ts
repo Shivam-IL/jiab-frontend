@@ -182,6 +182,7 @@ export type TCMSResponse = {
       documentId: string;
       have_an_invite_code_header: string;
       have_an_invite_code_sub_heading: string;
+      have_an_invite_code_button_text: string;
       createdAt: string;
       updatedAt: string;
       publishedAt: string;
@@ -241,6 +242,10 @@ export type TCMSResponse = {
       my_referrals: string;
       refer_another: string;
       help_us_know_more: string;
+      set_as_default: string;
+      my_jokes: string;
+      hall_of_lame_text: string;
+      send_again: string;
     };
     comic_coins: {
       id: number;

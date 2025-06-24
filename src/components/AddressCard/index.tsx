@@ -22,12 +22,14 @@ import useAppSelector from '@/hooks/useSelector'
 const AddressCard = ({
   allowBottomBorder = false,
   address,
-  addressLength
+  addressLength,
+  setAsDefault
 }: {
   index: number
   allowBottomBorder?: boolean
   address?: IUserAddressData | null
   addressLength?: number
+  setAsDefault: string
 }) => {
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false)
   const [addressId, setAddressId] = useState<number | null>(null)
@@ -160,7 +162,7 @@ const AddressCard = ({
           <AktivGroteskText
             fontSize='text-[12px] md:text-[18px]'
             fontWeight='font-[400]'
-            text='Set as Default'
+            text={setAsDefault}
           />
         </div>
         <button
