@@ -490,6 +490,9 @@ const SubmitYourJoke = () => {
       if (fileSizeMB > MAX_FILE_SIZE_MB) {
         alert(`File size should not exceed ${MAX_FILE_SIZE_MB} MB.`)
         setJokeData(prev => ({ ...prev, file: null }))
+        if (fileRef.current) {
+          fileRef.current.value = ''
+        }
         return
       }
       
@@ -497,6 +500,9 @@ const SubmitYourJoke = () => {
       if (!validateFileFormat(selectedFile, jokeData.acceptedFormats)) {
         alert(`Please select a file with one of these formats: ${jokeData.acceptedFormats}`)
         setJokeData(prev => ({ ...prev, file: null }))
+        if (fileRef.current) {
+          fileRef.current.value = ''
+        }
         return
       }
       
