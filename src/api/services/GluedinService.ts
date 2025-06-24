@@ -43,9 +43,20 @@ export class GluedinService extends MainService {
 
   public async generateFCMToken() {
     try {
-      if (!messaging) {
-        console.log("Firebase messaging not available");
-        return;
+      // Check if we're in a browser environment with Notification API
+      if (typeof window === 'undefined' || !('Notification' in window)) {
+        console.log("Notification API not available");
+        return null;
+      }
+
+      // Import setupMessaging function
+      const { setupMessaging } = await import('@/lib/firebase');
+      
+      // Ensure messaging is initialized with Web Push support check
+      const messagingInstance = messaging || await setupMessaging();
+      if (!messagingInstance) {
+        console.log("Firebase messaging not available or not supported on this device/browser");
+        return null;
       }
 
       // Check if service worker is supported
@@ -58,26 +69,30 @@ export class GluedinService extends MainService {
 
         if (permission === "granted") {
           // Generate FCM token
-          const token = await getToken(messaging, {
+          const token = await getToken(messagingInstance, {
             vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
           });
 
           if (token) {
             console.log("FCM Token generated for signup:", token);
-            return token;
             // Store token in localStorage for persistence
             localStorage.setItem("fcm_token", token);
+            return token;
           } else {
             console.log("No FCM token available");
+            return null;
           }
-          return null;
         } else {
           console.log("Notification permission denied");
           return null;
         }
+      } else {
+        console.log("Service Worker not supported");
+        return null;
       }
     } catch (error) {
       console.error("Error generating FCM token:", error);
+      return null;
     }
   }
 

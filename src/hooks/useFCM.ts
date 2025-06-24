@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { messaging, getToken, onMessage } from '@/lib/firebase';
+import { messaging, getToken, onMessage, setupMessaging } from '@/lib/firebase';
 import { sendTokenToServer } from '@/utils/fcmUtils';
 import { useQueryClient } from '@tanstack/react-query';
 import { keys } from '@/api/utils';
+import { isSupported } from 'firebase/messaging';
 
 export interface FCMHookResult {
   token: string | null;
@@ -16,20 +17,31 @@ export interface FCMHookResult {
 export const useFCM = (): FCMHookResult => {
   const [token, setToken] = useState<string | null>(null);
   const [permission, setPermission] = useState<NotificationPermission | null>(null);
-  const [isSupported, setIsSupported] = useState<boolean>(false);
+  const [isFCMSupported, setIsFCMSupported] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
     // Check if FCM is supported
-    const checkSupport = () => {
+    const checkSupport = async () => {
       if (typeof window !== 'undefined') {
-        const supported = 'Notification' in window && 
-                        'serviceWorker' in navigator && 
-                        'PushManager' in window;
-        setIsSupported(supported);
-        
-        if (supported) {
-          setPermission(Notification.permission);
+        try {
+          const supported = await isSupported();
+          const basicSupport = 'Notification' in window && 
+                              'serviceWorker' in navigator && 
+                              'PushManager' in window;
+          
+          const fullSupport = supported && basicSupport;
+          setIsFCMSupported(fullSupport);
+          
+          if (fullSupport) {
+            setPermission(Notification.permission);
+            console.log("Firebase messaging is supported on this device/browser");
+          } else {
+            console.log("Firebase messaging not supported on this device/browser");
+          }
+        } catch (error) {
+          console.error("Error checking Firebase messaging support:", error);
+          setIsFCMSupported(false);
         }
       }
     };
@@ -63,7 +75,12 @@ export const useFCM = (): FCMHookResult => {
 
   const requestPermission = async (): Promise<boolean> => {
     try {
-      if (!isSupported) {
+      if (typeof window === 'undefined' || !('Notification' in window)) {
+        console.log('Notification API not available');
+        return false;
+      }
+
+      if (!isFCMSupported) {
         console.log('FCM is not supported in this browser');
         return false;
       }
@@ -72,7 +89,7 @@ export const useFCM = (): FCMHookResult => {
       setPermission(permission);
       
       if (permission === 'granted') {
-        console.log('Notification permission granted by Ishaan');
+        console.log('Notification permission granted by user');
         await getRegistrationToken();
         return true;
       } else {
@@ -87,8 +104,10 @@ export const useFCM = (): FCMHookResult => {
 
   const getRegistrationToken = async (): Promise<string | null> => {
     try {
-      if (!messaging) {
-        console.log('Messaging not available');
+      // Ensure messaging is initialized with Web Push support check
+      const messagingInstance = messaging || await setupMessaging();
+      if (!messagingInstance) {
+        console.log('Messaging not available or not supported');
         return null;
       }
 
@@ -96,8 +115,8 @@ export const useFCM = (): FCMHookResult => {
       const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
       console.log('Service Worker registered:', registration);
 
-      const currentToken = await getToken(messaging, {
-        vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY, // You'll need to add this to .env.local
+      const currentToken = await getToken(messagingInstance, {
+        vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
         serviceWorkerRegistration: registration,
       });
 
@@ -125,39 +144,47 @@ export const useFCM = (): FCMHookResult => {
 
   // Set up foreground message listener
   useEffect(() => {
-    if (messaging && permission === 'granted') {
-      const unsubscribe = onMessage(messaging, (payload) => {
-        console.log('Foreground message received:', payload);
-        
-        // Update notification count and list immediately
-        queryClient.invalidateQueries({
-          queryKey: [...keys.notifications.getNotificationCount()],
-        });
-        
-        queryClient.invalidateQueries({
-          queryKey: [...keys.notifications.getNotifications()],
-        });
-        
-        // Handle foreground message
-        if (payload.notification) {
-          // You can show a custom notification or update UI
-          const notificationTitle = payload.notification.title ?? 'New Message';
-          const notificationOptions = {
-            body: payload.notification.body ?? 'You have a new message!',
-            icon: payload.notification.icon ?? '/icons/icon-192x192.png',
-            tag: 'jiab-foreground-notification',
-          };
+    const setupListener = async () => {
+      if (permission === 'granted' && isFCMSupported) {
+        // Ensure messaging is available
+        const messagingInstance = messaging || await setupMessaging();
+        if (!messagingInstance) return;
 
-          // Show browser notification even when app is in foreground
-          if ('Notification' in window && Notification.permission === 'granted') {
-            new Notification(notificationTitle, notificationOptions);
+        const unsubscribe = onMessage(messagingInstance, (payload) => {
+          console.log('Foreground message received:', payload);
+          
+          // Update notification count and list immediately
+          queryClient.invalidateQueries({
+            queryKey: [...keys.notifications.getNotificationCount()],
+          });
+          
+          queryClient.invalidateQueries({
+            queryKey: [...keys.notifications.getNotifications()],
+          });
+          
+          // Handle foreground message
+          if (payload.notification) {
+            // You can show a custom notification or update UI
+            const notificationTitle = payload.notification.title ?? 'New Message';
+            const notificationOptions = {
+              body: payload.notification.body ?? 'You have a new message!',
+              icon: payload.notification.icon ?? '/icons/icon-192x192.png',
+              tag: 'jiab-foreground-notification',
+            };
+
+            // Show browser notification even when app is in foreground
+            if ('Notification' in window && Notification.permission === 'granted') {
+              new Notification(notificationTitle, notificationOptions);
+            }
           }
-        }
-      });
+        });
 
-      return () => unsubscribe();
-    }
-  }, [permission, queryClient]);
+        return () => unsubscribe();
+      }
+    };
+
+    setupListener();
+  }, [permission, isFCMSupported, queryClient]);
 
   const testNotificationUpdate = () => {
     console.log('Manual notification cache invalidation triggered');
@@ -173,7 +200,7 @@ export const useFCM = (): FCMHookResult => {
   return {
     token,
     permission,
-    isSupported,
+    isSupported: isFCMSupported,
     requestPermission,
     getRegistrationToken,
     testNotificationUpdate,

@@ -1,6 +1,6 @@
 // lib/firebase.ts
 import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken, onMessage, Messaging, GetTokenOptions } from 'firebase/messaging';
+import { getMessaging, getToken, onMessage, Messaging, GetTokenOptions, isSupported } from 'firebase/messaging';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -15,8 +15,35 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Messaging (only in browser environment)
-const messaging = typeof window !== 'undefined' && 'serviceWorker' in navigator ? getMessaging(app) : null;
+// Initialize Messaging with Web Push support check
+let messaging: Messaging | null = null;
 
-export { messaging, getToken, onMessage };
+const setupMessaging = async (): Promise<Messaging | null> => {
+  if (typeof window === 'undefined' || !('serviceWorker' in navigator)) {
+    console.log("Firebase messaging not available - not in browser environment or no service worker support");
+    return null;
+  }
+
+  try {
+    const supported = await isSupported();
+    if (supported) {
+      messaging = getMessaging(app);
+      console.log("Firebase messaging initialized successfully");
+      return messaging;
+    } else {
+      console.log("Push messaging not supported on this device/browser.");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error checking Firebase messaging support:", error);
+    return null;
+  }
+};
+
+// Initialize messaging immediately if possible
+if (typeof window !== 'undefined') {
+  setupMessaging();
+}
+
+export { messaging, getToken, onMessage, setupMessaging };
 export type { Messaging, GetTokenOptions };
