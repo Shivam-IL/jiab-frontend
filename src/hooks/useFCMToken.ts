@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { messaging, getToken, onMessage } from '@/lib/firebase';
+import { messaging, getToken, onMessage, setupMessaging } from '@/lib/firebase';
 import { useRegisterDevice } from '@/api/hooks/NotificationHooks';
 import useAppSelector from '@/hooks/useSelector';
 import { useQueryClient } from '@tanstack/react-query';
@@ -74,6 +74,12 @@ const useFCMToken = () => {
 
   const requestNotificationPermission = useCallback(async (): Promise<boolean> => {
     try {
+      if (typeof window === 'undefined' || !('Notification' in window)) {
+        console.error('Notification API not available');
+        setFcmState(prev => ({ ...prev, permissionStatus: 'denied' }));
+        return false;
+      }
+
       const permission = await Notification.requestPermission();
       console.log('Notification permission:', permission);
       setFcmState(prev => ({ ...prev, permissionStatus: permission }));
@@ -85,10 +91,12 @@ const useFCMToken = () => {
     }
   }, []);
 
-  const setupForegroundMessageListener = useCallback(() => {
-    if (!messaging) return;
+  const setupForegroundMessageListener = useCallback(async () => {
+    // Ensure messaging is available before setting up listener
+    const messagingInstance = messaging || await setupMessaging();
+    if (!messagingInstance) return;
 
-    const unsubscribe = onMessage(messaging, (payload) => {
+    const unsubscribe = onMessage(messagingInstance, (payload) => {
       console.log('Foreground message received:', payload);
       
       // Update notification count and list immediately
@@ -101,7 +109,7 @@ const useFCMToken = () => {
       });
       
       // Show notification even when app is in foreground
-      if (Notification.permission === 'granted') {
+      if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
         const notificationTitle = payload.notification?.title || 'New Notification';
         const notificationOptions = {
           body: payload.notification?.body || 'You have a new message!',
@@ -120,18 +128,20 @@ const useFCMToken = () => {
   }, [queryClient]);
 
   const generateFCMToken = useCallback(async (): Promise<string | null> => {
-    if (!messaging) {
-      console.error('Firebase messaging not initialized');
-      setFcmState(prev => ({ 
-        ...prev, 
-        error: 'Firebase messaging not available',
-        isLoading: false 
-      }));
-      return null;
-    }
-
     try {
       setFcmState(prev => ({ ...prev, isLoading: true, error: null }));
+
+      // Ensure messaging is initialized with Web Push support check
+      const messagingInstance = messaging || await setupMessaging();
+      if (!messagingInstance) {
+        console.error('Firebase messaging not available or not supported');
+        setFcmState(prev => ({ 
+          ...prev, 
+          error: 'Firebase messaging not available or not supported on this device/browser',
+          isLoading: false 
+        }));
+        return null;
+      }
 
       // Check service worker registration first
       const swRegistered = await checkServiceWorkerRegistration();
@@ -152,7 +162,7 @@ const useFCMToken = () => {
       }
 
       // Generate FCM token
-      const token = await getToken(messaging, {
+      const token = await getToken(messagingInstance, {
         vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
       });
       
@@ -170,7 +180,7 @@ const useFCMToken = () => {
         localStorage.setItem('fcm_token', token);
         
         // Setup foreground message listener
-        setupForegroundMessageListener();
+        await setupForegroundMessageListener();
         
         return token;
       } else {
@@ -264,7 +274,9 @@ const useFCMToken = () => {
     }
     
     // Check current permission status
-    const currentPermission = Notification.permission;
+    const currentPermission = typeof window !== 'undefined' && 'Notification' in window 
+      ? Notification.permission 
+      : 'denied' as NotificationPermission;
     setFcmState(prev => ({ ...prev, permissionStatus: currentPermission }));
 
     // Check if already registered for this user
@@ -338,7 +350,7 @@ const useFCMToken = () => {
   };
 
   const testNotification = () => {
-    if (Notification.permission === 'granted') {
+    if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
       new Notification('Test Notification', {
         body: 'This is a test notification from your app!',
         icon: '/icons/icon-192x192.png',
@@ -347,7 +359,7 @@ const useFCMToken = () => {
       });
       console.log('Test notification sent');
     } else {
-      console.log('Notification permission not granted');
+      console.log('Notification permission not granted or API not available');
     }
   };
 
