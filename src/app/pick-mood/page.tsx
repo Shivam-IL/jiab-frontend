@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "@/components/common/Header/Header";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
 import MobileTempNavBar from "@/components/common/MobileTempNavBar";
@@ -13,8 +13,14 @@ import { triggerGAEvent } from "@/utils/gTagEvents";
 import { GA_EVENTS } from "@/constants";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
 import SurpriseMeModal from "@/components/common/SurpriseMeModal";
+import { useCMSData } from "@/data";
 
 const PickMood: React.FC = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const cmsData = useCMSData(mounted);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   // Get genres from Redux store and auth state
@@ -74,13 +80,13 @@ const PickMood: React.FC = () => {
   return (
     <>
       <MobileTempNavBar
-        title="Pick Mood"
-        subtitle="Pick your Delulu, Get your Solulu"
+        title={cmsData.homePage.pickYourMoodHeading}
+        subtitle={cmsData.homePage.pickYourMoodSubheading}
       />
       <ScreenWrapper className="md:bg-[#F2F2F2] bg-white border-t-[14px] border-[#F2F2F2] md:mt-[100px] mt-0">
         <Header
-          title="Pick Your Mood"
-          description="Pick your Delulu, Get your Solulu"
+          title={cmsData.homePage.pickYourMoodHeading}
+          description={cmsData.homePage.pickYourMoodSubheading}
           className="md:block hidden"
         />
         <div className="grid md:grid-cols-5 grid-cols-3 md:mt-[40px] md:gap-y-[24px] gap-y-[20px] justify-between">

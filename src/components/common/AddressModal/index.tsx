@@ -325,7 +325,7 @@ const AddressModal: React.FC<IAddressModal> = ({
         <div className='w-full flex px-[15px] md:px-[19px] justify-between items-center box-border '>
           <AktivGroteskText
             text={
-              type === AddressModalType.ADD ? 'Add Address' : 'Edit Address'
+              type === AddressModalType.ADD ? cmsData?.plusAddInsideProfile?.addAddress : cmsData?.plusAddInsideProfile?.editAddress
             }
             className='leading-tight'
             fontSize='text-[16px] md:text-[20px]'
@@ -446,7 +446,7 @@ const AddressModal: React.FC<IAddressModal> = ({
                 className='cursor-pointer border-none outline-none'
               >
                 <AktivGroteskText
-                  text='T&C*'
+                  text={cmsData?.plusAddInsideProfile?.tAndC}
                   fontSize='text-[7px]'
                   fontWeight='font-[400]'
                 />
@@ -457,7 +457,7 @@ const AddressModal: React.FC<IAddressModal> = ({
                 className='cursor-pointer border-none outline-none'
               >
                 <AktivGroteskText
-                  text='Privacy Policy*'
+                  text={cmsData?.plusAddInsideProfile?.privacyPolicy}
                   fontSize='text-[7px]'
                   fontWeight='font-[400]'
                 />
@@ -465,7 +465,7 @@ const AddressModal: React.FC<IAddressModal> = ({
             </div>
             <div className='relative flex gap-2 items-center'>
               <AktivGroteskText
-                text='CARBONATED WATER. TRADEMARK OWNER: THE COCA-COLA COMPANY.'
+                text={cmsData?.plusAddInsideProfile?.trademark}
                 fontSize='text-[6px]'
                 fontWeight='font-[400]'
               />
