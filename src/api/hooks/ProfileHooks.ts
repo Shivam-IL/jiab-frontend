@@ -23,7 +23,7 @@ const useGetUserProfileDetails = (params?: Record<string, unknown>) => {
     ],
     queryFn: () => profileService.getUserProfileDetails(),
     enabled: isAuthenticated && token ? true : false,
-    staleTime: 60 * 60,
+    staleTime: 0,
   });
 };
 
@@ -117,7 +117,7 @@ const useGetUserQuestions = ({ language_id }: { language_id: string }) => {
     queryKey: [...keys.profile.getUserQuestions(), { language_id }],
     queryFn: () => profileService.getUserQuestions(language_id),
     enabled: isAuthenticated && token ? true : false,
-    staleTime: 60 * 60,
+    staleTime: 0,
   });
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import AktivGroteskText from '../AktivGroteskText'
-import {  ICONS_NAMES, SAVE } from '@/constants'
+import { ICONS_NAMES, SAVE } from '@/constants'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import GreenCTA from '@/components/GreenCTA'
 import SvgIcons from '../SvgIcons'
@@ -119,6 +119,7 @@ const HelpUsToKnowYourBetter = ({
   const { data: userProfileData } = useGetUserProfileDetails({
     questionIdSubmitted
   })
+  const [questionSubmitted, setQuestionSubmitted] = useState<boolean>(false)
 
   useEffect(() => {
     if (selectedLanguage) {
@@ -136,7 +137,7 @@ const HelpUsToKnowYourBetter = ({
         setSubmittedCheck(false)
         setSavedCheck(false)
         setQuestionIdSubmitted(null)
-        mountRef.current = false
+        setQuestionSubmitted(false)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -144,16 +145,15 @@ const HelpUsToKnowYourBetter = ({
 
   // Re-map API response when userProfileQuestions data changes
   useEffect(() => {
-    if (
-      userProfileQuestions?.ok &&
-      userProfileQuestions?.data &&
-      selectedLanguageId
-    ) {
+    if (userProfileQuestions?.ok && selectedLanguageId && !questionSubmitted) {
       // Transform and map the API response using utility function
       const modifiedData = mapQuestionResponse(
         userProfileQuestions.data,
         selectedLanguageId
       )
+
+      console.log('modifiedData', modifiedData)
+      console.log('first', modifiedData?.[0])
 
       setAllQuestions(modifiedData)
 
@@ -172,6 +172,7 @@ const HelpUsToKnowYourBetter = ({
       setSavedCheck(isSaved)
       mountRef.current = true
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfileQuestions, selectedLanguageId])
 
   useEffect(() => {
@@ -192,7 +193,6 @@ const HelpUsToKnowYourBetter = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestionNumber])
-
 
   useEffect(() => {
     if (userProfileData?.ok) {
@@ -279,6 +279,7 @@ const HelpUsToKnowYourBetter = ({
                     ...selectedQuestion,
                     selected_option: parseInt(value)
                   })
+                  setQuestionSubmitted(true)
                 }}
                 className='flex flex-col gap-[16px] md:gap-[20px]'
               >
