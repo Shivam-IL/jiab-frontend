@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import SvgIcons from "../common/SvgIcons";
-import { ICONS_NAMES } from "@/constants";
+import { GA_EVENTS, ICONS_NAMES } from "@/constants";
 import AktivGroteskText from "../common/AktivGroteskText";
 import Input from "@/components/Input";
 import GreenCTA from "@/components/GreenCTA";
@@ -13,6 +13,7 @@ import {
   CDPEventPayloadBuilder,
   TransactionCodeCDPEventPayload,
 } from "@/api/utils/cdpEvents";
+import { triggerGAEvent } from "@/utils/gTagEvents";
 
 interface UniqueCodeModalProps {
   open: boolean;
@@ -106,6 +107,7 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
         switch (data.status) {
           case MIX_CODE_STATUS.SUCCESS:
             trigger_CDP_REDEEM_MIX_CODE(uniqueCode);
+            triggerGAEvent(GA_EVENTS.SPRITE_J24_UNIQUE_CODE_SUBMIT);
             setCoinsCollected(20); // Default coins for successful redemption
             setIsSuccess(true);
             break;

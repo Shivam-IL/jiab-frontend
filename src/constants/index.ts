@@ -770,6 +770,7 @@ export const GA_EVENTS = {
   SPRITE_J24_TEXT_JOKE_SUBMIT: "SpriteJ24_Text_JokeSubmit",
   SPRITE_J24_AUDIO_JOKE_SUBMIT: "SpriteJ24_Audio_JokeSubmit",
   SPRITE_J24_VIDEO_JOKE_SUBMIT: "SpriteJ24_Video_JokeSubmit",
+  SPRITE_J24_UNIQUE_CODE_SUBMIT: "SpriteJ24_UniqueCode_Submit",
 };
 
 export const ANNOUNCING_WINNER_TIMER_TEXT = "Announcing the winners in...";
