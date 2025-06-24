@@ -125,6 +125,7 @@ const ProfilePage = () => {
           <UserAddressCard
             addressTextField={cmsData?.myProfile?.addressTextField}
             addClickableText={cmsData?.myProfile?.addClickableText}
+            setAsDefault={cmsData?.myProfile?.setAsDefault}
           />
           <ReferAFriend
             referToFriendHeader={cmsData?.myProfile?.referToFriendHeader}
@@ -142,7 +143,10 @@ const ProfilePage = () => {
             prevButtonText={cmsData?.myProfile?.prevButtonText}
             nextButtonText={cmsData?.myProfile?.nextButtonText}
           />
-          <UserGeneratedJokecComponent />
+          <UserGeneratedJokecComponent 
+            myJokeText={cmsData?.myProfile?.myJokes}
+            hallOfLameText={cmsData?.myProfile?.hallOfLameText}
+          />
         </div>
       </div>
 
