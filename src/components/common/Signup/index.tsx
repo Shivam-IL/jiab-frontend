@@ -380,6 +380,7 @@ const Signup = () => {
         if (isFirstLogin) {
           removeAuthentication();
         }
+        clearSessionStorage();
       }}
       logo={true}
     >

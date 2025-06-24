@@ -7,8 +7,6 @@ import { AddressModalType } from "@/types";
 import { useGetUserProfileDetails } from "@/api/hooks/ProfileHooks";
 import useAppDispatch from "@/hooks/useDispatch";
 import { updateUser } from "@/store/profile/profile.slice";
-import { triggerGAEvent } from "@/utils/gTagEvents";
-import { GA_EVENTS } from "@/constants";
 
 const UserAddressCard = ({
   addressTextField,
@@ -27,9 +25,7 @@ const UserAddressCard = ({
     if (userProfileData?.ok) {
       const { data } = userProfileData?.data ?? {};
       dispatch(updateUser({ user: { ...data?.user } }));
-      if (data?.profile_percentage === 100) {
-        triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER);
-      }
+      
     }
   }, [userProfileData, dispatch]);
 

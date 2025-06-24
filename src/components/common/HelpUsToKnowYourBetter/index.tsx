@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import AktivGroteskText from '../AktivGroteskText'
-import { GA_EVENTS, ICONS_NAMES, SAVE } from '@/constants'
+import {  ICONS_NAMES, SAVE } from '@/constants'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import GreenCTA from '@/components/GreenCTA'
 import SvgIcons from '../SvgIcons'
@@ -10,7 +10,6 @@ import {
   useSubmitUserQuestions
 } from '@/api/hooks/ProfileHooks'
 import { updateBalance } from '@/store/profile/profile.slice'
-import { triggerGAEvent } from '@/utils/gTagEvents'
 import useAppDispatch from '@/hooks/useDispatch'
 import useAppSelector from '@/hooks/useSelector'
 import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
@@ -148,8 +147,7 @@ const HelpUsToKnowYourBetter = ({
     if (
       userProfileQuestions?.ok &&
       userProfileQuestions?.data &&
-      selectedLanguageId &&
-      mountRef.current !== true
+      selectedLanguageId
     ) {
       // Transform and map the API response using utility function
       const modifiedData = mapQuestionResponse(
@@ -159,6 +157,8 @@ const HelpUsToKnowYourBetter = ({
 
       setAllQuestions(modifiedData)
 
+      console.log('userProfileQuestions', modifiedData)
+      console.log('modifiedData', modifiedData?.[0])
       // Set the first question as selected if available
       if (modifiedData.length > 0) {
         setSelectedQuestion(modifiedData[0])
@@ -193,13 +193,11 @@ const HelpUsToKnowYourBetter = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestionNumber])
 
+
   useEffect(() => {
     if (userProfileData?.ok) {
       const { data } = userProfileData?.data ?? {}
       dispatch(updateBalance({ current_balance: data?.current_balance }))
-      if (data?.user?.profile_percentage === 100) {
-        triggerGAEvent(GA_EVENTS.SPRITE_J24_COMPLETED_PROFILE_CONSUMER)
-      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfileData])
@@ -218,8 +216,6 @@ const HelpUsToKnowYourBetter = ({
 
   useEffect(() => {
     if (submitQuestionResponse?.ok) {
-      console.log('user', selectedQuestion?.selected_option)
-      console.log('selectedQuestion', selectedQuestion)
       if (selectedQuestion?.selected_option) {
         trigerQuestionCDPEvent(selectedQuestion?.selected_option)
       }

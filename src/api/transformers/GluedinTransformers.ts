@@ -1,14 +1,14 @@
 import { IViewData } from "../services/GluedinService";
 import { TModifiedUGCContent, TUGCContent } from "../types/GluedinTypes";
 
-const JOKES = [
-  "What is fast, loud and crunchy? A rocket chip",
-  "I was going to tell you a joke about a broken pencil, but then I realized it was pointless.",
-  "What did the lava say to his girlfriend? “I lava you!",
-  "Why is Peter Pan always flying? Because he Neverlands",
-  "Which song is this??? . 12.9999999999… . . . . . . . . . . . . . . . . . . . . “Tera, Hone Laga Hoon…",
-  "Why is Peter Pan always flying? Because he Neverlands",
-];
+// const JOKES = [
+//   "What is fast, loud and crunchy? A rocket chip",
+//   "I was going to tell you a joke about a broken pencil, but then I realized it was pointless.",
+//   "What did the lava say to his girlfriend? “I lava you!",
+//   "Why is Peter Pan always flying? Because he Neverlands",
+//   "Which song is this??? . 12.9999999999… . . . . . . . . . . . . . . . . . . . . “Tera, Hone Laga Hoon…",
+//   "Why is Peter Pan always flying? Because he Neverlands",
+// ];
 
 const gluedinFeedListTransformer = (
   feedData: TUGCContent[],
@@ -50,9 +50,7 @@ const gluedinFeedListTransformer = (
         reactions,
         isReacted: isReacted,
         reactionType: reactionType,
-        content:
-          getContent?.content ??
-          JOKES[Math.floor(Math.random() * JOKES.length)],
+        content: getContent?.content ?? "",
         contentDataId: getContent?.id,
       };
       newFeedData.push(modifiedItem);

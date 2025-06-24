@@ -10,7 +10,7 @@ import Header from "@/components/common/Header/Header";
 import { useCMSData } from "@/data";
 import useWindowWidth from "@/hooks/useWindowWidth";
 import {
-  useGetGluedinFeedList,
+  useGetHomePageJokeList,
   useViewGludeinJokes,
 } from "@/api/hooks/GluedinHooks";
 import { TModifiedUGCContent } from "@/api/types/GluedinTypes";
@@ -45,10 +45,8 @@ const HomePageJokeSection = ({
   const { mutate: sendCDPEvent } = useSendCDPEvent();
 
   const { data: jokeBoxData, isFetched: isJokeBoxFetched } =
-    useGetGluedinFeedList({
+    useGetHomePageJokeList({
       sortBy: activeTab === "Latest" ? "latest" : "popular",
-      limit: 6,
-      offset: 0,
     });
 
   const dispatch = useAppDispatch();
@@ -83,6 +81,7 @@ const HomePageJokeSection = ({
   useEffect(() => {
     if (jokeBoxData?.ok && isJokeBoxFetched) {
       const { data } = jokeBoxData ?? {};
+      console.log("data", data);
       const assetIds = data?.map((item: { videoId: string }) => item?.videoId);
       viewGludeinJokes({ assetIds });
       trigger_CDP_VIEW_JOKES(assetIds);

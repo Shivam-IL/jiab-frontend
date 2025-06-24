@@ -140,6 +140,7 @@ export class ReferralService extends MainService {
       if (data?.success) {
         const responseData = {
           status: INVITE_CODE_STATUS.SUCCESS,
+          phone_number: data?.data?.phone_number,
         };
         return SuccessResponse(responseData);
       } else if (data?.code === 1010) {

@@ -9,6 +9,7 @@ import {
 import {
   TGludeinFeedList,
   TGludeinHallOfLame,
+  TGludeinHomePageJokeList,
   TGludeinJokes,
   TGludeinReport,
   TModifiedUGCContent,
@@ -44,18 +45,20 @@ export class GluedinService extends MainService {
   public async generateFCMToken() {
     try {
       // Check if we're in a browser environment with Notification API
-      if (typeof window === 'undefined' || !('Notification' in window)) {
+      if (typeof window === "undefined" || !("Notification" in window)) {
         console.log("Notification API not available");
         return null;
       }
 
       // Import setupMessaging function
-      const { setupMessaging } = await import('@/lib/firebase');
-      
+      const { setupMessaging } = await import("@/lib/firebase");
+
       // Ensure messaging is initialized with Web Push support check
-      const messagingInstance = messaging || await setupMessaging();
+      const messagingInstance = messaging || (await setupMessaging());
       if (!messagingInstance) {
-        console.log("Firebase messaging not available or not supported on this device/browser");
+        console.log(
+          "Firebase messaging not available or not supported on this device/browser"
+        );
         return null;
       }
 
@@ -150,6 +153,7 @@ export class GluedinService extends MainService {
         c_type: "UGC",
         offset: offset,
         limit: limit,
+        ugc: true,
         ...(labels.length > 0 && { labels }),
         ...(search && { search }),
         ...(sortBy && { sortBy }),
@@ -194,6 +198,70 @@ export class GluedinService extends MainService {
             contentResponse?.data ?? []
           );
         return SuccessResponse(modifiedFeedData);
+      }
+      return ErrorResponse(
+        response?.statusMessage || "Failed to get Gluedin feed list"
+      );
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to get Gluedin feed list";
+      throw new Error(errorMessage);
+    }
+  }
+
+  public async getHomePageJokeList({ sortBy }: TGludeinHomePageJokeList) {
+    const feedModule = new gluedin.GluedInFeedModule();
+    const offset = 0;
+    const limit = 1000;
+    try {
+      const payload = {
+        c_type: "UGC",
+        ugc: true,
+        offset: offset,
+        limit: limit,
+        ...(sortBy && { sortBy }),
+      };
+
+      const gluedinFeedList = await feedModule.filterVideos(payload);
+      const response = gluedinFeedList?.data ?? {};
+
+      const videoIds = response?.result?.map(
+        (item: TUGCContent) => item?.videoId
+      );
+      const gluedinUserVoteList = await feedModule.Like(videoIds);
+      const gluedinUserVoteListResponse = gluedinUserVoteList?.data ?? {};
+
+      const getContentByIds = await apiClient.post(
+        API_ROUTES.JOKES.GET_CONTENT_BY_IDS,
+        {
+          ids: videoIds ?? [],
+        },
+        {
+          headers: {
+            ...this.getAuthHeaders(),
+          },
+        }
+      );
+      const contentResponse = getContentByIds?.data ?? {};
+
+      const getData = await feedModule.Reactions(videoIds);
+      const gluedinUserReactionList = getData?.data;
+
+      if (response?.success) {
+        const modifiedFeedData: TModifiedUGCContent[] =
+          gluedinFeedListTransformer(
+            response?.result,
+            gluedinUserVoteListResponse?.result,
+            gluedinUserReactionList?.result,
+            contentResponse?.data ?? []
+          );
+        const newModifiedFeedData = modifiedFeedData.filter(
+          (item) => item.content !== ""
+        );
+        const newData = newModifiedFeedData?.slice(0, 6) ?? [];
+        return SuccessResponse(newData);
       }
       return ErrorResponse(
         response?.statusMessage || "Failed to get Gluedin feed list"
@@ -356,12 +424,12 @@ export class GluedinService extends MainService {
         );
         const contentResponse = getContentByIds?.data ?? {};
         const contentData = contentResponse?.data ?? [];
-        
+
         // Find the content with matching id (videoId) to get the asset_id
         const matchingContent = contentData.find(
           (content: { content: string; id: string }) => content.id === assetId
         );
-        
+
         if (matchingContent) {
           endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?asset_id=${matchingContent.id}&type=vote`;
         } else {
@@ -381,17 +449,18 @@ export class GluedinService extends MainService {
         }
       );
       const coinResponseData = coinResponse?.data ?? {};
-      
+
       // For voting, we need to check coin increment success
       let coinIncrementSuccess = false;
       if (type === "vote") {
         // If response status is 400, don't proceed with voting
         if (coinResponse?.status === 400) {
           return ErrorResponse(
-            coinResponseData?.statusMessage || "Bad request - voting not allowed"
+            coinResponseData?.statusMessage ||
+              "Bad request - voting not allowed"
           );
         }
-        
+
         // Only trigger coin animation when response.status === 200
         if (coinResponse?.status === 200) {
           coinIncrementSuccess = true;
@@ -401,7 +470,7 @@ export class GluedinService extends MainService {
           );
         }
       }
-      
+
       const actityvityTimelineModule = new gluedin.GluedInActivityTimeline();
       const gluedinUserVoteList =
         await actityvityTimelineModule.activityTimelineLike({

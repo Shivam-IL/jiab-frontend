@@ -28,6 +28,8 @@ const initialState: IUgcState = {
   loadMore: false,
 };
 
+
+
 const ugcSlice = createSlice({
   name: "ugc",
   initialState,
