@@ -24,6 +24,7 @@ export * from "./login";
 export * from "./leaderboard";
 export * from "./edit-profile";
 export * from "./invite_code";
+export * from "./same-refer";
 
 // Import all the mapping functions
 import {
@@ -166,6 +167,11 @@ import {
   mapInviteCodeData,
   type InviteCodeData,
 } from "./invite_code";
+import {
+  defaultSameReferPopupData,
+  mapSameReferPopupData,
+  SameReferPopupData,
+} from "./same-refer";
 
 // Combined interface for all CMS data
 export interface AllCMSData {
@@ -201,6 +207,7 @@ export interface AllCMSData {
   leaderboard: LeaderboardData;
   editProfile: EditProfileData;
   inviteCode: InviteCodeData;
+  sameRefer: SameReferPopupData;
 }
 
 // Hook to get all mapped CMS data
@@ -243,6 +250,7 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
         leaderboard: defaultLeaderboardData,
         editProfile: defaultEditProfileData,
         inviteCode: defaultInviteCodeData,
+        sameRefer: defaultSameReferPopupData,
       };
     }
 
@@ -280,6 +288,7 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
       leaderboard: mapLeaderboardData(homePageContent),
       editProfile: mapEditProfileData(homePageContent),
       inviteCode: mapInviteCodeData(homePageContent),
+      sameRefer: mapSameReferPopupData(homePageContent),
     };
   }, [homePageContent, mounted]);
 };
@@ -321,5 +330,6 @@ export const mapAllCMSData = (
     leaderboard: mapLeaderboardData(cmsData),
     editProfile: mapEditProfileData(cmsData),
     inviteCode: mapInviteCodeData(cmsData),
+    sameRefer: mapSameReferPopupData(cmsData),
   };
 };

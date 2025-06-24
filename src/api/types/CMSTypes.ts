@@ -498,6 +498,17 @@ export type TCMSResponse = {
       locale: string;
       no_data_found: string;
     };
+    trying_to_get_one_past_pop_up: {
+      id: number;
+      documentId: string;
+      trying_to_heading: string;
+      trying_to_sub_heading: string;
+      refer_another_pop_up: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
     localizations: Array<{
       id: number;
       documentId: string;

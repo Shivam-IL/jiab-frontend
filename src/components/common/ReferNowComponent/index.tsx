@@ -173,7 +173,8 @@ const ReferNowComponent = ({
     };
   }, []);
 
-  const { easyPeasy, ahemAhem, tryingToPrankUs, referAFriend } = useCMSData();
+  const { easyPeasy, ahemAhem, tryingToPrankUs, referAFriend, sameRefer } =
+    useCMSData();
 
   return (
     <>
@@ -269,12 +270,10 @@ const ReferNowComponent = ({
             setPhoneNumber("");
           }}
           icon={REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.ICON}
-          title={REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.TITLE}
-          subtitle={REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.SUB_TITLE}
+          title={sameRefer.trying_to_heading}
+          subtitle={sameRefer.trying_to_sub_heading}
           singleButton={REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.SINGLE_BUTTON}
-          singleButtonText={
-            REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.SINGLE_BUTTON_TEXT
-          }
+          singleButtonText={sameRefer.refer_another_pop_up}
           singleButtonOnClick={() => {
             setReferStatus2(false);
             setOpen?.(true);

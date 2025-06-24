@@ -7,9 +7,6 @@ import ScreenWrapper from "@/components/common/ScreenWrapper";
 import SvgIcons from "@/components/common/SvgIcons";
 import {
   ICONS_NAMES,
-  MOBILE_TEMP_NAVBAR_DATA,
-  NEXT,
-  PREV,
   REFFERAL_STATUS_POPUP_DATA,
   SEND_AGAIN_STATUS,
 } from "@/constants";
@@ -76,7 +73,7 @@ const SendReminderPage = () => {
 
   return (
     <div className="flex flex-col gap-3">
-      <MobileTempNavBar title={MOBILE_TEMP_NAVBAR_DATA.SEND_REMINDER.TITLE} />
+      <MobileTempNavBar title={cmsData?.myProfile?.sendReminder} />
       <ScreenWrapper
         className={`${width > 750 ? "mt-[71px] flex justify-center" : "mt-0"}`}
       >
@@ -150,7 +147,7 @@ const SendReminderPage = () => {
                   }`}
                 >
                   <AktivGroteskText
-                    text={PREV}
+                    text={cmsData?.myProfile?.prevButtonText}
                     fontSize="text-[14px] md:text-[20px]"
                     fontWeight="font-[700]"
                   />
@@ -170,7 +167,7 @@ const SendReminderPage = () => {
                   }  transition-all duration-300 rounded-[100px] border-[1px] text-[10px] font-[700] py-[6px] px-[36px]`}
                 >
                   <AktivGroteskText
-                    text={NEXT}
+                    text={cmsData?.myProfile?.nextButtonText}
                     fontSize="text-[14px] md:text-[20px]"
                     fontWeight="font-[700]"
                   />
