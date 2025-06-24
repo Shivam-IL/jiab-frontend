@@ -77,9 +77,12 @@ const ContactCard: React.FC<ContactCardProps> = ({
               <h3 className="md:text-[28px] text-[20px] font-semibold text-black mb-2">
                 {cmsData?.contactUs?.emailUs}
               </h3>
-              <p className="md:text-[24px] text-[16px] pb-[8px]">
+              <a
+                href="mailto:indiahelpline@coca-cola.com"
+                className="md:text-[24px] text-[16px] pb-[8px] inline-block"
+              >
                 indiahelpline@coca-cola.com
-              </p>
+              </a>
             </div>
 
             {/* Phone Section */}
@@ -96,9 +99,12 @@ const ContactCard: React.FC<ContactCardProps> = ({
                 {cmsData?.contactUs?.callUsTollFreeHeading}
               </h3>
               <div className="text-black">
-                <p className="md:text-[24px] text-[16px] md:font-semibold md:mb-2">
+                <a
+                  href="tel:18002082653"
+                  className="md:text-[24px] text-[16px] md:font-semibold md:mb-2"
+                >
                   1800 208 2653
-                </p>
+                </a>
                 <p className="md:text-[24px] text-[16px]">
                   9:00am-9:00pm (Mon-Sat)
                 </p>
