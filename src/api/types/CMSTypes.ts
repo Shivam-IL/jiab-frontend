@@ -98,6 +98,8 @@ export type TCMSResponse = {
       locale: string;
       Scroll_and_LOL_lastpage_content_heading: string;
       Scroll_and_LOL_lastpage_content_subheading: string;
+      exhaust_heading: string;
+      exhaust_sub_heading: string;
     };
     pj_challenge: {
       id: number;

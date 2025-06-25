@@ -5,7 +5,7 @@ import Header from "@/components/common/Header/Header";
 import ReactionEmojies from "@/components/ReactionEmojies";
 import { ICONS_NAMES } from "@/constants"; // Import ICONS_NAMES
 import { useCMSData } from "@/data";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useGetJokes } from "@/api/hooks/JokeHooks";
 import { useLanguage } from "@/hooks/useLanguage";
 import { IUserReaction } from "@/api/types/JokeTypes";
@@ -19,6 +19,7 @@ import {
 } from "@/api/utils/cdpEvents";
 import useAppSelector from "@/hooks/useSelector";
 import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
+import ExhaustVideo from "@/components/ExhaustVideo";
 
 export interface IModifiedJoke {
   id: string;
@@ -78,7 +79,7 @@ const ScrollAndLol: React.FC = () => {
   const selectedJokesParam = searchParams.get("selected_joke") || undefined;
 
   // Language for API
-  const { selectedLanguage } = useLanguage();
+  const { selectedLanguage, changeLanguage } = useLanguage();
 
   // Fetch jokes – ensure we always get 15 items (API default/limit)
   const { data: jokesResponse, isLoading: jokesLoading } = useGetJokes({
@@ -153,9 +154,12 @@ const ScrollAndLol: React.FC = () => {
   const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
     useViewGludeinJokes();
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
+
   useEffect(() => {
     setMounted(true);
   }, []);
+
   const cmsData = useCMSData(mounted);
 
   useEffect(() => {
@@ -564,6 +568,19 @@ const ScrollAndLol: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeVideoIndex, videos]);
 
+  // Handler for language selection from ExhaustVideo
+  const handleLanguageSelect = (langCode: string) => {
+    // Preserve selected_joke if present
+    const selectedJoke = searchParams.get("selected_joke");
+    const params = new URLSearchParams();
+    if (selectedJoke) params.set("selected_joke", selectedJoke);
+    // Set the new language param (if you use it in the URL, otherwise just reload)
+    // If language is not in the URL, just reload the page (state will update via Redux)
+    // But for SSR/Next.js, best to update the URL to force re-fetch
+    router.replace(`/scroll-and-lol?${params.toString()}`);
+    changeLanguage(langCode);
+  };
+
   return (
     <div className="md:w-full md:h-screen md:pt-[100px] pt-0 flex flex-col justify-center items-center bg-[url('/assets/images/scroll-and-lol-bg.png')] bg-cover bg-center bg-fixed overflow-hidden">
       {isLoading ? (
@@ -720,7 +737,16 @@ const ScrollAndLol: React.FC = () => {
                   scrollSnapStop: "always",
                 }}
               >
-                <SerialChillerEndPage />
+                {videos.length < 15 ? (
+                  <ExhaustVideo
+                    selectedLanguage={selectedLanguage}
+                    onLanguageSelect={handleLanguageSelect}
+                    headerText={cmsData?.scrollAndLol?.exhaustHeading}
+                    subText={cmsData?.scrollAndLol?.exhaustSubheading}
+                  />
+                ) : (
+                  <SerialChillerEndPage />
+                )}
               </div>
             </div>
 
