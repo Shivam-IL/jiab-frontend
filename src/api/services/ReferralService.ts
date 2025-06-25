@@ -79,14 +79,15 @@ export class ReferralService extends MainService {
     }
   }
 
-  public async getAllReferrals(page: number) {
+  public async getAllReferrals(page: number, query?: string) {
     try {
-      const response = await apiClient.get(
-        `${API_ROUTES.REFERRAL.GET_INVITEES}?page=${page}`,
-        {
-          headers: this.getAuthHeaders(),
-        }
-      );
+      let endpoint = `${API_ROUTES.REFERRAL.GET_INVITEES}?page=${page}`;
+      if (query) {
+        endpoint += query;
+      }
+      const response = await apiClient.get(endpoint, {
+        headers: this.getAuthHeaders(),
+      });
       const data = response.data;
       if (data?.success) {
         return SuccessResponse(data?.data);

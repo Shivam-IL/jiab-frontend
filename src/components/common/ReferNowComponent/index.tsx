@@ -92,6 +92,7 @@ const ReferNowComponent = ({
       return;
     }
 
+    setError("");
     sendReferral({
       refer_to: phoneNumber,
     });
