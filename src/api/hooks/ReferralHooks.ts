@@ -33,14 +33,16 @@ const useSendReferral = () => {
 const useGetAllReferrals = ({
   page,
   referralCode,
+  query
 }: {
   page: number;
   referralCode?: string;
+  query?:string
 }) => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
   return useQuery({
-    queryKey: [keys.referral.getAllReferrals(), { referralCode, page }],
-    queryFn: () => referralService.getAllReferrals(page),
+    queryKey: [keys.referral.getAllReferrals(), { referralCode, page, query }],
+    queryFn: () => referralService.getAllReferrals(page,query),
     enabled: isAuthenticated && token ? true : false,
     staleTime: 0,
   });
