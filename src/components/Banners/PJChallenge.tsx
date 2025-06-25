@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { useLanguage } from "@/hooks/useLanguage";
+import { LANGUAGE_MNEMONICS } from "@/constants";
 
 const PJChallenge: React.FC<{
   heading: string;
@@ -7,6 +9,7 @@ const PJChallenge: React.FC<{
   buttonText: string;
   onClick: () => void;
 }> = ({ heading, subheading, buttonText, onClick }) => {
+  const { selectedLanguage } = useLanguage();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
   const [fontScale, setFontScale] = useState(1);
@@ -151,7 +154,10 @@ const PJChallenge: React.FC<{
               2xl:px-[56px] 2xl:py-[22px]"
               style={{
                 fontSize: `${getCurrentFontSize()}px`,
-                letterSpacing: isWindows ? "-2px" : "normal",
+                letterSpacing:
+                  selectedLanguage !== LANGUAGE_MNEMONICS.ENGLISH && isWindows
+                    ? "-2px"
+                    : "normal",
               }}
             >
               <span ref={textRef} className="whitespace-nowrap">
