@@ -419,7 +419,7 @@ const SurpriseMeModal = ({
               }}
             />
           </div>
-          <div className="bg-white rounded-[10px] p-[8px] mt-[14px]  pb-[12px] flex justify-between ml-[12px]">
+          <div className="bg-white rounded-[20px] p-[8px] pb-[12px] flex justify-between ml-[12px]">
             <div className="flex gap-[10px] md:gap-[9px] pl-[2px]">
               <SurpriseMeCTA
                 name={ICONS_NAMES.FUNNY}
