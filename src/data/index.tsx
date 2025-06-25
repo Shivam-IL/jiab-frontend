@@ -1,218 +1,228 @@
 // Export all mapping functions and their types
-export * from "./home-page";
-export * from "./nav-bar";
-export * from "./scroll-and-lol";
-export * from "./pj-challenge";
-export * from "./joke-box";
-export * from "./hall-of-lame";
-export * from "./refer-a-friend";
-export * from "./contest";
-export * from "./web-footer";
-export * from "./comic";
-export * from "./nav-footer";
-export * from "./have-an-invite-code";
-export * from "./my-profile";
-export * from "./logout-button";
-export * from "./faq";
-export * from "./contact-us";
-export * from "./plus-add-inside-profile";
-export * from "./break_the_ice";
-export * from "./vote_is_in";
-export * from "./serial_chiller";
-export * from "./privacy";
-export * from "./login";
-export * from "./leaderboard";
-export * from "./edit-profile";
-export * from "./invite_code";
-export * from "./same-refer";
+export * from './home-page'
+export * from './nav-bar'
+export * from './scroll-and-lol'
+export * from './pj-challenge'
+export * from './joke-box'
+export * from './hall-of-lame'
+export * from './refer-a-friend'
+export * from './contest'
+export * from './web-footer'
+export * from './comic'
+export * from './nav-footer'
+export * from './have-an-invite-code'
+export * from './my-profile'
+export * from './logout-button'
+export * from './faq'
+export * from './contact-us'
+export * from './plus-add-inside-profile'
+export * from './break_the_ice'
+export * from './vote_is_in'
+export * from './serial_chiller'
+export * from './privacy'
+export * from './login'
+export * from './leaderboard'
+export * from './edit-profile'
+export * from './invite_code'
+export * from './same-refer'
+export * from './joke_box_filter'
+export * from './joke_is_in_popup'
 
 // Import all the mapping functions
 import {
   mapHomePageData,
   defaultHomePageData,
-  type HomePageData,
-} from "./home-page";
-import { mapNavBarData, defaultNavBarData, type NavBarData } from "./nav-bar";
+  type HomePageData
+} from './home-page'
+import { mapNavBarData, defaultNavBarData, type NavBarData } from './nav-bar'
 import {
   mapScrollAndLolData,
   defaultScrollAndLolData,
-  type ScrollAndLolData,
-} from "./scroll-and-lol";
+  type ScrollAndLolData
+} from './scroll-and-lol'
 import {
   mapPjChallengeData,
   defaultPjChallengeData,
-  type PjChallengeData,
-} from "./pj-challenge";
+  type PjChallengeData
+} from './pj-challenge'
 import {
   mapJokeBoxData,
   defaultJokeBoxData,
-  type JokeBoxData,
-} from "./joke-box";
+  type JokeBoxData
+} from './joke-box'
 import {
   mapHallOfLameData,
   defaultHallOfLameData,
-  type HallOfLameData,
-} from "./hall-of-lame";
+  type HallOfLameData
+} from './hall-of-lame'
 import {
   mapReferAFriendData,
   defaultReferAFriendData,
-  type ReferAFriendData,
-} from "./refer-a-friend";
-import {
-  mapContestData,
-  defaultContestData,
-  type ContestData,
-} from "./contest";
+  type ReferAFriendData
+} from './refer-a-friend'
+import { mapContestData, defaultContestData, type ContestData } from './contest'
 import {
   mapWebFooterData,
   defaultWebFooterData,
-  type WebFooterData,
-} from "./web-footer";
-import { mapComicData, defaultComicData, type ComicData } from "./comic";
+  type WebFooterData
+} from './web-footer'
+import { mapComicData, defaultComicData, type ComicData } from './comic'
 import {
   mapNavFooterData,
   defaultNavFooterData,
-  type NavFooterData,
-} from "./nav-footer";
+  type NavFooterData
+} from './nav-footer'
 import {
   mapHaveAnInviteCodeData,
   defaultHaveAnInviteCodeData,
-  type HaveAnInviteCodeData,
-} from "./have-an-invite-code";
+  type HaveAnInviteCodeData
+} from './have-an-invite-code'
 import {
   mapMyProfileData,
   defaultMyProfileData,
-  type MyProfileData,
-} from "./my-profile";
+  type MyProfileData
+} from './my-profile'
 import {
   mapLogoutButtonData,
   defaultLogoutButtonData,
-  type LogoutButtonData,
-} from "./logout-button";
-import { mapFaqData, defaultFaqData, type FaqData } from "./faq";
+  type LogoutButtonData
+} from './logout-button'
+import { mapFaqData, defaultFaqData, type FaqData } from './faq'
 import {
   mapContactUsData,
   defaultContactUsData,
-  type ContactUsData,
-} from "./contact-us";
+  type ContactUsData
+} from './contact-us'
 import {
   mapPlusAddInsideProfileData,
   defaultPlusAddInsideProfileData,
-  type PlusAddInsideProfileData,
-} from "./plus-add-inside-profile";
+  type PlusAddInsideProfileData
+} from './plus-add-inside-profile'
 import {
   BreakTheIceData,
   defaultBreakTheIceData,
-  mapBreakTheIceData,
-} from "./break_the_ice";
+  mapBreakTheIceData
+} from './break_the_ice'
 import {
   mapPrivacyPolicyData,
   defaultPrivacyPolicyData,
-  type PrivacyPolicyData,
-} from "./privacy";
+  type PrivacyPolicyData
+} from './privacy'
 
-import { TCMSResponse } from "@/api/types/CMSTypes";
-import useAppSelector from "@/hooks/useSelector";
-import { useMemo } from "react";
+import { TCMSResponse } from '@/api/types/CMSTypes'
+import useAppSelector from '@/hooks/useSelector'
+import { useMemo } from 'react'
 import {
   defaultDidThatMakeYouLaughData,
   DidThatMakeYouLaughData,
-  mapDidThatMakeYouLaughData,
-} from "./did_that_make_you_laugh";
+  mapDidThatMakeYouLaughData
+} from './did_that_make_you_laugh'
 import {
   defaultVoteIsInData,
   mapVoteIsInData,
-  type VoteIsInData,
-} from "./vote_is_in";
+  type VoteIsInData
+} from './vote_is_in'
 import {
   defaultSerialChillerData,
   mapSerialChillerData,
-  type SerialChillerData,
-} from "./serial_chiller";
+  type SerialChillerData
+} from './serial_chiller'
 import {
   defaultMadeYouLolPopupData,
   MadeYouLolPopupData,
-  mapMadeYouLolPopupData,
-} from "./made_you_lol";
+  mapMadeYouLolPopupData
+} from './made_you_lol'
 import {
   defaultTryingToPrankUsPopupData,
   mapTryingToPrankUsPopupData,
-  TryingToPrankUsPopupData,
-} from "./trying_to_prank_us";
+  TryingToPrankUsPopupData
+} from './trying_to_prank_us'
 import {
   AhemAhemPopupData,
   defaultAhemAhemPopupData,
-  mapAhemAhemPopupData,
-} from "./ahem_ahem_popup";
+  mapAhemAhemPopupData
+} from './ahem_ahem_popup'
 import {
   defaultEasyPeasyPopupData,
   EasyPeasyPopupData,
-  mapEasyPeasyPopupData,
-} from "./easy_peasy";
-import { defaultLoginData, mapLoginData, type LoginData } from "./login";
-import { defaultOtpData, mapOtpData, type OtpData } from "./otp";
-import { defaultSignupData, mapSignupData, type SignupData } from "./signup";
+  mapEasyPeasyPopupData
+} from './easy_peasy'
+import { defaultLoginData, mapLoginData, type LoginData } from './login'
+import { defaultOtpData, mapOtpData, type OtpData } from './otp'
+import { defaultSignupData, mapSignupData, type SignupData } from './signup'
 import {
   defaultLeaderboardData,
   LeaderboardData,
-  mapLeaderboardData,
-} from "./leaderboard";
+  mapLeaderboardData
+} from './leaderboard'
 import {
   EditProfileData,
   defaultEditProfileData,
-  mapEditProfileData,
-} from "./edit-profile";
+  mapEditProfileData
+} from './edit-profile'
 import {
   defaultInviteCodeData,
   mapInviteCodeData,
-  type InviteCodeData,
-} from "./invite_code";
+  type InviteCodeData
+} from './invite_code'
 import {
   defaultSameReferPopupData,
   mapSameReferPopupData,
-  SameReferPopupData,
-} from "./same-refer";
+  SameReferPopupData
+} from './same-refer'
+import {
+  defaultJokeBoxFilterData,
+  IJokeBoxFilter,
+  mapJokeBoxFilter
+} from './joke_box_filter'
+import {
+  defaultJokeIsIn,
+  IJokeIsInPopup,
+  mapJokesIsInPopup
+} from './joke_is_in_popup'
 
 // Combined interface for all CMS data
 export interface AllCMSData {
-  homePage: HomePageData;
-  navBar: NavBarData;
-  scrollAndLol: ScrollAndLolData;
-  pjChallenge: PjChallengeData;
-  jokeBox: JokeBoxData;
-  hallOfLame: HallOfLameData;
-  referAFriend: ReferAFriendData;
-  contest: ContestData;
-  webFooter: WebFooterData;
-  comic: ComicData;
-  navFooter: NavFooterData;
-  haveAnInviteCode: HaveAnInviteCodeData;
-  myProfile: MyProfileData;
-  logoutButton: LogoutButtonData;
-  faq: FaqData;
-  contactUs: ContactUsData;
-  plusAddInsideProfile: PlusAddInsideProfileData;
-  breakTheIce: BreakTheIceData;
-  didThatMakeYouLaugh: DidThatMakeYouLaughData;
-  voteIsIn: VoteIsInData;
-  serialChiller: SerialChillerData;
-  madeYouLoL: MadeYouLolPopupData;
-  tryingToPrankUs: TryingToPrankUsPopupData;
-  ahemAhem: AhemAhemPopupData;
-  easyPeasy: EasyPeasyPopupData;
-  privacyPolicy: PrivacyPolicyData;
-  login: LoginData;
-  otp: OtpData;
-  signup: SignupData;
-  leaderboard: LeaderboardData;
-  editProfile: EditProfileData;
-  inviteCode: InviteCodeData;
-  sameRefer: SameReferPopupData;
+  homePage: HomePageData
+  navBar: NavBarData
+  scrollAndLol: ScrollAndLolData
+  pjChallenge: PjChallengeData
+  jokeBox: JokeBoxData
+  hallOfLame: HallOfLameData
+  referAFriend: ReferAFriendData
+  contest: ContestData
+  webFooter: WebFooterData
+  comic: ComicData
+  navFooter: NavFooterData
+  haveAnInviteCode: HaveAnInviteCodeData
+  myProfile: MyProfileData
+  logoutButton: LogoutButtonData
+  faq: FaqData
+  contactUs: ContactUsData
+  plusAddInsideProfile: PlusAddInsideProfileData
+  breakTheIce: BreakTheIceData
+  didThatMakeYouLaugh: DidThatMakeYouLaughData
+  voteIsIn: VoteIsInData
+  serialChiller: SerialChillerData
+  madeYouLoL: MadeYouLolPopupData
+  tryingToPrankUs: TryingToPrankUsPopupData
+  ahemAhem: AhemAhemPopupData
+  easyPeasy: EasyPeasyPopupData
+  privacyPolicy: PrivacyPolicyData
+  login: LoginData
+  otp: OtpData
+  signup: SignupData
+  leaderboard: LeaderboardData
+  editProfile: EditProfileData
+  inviteCode: InviteCodeData
+  sameRefer: SameReferPopupData
+  jokeBoxFilter: IJokeBoxFilter
+  jokeIsIn: IJokeIsInPopup
 }
 
 // Hook to get all mapped CMS data
 export const useCMSData = (mounted: boolean = true): AllCMSData => {
-  const { homePageContent } = useAppSelector((state) => state.cms);
+  const { homePageContent } = useAppSelector(state => state.cms)
 
   return useMemo(() => {
     if (!mounted) {
@@ -251,7 +261,9 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
         editProfile: defaultEditProfileData,
         inviteCode: defaultInviteCodeData,
         sameRefer: defaultSameReferPopupData,
-      };
+        jokeBoxFilter: defaultJokeBoxFilterData,
+        jokeIsIn: defaultJokeIsIn
+      }
     }
 
     // Return mapped data from CMS
@@ -289,13 +301,15 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
       editProfile: mapEditProfileData(homePageContent),
       inviteCode: mapInviteCodeData(homePageContent),
       sameRefer: mapSameReferPopupData(homePageContent),
-    };
-  }, [homePageContent, mounted]);
-};
+      jokeBoxFilter: mapJokeBoxFilter(homePageContent),
+      jokeIsIn: mapJokesIsInPopup(homePageContent)
+    }
+  }, [homePageContent, mounted])
+}
 
 // Individual mapping functions for specific pages
 export const mapAllCMSData = (
-  cmsData: TCMSResponse["data"] | null
+  cmsData: TCMSResponse['data'] | null
 ): AllCMSData => {
   return {
     homePage: mapHomePageData(cmsData),
@@ -331,5 +345,7 @@ export const mapAllCMSData = (
     editProfile: mapEditProfileData(cmsData),
     inviteCode: mapInviteCodeData(cmsData),
     sameRefer: mapSameReferPopupData(cmsData),
-  };
-};
+    jokeBoxFilter: mapJokeBoxFilter(cmsData),
+    jokeIsIn: mapJokesIsInPopup(cmsData)
+  }
+}

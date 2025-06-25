@@ -261,7 +261,7 @@ const SubmitYourJoke = () => {
       formValid = false;
     }
     if (
-      jokeData.format.toLowerCase() !== FileType.TEXT.toLowerCase() &&
+      jokeData.format !== FORMAT_OPTIONS?.[1].label &&
       !jokeData.file
     ) {
       setFormError((prev) => ({ ...prev, joke: "File is required" }));
@@ -269,7 +269,7 @@ const SubmitYourJoke = () => {
       return false;
     }
     if (
-      jokeData.format.toLowerCase() === FileType.TEXT.toLowerCase() &&
+      jokeData.format=== FORMAT_OPTIONS?.[1]?.label &&
       jokeData.jokeText === ""
     ) {
       setFormError((prev) => ({ ...prev, joke: "Joke is required" }));

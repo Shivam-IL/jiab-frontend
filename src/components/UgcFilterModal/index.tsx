@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Dialog, DialogContent } from '../ui/dialog'
 import SvgIcons from '../common/SvgIcons'
 import { ICONS_NAMES } from '@/constants'
+import { CATEGORY_ID_CMS_KEY_MAPPING } from '@/constants'
 import { IUgcFilterModal } from '@/interfaces'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Label } from '../ui/label'
@@ -14,6 +15,7 @@ import {
   CDPEventPayloadBuilder,
   UGCFilterCDPEventPayload
 } from '@/api/utils/cdpEvents'
+import { useCMSData } from '@/data'
 
 export interface IOption {
   id: number
@@ -38,6 +40,8 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
   const { user } = useAppSelector(state => state.profile)
   const { mutate: sendCDPEvent } = useSendCDPEvent()
 
+  const { jokeBoxFilter } = useCMSData()
+
   useEffect(() => {
     const modifiedLanguages = languages?.map(language => ({
       id: language.id,
@@ -49,13 +53,18 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
   }, [languages])
 
   useEffect(() => {
-    const modifiedGenres = genres?.map(genre => ({
-      id: genre.id,
-      value: genre.genre,
-      label: genre.genre
-    }))
+    const CATEGORY_ID_CMS_KEY_MAPPING_TYPED = CATEGORY_ID_CMS_KEY_MAPPING as Record<number, string>;
+    const modifiedGenres = genres?.map(genre => {
+      const key = CATEGORY_ID_CMS_KEY_MAPPING_TYPED[genre.id];
+      const isValidKey = typeof key === 'string' && key in jokeBoxFilter;
+      return {
+        id: genre.id,
+        value: genre.genre,
+        label: isValidKey ? (jokeBoxFilter[key as keyof typeof jokeBoxFilter] as string) : ''
+      }
+    })
     setCategoryOptions(modifiedGenres)
-  }, [genres])
+  }, [genres, jokeBoxFilter])
 
   const trigger_CDP_UGC_FILTER = (language?: string, category?: string) => {
     if (language || category) {
@@ -66,7 +75,7 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
           languageCode ? languageCode : 'EN',
           user?.id,
           language ?? '',
-          category ?? '',
+          category ?? ''
         )
       sendCDPEvent(payload)
     }
@@ -98,7 +107,7 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
         <div className='px-[20px] pb-[32px]'>
           <div className='flex flex-col'>
             <AktivGroteskText
-              text='Pick your chill mode'
+              text={jokeBoxFilter.pick_your_filter}
               fontSize='md:text-[20px] text-[16px] leading-tight'
               fontWeight='font-[700]'
             />
@@ -114,7 +123,7 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
               >
                 <AktivGroteskText
                   className='text-[#1985D3]'
-                  text='Clear Filters'
+                  text={jokeBoxFilter.clear_filters_tag}
                   fontSize='md:text-[20px] text-[10px] leading-tight'
                   fontWeight='font-[700]'
                 />
@@ -136,7 +145,7 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
                       ? languageOptions.find(
                           opt => opt.value === selectedLanguage
                         )?.label
-                      : 'Select Language'}
+                      : jokeBoxFilter.select_language_placeholder}
                   </span>
                   <ChevronDown
                     className={`h-5 w-5 transition-transform ${
@@ -188,7 +197,7 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
                       ? categoryOptions.find(
                           opt => opt.value === selectedCategory
                         )?.label
-                      : 'Select Category'}
+                      : jokeBoxFilter.select_category_placeholder}
                   </span>
                   <ChevronDown
                     className={`h-5 w-5 transition-transform ${
@@ -231,7 +240,7 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
             <div className='flex w-full md:justify-center'>
               <GreenCTA
                 onClick={handleApply}
-                text='Apply'
+                text={jokeBoxFilter.applty_button_text}
                 className='w-full md:w-auto'
                 paddingClass='md:px-[105px] md:py-[21px] py-[12px] '
                 fontSize='md:text-[24px] text-[16px]'

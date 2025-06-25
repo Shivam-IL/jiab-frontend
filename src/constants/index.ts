@@ -86,6 +86,36 @@ if (typeof window !== "undefined") {
   CLIENT_URL = process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000";
 }
 
+export const CMS_CATEGORY_KEY_ID_MAPPING = {
+  cricket: 7,
+  animals: 8,
+  food: 9,
+  colllege: 11,
+  friends: 18,
+  finance: 24,
+  observation: 30,
+  self: 32,
+  adulting: 33,
+  office: 15,
+  relationships: 31,
+  family: 17,
+};
+
+export const CATEGORY_ID_CMS_KEY_MAPPING = {
+  7: "cricket",
+  8: "animals",
+  9: "food",
+  11: "colllege",
+  18: "friends",
+  24: "finance",
+  30: "observation",
+  32: "self",
+  33: "adulting",
+  15: "office",
+  31: "relationships",
+  17: "family",
+};
+
 export const LIMIT_EXCEED = "Limit Exceed";
 
 export const LANGUAGE_IDS = {

@@ -84,30 +84,30 @@ export class LoginService extends MainService {
 
   public async SignUp(data: TSignUp) {
     try {
-      const formData: Record<string, string | number | boolean> = {} 
-     if(data?.avatar){
-      formData['avatar_id'] = data.avatar;
-      formData['is_avatar'] = "true";
-     }
-      if(data?.referral_code){
-        formData['referral_code'] = data.referral_code;
+      const formData: Record<string, string | number | boolean> = {};
+      if (data?.avatar) {
+        formData["avatar_id"] = data.avatar;
+        formData["is_avatar"] = "true";
       }
-      if(data?.full_name){
-        formData['full_name'] = data.full_name;
+      if (data?.referral_code) {
+        formData["referral_code"] = data.referral_code;
       }
-      if(data?.mobile_number){
-        formData['mobile_number'] = data.mobile_number;
+      if (data?.full_name) {
+        formData["full_name"] = data.full_name;
       }
-      if(data?.email){
-        formData['email'] = data.email;
+      if (data?.mobile_number) {
+        formData["mobile_number"] = data.mobile_number;
       }
-      if(data?.device_token){
-        formData['device_token'] = data.device_token;
+      if (data?.email) {
+        formData["email"] = data.email;
+      }
+      if (data?.device_token) {
+        formData["device_token"] = data.device_token;
       }
       const response = await apiClient.post(
         API_ROUTES.AUTH.SIGN_UP,
         {
-          ...formData
+          ...formData,
         },
         {
           headers: {
@@ -119,7 +119,19 @@ export class LoginService extends MainService {
       if (responseData?.success) {
         return SuccessResponse(responseData.data);
       }
-      return ErrorResponse(responseData?.message ?? "Something went wrong");
+      const errorEntries = Object.entries(
+        responseData?.details?.validation_errors ?? {}
+      );
+      let errrMessage = "";
+      for (const item of errorEntries) {
+        const value = (Array.isArray(item[1]) ? item[1][0] : undefined) as string | undefined;
+        errrMessage = value ?? "Something Went Wrong!";
+        break;
+      }
+      if(responseData?.message && errorEntries?.length===0){
+        errrMessage = responseData?.message
+      }
+      return ErrorResponse(errrMessage ?? "Something went wrong");
     } catch (error) {
       if (error instanceof AxiosError) {
         return ErrorResponse(

@@ -1,3 +1,4 @@
+import { useCMSData } from '@/data'
 import CustomPopupWrapper from '../common/CustomPopupWrapper'
 import { JOKES_POPUP_DATA } from '@/constants'
 
@@ -10,13 +11,14 @@ const ApproveJokePopup = ({
   onClose: () => void
   singleButtonOnClick: () => void
 }) => {
+  const { jokeIsIn } = useCMSData()
   return (
     <CustomPopupWrapper
-      title={JOKES_POPUP_DATA.JOKE_SUBMITTED.TITLE}
-      subtitle={JOKES_POPUP_DATA.JOKE_SUBMITTED.SUB_TITLE}
+      title={jokeIsIn.joke_is_in_heading}
+      subtitle={jokeIsIn.joke_is_in_sub_heading}
       icon={JOKES_POPUP_DATA.JOKE_SUBMITTED.ICON}
-      singleButton={JOKES_POPUP_DATA.JOKE_SUBMITTED.SINGLE_BUTTON}
-      singleButtonText={JOKES_POPUP_DATA.JOKE_SUBMITTED.SINGLE_BUTTON_TEXT}
+      singleButton={true}
+      singleButtonText={jokeIsIn.explore_more_button}
       open={open}
       singleButtonOnClick={singleButtonOnClick}
       onClose={onClose}
@@ -111,5 +113,5 @@ export {
   JokeFeaturedPopup,
   JokeNotSuitablePopup,
   JokeNotGoodEnoughPopup,
-  JokeOffensivePopup,
+  JokeOffensivePopup
 }
