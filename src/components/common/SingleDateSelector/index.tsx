@@ -55,6 +55,7 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
   }, [open, selectedDate]);
 
   const handleDateSelect = (date: Date | undefined) => {
+    console.log("date", date);
     setSelectedDate(date);
     if (onDateSelect) {
       onDateSelect(date);
@@ -113,6 +114,7 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
 
   const handleNextYear = () => {
     const newDate = new Date(currentDate);
+    console.log("newDate", newDate);
     newDate.setFullYear(newDate.getFullYear() + 1);
     if (newDate.getFullYear() <= new Date().getFullYear()) {
       setCurrentDate(newDate);
@@ -150,27 +152,33 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4">
-          {MONTHS.map((month, index) => (
-            <button
-              key={month}
-              onClick={() => handleMonthSelect(index)}
-              className={`
-                p-3 border rounded-lg text-center transition-all
-                ${
-                  index === currentDate.getMonth()
-                    ? "border-[#4CAF50] bg-[#E8F5E9] text-[#4CAF50]"
-                    : "border-gray-200 hover:border-[#4CAF50] hover:bg-[#E8F5E9]/50"
-                }
-              `}
-            >
-              <span
-                className={`${aktivGrotesk.className} text-[14px] font-[400]`}
-              >
-                {month}
-              </span>
-            </button>
-          ))}
-        </div>
+  {MONTHS.map((month, index) => {
+    // Disable if year is current and month is after current month
+    const isFutureMonth =
+      currentDate.getFullYear() === new Date().getFullYear() &&
+      index > new Date().getMonth();
+
+    return (
+      <button
+        key={month}
+        onClick={() => handleMonthSelect(index)}
+        disabled={isFutureMonth}
+        className={`
+          p-3 border rounded-lg text-center transition-all
+          ${index === currentDate.getMonth()
+            ? "border-[#4CAF50] bg-[#E8F5E9] text-[#4CAF50]"
+            : isFutureMonth
+            ? "border-gray-200 text-gray-400 cursor-not-allowed opacity-50"
+            : "border-gray-200 hover:border-[#4CAF50] hover:bg-[#E8F5E9]/50"}
+        `}
+      >
+        <span className={`${aktivGrotesk.className} text-[14px] font-[400]`}>
+          {month}
+        </span>
+      </button>
+    );
+  })}
+</div>
       </div>
     );
   };
