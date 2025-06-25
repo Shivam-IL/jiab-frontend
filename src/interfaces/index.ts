@@ -187,6 +187,7 @@ export interface IInviteCodePopup {
   ctaText: string;
   code: string;
   onChange: (key: string, value: string) => void;
+  error?: string;
 }
 
 export interface IMobileTempNavBar {

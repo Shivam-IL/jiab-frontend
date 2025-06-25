@@ -16,6 +16,7 @@ const InviteCodePopupWrapper: React.FC<IInviteCodePopup> = ({
   code,
   onChange,
   onSubmit,
+  error
 }) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -54,6 +55,7 @@ const InviteCodePopupWrapper: React.FC<IInviteCodePopup> = ({
               fontSize="text-[14px] md:text-[16px]"
               onChange={onChange}
               placeholder="XXXXX"
+              error={error}
             />
             <GreenCTA
               text={ctaText}
