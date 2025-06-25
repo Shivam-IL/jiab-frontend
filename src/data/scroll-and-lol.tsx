@@ -7,6 +7,8 @@ export interface ScrollAndLolData {
   scrollAndLolLastPageContentSubheading: string;
   breakingNews: string;
   serialChiller: string;
+  exhaustHeading: string;
+  exhaustSubheading: string;
 }
 
 export const mapScrollAndLolData = (
@@ -31,6 +33,12 @@ export const mapScrollAndLolData = (
     serialChiller:
       scrollAndLolCMS?.Scroll_and_LOL_lastpage_content_subheading ??
       "We have a 'Serial Chiller' on the loose, and it's you!",
+    exhaustHeading:
+      scrollAndLolCMS?.exhaust_heading ??
+      "You've LOL-ed your way through all our jokes in this language.",
+    exhaustSubheading:
+      scrollAndLolCMS?.exhaust_sub_heading ??
+      "Switch languages to scroll through more HaHa-amazing Jokes!",
   };
 };
 
@@ -41,6 +49,9 @@ export const defaultScrollAndLolData: ScrollAndLolData = {
   scrollAndLolLastPageContentHeading: "You've reached the end",
   scrollAndLolLastPageContentSubheading: "Check back later for more content",
   breakingNews: "BREAKING NEWS",
-  serialChiller:
-    "We have a 'Serial Chiller' on the loose, and it's you!",
+  serialChiller: "We have a 'Serial Chiller' on the loose, and it's you!",
+  exhaustHeading:
+    "You've LOL-ed your way through all our jokes in this language.",
+  exhaustSubheading:
+    "Switch languages to scroll through more HaHa-amazing Jokes!",
 };
