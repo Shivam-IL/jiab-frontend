@@ -636,6 +636,7 @@ export const LOCAL_IMAGES = {
   PROFILE_MD_BG: "profile-md-bg.png",
   SURPRISE_ME: "surprise-me.gif",
   USER_JOKE_IMAGE: "user-joke-image.png",
+  UGC_CARD_BG: "ugc-bg.webp",
 };
 
 export const TOKEN_TYPE = {
