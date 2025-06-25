@@ -359,7 +359,7 @@ export class GluedinService extends MainService {
         });
       if (increaseComicCoin) {
         const token = await this.generateFCMToken();
-        const endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}?asset_id=${assetId}&type=other`;
+        const endpoint = `${API_ROUTES.JOKES.INCREASE_COMIC_COINS}`;
         await apiClient.post(
           endpoint,
           {

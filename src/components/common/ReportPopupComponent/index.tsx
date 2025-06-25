@@ -3,7 +3,7 @@ import CustomPopupWrapper from '../CustomPopupWrapper'
 import { GA_EVENTS, ICONS_NAMES } from '@/constants'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import ReportPopup from '../ReportPopup'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useSendReportToGluedin } from '@/api/hooks/GluedinHooks'
 import { useSendReport } from '@/api/hooks/ReportHooks'
 import {
@@ -38,6 +38,7 @@ const ReportPopupComponent = ({
   const { mutate: sendReportToGluedin, data: reportData } =
     useSendReportToGluedin()
   const { mutate: sendReport } = useSendReport()
+  const pathName = usePathname()
 
   const handleChange = (key: string, value: string) => {
     setRefferalLink(value)
@@ -93,6 +94,14 @@ const ReportPopupComponent = ({
 
   const router = useRouter()
 
+  useEffect(()=>{
+    return ()=>{
+      setOpen?.(false)
+      setOpen2(false)
+      onClose()
+    }
+  },[])
+
   return (
     <>
       {open && (
@@ -124,6 +133,12 @@ const ReportPopupComponent = ({
           singleButtonText={'Explore More'}
           singleButton={true}
           singleButtonOnClick={() => {
+            if (pathName === '/user-generated-jokes') {
+              setOpen2(false)
+              setOpen?.(false)
+              onClose()
+              return
+            }
             router.push('/user-generated-jokes')
           }}
           open={open2}
