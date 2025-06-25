@@ -1,7 +1,6 @@
 import InviteCodePopupWrapper from '@/components/InviteCodePopus'
 import {
   GA_EVENTS,
-  INVITE_CODE_POPUP_DATA,
   INVITE_CODE_STATUS
 } from '@/constants/'
 import React, { useEffect, useState } from 'react'
@@ -93,6 +92,9 @@ const InviteCodeComponent = ({
         triggerAnimation()
         triggerGAEvent(GA_EVENTS.SPRITE_24_REFERRAL_CODE_SUBMIT)
       } else if (status === INVITE_CODE_STATUS.INVALID_REFERRAL_CODE) {
+        if (invite2) {
+          setError(message as string)
+        }
         setInvite2(true)
         setOpen(false)
       } else {
@@ -101,6 +103,17 @@ const InviteCodeComponent = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [verifyReferralData])
+
+  useEffect(() => {
+    return () => {
+      setError('')
+      setInvite2(false)
+      setOpen(false)
+      setInviteCode('')
+      setInviteCodeStatus('')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
@@ -119,16 +132,18 @@ const InviteCodeComponent = ({
           onClose={() => {
             setOpen(false)
             setInviteCode('')
+            setError('')
           }}
         />
       )}
       {invite2 &&
         inviteCodeStatus === INVITE_CODE_STATUS.INVALID_REFERRAL_CODE && (
           <InviteCodePopupWrapper
-            title={INVITE_CODE_POPUP_DATA.CHEAT_CODE_NOT_ALLOWED.TITLE}
-            subtitle={INVITE_CODE_POPUP_DATA.CHEAT_CODE_NOT_ALLOWED.SUB_TITLE}
-            ctaText={INVITE_CODE_POPUP_DATA.CHEAT_CODE_NOT_ALLOWED.CTA_TEXT}
+            title={cmsData?.cheatCodeInvite?.cheat_code_title}
+            subtitle={cmsData?.cheatCodeInvite?.cheat_code_sub_title}
+            ctaText={cmsData?.cheatCodeInvite?.submit_button}
             code={inviteCode}
+            error={error}
             onChange={handleChangeInvite}
             open={invite2}
             onSubmit={() => {
@@ -138,6 +153,7 @@ const InviteCodeComponent = ({
               setInvite2(false)
               setInviteCode('')
               setInviteCodeStatus('')
+              setError('')
             }}
           />
         )}

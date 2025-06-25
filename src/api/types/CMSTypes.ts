@@ -287,6 +287,17 @@ export type TCMSResponse = {
       publishedAt: string;
       locale: string;
     };
+    cheat_code_invide_code: {
+      id: number;
+      documentId: string;
+      cheat_code_title: string;
+      cheat_code_sub_title: string;
+      submit_button: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
     logout_button_navbar_profile_dropdown: {
       id: number;
       documentId: string;

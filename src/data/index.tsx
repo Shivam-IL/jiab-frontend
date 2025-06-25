@@ -30,6 +30,7 @@ export * from './joke_is_in_popup'
 export * from './unique_code'
 export * from './that_was_quick'
 export * from './sorry_unique_code'
+export * from './cheat_code_invite'
 
 // Import all the mapping functions
 import {
@@ -186,6 +187,7 @@ import {
 import { defaultUniqueCodeData, IUniqueCodeData, mapUniqueCodeData } from './unique_code'
 import { defaultThatWasQuickData, IThatWasQuickData, mapThatWasQuickData } from './that_was_quick'
 import { defaultSorryUniqueCodeData, ISorryUniqueCodeData, mapSorryUniqueCodeData } from './sorry_unique_code'
+import { defaultCheatCodeInviteData, ICheatCodeInviteData, mapCheatCodeInviteData } from './cheat_code_invite'
 
 // Combined interface for all CMS data
 export interface AllCMSData {
@@ -227,6 +229,7 @@ export interface AllCMSData {
   uniqueCode: IUniqueCodeData
   thatWasQuick: IThatWasQuickData
   sorryUniqueCode: ISorryUniqueCodeData
+  cheatCodeInvite: ICheatCodeInviteData
 }
 
 // Hook to get all mapped CMS data
@@ -274,7 +277,8 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
         jokeIsIn: defaultJokeIsIn,
         uniqueCode: defaultUniqueCodeData,
         thatWasQuick: defaultThatWasQuickData,
-        sorryUniqueCode: defaultSorryUniqueCodeData
+        sorryUniqueCode: defaultSorryUniqueCodeData,
+        cheatCodeInvite: defaultCheatCodeInviteData
       }
     }
 
@@ -317,7 +321,8 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
       jokeIsIn: mapJokesIsInPopup(homePageContent),
       uniqueCode: mapUniqueCodeData(homePageContent),
       thatWasQuick: mapThatWasQuickData(homePageContent),
-      sorryUniqueCode: mapSorryUniqueCodeData(homePageContent)
+      sorryUniqueCode: mapSorryUniqueCodeData(homePageContent),
+      cheatCodeInvite: mapCheatCodeInviteData(homePageContent)
     }
   }, [homePageContent, mounted])
 }
@@ -364,6 +369,7 @@ export const mapAllCMSData = (
     jokeIsIn: mapJokesIsInPopup(cmsData),
     uniqueCode: mapUniqueCodeData(cmsData),
     thatWasQuick: mapThatWasQuickData(cmsData),
-    sorryUniqueCode: mapSorryUniqueCodeData(cmsData)
+    sorryUniqueCode: mapSorryUniqueCodeData(cmsData),
+    cheatCodeInvite: mapCheatCodeInviteData(cmsData)
   }
 }
