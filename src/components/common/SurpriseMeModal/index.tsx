@@ -142,6 +142,12 @@ const SurpriseMeModal = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gluedinAssetData]);
+  
+  useEffect(()=>{
+    return ()=>{
+      setJoke(null)
+    }
+  },[])
 
   const handleSendGluedinUserReaction = (
     reactionType: string,
