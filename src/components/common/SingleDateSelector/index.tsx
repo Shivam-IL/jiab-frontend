@@ -108,12 +108,16 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
     const newDate = new Date(currentDate);
     newDate.setFullYear(newDate.getFullYear() - 1);
     setCurrentDate(newDate);
+    setSelectedDate(newDate);
   };
 
   const handleNextYear = () => {
     const newDate = new Date(currentDate);
     newDate.setFullYear(newDate.getFullYear() + 1);
-    setCurrentDate(newDate);
+    if (newDate.getFullYear() <= new Date().getFullYear()) {
+      setCurrentDate(newDate);
+      setSelectedDate(newDate);
+    }
   };
 
   const renderMonthGrid = () => {
@@ -134,7 +138,12 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
             </h2>
             <button
               onClick={handleNextYear}
-              className="h-7 w-7 flex items-center justify-center hover:bg-[#E8F5E9] rounded-full transition-colors"
+              disabled={currentDate.getFullYear() >= new Date().getFullYear()}
+              className={`h-7 w-7 flex items-center justify-center rounded-full transition-colors ${
+                currentDate.getFullYear() >= new Date().getFullYear() 
+                  ? 'opacity-50 cursor-not-allowed' 
+                  : 'hover:bg-[#E8F5E9]'
+              }`}
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -197,11 +206,14 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
             <button
               key={year}
               onClick={() => handleYearSelect(year)}
+              disabled={year > new Date().getFullYear()}
               className={`
                 p-3 border rounded-lg text-center transition-all
                 ${
                   year === currentDate.getFullYear()
                     ? "border-[#4CAF50] bg-[#E8F5E9] text-[#4CAF50]"
+                    : year > new Date().getFullYear()
+                    ? "border-gray-200 text-gray-400 cursor-not-allowed opacity-50"
                     : "border-gray-200 hover:border-[#4CAF50] hover:bg-[#E8F5E9]/50"
                 }
               `}
@@ -230,24 +242,58 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
               onSelect={handleDateSelect}
               numberOfMonths={1}
               className="w-full space-y-[7px]"
-              defaultMonth={selectedDate || currentDate}
+              month={currentDate}
+              onMonthChange={setCurrentDate}
               captionLayout="buttons"
+              disabled={(date) => date > new Date()}
               components={{
-                IconLeft: () => <ChevronLeft className="h-4 w-4" />,
-                IconRight: () => <ChevronRight className="h-4 w-4" />,
+                IconLeft: () => (
+                  <button
+                    onClick={() => {
+                      const newDate = new Date(currentDate);
+                      newDate.setMonth(newDate.getMonth() - 1);
+                      setCurrentDate(newDate);
+                    }}
+                    className="h-7 w-7 flex items-center justify-center hover:bg-[#E8F5E9] rounded-full transition-colors"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                ),
+                IconRight: () => {
+                  const nextMonth = new Date(currentDate);
+                  nextMonth.setMonth(nextMonth.getMonth() + 1);
+                  const isDisabled = nextMonth > new Date();
+                  return (
+                    <button
+                      onClick={() => {
+                        if (!isDisabled) {
+                          const newDate = new Date(currentDate);
+                          newDate.setMonth(newDate.getMonth() + 1);
+                          setCurrentDate(newDate);
+                        }
+                      }}
+                      disabled={isDisabled}
+                      className={`h-7 w-7 flex items-center justify-center rounded-full transition-colors ${
+                        isDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#E8F5E9]'
+                      }`}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </button>
+                  );
+                },
                 CaptionLabel: ({ displayMonth }) => (
                   <div className="flex items-center gap-2">
                     <span
                       onClick={() => setViewMode("month")}
                       className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
                     >
-                      {selectedDate ? format(selectedDate, "MMM") : format(displayMonth, "MMM")}
+                      {format(displayMonth, "MMM")}
                     </span>
                     <span
                       onClick={() => setViewMode("year")}
                       className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
                     >
-                      {selectedDate ? format(selectedDate, "yyyy") : format(displayMonth, "yyyy")}
+                      {format(displayMonth, "yyyy")}
                     </span>
                   </div>
                 ),

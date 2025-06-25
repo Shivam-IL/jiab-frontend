@@ -559,6 +559,7 @@ export const SEND_AGAIN_STATUS = {
 export const INVITE_CODE_STATUS = {
   SUCCESS: "success",
   INVALID_REFERRAL_CODE: "invalid_referral_code",
+  CANT_VERIFY_OWN_REFERRAL_CODE: "cant_verify_own_referral_code",
 };
 
 export const ARE_YOU_SURE_YOU_WANT_TO_EXIT = "Are you sure you want to exit?";

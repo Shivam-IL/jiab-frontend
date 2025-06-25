@@ -149,6 +149,11 @@ export class ReferralService extends MainService {
           status: INVITE_CODE_STATUS.INVALID_REFERRAL_CODE,
         };
         return SuccessResponse(responseData);
+      } else if (data?.code === 1002) {
+        const responseData = {
+          message: data?.message,
+        };
+        return SuccessResponse(responseData);
       }
       return ErrorResponse(data?.message || "Invalid Referral Code");
     } catch (error) {
