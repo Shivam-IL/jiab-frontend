@@ -16,6 +16,7 @@ import { dateConvert, generateImageurl } from "@/utils";
 import useWindowWidth from "@/hooks/useWindowWidth";
 import useAppSelector from "@/hooks/useSelector";
 import { User } from "@/store/profile/profile.slice";
+import { useCMSData } from "@/data";
 
 interface InfoDataItem {
   id: number;
@@ -26,6 +27,12 @@ interface InfoDataItem {
 }
 
 const ProfileCard = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const cmsData = useCMSData(mounted);
   const router = useRouter();
 
   const width = useWindowWidth();
@@ -93,7 +100,26 @@ const ProfileCard = () => {
       const modifiedEmailGenderArray = USER_INFO_EMAIL_GENDER_ARRAY?.map(
         (item) => {
           const itemKey = item.type as keyof User;
-          const value = user[itemKey];
+          let value = user[itemKey];
+          if (item.type === "gender" && value) {
+            // Map gender value to CMS label
+            switch (String(value).toLowerCase()) {
+              case "male":
+                value = cmsData.editProfile.genderMale;
+                break;
+              case "female":
+                value = cmsData.editProfile.genderFemale;
+                break;
+              case "other":
+                value = cmsData.editProfile.genderOthers;
+                break;
+              case "perfer_not_to_say":
+                value = cmsData.editProfile.genderPreferNotToSay;
+                break;
+              default:
+                value = String(user[itemKey]);
+            }
+          }
           if (value !== undefined && value !== null && value) {
             return {
               ...item,
@@ -106,15 +132,13 @@ const ProfileCard = () => {
       );
       setEmailGenderArray(modifiedEmailGenderArray);
     }
-  }, [user]);
+  }, [user, cmsData]);
 
   const handleEditProfile = () => {
     if (id) {
       router.push(`/my-profile/${id}`);
     }
   };
-
-  console.log(userImage, "userImage");
 
   return (
     <div className="relative w-full rounded-[10px]  bg-white md:rounded-[20px]">

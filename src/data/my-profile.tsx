@@ -22,6 +22,10 @@ export interface MyProfileData {
   myJokes: string;
   hallOfLameText: string;
   sendAgain: string;
+  male: string;
+  female: string;
+  other: string;
+  preferNotToSay: string;
 }
 
 export const mapMyProfileData = (
@@ -53,6 +57,10 @@ export const mapMyProfileData = (
     myJokes: myProfileCMS?.my_jokes ?? "My Jokes",
     hallOfLameText: myProfileCMS?.hall_of_lame_text ?? "Hall of Lame",
     sendAgain: myProfileCMS?.send_again ?? "Send Again",
+    male: myProfileCMS?.male ?? "Male",
+    female: myProfileCMS?.female ?? "Female",
+    other: myProfileCMS?.other ?? "Other",
+    preferNotToSay: myProfileCMS?.prefer_not_to_say ?? "Prefer Not to Say",
   };
 };
 
@@ -79,4 +87,8 @@ export const defaultMyProfileData: MyProfileData = {
   myJokes: "My Jokes",
   hallOfLameText: "Hall of Lame",
   sendAgain: "Send Again",
+  male: "Male",
+  female: "Female",
+  other: "Other",
+  preferNotToSay: "Prefer Not to Say",
 };
