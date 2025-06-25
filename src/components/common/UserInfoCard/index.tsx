@@ -1,7 +1,7 @@
-import { IUserInfoCard } from '@/interfaces'
-import React from 'react'
-import SvgIcons from '../SvgIcons'
-import AktivGroteskText from '../AktivGroteskText'
+import { IUserInfoCard } from "@/interfaces";
+import React from "react";
+import SvgIcons from "../SvgIcons";
+import AktivGroteskText from "../AktivGroteskText";
 
 const UserInfoCard: React.FC<IUserInfoCard> = ({
   dataLength,
@@ -11,15 +11,15 @@ const UserInfoCard: React.FC<IUserInfoCard> = ({
   className,
   iconWidth,
   iconHeight,
-  iconClassName = '',
-  textFontSize = 'text-[12px] md:text-[24px]',
-  textFontWeight = 'font-[400]'
+  iconClassName = "",
+  textFontSize = "text-[12px] md:text-[24px]",
+  textFontWeight = "font-[400]",
 }) => {
   return (
     <div
       className={`flex justify-start items-center gap-2 md:gap-[16px] ${className}`}
     >
-      <div className='flex items-center justify-center min-w-[14px] min-h-[14px] md:min-w-[29px] md:min-h-[29px]'>
+      <div className="flex items-center justify-center min-w-[14px] min-h-[14px] md:min-w-[29px] md:min-h-[29px]">
         <SvgIcons
           className={iconClassName}
           name={iconName}
@@ -31,10 +31,12 @@ const UserInfoCard: React.FC<IUserInfoCard> = ({
         text={text}
         fontSize={textFontSize}
         fontWeight={textFontWeight}
-        className={`${index ? index + 1 === dataLength ? 'capitalize' : '' : ''}`}
+        className={`${
+          index ? (index + 1 === dataLength ? "capitalize" : "") : ""
+        }`}
       />
     </div>
-  )
-}
+  );
+};
 
-export default UserInfoCard
+export default UserInfoCard;

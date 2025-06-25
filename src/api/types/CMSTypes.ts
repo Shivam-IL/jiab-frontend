@@ -249,6 +249,10 @@ export type TCMSResponse = {
       my_jokes: string;
       hall_of_lame_text: string;
       send_again: string;
+      male: string;
+      female: string;
+      other: string;
+      prefer_not_to_say: string;
     };
     comic_coins: {
       id: number;
