@@ -27,6 +27,7 @@ import {
 } from "@/api/utils/cdpEvents";
 import useAppSelector from "@/hooks/useSelector";
 import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
+import Image from "next/image";
 
 export interface ISurpriseMeJoke {
   artist_id: string;
@@ -358,9 +359,12 @@ const SurpriseMeModal = ({
         `}</style>
         <DialogContent className="border-none md:max-w-[353px] px-[12px] max-w-[277px] shadow-none p-0 rounded-[20px]">
           <div className="absolute border-none outline-none top-[-105px] md:top-[-100px] left-0 flex justify-center items-center w-full">
-            <SvgIcons
-              name={ICONS_NAMES.SURPRISE_ME}
+            <Image
+              src={`/static/sprite/icons/${ICONS_NAMES.SURPRISE_ME}.svg`}
+              alt={ICONS_NAMES.SURPRISE_ME}
               className="w-[145px] h-[102px] md:w-[136px] md:h-[97px]"
+              width={145}
+              height={102}
             />
           </div>
           <div className="flex justify-between items-start p-[12px]">

@@ -3,6 +3,7 @@ import SvgIcons from "../common/SvgIcons";
 import { ICONS_NAMES } from "@/constants";
 import { IUserReaction } from "@/api/types/JokeTypes";
 import { formatNumberToK } from "@/utils";
+import Image from "next/image";
 
 // Define a type for the values of ICONS_NAMES
 type IconName = (typeof ICONS_NAMES)[keyof typeof ICONS_NAMES];
@@ -142,8 +143,9 @@ const ReactionEmojies: React.FC<ReactionEmojiesProps> = ({
               if (!isViewIcon && !isReacted) handleClick(reaction);
             }}
           >
-            <SvgIcons
-              name={reaction.icon}
+            <Image
+              src={`/static/sprite/icons/${reaction.icon}.svg`}
+              alt={reaction.icon}
               width={36.2}
               height={36.2}
               className={`md:w-[clamp(28px,4.5vh,32.25px)] ${getClassName(
