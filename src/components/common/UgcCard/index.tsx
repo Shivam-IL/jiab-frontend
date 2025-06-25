@@ -26,11 +26,6 @@ import {
 } from "@/api/utils/cdpEvents";
 import VideoModal from "@/components/VideoModal";
 
-enum UGCReactionType {
-  HAHA = "haha",
-  MEH = "meh",
-  GRR = "grr",
-}
 
 const UgcCard: React.FC<UgcCardProps> = ({
   disclaimerText = "The content displayed above is user generated and may not reflect the opinions of Sprite®",

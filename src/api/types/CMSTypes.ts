@@ -300,6 +300,41 @@ export type TCMSResponse = {
       vote_is_in_sub_heading: string;
       vote_is_in_button_text: string;
     };
+    joke_box_filter: {
+      id: number; 
+      documentId: string;
+      pick_your_filter: string;
+      clear_filters_tag: string;
+      select_language_placeholder: string;
+      select_category_placeholder: string;
+      cricket: string;
+      animals: string;
+      food: string;
+      colllege: string;
+      friends: string;
+      finance: string;
+      observation: string;
+      self: string;
+      adulting: string;
+      office: string;
+      relationships: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+      applty_button_text: string;
+    };
+    joke_is_in_pop_up: {
+      id: number;
+      documentId: string;
+      joke_is_in_heading: string;
+      joke_is_in_sub_heading: string;
+      explore_more_button: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
     serial_chiller_pop_up: {
       id: number;
       documentId: string;
@@ -479,7 +514,7 @@ export type TCMSResponse = {
       publishedAt: string;
       locale: string;
     };
-    
+
     leaderboard: {
       id: number;
       documentId: string;
