@@ -322,6 +322,7 @@ export type TCMSResponse = {
       updatedAt: string;
       publishedAt: string;
       locale: string;
+      family:string;
       applty_button_text: string;
     };
     joke_is_in_pop_up: {
