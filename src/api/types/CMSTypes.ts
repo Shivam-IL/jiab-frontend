@@ -273,6 +273,20 @@ export type TCMSResponse = {
       comic_coin_header: string;
       how_to_collect: string;
     };
+    unique_code: {
+      id: number;
+      documentId: string;
+      unique_code_header: string;
+      unqiue_code_placeholder: string;
+      submit_buttom: string;
+      Note_under_submit_button: string;
+      incorrect_code: string;
+      same_unique_code: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
     logout_button_navbar_profile_dropdown: {
       id: number;
       documentId: string;
@@ -307,7 +321,7 @@ export type TCMSResponse = {
       vote_is_in_button_text: string;
     };
     joke_box_filter: {
-      id: number; 
+      id: number;
       documentId: string;
       pick_your_filter: string;
       clear_filters_tag: string;
@@ -328,7 +342,7 @@ export type TCMSResponse = {
       updatedAt: string;
       publishedAt: string;
       locale: string;
-      family:string;
+      family: string;
       applty_button_text: string;
     };
     joke_is_in_pop_up: {
@@ -381,6 +395,29 @@ export type TCMSResponse = {
       login_heading: string;
       login_otp_button: string;
       mobile_number_placeholder: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
+    sorry_pop_up: {
+      id: number;
+      documentId: string;
+      sorry_title: string;
+      sorry_sub_title: string;
+      submit_button: string;
+      note_text: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
+    that_was_quick_pop_up: {
+      id: number;
+      documentId: string;
+      heading_title: string;
+      sub_heading_title: string;
+      got_it_text: string;
       createdAt: string;
       updatedAt: string;
       publishedAt: string;

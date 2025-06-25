@@ -27,6 +27,9 @@ export * from './invite_code'
 export * from './same-refer'
 export * from './joke_box_filter'
 export * from './joke_is_in_popup'
+export * from './unique_code'
+export * from './that_was_quick'
+export * from './sorry_unique_code'
 
 // Import all the mapping functions
 import {
@@ -180,6 +183,9 @@ import {
   IJokeIsInPopup,
   mapJokesIsInPopup
 } from './joke_is_in_popup'
+import { defaultUniqueCodeData, IUniqueCodeData, mapUniqueCodeData } from './unique_code'
+import { defaultThatWasQuickData, IThatWasQuickData, mapThatWasQuickData } from './that_was_quick'
+import { defaultSorryUniqueCodeData, ISorryUniqueCodeData, mapSorryUniqueCodeData } from './sorry_unique_code'
 
 // Combined interface for all CMS data
 export interface AllCMSData {
@@ -218,6 +224,9 @@ export interface AllCMSData {
   sameRefer: SameReferPopupData
   jokeBoxFilter: IJokeBoxFilter
   jokeIsIn: IJokeIsInPopup
+  uniqueCode: IUniqueCodeData
+  thatWasQuick: IThatWasQuickData
+  sorryUniqueCode: ISorryUniqueCodeData
 }
 
 // Hook to get all mapped CMS data
@@ -262,7 +271,10 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
         inviteCode: defaultInviteCodeData,
         sameRefer: defaultSameReferPopupData,
         jokeBoxFilter: defaultJokeBoxFilterData,
-        jokeIsIn: defaultJokeIsIn
+        jokeIsIn: defaultJokeIsIn,
+        uniqueCode: defaultUniqueCodeData,
+        thatWasQuick: defaultThatWasQuickData,
+        sorryUniqueCode: defaultSorryUniqueCodeData
       }
     }
 
@@ -302,7 +314,10 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
       inviteCode: mapInviteCodeData(homePageContent),
       sameRefer: mapSameReferPopupData(homePageContent),
       jokeBoxFilter: mapJokeBoxFilter(homePageContent),
-      jokeIsIn: mapJokesIsInPopup(homePageContent)
+      jokeIsIn: mapJokesIsInPopup(homePageContent),
+      uniqueCode: mapUniqueCodeData(homePageContent),
+      thatWasQuick: mapThatWasQuickData(homePageContent),
+      sorryUniqueCode: mapSorryUniqueCodeData(homePageContent)
     }
   }, [homePageContent, mounted])
 }
@@ -346,6 +361,9 @@ export const mapAllCMSData = (
     inviteCode: mapInviteCodeData(cmsData),
     sameRefer: mapSameReferPopupData(cmsData),
     jokeBoxFilter: mapJokeBoxFilter(cmsData),
-    jokeIsIn: mapJokesIsInPopup(cmsData)
+    jokeIsIn: mapJokesIsInPopup(cmsData),
+    uniqueCode: mapUniqueCodeData(cmsData),
+    thatWasQuick: mapThatWasQuickData(cmsData),
+    sorryUniqueCode: mapSorryUniqueCodeData(cmsData)
   }
 }
