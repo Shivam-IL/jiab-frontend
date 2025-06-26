@@ -198,7 +198,7 @@ const OtpModal = () => {
             dispatch(updateOtpStatus({ otpSent: false }));
           }}
         >
-          <SvgIcons name={ICONS_NAMES.CROSS} className="w-[16px] h-[16px]" />
+          <SvgIcons name={ICONS_NAMES.CROSS} className="w-[20px] h-[20px]" />
         </button>
       </div>
       <div className={`flex flex-col gap-[12px] pt-[50px]`}>

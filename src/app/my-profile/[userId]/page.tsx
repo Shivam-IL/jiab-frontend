@@ -8,7 +8,6 @@ import EditProfileImage from "@/components/EditProfileImage";
 import GreenCTA from "@/components/GreenCTA";
 import Input from "@/components/Input";
 import { Separator } from "@/components/ui/separator";
-import { GA_EVENTS } from "@/constants";
 import { IAvatarsData, updateUser } from "@/store/profile/profile.slice";
 import useAppSelector from "@/hooks/useSelector";
 import useWindowWidth from "@/hooks/useWindowWidth";
@@ -16,9 +15,7 @@ import { newMonthDayYearConvert } from "@/utils";
 import { useParams, useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import useAppDispatch from "@/hooks/useDispatch";
-import { triggerGAEvent } from "@/utils/gTagEvents";
 import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
-import {  MOBILE_TEMP_NAVBAR_DATA } from '@/constants'
 
 import {
   CDPEventPayloadBuilder,

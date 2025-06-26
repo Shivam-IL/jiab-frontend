@@ -46,10 +46,15 @@ const InviteCodeComponent = ({
   const { mutate: sendCDPEvent } = useSendCDPEvent()
 
   const handleChangeInvite = (key: string, value: string) => {
+    setError('')
     setInviteCode(value)
   }
 
   const handleVerifyReferral = () => {
+    if (inviteCode==='') {
+      setError("Please enter refer code.");
+      return;
+    }
     verifyReferral({ referral_code: inviteCode })
   }
 
@@ -114,6 +119,7 @@ const InviteCodeComponent = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
 
   return (
     <>

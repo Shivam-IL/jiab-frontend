@@ -141,6 +141,7 @@ const ReferNowComponent = ({
         setOpen3(false);
         setReferStatus1(false);
         setReferStatus2(false);
+        setError("Please enter a valid 10 digit mobile number");
         onClose();
       } else if (status === REFERRAL_CODE.EXISTING_USER) {
         setOpen?.(true);
@@ -196,6 +197,7 @@ const ReferNowComponent = ({
           onClose={() => {
             onClose();
             setPhoneNumber("");
+            setError("");
           }}
         />
       )}
@@ -216,6 +218,7 @@ const ReferNowComponent = ({
             onClose();
             setPhoneNumber("");
             setOpen2(false);
+            setError("");
           }}
         />
       )}
@@ -243,6 +246,7 @@ const ReferNowComponent = ({
           onClose={() => {
             setReferStatus1(false);
             setPhoneNumber("");
+            setError("");
           }}
           icon={REFFERAL_STATUS_POPUP_DATA.EASY.ICON}
           title={easyPeasy.easy_me_pop_up_heading}
@@ -269,6 +273,7 @@ const ReferNowComponent = ({
           onClose={() => {
             setReferStatus2(false);
             setPhoneNumber("");
+            setError("");
           }}
           icon={REFFERAL_STATUS_POPUP_DATA.PAST_ON_US.ICON}
           title={sameRefer.trying_to_heading}

@@ -358,7 +358,7 @@ const SurpriseMeModal = ({
               border-radius: 3px !important;
             }
           `}</style>
-          <DialogContent className='z-[50] border-none md:max-w-[353px] px-[12px] max-w-[277px] shadow-none p-0 rounded-[20px]'>
+          <DialogContent className='z-[50] border-none md:max-w-[353px] px-[12px] max-w-[68%] shadow-none p-0 rounded-[20px]'>
             <div className='absolute border-none outline-none top-[-105px] md:top-[-100px] left-0 flex justify-center items-center w-full'>
               <Image
                 src={`/static/sprite/icons/${ICONS_NAMES.SURPRISE_ME}.svg`}
@@ -404,7 +404,7 @@ const SurpriseMeModal = ({
                 />
               </button>
             </div>
-            <div className='relative  max-w-[255px] md:max-w-[329px] h-[429px] md:h-[526px] ml-[11px]'>
+            <div className='relative  max-w-[100%] md:max-w-[329px] md:min-w-[329px]  md:h-[526px] ml-[11px] mr-[11px] md:mr-0'>
               <video
                 src={joke?.url ?? ''}
                 preload='auto'
@@ -417,6 +417,7 @@ const SurpriseMeModal = ({
                 webkit-playsinline=''
                 x5-playsinline=''
                 style={{
+                  position:'relative',
                   width: '100%',
                   height: '100%',
                   aspectRatio: '9/16',

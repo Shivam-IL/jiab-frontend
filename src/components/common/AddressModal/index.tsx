@@ -337,7 +337,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               setOpen(false)
             }}
           >
-            <SvgIcons name={ICONS_NAMES.CROSS} className='w-[13px] h-[13px]' />
+            <SvgIcons name={ICONS_NAMES.CROSS} className='w-[20px] h-[20px]' />
           </button>
         </div>
         <form

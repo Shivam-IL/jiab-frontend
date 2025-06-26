@@ -38,7 +38,7 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
         <div className="flex flex-col items-center justify-center w-[50px] h-[50px] rounded-full bg-[#FFE200]">
           <SvgIcons name={icon} className="w-[25px] h-[25px]" />
         </div>
-        <div className="flex flex-col text-center items-center px-[27px] w-[90%] justify-center gap-[16px]">
+        <div className={`flex flex-col text-center items-center px-[27px] w-[90%] justify-center gap-[16px] ${!singleButton && !doubleButton ? 'pb-[18px]' : ''}`}>
           {title && <AktivGroteskText
             text={title}
             fontSize="text-[18px]"

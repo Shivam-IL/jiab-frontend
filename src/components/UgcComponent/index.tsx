@@ -81,7 +81,7 @@ const UgcComponent: React.FC<IUgcComponent> = ({
             >
               <SvgIcons
                 name={ICONS_NAMES.CROSS}
-                className="w-[16px] h-[16px]"
+                className="w-[20px] h-[20px]"
               />
             </button>
           </div>

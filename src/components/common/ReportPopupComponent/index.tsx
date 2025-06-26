@@ -132,7 +132,6 @@ const ReportPopupComponent = ({
           title={'We heard you!'}
           subtitle={"Thand Rakh, we'll get this sorted soon."}
           singleButtonText={'Explore More'}
-          singleButton={true}
           singleButtonOnClick={() => {
             if (pathName === '/user-generated-jokes') {
               setOpen2(false)
