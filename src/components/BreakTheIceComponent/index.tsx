@@ -3,7 +3,11 @@ import { usePathname, useRouter } from 'next/navigation'
 import { BreakTheIceExitPopup } from '../ExitPopUps'
 import { LOCAL_KEYS, SESSION_STORAGE_KEYS } from '@/constants'
 import useAppSelector from '@/hooks/useSelector'
-import { getLocalStorageItem, removeSessionStorageItem } from '@/utils'
+import {
+  getLocalStorageItem,
+  getSessionStorageItem,
+  removeSessionStorageItem
+} from '@/utils'
 
 const BreakTheIceComponent = () => {
   // ...existing code...
@@ -86,6 +90,13 @@ const BreakTheIceComponent = () => {
   if (pathname.startsWith('/my-profile')) return <></>
 
   if (pathname.startsWith('/profile')) return <></>
+
+  if (
+    !getSessionStorageItem(SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL) &&
+    pathname === '/'
+  ) {
+    return <></>
+  }
 
   if (
     pathname.startsWith('/contest') &&
