@@ -3,6 +3,7 @@
 import AktivGroteskText from "@/components/common/AktivGroteskText";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
 import UgcComponent from "@/components/UgcComponent";
+import UgcPageLoader from "@/components/UgcPageLoader";
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { MadeYouLaughExitPopup } from "@/components/ExitPopUps";
@@ -26,6 +27,7 @@ const UserGeneratedJokes = () => {
   const router = useRouter();
   const [isUnmounting, setIsUnmounting] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const dispatch = useAppDispatch();
 
   const { ugcData, offset, limit, ugcFilters, filterChnageId, loadMore } =
@@ -79,8 +81,20 @@ const UserGeneratedJokes = () => {
           ugcData: gluedinFeedList?.data,
         })
       );
+
+      // Set initial loading to false once first data is loaded
+      if (initialLoading) {
+        setInitialLoading(false);
+      }
     }
-  }, [gluedinFeedList, filterChnageId, dispatch, viewGludeinJokes, loadMore]);
+  }, [
+    gluedinFeedList,
+    filterChnageId,
+    dispatch,
+    viewGludeinJokes,
+    loadMore,
+    initialLoading,
+  ]);
 
   useEffect(() => {
     if (viewGludeinJokesData?.ok) {
@@ -96,6 +110,17 @@ const UserGeneratedJokes = () => {
 
   return (
     <ScreenWrapper>
+      {/* Page-specific loading component */}
+      <UgcPageLoader
+        isVisible={
+          initialLoading ||
+          (isLoadingGluedinFeedList &&
+            offset === 1 &&
+            !loadMore &&
+            ugcData.length === 0)
+        }
+      />
+
       <div>
         <div className="flex flex-col gap-[4px] md:gap-[12px]">
           <div className="flex justify-between items-center">

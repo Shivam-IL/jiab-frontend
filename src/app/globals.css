@@ -115,6 +115,18 @@
     pointer-events: none;
     z-index: 60;
   }
+
+  .dashed-expanded {
+    border-style: dashed;
+    border-width: 2px;
+    border-color: #00C853;
+    /* match border-green or use current color */
+    border-radius: 0.5rem;
+    padding: 1rem;
+    border-image: repeating-linear-gradient(to right,
+        #00C853 0 8px,
+        transparent 8px 16px) 1;
+  }
 }
 
 @keyframes slideDown {

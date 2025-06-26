@@ -498,8 +498,9 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         className="hover:bg-gray-50 flex justify-between items-center px-[20px] py-[10px]"
                       >
                         {cmsData.navBar.myProfile}
-                        <SvgIcons
-                          name={ICONS_NAMES.PROFILE_ICON}
+                        <Image
+                          src={`/static/sprite/icons/${ICONS_NAMES.PROFILE_ICON}.svg`}
+                          alt={ICONS_NAMES.PROFILE_ICON}
                           width={20}
                           height={20}
                         />
@@ -511,8 +512,9 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         className="px-[20px] py-[10px] hover:bg-gray-50 flex justify-between items-center"
                       >
                         {cmsData.navBar.comicCoins}
-                        <SvgIcons
-                          name={ICONS_NAMES.WALLET_ICON}
+                        <Image
+                          src={`/static/sprite/icons/${ICONS_NAMES.WALLET_ICON}.svg`}
+                          alt={ICONS_NAMES.WALLET_ICON}
                           width={20}
                           height={20}
                         />
@@ -524,8 +526,9 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         className="w-full text-left px-[20px] py-[10px] hover:bg-gray-50 text-red-500 flex items-center justify-between"
                       >
                         <span>{cmsData.navBar.logout}</span>
-                        <SvgIcons
-                          name={ICONS_NAMES.LOGOUT_ICON}
+                        <Image
+                          src={`/static/sprite/icons/${ICONS_NAMES.LOGOUT_ICON}.svg`}
+                          alt={ICONS_NAMES.LOGOUT_ICON}
                           width={20}
                           height={20}
                         />

@@ -19,11 +19,41 @@ import useAppSelector from "@/hooks/useSelector";
 import useAppDispatch from "@/hooks/useDispatch";
 import { updateLoginModal } from "@/store/auth/auth.slice";
 import SvgIcons from "@/components/common/SvgIcons";
+import PhonePeVoucherPopup from "@/components/PhonePeVoucherPopup";
+import RedeemSuccessPopup from "@/components/RedeemSuccessPopup";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+
+interface WalletCard {
+  id: number;
+  imageUrl: string;
+  title: string;
+  description: string;
+  isRedeemed: boolean;
+  expiryDate: string;
+  voucherCode?: string;
+  pin?: string;
+}
 
 const ComicCoinsPage = () => {
   const [mounted, setMounted] = useState(false);
   const [isReferModalOpen, setIsReferModalOpen] = useState(false);
   const [isRedeemed, setIsRedeemed] = useState(true);
+  const [activeTooltipId, setActiveTooltipId] = useState<number | null>(null);
+  const [isVoucherPopupOpen, setIsVoucherPopupOpen] = useState(false);
+  const [selectedVoucher, setSelectedVoucher] = useState<WalletCard | null>(
+    null
+  );
+  const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
+
+  // Carousel state management
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
 
   // Fetch comic coins data
   const { data: comicCoinsData, isLoading: isComicCoinsLoading } =
@@ -32,6 +62,21 @@ const ComicCoinsPage = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Carousel effect
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
+
   const cmsData = useCMSData(mounted);
   const router = useRouter();
   const handlePJChallengeClick = () => {
@@ -44,6 +89,33 @@ const ComicCoinsPage = () => {
 
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+
+  // Sample wallet cards data - you can replace this with actual data
+  const walletCards: WalletCard[] = [
+    {
+      id: 1,
+      imageUrl: "/other-svgs/phone-pe.svg",
+      title: "Cashback worth Rs.10",
+      description:
+        "Here's a pocket-sized perk just for you. Grab this Rs.10 PhonePe voucher now!",
+      isRedeemed: isRedeemed,
+      expiryDate: "31st Dec 2025",
+      voucherCode: "AJ5739EY93HYS",
+      pin: "315724",
+    },
+    {
+      id: 2,
+      imageUrl: "/other-svgs/phone-pe.svg",
+      title: "Cashback worth Rs.10",
+      description:
+        "Here's a pocket-sized perk just for you. Grab this Rs.10 PhonePe voucher now!",
+      isRedeemed: isRedeemed,
+      expiryDate: "31st Dec 2025",
+      voucherCode: "BK7845FG12LMN",
+      pin: "892341",
+    },
+    // Add more wallet cards here as needed
+  ];
 
   return (
     <>
@@ -86,70 +158,148 @@ const ComicCoinsPage = () => {
         </div>
       </div>
       <ScreenWrapper className="mt-0">
-
         {/* Reward Pool */}
         <Header title="My Wins" className="md:mt-8 mt-0 mx-[-19px] md:mx-0" />
         <div className="mt-4 w-full">
-          <WalletCard
-            imageUrl="/other-svgs/phone-pe.svg"
-            imageClassName="w-full h-auto"
-            imageAlt="my-win"
-            containerClassName="bg-white rounded-[10.68px] px-[13px] py-[14.57px] md:pt-[16px] md:pb-[35px] md:px-[33.5px] flex flex-col md:gap-[18.5px] gap-[8px] w-full"
+          <Carousel
+            setApi={setApi}
+            className="w-full"
+            opts={{
+              align: "start",
+              loop: false,
+            }}
           >
-            <div className="flex flex-col items-center gap-[24px] md:gap-[36px]">
-              <div className="flex flex-col items-center gap-[0px] md:gap-[20px]">
-                <div className="flex items-center gap-[10px]">
-                  <AktivGroteskText
-                    text="Cashback worth Rs.10"
-                    fontSize="text-[20px] md:text-[28px]"
-                    fontWeight="font-[700]"
+            <CarouselContent>
+              {walletCards.map((card) => (
+                <CarouselItem key={card.id} className="w-full">
+                  <WalletCard
+                    imageUrl={card.imageUrl}
+                    imageClassName="w-full h-auto"
+                    imageAlt="my-win"
+                    containerClassName="bg-white rounded-[10.68px] px-[13px] py-[14.57px] md:pt-[16px] md:pb-[35px] md:px-[33.5px] flex flex-col md:gap-[18.5px] gap-[8px] w-full"
+                  >
+                    <div className="flex flex-col items-center gap-[24px] md:gap-[36px]">
+                      <div className="flex flex-col items-center gap-[0px] md:gap-[20px]">
+                        <div className="flex items-center gap-[10px] relative">
+                          <AktivGroteskText
+                            text={card.title}
+                            fontSize="text-[20px] md:text-[28px]"
+                            fontWeight="font-[700]"
+                          />
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveTooltipId(
+                                activeTooltipId === card.id ? null : card.id
+                              );
+                            }}
+                            className="relative"
+                          >
+                            <SvgIcons
+                              name={ICONS_NAMES.INFO}
+                              className="w-[20px] h-[20px] cursor-pointer"
+                            />
+                            {/* Tooltip */}
+                            {activeTooltipId === card.id && (
+                              <>
+                                {/* Overlay to close tooltip when clicking outside */}
+                                <div
+                                  className="fixed inset-0 z-[9998]"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setActiveTooltipId(null);
+                                  }}
+                                />
+                                <div className="absolute top-full right-[-16px] mt-2 z-[9999] w-[280px] md:w-[309px]">
+                                  <div
+                                    className="bg-white border-2 border-green rounded-lg py-[11px] px-[8px] shadow-lg"
+                                    onClick={(e) => e.stopPropagation()}
+                                  >
+                                    {/* Tooltip arrow */}
+                                    <div className="absolute bottom-full right-[20px]">
+                                      <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-green"></div>
+                                      <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-b-[7px] border-l-transparent border-r-transparent border-b-white absolute bottom-[-5px] right-0"></div>
+                                    </div>
+                                    <div className="text-[14px] md:text-[16px] text-black md:leading-[20px] text-left">
+                                      Win* with every unique code. Find the code
+                                      behind the label of a Sprite<sup>®</sup>{" "}
+                                      promotion pack.
+                                    </div>
+                                  </div>
+                                </div>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                        <p className="text-[#313131] md:text-[20px] text-[16px] text-center max-w-[355px]">
+                          {card.description}
+                        </p>
+                      </div>
+                      {card.isRedeemed ? (
+                        <GreenCTA
+                          text="Redeem"
+                          onClick={() => {
+                            setSelectedVoucher(card);
+                            setIsVoucherPopupOpen(true);
+                          }}
+                          paddingClass="py-[12px] px-[36px] md:py-[20px] md:px-[44px]"
+                          fontSize="text-[12px] md:text-[20px]"
+                          className="max-w-[250px]"
+                        />
+                      ) : (
+                        <GreenCTA
+                          text="Redeemed"
+                          paddingClass="py-[12px] px-[36px] md:py-[20px] md:px-[44px]"
+                          fontSize="text-[12px] md:text-[20px]"
+                          className="text-[#E1E1E3] bg-[#C4C5C6]"
+                          disabled={true}
+                        />
+                      )}
+                    </div>
+                    {card.isRedeemed ? (
+                      <span className="text-[#313131] font-medium text-center md:text-[20px] text-[12px] md:mt-[24px] mt-[8px]">
+                        Last day to redeem:{" "}
+                        <span className="text-green">{card.expiryDate}</span>
+                      </span>
+                    ) : (
+                      <span className="text-[#C4C5C6] font-medium text-center md:text-[20px] text-[12px] md:mt-[24px] mt-[8px]">
+                        Last day to redeem: {card.expiryDate}
+                      </span>
+                    )}
+                  </WalletCard>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+
+          {/* Pagination dots - only show if there are multiple cards */}
+          {count > 1 && (
+            <div className="flex justify-center md:gap-1 gap-[1.77px] md:mb-10 mb-0 md:mt-[30px] mt-[8px]">
+              {Array.from({ length: count }).map((_, index) => {
+                const isActive = index === current - 1;
+                const key = `wallet-pagination-dot-${index}`;
+
+                const classes = [
+                  "h-1 rounded-full transition-all duration-300",
+                  isActive
+                    ? "md:w-[24px] w-[17.73px] bg-black"
+                    : "md:w-[12px] w-[8.86px] bg-gray-300",
+                ].join(" ");
+
+                return (
+                  <button
+                    key={key}
+                    className={classes}
+                    onClick={() => api?.scrollTo(index)}
+                    aria-label={`Go to wallet card ${index + 1}`}
                   />
-                  <SvgIcons
-                    name={ICONS_NAMES.INFO}
-                    className="w-[20px] h-[20px]"
-                  />
-                </div>
-                <p className="text-[#313131] md:text-[20px] text-[16px] text-center max-w-[355px]">
-                  Here&apos;s a pocket-sized perk just for you. Grab this Rs.10
-                  PhonePe voucher now!
-                </p>
-              </div>
-              {isRedeemed ? (
-                <GreenCTA
-                  text="Redeem"
-                  onClick={() => {
-                    setIsRedeemed(false);
-                  }}
-                  paddingClass="py-[12px] px-[36px] md:py-[20px] md:px-[44px]"
-                  fontSize="text-[12px] md:text-[20px]"
-                  className="max-w-[250px]"
-                />
-              ) : (
-                <GreenCTA
-                  text="Expired"
-                  paddingClass="py-[12px] px-[36px] md:py-[20px] md:px-[44px]"
-                  fontSize="text-[12px] md:text-[20px]"
-                  className="text-[#E1E1E3] bg-[#C4C5C6]"
-                  disabled={true}
-                />
-              )}
+                );
+              })}
             </div>
-            {isRedeemed ? (
-              <span className="text-[#313131] font-medium text-center md:text-[20px] text-[12px] md:mt-[24px] mt-[8px]">
-                Last day to redeem:{" "}
-                <span className="text-green">31st Dec 2025</span>
-              </span>
-            ) : (
-              <span className="text-[#C4C5C6] font-medium text-center md:text-[20px] text-[12px] md:mt-[24px] mt-[8px]">
-                Last day to redeem: 31st Dec 2025
-              </span>
-            )}
-          </WalletCard>
+          )}
         </div>
 
-        {/* PhonePe Cashback */}
-        {/* <Header title="PhonePe Cashback" className="md:mt-[40px] mt-[20px]" />
-        <div className="bg-white rounded-[10.68px] flex flex-col items-center text-center p-6 md:p-10 gap-6 mt-4">
+        {/* <div className="bg-white rounded-[10.68px] flex flex-col items-center text-center p-6 md:p-10 gap-6 mt-4">
           <Image
             src="/other-svgs/bummer.svg"
             alt="no-wins"
@@ -157,24 +307,6 @@ const ComicCoinsPage = () => {
             height={180}
             className="w-[120px] md:w-[180px] h-auto"
           />
-          <AktivGroteskText
-            text="Bummer! No wins yet!"
-            fontSize="text-[14px] md:text-[24px]"
-            fontWeight="font-[700]"
-            className="text-black"
-          />
-          <GreenCTA
-            text="Enter Code To Get Started"
-            onClick={() => {}}
-            paddingClass="py-[6px] px-[16px] md:py-[14px] md:px-[60px] max-w-[337px]"
-            fontSize="text-[12px] md:text-[20px]"
-          />
-          <p className="text-[#616161] text-[10px] md:text-[14px]">
-            Grab a Sprite® & participate in the Cashbacks for this hour have
-            already been won by other participants. Please come back next hour
-            to try again, or continue entering code to collect more Comic Coins
-            in the meantime.
-          </p>
         </div> */}
 
         {/* Previous Winners Banner */}
@@ -239,6 +371,40 @@ const ComicCoinsPage = () => {
           onClose={() => setIsReferModalOpen(false)}
         />
       )}
+
+      {/* PhonePe Voucher Popup */}
+      <PhonePeVoucherPopup
+        isOpen={isVoucherPopupOpen}
+        onClose={() => {
+          setIsVoucherPopupOpen(false);
+          setSelectedVoucher(null);
+        }}
+        title={selectedVoucher?.title}
+        description={selectedVoucher?.description}
+        voucherCode={selectedVoucher?.voucherCode}
+        pin={selectedVoucher?.pin}
+        expiryDate={selectedVoucher?.expiryDate}
+        onRedeem={() => {
+          // Handle redeem logic here
+          console.log("Voucher redeemed:", selectedVoucher);
+          setIsRedeemed(false);
+          setIsVoucherPopupOpen(false);
+          setSelectedVoucher(null);
+          // Show success popup
+          setIsSuccessPopupOpen(true);
+        }}
+        onShare={() => {
+          // Handle share logic here
+          console.log("Voucher shared:", selectedVoucher);
+        }}
+      />
+
+      {/* Redeem Success Popup */}
+      <RedeemSuccessPopup
+        isOpen={isSuccessPopupOpen}
+        onClose={() => setIsSuccessPopupOpen(false)}
+        comicCoinsEarned={20}
+      />
     </>
   );
 };
