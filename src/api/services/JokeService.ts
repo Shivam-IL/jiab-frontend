@@ -136,6 +136,9 @@ export class JokeService extends MainService {
           },
         }
       );
+      if (!response) {
+        throw new Error("Something went wrong");
+      }
       const responseData = response.data;
       if (responseData?.success) {
         const data = {

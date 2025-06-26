@@ -2,6 +2,7 @@ import React from "react";
 import { IUserGeneratedJokeCard } from "@/interfaces";
 import AktivGroteskText from "../AktivGroteskText";
 import {  PENDING } from "@/constants";
+import { formatDateToMonthYear } from "@/utils";
 
 const UserGeneratedJokeCard: React.FC<IUserGeneratedJokeCard> = ({
   image,
@@ -31,7 +32,7 @@ const UserGeneratedJokeCard: React.FC<IUserGeneratedJokeCard> = ({
         />
         <div className="flex justify-between items-center">
           <AktivGroteskText
-            text={`Date: ${date}`}
+            text={`Date: ${formatDateToMonthYear(date)}`}
             fontSize="text-[10px] md:text-[14px]"
             fontWeight="font-[400]"
           />

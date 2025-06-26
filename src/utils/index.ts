@@ -94,3 +94,22 @@ export const formatTimestampToDate = (timestamp: number): string => {
   return `${day}/${month}/${year}`;
 }
 
+export const formatDateToReadable = (date: string): string => {
+  const dateObj = new Date(date);
+  const day = String(dateObj.getDate()).padStart(2, '0');
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const year = dateObj.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+export const formatDateToMonthYear = (date: string): string => {
+  const dateObj = new Date(date);
+  const day = dateObj.getDate();
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const month = monthNames[dateObj.getMonth()];
+  const year = dateObj.getFullYear();
+  return `${day} ${month}, ${year}`;
+}
