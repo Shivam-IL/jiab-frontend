@@ -85,7 +85,8 @@ const SurpriseMeModal = ({
 
   const {
     mutate: mutateSendGluedinUserReaction,
-    data: gluedinUserReactionData
+    data: gluedinUserReactionData,
+    isPending: isSendingGluedinUserReaction
   } = useSendGluedinUserReaction()
   const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
     useViewGludeinJokes()
@@ -215,7 +216,7 @@ const SurpriseMeModal = ({
   //   };
   // }, [forceHideLoader]);
 
-  if (serialChill) {
+  if (serialChill && !joke) {
     return (
       <SerialChillerPopup
         open={serialChill}
@@ -243,7 +244,6 @@ const SurpriseMeModal = ({
     }
   }
 
-  console.log(joke, 'joke', makeLaughExitPopup)
 
   if (joke) {
     return (
@@ -254,6 +254,7 @@ const SurpriseMeModal = ({
             if (joke?.reactionType) {
               //modal is clicking 2
               handleClose()
+              setJoke(null)
             }
           }}
         >
@@ -417,7 +418,7 @@ const SurpriseMeModal = ({
                 webkit-playsinline=''
                 x5-playsinline=''
                 style={{
-                  position:'relative',
+                  position: 'relative',
                   width: '100%',
                   height: '100%',
                   aspectRatio: '9/16',
@@ -437,6 +438,7 @@ const SurpriseMeModal = ({
                   }
                   text={formatNumberToK(joke?.user_reaction?.laugh ?? 0)}
                   onClick={() => {
+                    if (isSendingGluedinUserReaction) return
                     handleSendGluedinUserReaction(ReactionType.LAUGH, joke?.id)
                     triggerCDPEvent(ReactionType.LAUGH)
                   }}
@@ -451,6 +453,7 @@ const SurpriseMeModal = ({
                   }
                   text={formatNumberToK(joke?.user_reaction?.neutral ?? 0)}
                   onClick={() => {
+                    if (isSendingGluedinUserReaction) return
                     handleSendGluedinUserReaction(
                       ReactionType.NEUTRAL,
                       joke?.id
@@ -468,6 +471,7 @@ const SurpriseMeModal = ({
                   }
                   text={formatNumberToK(joke?.user_reaction?.sad ?? 0)}
                   onClick={() => {
+                    if (isSendingGluedinUserReaction) return
                     handleSendGluedinUserReaction(ReactionType.SAD, joke?.id)
                     triggerCDPEvent(ReactionType.SAD)
                   }}
@@ -492,6 +496,7 @@ const SurpriseMeModal = ({
               setMakeLaughExitPopup(false)
               setOpen(false)
               onClose()
+              setJoke(null)
             }}
             noButtonClick={() => {
               setMakeLaughExitPopup(false)

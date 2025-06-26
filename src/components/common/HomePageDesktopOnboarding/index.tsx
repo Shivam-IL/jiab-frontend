@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import SvgIcons from '../SvgIcons'
-import { ICONS_NAMES } from '@/constants'
+import { ICONS_NAMES, SESSION_STORAGE_KEYS } from '@/constants'
 import { aktivGrotesk } from '@/app/layout'
-import { updateEnableCoachMarks } from '@/store/auth/auth.slice'
+import { updateEnableCoachMarks, updateSurpriseMe } from '@/store/auth/auth.slice'
 import useAppDispatch from '@/hooks/useDispatch'
 import { BoxIds } from '../CircularBoxesModal'
 import AktivGroteskText from '../AktivGroteskText'
+import { getSessionStorageItem } from '@/utils'
 
 // Export box IDs for reuse in other components
 export const DesktopBoxIds = {
@@ -57,6 +58,9 @@ const HomePageDesktopOnboarding = ({
 
   const handleClose = () => {
     dispatch(updateEnableCoachMarks({ enableCoachMarks: false }))
+    if(!getSessionStorageItem(SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL)){
+      dispatch(updateSurpriseMe({ surpriseMe: true }))
+    }
     onClose()
   }
 
