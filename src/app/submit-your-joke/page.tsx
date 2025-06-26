@@ -230,7 +230,7 @@ const SubmitYourJoke = () => {
         label: cmsData.pjChallenge.video,
         acceptedFormats: '.mp4',
         name: 'Video',
-        size: 100
+        size: 50
       }
     ],
     [cmsData]
@@ -819,10 +819,11 @@ const SubmitYourJoke = () => {
               onClick={() => {
                 handleSubmitJoke()
               }}
+              disabled={isPending}
               className='w-full md:w-[480px]'
               fontSize='text-[16px] md:text-[32px]'
               fontWeight='font-[400]'
-              text={cmsData.pjChallenge.submitButtonText}
+              text={isPending ? 'Submitting...' : cmsData.pjChallenge.submitButtonText}
               paddingClass='pt-[17px] pb-[12px] md:py-[24px]'
             />
             <AktivGroteskText
@@ -850,6 +851,9 @@ const SubmitYourJoke = () => {
               language: '',
               size: 1
             })
+            if (fileRef.current) {
+              fileRef.current.value = ''
+            }
             setOpenApproveJokePopup(false)
             router.push('/user-generated-jokes')
           }}
@@ -867,6 +871,9 @@ const SubmitYourJoke = () => {
               language: '',
               size: 1
             })
+            if (fileRef.current) {
+              fileRef.current.value = ''
+            }
             setOpenApproveJokePopup(false)
           }}
         />

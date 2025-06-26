@@ -45,6 +45,7 @@ const useSubmitJoke = () => {
         queryKey: [...keys.joke.getUserSubmittedJokes()],
       });
     },
+    retry: 3,
   });
 };
 
