@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import comicCoin from "../../../../../public/other-svgs/comic-coin-footer.svg";
+import comicCoinActive from "../../../../../public/other-svgs/comic-active-footer.svg";
 import { BoxIds } from "../../../common/CircularBoxesModal";
 import { useCMSData } from "@/data";
 import { useGetComicCoins } from "@/api/hooks/JokeHooks";
@@ -155,24 +156,16 @@ const MobileFooter = () => {
           >
             <div className="relative">
               <Image
-                src={comicCoin}
+                src={currentPath === "/my-wallet" ? comicCoinActive : comicCoin}
                 alt="comic-coins"
                 width={24}
                 height={24}
-                style={{
-                  filter:
-                    currentPath === "/my-wallet"
-                      ? "brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(120deg) brightness(95%) contrast(105%)"
-                      : "none",
-                }}
               />
               <div
-                className={`absolute -top-1 -right-1 bg-yellow-400 text-white
-                text-[7px] px-1 py-0.5 rounded-full font-bold ${
-                  currentPath === "/my-wallet" ? "bg-green" : "bg-black"
-                }`}
+                className={`absolute top-[-3px] right-[-8px] text-white flex justify-center items-center
+                text-[7px] px-1 py-0.5 rounded-full font-bold w-[22.58px] h-[10px] text-center bg-[#717171]`}
               >
-                {isComicCoinsLoading ? "--" : comicCoinsValue}
+                {isComicCoinsLoading ? "0" : comicCoinsValue}
               </div>
             </div>
             <span
