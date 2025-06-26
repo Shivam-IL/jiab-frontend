@@ -82,13 +82,30 @@
     z-index: 60;
   }
 
+  /* Notification dropdown arrow */
+  .notification-button-with-arrow::after {
+    content: '';
+    position: absolute;
+    left: 49%;
+    transform: translateX(-50%);
+    top: 33px;
+    width: 20px;
+    height: 20px;
+    background-image: url('/other-svgs/navbar-arrow.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    z-index: 60;
+  }
+
   /* Profile dropdown arrow */
   .profile-button-with-arrow::after {
     content: '';
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 45px;
+    top: 43.15px;
     width: 20px;
     height: 20px;
     background-image: url('/other-svgs/navbar-arrow.svg');

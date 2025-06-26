@@ -348,7 +348,11 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
           {isAuthenticated ? (
             <div className="relative" ref={notificationDropdownRef}>
               <button
-                className="cursor-pointer"
+                className={`cursor-pointer ${
+                  isNotificationDropdownOpen
+                    ? "notification-button-with-arrow"
+                    : ""
+                }`}
                 onClick={handleNotificationDropdownToggle}
               >
                 <Image
@@ -365,7 +369,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
               </button>
 
               {isNotificationDropdownOpen && (
-                <div className="absolute top-full right-0 mt-4 w-[450px] bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 max-h-[500px] overflow-y-auto">
+                <div className="absolute top-full right-[-11px] mt-4 w-[450px] bg-white border border-[#ebebeb] shadow-lg z-30 max-h-[500px] overflow-y-auto rounded-[3px]">
                   <div className="py-2">
                     {notificationsLoading ? (
                       <div className="flex justify-center items-center py-8">
