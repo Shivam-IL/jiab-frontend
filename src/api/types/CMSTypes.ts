@@ -298,6 +298,16 @@ export type TCMSResponse = {
       publishedAt: string;
       locale: string;
     };
+    send_again_pop_up: {
+      id: number;
+      documentId: string;
+      heading: string;
+      sub_heading: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
     logout_button_navbar_profile_dropdown: {
       id: number;
       documentId: string;

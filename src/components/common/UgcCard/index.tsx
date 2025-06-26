@@ -192,9 +192,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
   return (
     <div
       style={{
-        backgroundImage: `url(${generateImageurl(
-          LOCAL_IMAGES.UGC_CARD_BG
-        )})`
+        backgroundImage: `url(${generateImageurl(LOCAL_IMAGES.UGC_CARD_BG)})`
       }}
       className='relative bg-cover bg-no-repeat w-full flex-grow-1 p-[16px] md:px-[12px] flex flex-col justify-between gap-[10px] md:rounded-[10px] rounded-[5px]'
     >

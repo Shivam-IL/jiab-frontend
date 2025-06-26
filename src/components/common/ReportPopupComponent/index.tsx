@@ -69,9 +69,6 @@ const ReportPopupComponent = ({
       assetId,
       information: refferalLink
     })
-
-    setOpen2(true)
-    setOpen?.(false)
   }
 
   const triggerReportCDPEvent = useCallback(() => {
@@ -87,10 +84,11 @@ const ReportPopupComponent = ({
   useEffect(() => {
     if (reportData?.ok) {
       triggerReportCDPEvent()
-      setOpen2(true)
       setOpen?.(false)
+      setOpen2(true)
     }
-  }, [reportData, triggerReportCDPEvent, setOpen, setOpen2, onClose])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reportData])
 
   const router = useRouter()
 
@@ -100,6 +98,7 @@ const ReportPopupComponent = ({
       setOpen2(false)
       onClose()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (
@@ -121,6 +120,8 @@ const ReportPopupComponent = ({
           error={error}
           onClose={() => {
             onClose()
+            setOpen?.(false)
+            setOpen2(false)
             setRefferalLink('')
           }}
         />
@@ -144,6 +145,7 @@ const ReportPopupComponent = ({
           open={open2}
           onClose={() => {
             onClose()
+            setOpen?.(false)
             setOpen2(false)
             setRefferalLink('')
           }}

@@ -5,11 +5,7 @@ import CustomPopupWrapper from '@/components/common/CustomPopupWrapper'
 import MobileTempNavBar from '@/components/common/MobileTempNavBar'
 import ScreenWrapper from '@/components/common/ScreenWrapper'
 import SvgIcons from '@/components/common/SvgIcons'
-import {
-  ICONS_NAMES,
-  REFFERAL_STATUS_POPUP_DATA,
-  SEND_AGAIN_STATUS
-} from '@/constants'
+import { ICONS_NAMES, SEND_AGAIN_STATUS } from '@/constants'
 import useWindowWidth from '@/hooks/useWindowWidth'
 import React, { useEffect, useState } from 'react'
 import {
@@ -39,7 +35,7 @@ const SendReminderPage = () => {
   const { mutate: sendReferralAgain, data: sendReferralAgainData } =
     useSendReferralAgain()
   const [sendAgainStatus, setSendAgainStatus] = useState<string>('')
-
+  const sendAgainPopupData = cmsData?.sendAgain
   const [data, setData] = useState<IInviteeData[]>([])
 
   useEffect(() => {
@@ -187,7 +183,7 @@ const SendReminderPage = () => {
             setSendReminder(false)
           }}
           icon={ICONS_NAMES.CHECK}
-          subtitle={REFFERAL_STATUS_POPUP_DATA.SEND_REMINDER.SUB_TITLE}
+          subtitle={sendAgainPopupData?.heading}
         >
           <div className='flex flex-col gap-[20px]'>
             <AktivGroteskText
@@ -199,9 +195,7 @@ const SendReminderPage = () => {
             <AktivGroteskText
               fontSize='text-[12px]'
               fontWeight='font-[400] text-center'
-              text={
-                'Your points will be credited on successful sign up using the invite code'
-              }
+              text={sendAgainPopupData?.sub_heading}
             />
           </div>
         </CustomPopupWrapper>

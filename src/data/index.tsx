@@ -31,6 +31,7 @@ export * from './unique_code'
 export * from './that_was_quick'
 export * from './sorry_unique_code'
 export * from './cheat_code_invite'
+export * from './send_again'
 
 // Import all the mapping functions
 import {
@@ -188,6 +189,7 @@ import { defaultUniqueCodeData, IUniqueCodeData, mapUniqueCodeData } from './uni
 import { defaultThatWasQuickData, IThatWasQuickData, mapThatWasQuickData } from './that_was_quick'
 import { defaultSorryUniqueCodeData, ISorryUniqueCodeData, mapSorryUniqueCodeData } from './sorry_unique_code'
 import { defaultCheatCodeInviteData, ICheatCodeInviteData, mapCheatCodeInviteData } from './cheat_code_invite'
+import { defaultSendAgainPopupData, SendAgainPopupData, mapSendAgainPopupData } from './send_again'
 
 // Combined interface for all CMS data
 export interface AllCMSData {
@@ -230,6 +232,7 @@ export interface AllCMSData {
   thatWasQuick: IThatWasQuickData
   sorryUniqueCode: ISorryUniqueCodeData
   cheatCodeInvite: ICheatCodeInviteData
+  sendAgain: SendAgainPopupData
 }
 
 // Hook to get all mapped CMS data
@@ -278,7 +281,8 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
         uniqueCode: defaultUniqueCodeData,
         thatWasQuick: defaultThatWasQuickData,
         sorryUniqueCode: defaultSorryUniqueCodeData,
-        cheatCodeInvite: defaultCheatCodeInviteData
+        cheatCodeInvite: defaultCheatCodeInviteData,
+        sendAgain: defaultSendAgainPopupData
       }
     }
 
@@ -322,7 +326,8 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
       uniqueCode: mapUniqueCodeData(homePageContent),
       thatWasQuick: mapThatWasQuickData(homePageContent),
       sorryUniqueCode: mapSorryUniqueCodeData(homePageContent),
-      cheatCodeInvite: mapCheatCodeInviteData(homePageContent)
+      cheatCodeInvite: mapCheatCodeInviteData(homePageContent),
+      sendAgain: mapSendAgainPopupData(homePageContent)
     }
   }, [homePageContent, mounted])
 }
@@ -370,6 +375,7 @@ export const mapAllCMSData = (
     uniqueCode: mapUniqueCodeData(cmsData),
     thatWasQuick: mapThatWasQuickData(cmsData),
     sorryUniqueCode: mapSorryUniqueCodeData(cmsData),
-    cheatCodeInvite: mapCheatCodeInviteData(cmsData)
+    cheatCodeInvite: mapCheatCodeInviteData(cmsData),
+    sendAgain: mapSendAgainPopupData(cmsData)
   }
 }
