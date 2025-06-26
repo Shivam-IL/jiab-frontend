@@ -75,7 +75,7 @@ const SurpriseMeLockModal = ({
               handleClose();
             }}
           >
-            <SvgIcons name={ICONS_NAMES.CROSS} className="w-[16px] h-[16px]" />
+            <SvgIcons name={ICONS_NAMES.CROSS} className="w-[20px] h-[20px]" />
           </button>
         </div>
         <div className="relative  mb-5 px-3">

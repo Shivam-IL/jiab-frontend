@@ -172,12 +172,6 @@ export default function RootLayout({
         }}
       >
         <LayoutClient>{children}</LayoutClient>
-        {/* {showExitPopup && (
-        <BreakTheIceExitPopup
-          open={showExitPopup}
-          onClose={handleStayOnPage}
-        />
-      )} */}
       </body>
     </html>
   );

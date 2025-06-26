@@ -172,7 +172,7 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
             >
               <SvgIcons
                 name={ICONS_NAMES.CROSS}
-                className='w-[13px] h-[13px] md:w-[14px] md:h-[12px]'
+                className='w-[20px] h-[20px]'
               />
             </button>
           </div>
@@ -233,7 +233,7 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
             >
               <SvgIcons
                 name={ICONS_NAMES.CROSS}
-                className='w-[12.14px] h-[12.1px]'
+                className='w-[20px] h-[20px]'
               />
             </button>
           </div>
@@ -321,7 +321,7 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
           >
             <SvgIcons
               name={ICONS_NAMES.CROSS}
-              className='w-[12.29px] h-[12.64px]'
+              className='w-[20px] h-[20px]'
             />
           </button>
         </div>
