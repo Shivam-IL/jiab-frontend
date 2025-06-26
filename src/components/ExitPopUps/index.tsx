@@ -41,7 +41,9 @@ const MakeLaughExitPopup = ({
   return (
     <CustomPopupWrapper
       open={open}
-      onClose={onClose}
+      onClose={() => {
+        onClose()
+      }}
       icon={EXIT_POPUP_DATA.MAKE_LAUGH.ICON}
       title={didThatMakeYouLaugh?.didThatMakeYouLaughHeading}
       subtitle={didThatMakeYouLaugh?.didThatMakeYouLaughSubHeading1}
