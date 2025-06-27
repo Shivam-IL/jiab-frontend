@@ -772,7 +772,7 @@ const SubmitYourJoke = () => {
                       iconClassName={
                         'w-[31px] h-[39px] md:w-[55px] md:h-[56px]'
                       }
-                      imageClassName='md:max-w-[48px] md:max-h-[48px] md:min-w-[48px] md:min-h-[48px] min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] object-cover'
+                      imageClassName='md:max-w-[48px] md:max-h-[48px] md:min-w-[48px] md:min-h-[48px] min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] object-fill'
                       className={`cursor-pointer ${
                         item.name.toLowerCase() ===
                         jokeData.category.toLowerCase()

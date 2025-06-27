@@ -145,7 +145,12 @@ const AddressModal: React.FC<IAddressModal> = ({
       setError(prev => ({ ...prev, city: 'City is required' }))
       errorValidation = true
     }
-    if (data?.alternate_phone_number?.length === 10 && parseInt(data?.alternate_phone_number?.[0],10)<6) {
+    if (
+      (data?.alternate_phone_number?.length > 0 &&
+        data?.alternate_phone_number?.length < 10) ||
+      (data?.alternate_phone_number?.length === 10 &&
+        parseInt(data?.alternate_phone_number?.[0], 10) < 6)
+    ) {
       setError(prev => ({
         ...prev,
         alternate_phone_number: 'Invalid Alternate Number'
