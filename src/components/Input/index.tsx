@@ -27,6 +27,7 @@ const Input: React.FC<IInput> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [dropdownPosition, setDropdownPosition] = useState<'top' | 'bottom'>('bottom')
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -42,6 +43,35 @@ const Input: React.FC<IInput> = ({
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
+  const calculateDropdownPosition = () => {
+    if (!dropdownRef.current) return 'bottom'
+    
+    const rect = dropdownRef.current.getBoundingClientRect()
+    const viewportHeight = window.innerHeight
+    const dropdownHeight = 200 // max-h-[200px]
+    const spaceBelow = viewportHeight - rect.bottom
+    const spaceAbove = rect.top
+    
+    // If there's not enough space below but enough space above, position above
+    if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
+      return 'top'
+    }
+    
+    return 'bottom'
+  }
+
+  const handleDropdownToggle = () => {
+    if (!readonly) {
+      const newIsOpen = !isOpen
+      setIsOpen(newIsOpen)
+      
+      if (newIsOpen) {
+        // Calculate position when opening
+        setDropdownPosition(calculateDropdownPosition())
+      }
+    }
+  }
 
   const filteredOptions = options.filter(
     (option: { value: string; label: string }) =>
@@ -80,14 +110,12 @@ const Input: React.FC<IInput> = ({
           } ${paddingClass} ${bgColor} rounded-[100px] transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B] focus-visible:border-[#11A64B] ${
             isOpen ? 'border-[#11A64B]' : ''
           }`}
-          onClick={() => !readonly && setIsOpen(!isOpen)}
+          onClick={handleDropdownToggle}
           tabIndex={0}
           onKeyDown={e => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault()
-              if (!readonly) {
-                setIsOpen(!isOpen)
-              }
+              handleDropdownToggle()
             }
           }}
         >
@@ -108,7 +136,13 @@ const Input: React.FC<IInput> = ({
         </div>
 
         {isOpen && (
-          <div className='absolute top-full left-0 right-0 mt-1 bg-white rounded-[12px] shadow-lg z-10 max-h-[200px] overflow-y-auto border border-gray-100'>
+          <div 
+            className={`absolute left-0 right-0 bg-white rounded-[12px] shadow-lg z-10 max-h-[200px] overflow-y-auto border border-gray-100 ${
+              dropdownPosition === 'top' 
+                ? 'bottom-full mb-1' 
+                : 'top-full mt-1'
+            }`}
+          >
             {isSearchable && (
               <div className='p-2 border-b border-gray-100'>
                 <input

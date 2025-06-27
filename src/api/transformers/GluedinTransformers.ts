@@ -76,6 +76,22 @@ const gluedinViewTransformer = (data: IViewData[]) => {
   return newData;
 };
 
+export const gluedinHallOfLameArtistTransformer = (
+  data: { videoId: string }[],
+  artistData: { id: string; artist_name: string }[]
+) => {
+  return data?.map((item: { videoId: string }) => {
+    const artist = artistData?.find(
+      (artist: { id: string; artist_name: string }) =>
+        artist?.id === item?.videoId
+    );
+    return {
+      ...item,
+      artistName: artist?.artist_name ?? "",
+    };
+  });
+};
+
 export {
   gluedinFeedListTransformer,
   gluedinAssetByIdTransformer,

@@ -81,7 +81,11 @@ const DisplayTable = ({
                             />
                           </div>
                           <AktivGroteskText
-                            text={item?.jokeOwnerName ?? ''}
+                            text={
+                              item?.artistName
+                                ? item?.artistName
+                                : item?.jokeOwnerName
+                            }
                             className='leading-tight w-full text-start'
                             fontSize='text-[10px] md:text-[16px]'
                             fontWeight='font-[400]'
