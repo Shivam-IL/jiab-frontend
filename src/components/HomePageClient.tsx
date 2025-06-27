@@ -50,6 +50,7 @@ import {
   BaseCDPEventPayload,
 } from "@/api/utils/cdpEvents";
 import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
+import { INFOBIP_WHATSAPP_URL } from "@/config";
 
 export default function HomePageClient() {
   const {
@@ -437,7 +438,7 @@ export default function HomePageClient() {
               },
               {
                 id: 4,
-                href: "https://www.whatsapp.com",
+                href:`${INFOBIP_WHATSAPP_URL}&text=Hi,+I+am+here+for+Sprite+Joke-In-A-Bottle!+By+pressing+Send+on+this,+I+give+my+consent+to+sharing+my+mobile+number+and+display+name+with+Sprite.`,
                 icon: (
                   <SvgIcons name={ICONS_NAMES.WHATSAPP} className="w-5 h-5" />
                 ),
