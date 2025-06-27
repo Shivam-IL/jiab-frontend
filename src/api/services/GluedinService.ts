@@ -4,6 +4,7 @@ import { API_ROUTES, LOCAL_STORAGE_KEYS } from "../client/config";
 import {
   gluedinAssetByIdTransformer,
   gluedinFeedListTransformer,
+  gluedinHallOfLameArtistTransformer,
   gluedinViewTransformer,
 } from "../transformers/GluedinTransformers";
 import {
@@ -557,9 +558,29 @@ export class GluedinService extends MainService {
         ...(fromDate && { fromDate }),
       });
       const response = gluedinHallOfLame?.data ?? {};
+      const videosIds = response?.result?.map(
+        (item: { videoId: string }) => item?.videoId
+      );
+      const artistResponse = await apiClient.post(
+        API_ROUTES.JOKES.GET_HALL_OF_LAME_ARTIST,
+        {
+          ids: videosIds,
+        },
+        {
+          headers: {
+            ...this.getAuthHeaders(),
+          },
+        }
+      );
+
       if (response?.success) {
+        console.log("artistResponse", artistResponse);
+        const transformedData = gluedinHallOfLameArtistTransformer(
+          response?.result,
+          artistResponse?.data?.data ?? []
+        );
         const data = {
-          data: response?.result,
+          data: transformedData,
           totalPages: response?.total,
         };
         return SuccessResponse(data);

@@ -52,6 +52,7 @@ export interface IHallOfLameData {
   projectId: string
   businessId: string
   rank: number
+  artistName: string
 }
 
 export interface IHallOfLameLeaderboardTableProps {
