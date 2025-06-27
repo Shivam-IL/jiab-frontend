@@ -42,7 +42,13 @@ interface WalletCard {
 const ComicCoinsPage = () => {
   const [mounted, setMounted] = useState(false);
   const [isReferModalOpen, setIsReferModalOpen] = useState(false);
-  const [isRedeemed, setIsRedeemed] = useState(true);
+  const [redemptionStates, setRedemptionStates] = useState<{
+    [key: number]: boolean;
+  }>({
+    1: true, // Card with id 1 is redeemable
+    2: true, // Card with id 2 is redeemable
+    // Add more cards as needed
+  });
   const [activeTooltipId, setActiveTooltipId] = useState<number | null>(null);
   const [isVoucherPopupOpen, setIsVoucherPopupOpen] = useState(false);
   const [selectedVoucher, setSelectedVoucher] = useState<WalletCard | null>(
@@ -98,7 +104,7 @@ const ComicCoinsPage = () => {
       title: "Cashback worth Rs.10",
       description:
         "Here's a pocket-sized perk just for you. Grab this Rs.10 PhonePe voucher now!",
-      isRedeemed: isRedeemed,
+      isRedeemed: redemptionStates[1] || false,
       expiryDate: "31st Dec 2025",
       voucherCode: "AJ5739EY93HYS",
       pin: "315724",
@@ -109,7 +115,7 @@ const ComicCoinsPage = () => {
       title: "Cashback worth Rs.10",
       description:
         "Here's a pocket-sized perk just for you. Grab this Rs.10 PhonePe voucher now!",
-      isRedeemed: isRedeemed,
+      isRedeemed: redemptionStates[2] || false,
       expiryDate: "31st Dec 2025",
       voucherCode: "BK7845FG12LMN",
       pin: "892341",
@@ -121,7 +127,7 @@ const ComicCoinsPage = () => {
     <>
       <div className="bg-white -mt-5 pt-5">
         {/* Top Section */}
-        <div className="flex justify-between items-end h-full container mx-auto mt-20">
+        <div className="flex justify-between items-end h-full container mx-auto mt-20 md:mb-0 mb-3">
           {/* Comic Coins */}
           <div className="mx-4 md:mx-0">
             <AktivGroteskText
@@ -201,33 +207,23 @@ const ComicCoinsPage = () => {
                             />
                             {/* Tooltip */}
                             {activeTooltipId === card.id && (
-                              <>
-                                {/* Overlay to close tooltip when clicking outside */}
+                              <div className="absolute top-full right-[-16px] mt-2 z-[9999] w-[280px] md:w-[309px]">
                                 <div
-                                  className="fixed inset-0 z-[9998]"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setActiveTooltipId(null);
-                                  }}
-                                />
-                                <div className="absolute top-full right-[-16px] mt-2 z-[9999] w-[280px] md:w-[309px]">
-                                  <div
-                                    className="bg-white border-2 border-green rounded-lg py-[11px] px-[8px] shadow-lg"
-                                    onClick={(e) => e.stopPropagation()}
-                                  >
-                                    {/* Tooltip arrow */}
-                                    <div className="absolute bottom-full right-[20px]">
-                                      <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-green"></div>
-                                      <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-b-[7px] border-l-transparent border-r-transparent border-b-white absolute bottom-[-5px] right-0"></div>
-                                    </div>
-                                    <div className="text-[14px] md:text-[16px] text-black md:leading-[20px] text-left">
-                                      Win* with every unique code. Find the code
-                                      behind the label of a Sprite<sup>®</sup>{" "}
-                                      promotion pack.
-                                    </div>
+                                  className="bg-white border-2 border-green rounded-lg py-[11px] px-[8px] shadow-lg"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  {/* Tooltip arrow */}
+                                  <div className="absolute bottom-full right-[20px]">
+                                    <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-green"></div>
+                                    <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-b-[7px] border-l-transparent border-r-transparent border-b-white absolute bottom-[-5px] right-0"></div>
+                                  </div>
+                                  <div className="text-[14px] md:text-[16px] text-black md:leading-[20px] text-left">
+                                    Win* with every unique code. Find the code
+                                    behind the label of a Sprite<sup>®</sup>{" "}
+                                    promotion pack.
                                   </div>
                                 </div>
-                              </>
+                              </div>
                             )}
                           </button>
                         </div>
@@ -387,7 +383,12 @@ const ComicCoinsPage = () => {
         onRedeem={() => {
           // Handle redeem logic here
           console.log("Voucher redeemed:", selectedVoucher);
-          setIsRedeemed(false);
+          if (selectedVoucher) {
+            setRedemptionStates((prev) => ({
+              ...prev,
+              [selectedVoucher.id]: false,
+            }));
+          }
           setIsVoucherPopupOpen(false);
           setSelectedVoucher(null);
           // Show success popup
@@ -398,6 +399,17 @@ const ComicCoinsPage = () => {
           console.log("Voucher shared:", selectedVoucher);
         }}
       />
+
+      {/* Global tooltip overlay */}
+      {activeTooltipId !== null && (
+        <div
+          className="fixed inset-0 z-[9998]"
+          onClick={(e) => {
+            e.stopPropagation();
+            setActiveTooltipId(null);
+          }}
+        />
+      )}
 
       {/* Redeem Success Popup */}
       <RedeemSuccessPopup

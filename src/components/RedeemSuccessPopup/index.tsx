@@ -16,6 +16,9 @@ const RedeemSuccessPopup: React.FC<RedeemSuccessPopupProps> = ({
   onClose,
   comicCoinsEarned = 20,
 }) => {
+  // Bypass the modal - always return null
+  return null;
+
   if (!isOpen) return null;
 
   return (

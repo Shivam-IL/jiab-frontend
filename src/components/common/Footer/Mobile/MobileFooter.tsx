@@ -6,6 +6,8 @@ import comicCoinActive from "../../../../../public/other-svgs/comic-active-foote
 import { BoxIds } from "../../../common/CircularBoxesModal";
 import { useCMSData } from "@/data";
 import { useGetComicCoins } from "@/api/hooks/JokeHooks";
+import { cn } from "@/lib/utils";
+import useAppSelector from "@/hooks/useSelector";
 
 const MobileFooter = () => {
   const [currentPath, setCurrentPath] = useState("/");
@@ -14,6 +16,9 @@ const MobileFooter = () => {
   // Fetch comic coins data
   const { data: comicCoinsData, isLoading: isComicCoinsLoading } =
     useGetComicCoins();
+
+  // Get selected language from redux
+  const { selectedLanguage } = useAppSelector((state) => state.language);
 
   // Use effect to handle client-side hydration
   useEffect(() => {
@@ -181,7 +186,10 @@ const MobileFooter = () => {
           <Link
             id={BoxIds.REFRESH}
             href="/refresh-rings"
-            className="flex flex-col items-center justify-center flex-1"
+            className={cn(
+              "flex flex-col items-center justify-center flex-1",
+              selectedLanguage === "kn" ? "gap-1" : ""
+            )}
           >
             <svg
               width="22"
@@ -226,11 +234,13 @@ const MobileFooter = () => {
             </svg>
 
             <span
-              className={`text-[9px] mt-1 font-medium ${
+              className={cn(
+                "mt-1 font-medium",
+                selectedLanguage === "kn" ? "text-[7px]" : "text-[9px]",
                 currentPath === "/refresh-rings"
                   ? "text-[#00953B]"
                   : "text-black"
-              }`}
+              )}
             >
               {cmsData.navFooter.refreshRings.toUpperCase()}
             </span>
