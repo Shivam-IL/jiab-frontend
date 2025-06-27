@@ -67,7 +67,8 @@ const AddressModal: React.FC<IAddressModal> = ({
     address_line_1: '',
     pincode: '',
     state: '',
-    city: ''
+    city: '',
+    alternate_phone_number: ''
   })
 
   const { addresses } = useAppSelector(state => state.profile)
@@ -142,6 +143,13 @@ const AddressModal: React.FC<IAddressModal> = ({
     }
     if (data?.city === '') {
       setError(prev => ({ ...prev, city: 'City is required' }))
+      errorValidation = true
+    }
+    if (data?.alternate_phone_number?.length === 10 && parseInt(data?.alternate_phone_number?.[0],10)<6) {
+      setError(prev => ({
+        ...prev,
+        alternate_phone_number: 'Invalid Alternate Number'
+      }))
       errorValidation = true
     }
 
@@ -275,6 +283,23 @@ const AddressModal: React.FC<IAddressModal> = ({
   }, [data?.pincode])
 
   useEffect(() => {
+    if (
+      data?.alternate_phone_number?.length === 10 &&
+      parseInt(data?.alternate_phone_number?.[0], 10) < 6
+    ) {
+      setError(prev => ({
+        ...prev,
+        alternate_phone_number: 'Invalid Alternate Mobile Number'
+      }))
+    } else {
+      setError(prev => ({
+        ...prev,
+        alternate_phone_number: ''
+      }))
+    }
+  }, [data?.alternate_phone_number])
+
+  useEffect(() => {
     if (pincodeData?.ok) {
       const { data } = pincodeData ?? {}
       setData(prev => ({
@@ -302,7 +327,8 @@ const AddressModal: React.FC<IAddressModal> = ({
         address_line_1: '',
         pincode: '',
         state: '',
-        city: ''
+        city: '',
+        alternate_phone_number: ''
       })
       setData({
         address_line_1: '',
@@ -325,7 +351,9 @@ const AddressModal: React.FC<IAddressModal> = ({
         <div className='w-full flex px-[15px] md:px-[19px] justify-between items-center box-border '>
           <AktivGroteskText
             text={
-              type === AddressModalType.ADD ? cmsData?.plusAddInsideProfile?.addAddress : cmsData?.plusAddInsideProfile?.editAddress
+              type === AddressModalType.ADD
+                ? cmsData?.plusAddInsideProfile?.addAddress
+                : cmsData?.plusAddInsideProfile?.editAddress
             }
             className='leading-tight'
             fontSize='text-[16px] md:text-[20px]'
@@ -378,6 +406,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               placeholder={cmsData?.plusAddInsideProfile?.altMobileNumber}
               value={data.alternate_phone_number}
               onChange={handleChange}
+              error={error.alternate_phone_number}
               paddingClass='py-[16px] px-[20px] md:py-[14px]'
             />
             <Input
@@ -440,40 +469,40 @@ const AddressModal: React.FC<IAddressModal> = ({
           </div>
         </form>
         <div className='md:hidden flex justify-between px-[10px]'>
-            <div className='flex items-center gap-[5px]'>
-              <button
-                onClick={() => router.push('/terms-and-conditions')}
-                className='cursor-pointer border-none outline-none'
-              >
-                <AktivGroteskText
-                  text={cmsData?.plusAddInsideProfile?.tAndC}
-                  fontSize='text-[7px]'
-                  fontWeight='font-[400]'
-                />
-              </button>
-              <Separator className='h-[80%] self-center w-[0.5px] bg-black' />
-              <button
-                onClick={() => router.push('/privacy-policy')}
-                className='cursor-pointer border-none outline-none'
-              >
-                <AktivGroteskText
-                  text={cmsData?.plusAddInsideProfile?.privacyPolicy}
-                  fontSize='text-[7px]'
-                  fontWeight='font-[400]'
-                />
-              </button>
-            </div>
-            <div className='relative flex gap-2 items-center'>
+          <div className='flex items-center gap-[5px]'>
+            <button
+              onClick={() => router.push('/terms-and-conditions')}
+              className='cursor-pointer border-none outline-none'
+            >
               <AktivGroteskText
-                text={cmsData?.plusAddInsideProfile?.trademark}
-                fontSize='text-[6px]'
+                text={cmsData?.plusAddInsideProfile?.tAndC}
+                fontSize='text-[7px]'
                 fontWeight='font-[400]'
               />
-              <div className='relative min-w-[4.75px] min-h-[4.75px] bg-[#00953B] flex flex-col justify-center items-center'>
-                <div className='relative bottom-[0.0107px] left-[0.070px] rounded-full min-w-[3px] min-h-[3px] bg-[#E0E0E0] self-center'></div>
-              </div>
+            </button>
+            <Separator className='h-[80%] self-center w-[0.5px] bg-black' />
+            <button
+              onClick={() => router.push('/privacy-policy')}
+              className='cursor-pointer border-none outline-none'
+            >
+              <AktivGroteskText
+                text={cmsData?.plusAddInsideProfile?.privacyPolicy}
+                fontSize='text-[7px]'
+                fontWeight='font-[400]'
+              />
+            </button>
+          </div>
+          <div className='relative flex gap-2 items-center'>
+            <AktivGroteskText
+              text={cmsData?.plusAddInsideProfile?.trademark}
+              fontSize='text-[6px]'
+              fontWeight='font-[400]'
+            />
+            <div className='relative min-w-[4.75px] min-h-[4.75px] bg-[#00953B] flex flex-col justify-center items-center'>
+              <div className='relative bottom-[0.0107px] left-[0.070px] rounded-full min-w-[3px] min-h-[3px] bg-[#E0E0E0] self-center'></div>
             </div>
           </div>
+        </div>
       </DialogContent>
     </Dialog>
   )

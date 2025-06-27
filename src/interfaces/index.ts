@@ -340,6 +340,7 @@ export interface IAddressError {
   pincode: string;
   state: string;
   city: string;
+  alternate_phone_number: string;
 }
 export interface IRewardPool {
   imageUrl: string;
