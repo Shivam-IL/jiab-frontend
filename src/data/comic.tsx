@@ -12,6 +12,7 @@ export interface ComicData {
   surpriseMe: string;
   comicCoinHeader: string;
   howToCollect: string;
+  myWinsHeader: string;
 }
 
 export const mapComicData = (
@@ -40,6 +41,7 @@ export const mapComicData = (
     surpriseMe: comicCoinsCMS?.surprise_me ?? "Surprise Me",
     comicCoinHeader: comicCoinsCMS?.comic_coin_header ?? "Comic Coins",
     howToCollect: comicCoinsCMS?.how_to_collect ?? "How To Collect?",
+    myWinsHeader: comicCoinsCMS?.my_wins_header ?? "My Wins",
   };
 };
 
@@ -56,4 +58,5 @@ export const defaultComicData: ComicData = {
   surpriseMe: "Surprise Me",
   comicCoinHeader: "Comic Coins",
   howToCollect: "How To Collect?",
+  myWinsHeader: "My Wins",
 };

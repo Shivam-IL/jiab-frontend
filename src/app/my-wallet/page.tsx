@@ -165,7 +165,10 @@ const ComicCoinsPage = () => {
       </div>
       <ScreenWrapper className="mt-0">
         {/* Reward Pool */}
-        <Header title="My Wins" className="md:mt-8 mt-0 mx-[-19px] md:mx-0" />
+        <Header
+          title={cmsData.comic.myWinsHeader}
+          className="md:mt-8 mt-0 mx-[-19px] md:mx-0"
+        />
         <div className="mt-4 w-full">
           <Carousel
             setApi={setApi}

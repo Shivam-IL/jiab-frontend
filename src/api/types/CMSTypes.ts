@@ -272,6 +272,7 @@ export type TCMSResponse = {
       locale: string;
       comic_coin_header: string;
       how_to_collect: string;
+      my_wins_header: string;
     };
     unique_code: {
       id: number;
