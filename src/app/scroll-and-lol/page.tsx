@@ -5,7 +5,7 @@ import Header from "@/components/common/Header/Header";
 import ReactionEmojies from "@/components/ReactionEmojies";
 import { ICONS_NAMES } from "@/constants"; // Import ICONS_NAMES
 import { useCMSData } from "@/data";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useGetJokes } from "@/api/hooks/JokeHooks";
 import { useLanguage } from "@/hooks/useLanguage";
 import { IUserReaction } from "@/api/types/JokeTypes";
@@ -78,14 +78,15 @@ const ScrollAndLol: React.FC = () => {
   const searchParams = useSearchParams();
   const selectedJokesParam = searchParams.get("selected_joke") || undefined;
 
-  // Language for API
-  const { selectedLanguage, changeLanguage } = useLanguage();
+  // Language for API - use local state instead of global language
+  const { selectedLanguage: globalLanguage } = useLanguage();
+  const [videoLanguage, setVideoLanguage] = useState(globalLanguage);
 
   // Fetch jokes – ensure we always get 15 items (API default/limit)
   const { data: jokesResponse, isLoading: jokesLoading } = useGetJokes({
     limit: 15,
     selected_joke: selectedJokesParam,
-    language: selectedLanguage,
+    language: videoLanguage,
   });
 
   const [videos, setVideos] = useState<VideoData[]>([]);
@@ -116,7 +117,14 @@ const ScrollAndLol: React.FC = () => {
 
     // Increment key to force re-render and reset intersection observer
     setLanguageChangeKey((prev) => prev + 1);
-  }, [selectedLanguage]);
+
+    // Safety timeout to prevent infinite loading
+    const safetyTimeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 10000); // 10 second timeout
+
+    return () => clearTimeout(safetyTimeout);
+  }, [videoLanguage]);
 
   useEffect(() => {
     if (jokesResponse?.ok) {
@@ -132,6 +140,14 @@ const ScrollAndLol: React.FC = () => {
         isReacted: joke.isReacted ?? false,
       }));
       setVideos(newData);
+
+      // If no videos returned, hide loading
+      if (newData.length === 0) {
+        setIsLoading(false);
+      }
+    } else if (jokesResponse && !jokesResponse.ok) {
+      // If API returns error, also hide loading
+      setIsLoading(false);
     }
   }, [jokesResponse]);
 
@@ -154,7 +170,6 @@ const ScrollAndLol: React.FC = () => {
   const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
     useViewGludeinJokes();
   const [mounted, setMounted] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -173,14 +188,14 @@ const ScrollAndLol: React.FC = () => {
     };
   }, []);
 
-  // Hide loader once API data fetched
+  // Hide loader once API data fetched and videos are processed
   useEffect(() => {
-    if (!jokesLoading) {
+    if (!jokesLoading && videos && videos.length > 0) {
       // Allow loader to disappear after small delay so first video can load
       const timeout = setTimeout(() => setIsLoading(false), 500);
       return () => clearTimeout(timeout);
     }
-  }, [jokesLoading]);
+  }, [jokesLoading, videos]);
 
   // Auto-play first video when component mounts and loading is complete
   useEffect(() => {
@@ -570,15 +585,8 @@ const ScrollAndLol: React.FC = () => {
 
   // Handler for language selection from ExhaustVideo
   const handleLanguageSelect = (langCode: string) => {
-    // Preserve selected_joke if present
-    const selectedJoke = searchParams.get("selected_joke");
-    const params = new URLSearchParams();
-    if (selectedJoke) params.set("selected_joke", selectedJoke);
-    // Set the new language param (if you use it in the URL, otherwise just reload)
-    // If language is not in the URL, just reload the page (state will update via Redux)
-    // But for SSR/Next.js, best to update the URL to force re-fetch
-    router.replace(`/scroll-and-lol?${params.toString()}`);
-    changeLanguage(langCode);
+    // Update only the local video language state, not the global website language
+    setVideoLanguage(langCode);
   };
 
   return (
@@ -739,7 +747,7 @@ const ScrollAndLol: React.FC = () => {
               >
                 {videos.length < 15 ? (
                   <ExhaustVideo
-                    selectedLanguage={selectedLanguage}
+                    selectedLanguage={videoLanguage}
                     onLanguageSelect={handleLanguageSelect}
                     headerText={cmsData?.scrollAndLol?.exhaustHeading}
                     subText={cmsData?.scrollAndLol?.exhaustSubheading}
