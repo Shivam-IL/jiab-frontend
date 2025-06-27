@@ -348,7 +348,11 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
           {isAuthenticated ? (
             <div className="relative" ref={notificationDropdownRef}>
               <button
-                className="cursor-pointer"
+                className={`cursor-pointer ${
+                  isNotificationDropdownOpen
+                    ? "notification-button-with-arrow"
+                    : ""
+                }`}
                 onClick={handleNotificationDropdownToggle}
               >
                 <Image
@@ -365,7 +369,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
               </button>
 
               {isNotificationDropdownOpen && (
-                <div className="absolute top-full right-0 mt-4 w-[450px] bg-white border border-[#ebebeb] rounded-lg shadow-lg z-30 max-h-[500px] overflow-y-auto">
+                <div className="absolute top-full right-[-11px] mt-4 w-[450px] bg-white border border-[#ebebeb] shadow-lg z-30 max-h-[500px] overflow-y-auto rounded-[3px]">
                   <div className="py-2">
                     {notificationsLoading ? (
                       <div className="flex justify-center items-center py-8">
@@ -494,8 +498,9 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         className="hover:bg-gray-50 flex justify-between items-center px-[20px] py-[10px]"
                       >
                         {cmsData.navBar.myProfile}
-                        <SvgIcons
-                          name={ICONS_NAMES.PROFILE_ICON}
+                        <Image
+                          src={`/static/sprite/icons/${ICONS_NAMES.PROFILE_ICON}.svg`}
+                          alt={ICONS_NAMES.PROFILE_ICON}
                           width={20}
                           height={20}
                         />
@@ -507,8 +512,9 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         className="px-[20px] py-[10px] hover:bg-gray-50 flex justify-between items-center"
                       >
                         {cmsData.navBar.comicCoins}
-                        <SvgIcons
-                          name={ICONS_NAMES.WALLET_ICON}
+                        <Image
+                          src={`/static/sprite/icons/${ICONS_NAMES.WALLET_ICON}.svg`}
+                          alt={ICONS_NAMES.WALLET_ICON}
                           width={20}
                           height={20}
                         />
@@ -520,8 +526,9 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         className="w-full text-left px-[20px] py-[10px] hover:bg-gray-50 text-red-500 flex items-center justify-between"
                       >
                         <span>{cmsData.navBar.logout}</span>
-                        <SvgIcons
-                          name={ICONS_NAMES.LOGOUT_ICON}
+                        <Image
+                          src={`/static/sprite/icons/${ICONS_NAMES.LOGOUT_ICON}.svg`}
+                          alt={ICONS_NAMES.LOGOUT_ICON}
                           width={20}
                           height={20}
                         />
