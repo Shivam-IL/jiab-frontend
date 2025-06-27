@@ -49,21 +49,41 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
       label: language.vernacual_name,
       languageCode: language.language_key
     }))
-    setLanguageOptions(modifiedLanguages)
-  }, [languages])
+    const newModifiedLanguages = [
+      {
+        id: -1,
+        value: jokeBoxFilter.select_language_placeholder,
+        label: jokeBoxFilter.select_language_placeholder,
+        languageCode: ''
+      },
+      ...modifiedLanguages
+    ]
+    setLanguageOptions(newModifiedLanguages)
+  }, [languages, jokeBoxFilter])
 
   useEffect(() => {
-    const CATEGORY_ID_CMS_KEY_MAPPING_TYPED = CATEGORY_ID_CMS_KEY_MAPPING as Record<number, string>;
+    const CATEGORY_ID_CMS_KEY_MAPPING_TYPED =
+      CATEGORY_ID_CMS_KEY_MAPPING as Record<number, string>
     const modifiedGenres = genres?.map(genre => {
-      const key = CATEGORY_ID_CMS_KEY_MAPPING_TYPED[genre.id];
-      const isValidKey = typeof key === 'string' && key in jokeBoxFilter;
+      const key = CATEGORY_ID_CMS_KEY_MAPPING_TYPED[genre.id]
+      const isValidKey = typeof key === 'string' && key in jokeBoxFilter
       return {
         id: genre.id,
         value: genre.genre,
-        label: isValidKey ? (jokeBoxFilter[key as keyof typeof jokeBoxFilter] as string) : ''
+        label: isValidKey
+          ? (jokeBoxFilter[key as keyof typeof jokeBoxFilter] as string)
+          : ''
       }
     })
-    setCategoryOptions(modifiedGenres)
+    const newModifiedGenres = [
+      {
+        id: -1,
+        value: jokeBoxFilter.select_category_placeholder,
+        label: jokeBoxFilter.select_category_placeholder
+      },
+      ...modifiedGenres
+    ]
+    setCategoryOptions(newModifiedGenres)
   }, [genres, jokeBoxFilter])
 
   const trigger_CDP_UGC_FILTER = (language?: string, category?: string) => {
@@ -157,6 +177,11 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
                   <RadioGroup
                     value={selectedLanguage}
                     onValueChange={value => {
+                      if (value === jokeBoxFilter.select_language_placeholder) {
+                        setSelectedLanguage('')
+                        setIsLanguageOpen(false)
+                        return
+                      }
                       setSelectedLanguage(value)
                       setIsLanguageOpen(false)
                     }}
@@ -209,6 +234,11 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
                   <RadioGroup
                     value={selectedCategory}
                     onValueChange={value => {
+                      if (value === jokeBoxFilter.select_category_placeholder) {
+                        setSelectedCategory('')
+                        setIsCategoryOpen(false)
+                        return
+                      }
                       setSelectedCategory(value)
                       setIsCategoryOpen(false)
                     }}
