@@ -171,18 +171,24 @@ const HallOfLameLeaderboardTable = ({
     <div className='flex flex-col gap-[20px]'>
       <div className='flex justify-between md:justify-start items-center md:gap-[12px]'>
         <button
-          className='outline-none md:block hidden border-none'
+          className='outline-none md:flex hidden border-none  items-center gap-[12px]'
           onClick={() => setIsCalendarOpen(true)}
         >
           <SvgIcons
             name={ICONS_NAMES.CALENDAR2}
             className='w-[18px] h-[18px] md:w-[22px] md:h-[22px]'
           />
+          <AktivGroteskText
+            text={weeklyTopJokes}
+            fontSize='text-[14px] md:text-[20px]'
+            fontWeight='font-[500] md:font-[400]'
+          />
         </button>
         <AktivGroteskText
           text={weeklyTopJokes}
           fontSize='text-[14px] md:text-[20px]'
           fontWeight='font-[500] md:font-[400]'
+          className='md:hidden'
         />
         <button
           className='outline-none md:hidden border-none'

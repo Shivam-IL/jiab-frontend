@@ -55,6 +55,10 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
     number | undefined
   >(toDate)
 
+  // Get today's date for disabling future dates
+  const today = new Date()
+  today.setHours(23, 59, 59, 999) // End of today
+
   // Clear date range when dialog opens to start fresh
   React.useEffect(() => {
     if (open) {
@@ -117,6 +121,10 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
   }
 
   const handleYearSelect = (year: number) => {
+    // Prevent selecting future years
+    if (year > currentYear) {
+      return
+    }
     const newDate = new Date(currentDate)
     newDate.setFullYear(year)
     setCurrentDate(newDate)
@@ -124,6 +132,14 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
   }
 
   const handleMonthSelect = (monthIndex: number) => {
+    // Prevent selecting future months in current year
+    const currentYear = new Date().getFullYear()
+    const currentMonth = new Date().getMonth()
+    
+    if (currentDate.getFullYear() === currentYear && monthIndex > currentMonth) {
+      return
+    }
+    
     const newDate = new Date(currentDate)
     newDate.setMonth(monthIndex)
     setCurrentDate(newDate)
@@ -135,6 +151,11 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
   }
 
   const handleNextYears = () => {
+    // Prevent navigating to future years
+    const maxYear = currentYear + 1
+    if (yearViewStartYear + 12 >= maxYear) {
+      return
+    }
     setYearViewStartYear(prev => prev + 12)
   }
 
@@ -145,12 +166,19 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
   }
 
   const handleNextYear = () => {
+    // Prevent navigating to future years
+    if (currentDate.getFullYear() >= currentYear) {
+      return
+    }
     const newDate = new Date(currentDate)
     newDate.setFullYear(newDate.getFullYear() + 1)
     setCurrentDate(newDate)
   }
 
   const renderMonthGrid = () => {
+    const currentYear = new Date().getFullYear()
+    const currentMonth = new Date().getMonth()
+    
     return (
       <div className='p-6'>
         <div className='flex items-center justify-between mb-6'>
@@ -168,33 +196,46 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
             </h2>
             <button
               onClick={handleNextYear}
-              className='h-7 w-7 flex items-center justify-center hover:bg-[#E8F5E9] rounded-full transition-colors'
+              disabled={currentDate.getFullYear() >= currentYear}
+              className={`h-7 w-7 flex items-center justify-center rounded-full transition-colors ${
+                currentDate.getFullYear() >= currentYear 
+                  ? 'text-gray-400 cursor-not-allowed' 
+                  : 'hover:bg-[#E8F5E9]'
+              }`}
             >
               <ChevronRight className='h-4 w-4' />
             </button>
           </div>
         </div>
         <div className='grid grid-cols-3 gap-4'>
-          {MONTHS.map((month, index) => (
-            <button
-              key={month}
-              onClick={() => handleMonthSelect(index)}
-              className={`
-                p-3 border rounded-lg text-center transition-all
-                ${
-                  index === currentDate.getMonth()
-                    ? 'border-[#4CAF50] bg-[#E8F5E9] text-[#4CAF50]'
-                    : 'border-gray-200 hover:border-[#4CAF50] hover:bg-[#E8F5E9]/50'
-                }
-              `}
-            >
-              <span
-                className={`${aktivGrotesk.className} text-[14px] font-[400]`}
+          {MONTHS.map((month, index) => {
+            const isFutureMonth = currentDate.getFullYear() === currentYear && index > currentMonth
+            const isCurrentMonth = index === currentDate.getMonth()
+            
+            return (
+              <button
+                key={month}
+                onClick={() => handleMonthSelect(index)}
+                disabled={isFutureMonth}
+                className={`
+                  p-3 border rounded-lg text-center transition-all
+                  ${
+                    isCurrentMonth
+                      ? 'border-[#4CAF50] bg-[#E8F5E9] text-[#4CAF50]'
+                      : isFutureMonth
+                      ? 'border-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'border-gray-200 hover:border-[#4CAF50] hover:bg-[#E8F5E9]/50'
+                  }
+                `}
               >
-                {month}
-              </span>
-            </button>
-          ))}
+                <span
+                  className={`${aktivGrotesk.className} text-[14px] font-[400]`}
+                >
+                  {month}
+                </span>
+              </button>
+            )
+          })}
         </div>
       </div>
     )
@@ -220,33 +261,46 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
             </h2>
             <button
               onClick={handleNextYears}
-              className='h-7 w-7 flex items-center justify-center hover:bg-[#E8F5E9] rounded-full transition-colors'
+              disabled={yearViewStartYear + 12 >= currentYear + 1}
+              className={`h-7 w-7 flex items-center justify-center rounded-full transition-colors ${
+                yearViewStartYear + 12 >= currentYear + 1
+                  ? 'text-gray-400 cursor-not-allowed' 
+                  : 'hover:bg-[#E8F5E9]'
+              }`}
             >
               <ChevronRight className='h-4 w-4' />
             </button>
           </div>
         </div>
         <div className='grid grid-cols-3 gap-4'>
-          {years.map(year => (
-            <button
-              key={year}
-              onClick={() => handleYearSelect(year)}
-              className={`
-                p-3 border rounded-lg text-center transition-all
-                ${
-                  year === currentDate.getFullYear()
-                    ? 'border-[#4CAF50] bg-[#E8F5E9] text-[#4CAF50]'
-                    : 'border-gray-200 hover:border-[#4CAF50] hover:bg-[#E8F5E9]/50'
-                }
-              `}
-            >
-              <span
-                className={`${aktivGrotesk.className} text-[14px] font-[400]`}
+          {years.map(year => {
+            const isFutureYear = year > currentYear
+            const isCurrentYear = year === currentDate.getFullYear()
+            
+            return (
+              <button
+                key={year}
+                onClick={() => handleYearSelect(year)}
+                disabled={isFutureYear}
+                className={`
+                  p-3 border rounded-lg text-center transition-all
+                  ${
+                    isCurrentYear
+                      ? 'border-[#4CAF50] bg-[#E8F5E9] text-[#4CAF50]'
+                      : isFutureYear
+                      ? 'border-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'border-gray-200 hover:border-[#4CAF50] hover:bg-[#E8F5E9]/50'
+                  }
+                `}
               >
-                {year}
-              </span>
-            </button>
-          ))}
+                <span
+                  className={`${aktivGrotesk.className} text-[14px] font-[400]`}
+                >
+                  {year}
+                </span>
+              </button>
+            )
+          })}
         </div>
       </div>
     )
@@ -266,6 +320,7 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
               className='w-full space-y-[7px]'
               defaultMonth={currentDate}
               captionLayout='buttons'
+              disabled={{ after: today }}
               modifiers={{
                 first_of_row: date => date.getDay() === 0,
                 last_of_row: date => date.getDay() === 6,
