@@ -26,6 +26,7 @@ export interface MyProfileData {
   female: string;
   other: string;
   preferNotToSay: string;
+  reminderOnceInAWeek: string;
 }
 
 export const mapMyProfileData = (
@@ -61,6 +62,9 @@ export const mapMyProfileData = (
     female: myProfileCMS?.female ?? "Female",
     other: myProfileCMS?.other ?? "Other",
     preferNotToSay: myProfileCMS?.prefer_not_to_say ?? "Prefer Not to Say",
+    reminderOnceInAWeek:
+      myProfileCMS?.reminder_once_in_a_week ??
+      "You can only remind your friend once in a week!",
   };
 };
 
@@ -91,4 +95,5 @@ export const defaultMyProfileData: MyProfileData = {
   female: "Female",
   other: "Other",
   preferNotToSay: "Prefer Not to Say",
+  reminderOnceInAWeek: "You can only remind your friend once in a week!",
 };

@@ -22,7 +22,12 @@ import CircularBoxesModal, {
 } from "@/components/common/CircularBoxesModal";
 import useWindowWidth from "@/hooks/useWindowWidth";
 import SvgIcons from "@/components/common/SvgIcons";
-import { GA_EVENTS, ICONS_NAMES, SESSION_STORAGE_KEYS } from "@/constants";
+import {
+  GA_EVENTS,
+  ICONS_NAMES,
+  SESSION_STORAGE_KEYS,
+  CATEGORY_ID_CMS_KEY_MAPPING,
+} from "@/constants";
 import { updateSurpriseMe } from "@/store/auth/auth.slice";
 import useAppDispatch from "@/hooks/useDispatch";
 import { useGetJokes } from "@/api/hooks/JokeHooks";
@@ -97,12 +102,24 @@ export default function HomePageClient() {
 
   // Transform genres from API to match the expected structure
   const categories =
-    genres?.map((genre) => ({
-      id: genre.id.toString(),
-      name: genre.genre,
-      image_url: genre.image_url,
-      url: "/pick-mood",
-    })) || [];
+    genres?.map((genre) => {
+      const CATEGORY_ID_CMS_KEY_MAPPING_TYPED =
+        CATEGORY_ID_CMS_KEY_MAPPING as Record<number, string>;
+      const key = CATEGORY_ID_CMS_KEY_MAPPING_TYPED[genre.id];
+      const isValidKey =
+        typeof key === "string" && key in cmsData.jokeBoxFilter;
+
+      return {
+        id: genre.id.toString(),
+        name: isValidKey
+          ? (cmsData.jokeBoxFilter[
+              key as keyof typeof cmsData.jokeBoxFilter
+            ] as string)
+          : genre.genre, // fallback to original genre name
+        image_url: genre.image_url,
+        url: "/pick-mood",
+      };
+    }) || [];
 
   // Calculate how many pages we need based on screen size
   const [api, setApi] = useState<CarouselApi>();
@@ -438,7 +455,7 @@ export default function HomePageClient() {
               },
               {
                 id: 4,
-                href:`${INFOBIP_WHATSAPP_URL}&text=Hi,+I+am+here+for+Sprite+Joke-In-A-Bottle!+By+pressing+Send+on+this,+I+give+my+consent+to+sharing+my+mobile+number+and+display+name+with+Sprite.`,
+                href: `${INFOBIP_WHATSAPP_URL}&text=Hi,+I+am+here+for+Sprite+Joke-In-A-Bottle!+By+pressing+Send+on+this,+I+give+my+consent+to+sharing+my+mobile+number+and+display+name+with+Sprite.`,
                 icon: (
                   <SvgIcons name={ICONS_NAMES.WHATSAPP} className="w-5 h-5" />
                 ),
@@ -485,7 +502,9 @@ export default function HomePageClient() {
         <SurpriseMeModal
           genreId={selectedGenreId}
           category={
-            genres?.find((genre) => genre.id === selectedGenreId)?.genre ?? ""
+            categories?.find(
+              (category) => category.id === selectedGenreId?.toString()
+            )?.name ?? ""
           }
           pullJoke={true}
           languageId={1}

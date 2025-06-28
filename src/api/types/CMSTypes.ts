@@ -253,6 +253,7 @@ export type TCMSResponse = {
       female: string;
       other: string;
       prefer_not_to_say: string;
+      reminder_once_in_a_week: string;
     };
     comic_coins: {
       id: number;
@@ -377,6 +378,7 @@ export type TCMSResponse = {
       plusaddmyprofile_state_staterequired: string;
       plusaddmyprofile_city_cityerror: string;
       referafriend_brocodewefollow_userexist_useralreadyexisterror: string;
+      reportpopup_url_validurl: string;
     };
     vote_is_in_pop_up: {
       id: number;

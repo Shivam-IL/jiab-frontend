@@ -10,7 +10,7 @@ import SurpriseMeLockModal from "@/components/common/SurpriseMeLockModal";
 import useAppDispatch from "@/hooks/useDispatch";
 import { updateLoginModal } from "@/store/auth/auth.slice";
 import { triggerGAEvent } from "@/utils/gTagEvents";
-import { GA_EVENTS } from "@/constants";
+import { GA_EVENTS, CATEGORY_ID_CMS_KEY_MAPPING } from "@/constants";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
 import SurpriseMeModal from "@/components/common/SurpriseMeModal";
 import { useCMSData } from "@/data";
@@ -37,12 +37,24 @@ const PickMood: React.FC = () => {
 
   // Transform genres from API to match the expected structure
   const categories =
-    genres?.map((genre) => ({
-      id: genre.id.toString(),
-      name: genre.genre,
-      image_url: genre.image_url,
-      url: "/scroll-and-lol",
-    })) || [];
+    genres?.map((genre) => {
+      const CATEGORY_ID_CMS_KEY_MAPPING_TYPED =
+        CATEGORY_ID_CMS_KEY_MAPPING as Record<number, string>;
+      const key = CATEGORY_ID_CMS_KEY_MAPPING_TYPED[genre.id];
+      const isValidKey =
+        typeof key === "string" && key in cmsData.jokeBoxFilter;
+
+      return {
+        id: genre.id.toString(),
+        name: isValidKey
+          ? (cmsData.jokeBoxFilter[
+              key as keyof typeof cmsData.jokeBoxFilter
+            ] as string)
+          : genre.genre, // fallback to original genre name
+        image_url: genre.image_url,
+        url: "/scroll-and-lol",
+      };
+    }) || [];
 
   // Handle category click
   const handleCategoryClick = (category: {
@@ -125,7 +137,9 @@ const PickMood: React.FC = () => {
       {genreSurpriseModal && isAuthenticated && (
         <SurpriseMeModal
           category={
-            genres?.find((genre) => genre.id === selectedGenreId)?.genre ?? ""
+            categories?.find(
+              (category) => category.id === selectedGenreId?.toString()
+            )?.name ?? ""
           }
           genreId={selectedGenreId}
           languageId={1}

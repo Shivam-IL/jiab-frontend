@@ -18,6 +18,7 @@ export interface ValidationData {
   plusAddMyProfileStateRequired: string;
   plusAddMyProfileCityError: string;
   referAFriendUserAlreadyExistError: string;
+  reportPopupUrlValidation: string;
 }
 
 export const mapValidationData = (
@@ -71,6 +72,8 @@ export const mapValidationData = (
     referAFriendUserAlreadyExistError:
       validationCMS?.referafriend_brocodewefollow_userexist_useralreadyexisterror ??
       "Referred User already Exist",
+    reportPopupUrlValidation:
+      validationCMS?.reportpopup_url_validurl ?? "Please enter a valid URL",
   };
 };
 
@@ -93,4 +96,5 @@ export const defaultValidationData: ValidationData = {
   plusAddMyProfileStateRequired: "State is required",
   plusAddMyProfileCityError: "City is required",
   referAFriendUserAlreadyExistError: "Referred User already Exist",
+  reportPopupUrlValidation: "Please enter a valid URL",
 };

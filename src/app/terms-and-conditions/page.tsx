@@ -1,8 +1,9 @@
 "use client";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/common/Header/Header";
 import MobileTempNavBar from "@/components/common/MobileTempNavBar";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
-import React from "react";
+import { useCMSData } from "@/data";
 
 const termsContent = [
   {
@@ -767,13 +768,18 @@ const spriteRefreshRingsTerms = [
   },
 ];
 
-const page: React.FC = () => {
+const TermsAndConditionsPage = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const cmsData = useCMSData(mounted);
   return (
     <>
-      <MobileTempNavBar title="Terms and Conditions" />
+      <MobileTempNavBar title={cmsData?.navBar?.termsAndConditions} />
       <ScreenWrapper className="px-4 md:mt-0 mt-[-30px]">
         <Header
-          title="Terms and Conditions"
+          title={cmsData?.navBar?.termsAndConditions}
           className="md:block hidden mt-[100px]"
         />
 
@@ -819,4 +825,4 @@ const page: React.FC = () => {
   );
 };
 
-export default page;
+export default TermsAndConditionsPage;

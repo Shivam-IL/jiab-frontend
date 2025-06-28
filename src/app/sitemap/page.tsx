@@ -10,7 +10,7 @@ import ContactCard from "@/components/ContactCard";
 const homepageLinks = [
   { href: "/user-generated-jokes", label: "Joke Box", id: 1 },
   { href: "/hall-of-lame", label: "Hall Of Lame", id: 2 },
-  { href: "/wallet", label: "Wallet", id: 3 },
+  { href: "/my-wallet", label: "Wallet", id: 3 },
   { href: "/contest", label: "Contest", id: 4 },
   { href: "/profile", label: "My Profile", id: 5 },
 ];
