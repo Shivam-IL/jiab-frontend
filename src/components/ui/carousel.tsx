@@ -87,6 +87,28 @@ const Carousel = React.forwardRef<
 
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
+        // Check if text is being selected (Shift key is pressed)
+        if (event.shiftKey) {
+          return; // Don't interfere with text selection
+        }
+        
+        // Check if any text is selected
+        const selection = window.getSelection();
+        if (selection && selection.toString().length > 0) {
+          return; // Don't interfere with text selection
+        }
+        
+        // Check if a modal is open by looking for modal/overlay elements
+        const modalElements = document.querySelectorAll('[role="dialog"], .modal, .overlay, [data-modal="true"]');
+        const hasOpenModal = Array.from(modalElements).some(element => {
+          const style = window.getComputedStyle(element);
+          return style.display !== 'none' && style.visibility !== 'hidden';
+        });
+        
+        if (hasOpenModal) {
+          return; // Don't interfere when modal is open
+        }
+        
         if (event.key === "ArrowLeft") {
           event.preventDefault();
           scrollPrev();

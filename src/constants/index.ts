@@ -234,6 +234,7 @@ export const DAILY_WINNERS = "Daily Winners";
 export const IMAGES = {
   COUPON: "coupon.png",
   SURPRISE_ME_LOCK_MODAL: "lock_story_modal.png",
+  COMIC_COIN_VOUCHER: "comic-coin-voucher.png",
 };
 
 export const ICONS_NAMES = {
@@ -344,6 +345,7 @@ export const ICONS_NAMES = {
   NEW_REFRESH_RING: "new-refresh-ring",
   CROSS2: "cross2",
   HASHTAG: "hashtag",
+  ARROW: "arrow",
 };
 
 export const INVITE_CODE_POPUP_DATA = {
