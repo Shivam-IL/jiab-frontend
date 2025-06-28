@@ -176,6 +176,7 @@ export interface IReportPopup {
   onSubmit: () => void;
   placeholder?: string;
   error?: string;
+  onBlur?: () => void;
 }
 
 export interface IInviteCodePopup {

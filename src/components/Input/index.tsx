@@ -232,7 +232,7 @@ const Input: React.FC<IInput> = ({
         />
       )}
       {error !== '' && (
-        <span className={`${errorClassName} text-[#FD0202] font-[400] text-[12px]`}>{error}</span>
+        <span className={`${errorClassName} text-[#FD0202] font-[400] text-[12px] pl-[10px]`}>{error}</span>
       )}
     </div>
   )

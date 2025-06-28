@@ -16,7 +16,8 @@ const ReportPopup: React.FC<IReportPopup> = ({
   onChange,
   onSubmit,
   placeholder = 'Source URL*',
-  error
+  error,
+  onBlur
 }) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -55,6 +56,7 @@ const ReportPopup: React.FC<IReportPopup> = ({
               onChange={onChange}
               error={error}
               placeholder={placeholder}
+              onBlur={onBlur}
             />
             <div className='flex flex-col justify-center items-center'>
               <GreenCTA
