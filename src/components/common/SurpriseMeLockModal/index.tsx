@@ -57,7 +57,12 @@ const SurpriseMeLockModal = ({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className='rounded-[10px] md:rounded-[10px] p-0 max-w-[37dvh] gap-2'>
+      <DialogContent
+        style={{
+          borderRadius: '12.5px'
+        }}
+        className='p-0 max-w-[37dvh] gap-2'
+      >
         <div className='absolute top-[-105px] md:top-[-100px] left-0 flex justify-center items-center w-full'>
           <Image
             src='/static/sprite/icons/surprise-me.svg'
