@@ -29,6 +29,7 @@ import {
   useCoinAnimation
 } from '@/components/common/CoinAnimation'
 import SurpriseMeModal from '@/components/common/SurpriseMeModal'
+import AktivGroteskText from '@/components/common/AktivGroteskText'
 
 const steps: Step[] = [
   {
@@ -358,7 +359,7 @@ const ContestPage: React.FC = () => {
         )}
 
         {/* Buttons */}
-        <div className='flex justify-center md:mt-[40px] mt-[24px]'>
+        <div className='flex justify-center md:my-[40px] my-[18px]'>
           <Link href='/leaderboard'>
             <ContentButton
               id='previous-winner'
@@ -371,15 +372,20 @@ const ContestPage: React.FC = () => {
         </div>
 
         {/* How to Gather */}
-        <div className='how-to-gather'>
-          <Header
+        <div className='how-to-gather flex flex-col md:gap-[24px] gap-[8px]'>
+          <AktivGroteskText
+            fontSize='text-[16px] md:text-[30px]'
+            fontWeight='font-[700]'
+            text={cmsData.contest.howToGatherComicCoins}
+          />
+          {/* <Header
             title={cmsData.contest.howToGatherComicCoins}
             id='how-to-gather'
-            className='md:mt-[40px] how-to-gather mt-[24px] md:ml-0 -ml-[16px] mx-5'
-          />
+            className='how-to-gather  md:ml-0 -ml-[16px] mx-5'
+          /> */}
 
           {/* Contest Activities */}
-          <div className='grid  grid-cols-2 lg:grid-cols-3 md:gap-x-[17px] md:gap-y-[28px] gap-x-[13px] gap-y-[12px] md:pb-[41px] pb-[28px] md:mt-[24px] mt-[16px]'>
+          <div className='grid  grid-cols-2 lg:grid-cols-3 md:gap-x-[17px] md:gap-y-[28px] gap-x-[13px] gap-y-[8px] md:pb-[41px] pb-[28px]'>
             {contestActivities?.map(activity => (
               <ContestFlatCard
                 key={activity.id}
