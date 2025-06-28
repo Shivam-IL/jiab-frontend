@@ -239,11 +239,27 @@ const HelpUsToKnowYourBetter = ({
       className='bg-white w-full rounded-[5px] md:rounded-[20px] py-[16px] md:py-[44px] px-[14px] md:px-[33px] flex flex-col gap-[8px] md:gap-[20px]'
       id={id}
     >
-      <AktivGroteskText
-        text={cmsData?.myProfile?.helpUsKnowMore}
-        fontSize='text-[16px] md:text-[28px]'
-        fontWeight='font-[700]'
-      />
+      <div className='flex justify-between items-start'>
+        <AktivGroteskText
+          text={cmsData?.myProfile?.helpUsKnowMore}
+          fontSize='text-[16px] md:text-[28px]'
+          fontWeight='font-[700]'
+        />
+        {selectedQuestion && (
+          <div className='w-[10%] flex justify-end mt-[8px]'>
+            <AktivGroteskText
+              fontSize='text-[10px] md:text-[12px]'
+              fontWeight='font-[700]'
+              text={currentQuestionNumber?.toString()}
+            />
+            <AktivGroteskText
+              fontSize='text-[10px] md:text-[12px]'
+              fontWeight='font-[700]'
+              text={`/${allQuestions?.length}`}
+            />
+          </div>
+        )}
+      </div>
       <div>
         {selectedQuestion && (
           <div className='w-full' key={selectedQuestion.id}>
@@ -253,18 +269,6 @@ const HelpUsToKnowYourBetter = ({
                   text={selectedQuestion.question_text}
                   fontSize='text-[12px] md:text-[24px]'
                   fontWeight='font-[700]'
-                />
-              </div>
-              <div className='w-[10%] flex justify-end'>
-                <AktivGroteskText
-                  fontSize='text-[10px] md:text-[20px]'
-                  fontWeight='font-[700]'
-                  text={currentQuestionNumber?.toString()}
-                />
-                <AktivGroteskText
-                  fontSize='text-[10px] md:text-[20px]'
-                  fontWeight='font-[700]'
-                  text={`/${allQuestions?.length}`}
                 />
               </div>
             </div>
