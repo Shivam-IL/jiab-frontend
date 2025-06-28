@@ -8,4 +8,5 @@ export type TReferralSendAgain = {
 
 export type TReferralVerify = {
   referral_code: string;
+  validationMessage?: string;
 };

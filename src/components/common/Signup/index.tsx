@@ -135,14 +135,14 @@ const Signup = () => {
     const timeoutId = setTimeout(() => {
       const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
       if (!emailRegex.test(userData.email)) {
-        setEmailError("Please enter a valid email address");
+        setEmailError(cmsData.validation.signupEmailValidation);
       } else {
         setEmailError("");
       }
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [userData.email]);
+  }, [userData.email, cmsData.validation.signupEmailValidation]);
 
   const triggerCDPInviteCodeEvent = useCallback(
     (userId: string) => {
@@ -170,10 +170,10 @@ const Signup = () => {
   const isFormValid = () => {
     let emailCheck = true;
     if (userData?.name === "") {
-      setNameError("Please enter a valid name.");
+      setNameError(cmsData.validation.signupNameRequired);
     }
     if (!userData?.agree) {
-      setAcceptTermsError("Please accept the terms and conditions");
+      setAcceptTermsError(cmsData.validation.signupTandcAcceptance);
       return false;
     }
     if (userData?.email !== "") {
@@ -408,7 +408,7 @@ const Signup = () => {
               clearSessionStorage();
             }}
           >
-            <SvgIcons name={ICONS_NAMES.CROSS} className='w-[20px] h-[20px]' />
+            <SvgIcons name={ICONS_NAMES.CROSS} className="w-[20px] h-[20px]" />
           </button>
         </div>
         <div className="flex flex-col justify-center items-center gap-[8px]">
