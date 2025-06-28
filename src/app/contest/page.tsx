@@ -283,7 +283,7 @@ const ContestPage: React.FC = () => {
       />{' '}
       <ScreenWrapper className='overflow-hidden pt-20'>
         {isContestOver ? (
-          <div className='md:w-full h-auto md:mt-[40px] mt-[18px] '>
+          <div className='md:w-full h-auto md:mt-[40px] mt-[-4px] '>
             <ComingSoon
               topText={cmsData.contest.giftBoxTheContestIsOver}
               mainText={cmsData.contest.comingSoon}
@@ -385,7 +385,7 @@ const ContestPage: React.FC = () => {
           /> */}
 
           {/* Contest Activities */}
-          <div className='grid  grid-cols-2 lg:grid-cols-3 md:gap-x-[17px] md:gap-y-[28px] gap-x-[13px] gap-y-[8px] md:pb-[41px] pb-[28px]'>
+          <div className='grid  grid-cols-2 lg:grid-cols-3 md:gap-x-[17px] md:gap-y-[28px] gap-x-[13px] gap-y-[8px] md:pb-[41px] pb-[0px]'>
             {contestActivities?.map(activity => (
               <ContestFlatCard
                 key={activity.id}

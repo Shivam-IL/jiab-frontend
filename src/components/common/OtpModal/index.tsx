@@ -167,10 +167,15 @@ const OtpModal = () => {
       dispatch(updateIsAuthenticated({ isAuthenticated: true }));
       setOpen(false);
     } else if (verifyOTPData?.ok === false) {
-      const { data } = verifyOTPData;
-      setError(data?.message ?? "Invalid OTP");
+      setError(cmsData.validation.otpVerificationRequired);
     }
-  }, [verifyOTPData, dispatch, triggerLoginCDPEvent, mainServiceInstance]);
+  }, [
+    verifyOTPData,
+    dispatch,
+    triggerLoginCDPEvent,
+    mainServiceInstance,
+    cmsData,
+  ]);
 
   return (
     <LoginSignupWrapper open={open} setOpen={setOpen} logo={true}>
