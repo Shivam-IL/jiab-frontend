@@ -309,6 +309,28 @@ export type TCMSResponse = {
       publishedAt: string;
       locale: string;
     };
+    report_pop_up: {
+      id: number;
+      documentId: string;
+      report_heading: string;
+      report_placeholder: string;
+      report_submit_button: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
+    thand_rakh_pop_up: {
+      id: number;
+      documentId: string;
+      thand_rakh_heading: string;
+      thand_rakh_subheading: string;
+      thand_rakh_explore_button: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+    };
     logout_button_navbar_profile_dropdown: {
       id: number;
       documentId: string;
