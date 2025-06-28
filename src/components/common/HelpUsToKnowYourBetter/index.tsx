@@ -257,7 +257,6 @@ const HelpUsToKnowYourBetter = ({
               </div>
               <div className='w-[10%] flex justify-end'>
                 <AktivGroteskText
-                  className='text-[rgba(0,0,0,0.5)]'
                   fontSize='text-[10px] md:text-[20px]'
                   fontWeight='font-[700]'
                   text={currentQuestionNumber?.toString()}

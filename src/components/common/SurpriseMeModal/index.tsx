@@ -244,7 +244,6 @@ const SurpriseMeModal = ({
     }
   }
 
-
   if (joke) {
     return (
       <>
@@ -359,12 +358,12 @@ const SurpriseMeModal = ({
               border-radius: 3px !important;
             }
           `}</style>
-          <DialogContent className='z-[50] border-none md:max-w-[353px] px-[12px] max-w-[68%] shadow-none p-0 rounded-[20px]'>
-            <div className='absolute border-none outline-none top-[-105px] md:top-[-100px] left-0 flex justify-center items-center w-full'>
+          <DialogContent className='z-[50] border-none max-w-[37dvh] gap-[4px] shadow-none p-0 rounded-[10px]'>
+            <div className='absolute border-none outline-none top-[-95px] md:top-[-100px] left-0 flex justify-center items-center w-full'>
               <Image
                 src={`/static/sprite/icons/${ICONS_NAMES.SURPRISE_ME}.svg`}
                 alt={ICONS_NAMES.SURPRISE_ME}
-                className='w-[145px] h-[102px] md:w-[136px] md:h-[97px]'
+                className='w-[136px] h-[97px]'
                 width={145}
                 height={102}
               />
@@ -377,12 +376,12 @@ const SurpriseMeModal = ({
                 />
                 <div className='flex flex-col gap-[2px]'>
                   <p
-                    className={`${aktivGrotesk.className} font-[700] md:text-[12px] text-[14px] text-[#000000]`}
+                    className={`${aktivGrotesk.className} truncate font-[700] md:text-[12px] sm:text-[14px] text-[10px]  text-[#000000]`}
                   >
                     {joke?.title ?? ''}
                   </p>
                   <p
-                    className={`${aktivGrotesk.className} font-[400] md:text-[10px] text-[12px] text-[#000000]`}
+                    className={`${aktivGrotesk.className} font-[400] md:text-[10px] sm:text-[12px] text-[8px] text-[#000000]`}
                   >
                     {joke?.joke_creator ?? ''}
                   </p>
@@ -405,7 +404,7 @@ const SurpriseMeModal = ({
                 />
               </button>
             </div>
-            <div className='relative  max-w-[100%] md:max-w-[329px] md:min-w-[329px]  md:h-[526px] ml-[11px] mr-[11px] md:mr-0'>
+            <div className='relative  ml-[11px] mr-[11px]'>
               <video
                 src={joke?.url ?? ''}
                 preload='auto'
@@ -419,14 +418,13 @@ const SurpriseMeModal = ({
                 x5-playsinline=''
                 style={{
                   position: 'relative',
-                  width: '100%',
-                  height: '100%',
+                  height: 'inherit',
                   aspectRatio: '9/16',
-                  objectFit: 'cover'
+                  objectFit: 'contain'
                 }}
               />
             </div>
-            <div className='bg-white rounded-[20px] p-[8px] pb-[12px] flex justify-between ml-[12px]'>
+            <div className='bg-white rounded-[10px] p-[8px]  pb-[12px] flex justify-between ml-[12px]'>
               <div className='flex gap-[10px] md:gap-[9px] pl-[2px]'>
                 <SurpriseMeCTA
                   name={ICONS_NAMES.FUNNY}

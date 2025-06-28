@@ -233,6 +233,7 @@ export const DAILY_WINNERS = "Daily Winners";
 
 export const IMAGES = {
   COUPON: "coupon.png",
+  SURPRISE_ME_LOCK_MODAL: "lock_story_modal.png",
 };
 
 export const ICONS_NAMES = {
