@@ -20,13 +20,13 @@ const ContestFlatCard: React.FC<ContestFlatCardProps> = ({
 }) => {
   return (
     <div
-      className={`bg-white rounded-[8px] md:p-[15px] p-[6px] flex items-center md:gap-[10px] gap-[10px] shadow-sm ${
+      className={`bg-white rounded-[4px]  md:py-[15px] md:px-[13px] p-[6px] flex items-center md:gap-[10px] gap-[10px] shadow-sm ${
         onClick ? "cursor-pointer hover:shadow-md transition-shadow" : ""
       } ${className}`}
       onClick={onClick}
     >
       {/* Icon Container */}
-      <div className="bg-green rounded-[5px] flex-shrink-0 flex items-center justify-center md:h-[117px] h-[57px] md:w-[107.19px] w-[51px]">
+      <div className="bg-green rounded-[4px] flex-shrink-0 flex items-center justify-center md:max-h-[117px] md:min-h-[117px]  h-[48px] min-h-[48px]  md:max-w-[107.19px] md:min-w-[107.19px]  max-w-[48px] min-w-[48px]">
         <Image
           src={icon}
           alt={title}
@@ -41,13 +41,14 @@ const ContestFlatCard: React.FC<ContestFlatCardProps> = ({
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex flex-col md:gap-[16px] gap-[8px]">
+      <div className="flex-1 flex flex-col md:gap-[16px] gap-[4px]">
         <h3 className="text-black md:text-[20px] md:leading-[24px] text-[10px] leading-[14px] font-bold">
           {title}
         </h3>
         <div className="flex items-center gap-1">
           <div className="flex items-center justify-center">
-            <Image
+       
+            <img
               src="/assets/images/coin-final-sidebar.svg"
               alt="coin"
               width={31}
