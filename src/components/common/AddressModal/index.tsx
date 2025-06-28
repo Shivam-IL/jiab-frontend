@@ -352,7 +352,7 @@ const AddressModal: React.FC<IAddressModal> = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className='rounded-[5px] md:max-w-[401px] flex flex-col px-0 gap-[18px] md:gap-[28px]  py-[20px] md:pt-[28px] md:pb-[20px] max-w-[358px]'>
+      <DialogContent className='box-border p-0  overflow-scroll md:rouned-[20px] rounded-[20px] md:max-w-[398px] flex flex-col px-0 gap-[32px]  py-[20px] md:pt-[28px] md:pb-[20px] max-w-[358px] max-h-[90vh] overflow-y-auto'>
         <div className='w-full flex px-[15px] md:px-[19px] justify-between items-center box-border '>
           <AktivGroteskText
             text={
@@ -377,9 +377,9 @@ const AddressModal: React.FC<IAddressModal> = ({
           onSubmit={event => {
             event.preventDefault()
           }}
-          className='flex flex-col px-[8px] md:px-[16px] gap-[20px]'
+          className='flex flex-col px-[8px] md:px-[10px] gap-[20px]'
         >
-          <div className='flex flex-col gap-[24px]'>
+          <div className='flex flex-col md:gap-[32px] gap-[28px]'>
             <Input
               name='address_line_1'
               type='text'
@@ -387,7 +387,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               value={data.address_line_1}
               onChange={handleChange}
               error={error.address_line_1}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass='py-[10px] px-[17px] '
             />
             <Input
               name='address_line_2'
@@ -395,7 +395,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               placeholder={cmsData?.plusAddInsideProfile?.addressLine2}
               value={data.address_line_2}
               onChange={handleChange}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass='py-[10px] px-[17px] '
             />
             <Input
               name='nearest_landmark'
@@ -403,7 +403,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               placeholder={cmsData?.plusAddInsideProfile?.nearestLandmark}
               value={data.nearest_landmark}
               onChange={handleChange}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass='py-[10px] px-[17px] '
             />
             <Input
               name='alternate_phone_number'
@@ -412,7 +412,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               value={data.alternate_phone_number}
               onChange={handleChange}
               error={error.alternate_phone_number}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass='py-[10px] px-[17px] '
             />
             <Input
               name='pincode'
@@ -421,7 +421,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               value={data.pincode}
               error={error.pincode}
               onChange={handleChange}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass='py-[10px] px-[17px] '
             />
             <Input
               name='state'
@@ -429,7 +429,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               placeholder={cmsData?.plusAddInsideProfile?.state}
               value={data.state}
               error={error.state}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass='py-[10px] px-[17px] '
               onChange={handleChange}
               readonly={true}
             />
@@ -439,7 +439,7 @@ const AddressModal: React.FC<IAddressModal> = ({
               placeholder={cmsData?.plusAddInsideProfile?.city}
               value={data.city}
               error={error.city}
-              paddingClass='py-[16px] px-[20px] md:py-[14px]'
+              paddingClass='py-[10px] px-[17px] '
               onChange={handleChange}
               readonly={true}
             />
