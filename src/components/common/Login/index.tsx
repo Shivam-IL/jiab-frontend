@@ -49,7 +49,7 @@ const Login = () => {
       mobileNumber?.[0] &&
       parseInt(mobileNumber[0]) < 6
     ) {
-      setError("Please enter a valid 10-digit mobile number");
+      setError(cmsData.validation.loginMobileNumberRequired);
     } else if (
       mobileNumber?.length === 10 &&
       mobileNumber?.[0] &&
@@ -67,7 +67,7 @@ const Login = () => {
       !mobileNumber?.[0] ||
       parseInt(mobileNumber[0]) < 6
     ) {
-      setError("Please enter a valid 10-digit mobile number");
+      setError(cmsData.validation.loginMobileNumberRequired);
       return;
     }
     showLoader();

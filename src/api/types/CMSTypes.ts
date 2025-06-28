@@ -331,6 +331,31 @@ export type TCMSResponse = {
       publishedAt: string;
       locale: string;
     };
+    validations_translation: {
+      id: number;
+      documentId: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+      login_mobilenumber_numberrequired: string;
+      otp_verification_otpsentrequired: string;
+      signup_name_namerequired: string;
+      signup_emailid_emailidvalidation: string;
+      signup_tandc_tandcacceptance: string;
+      signup_referralcode_referralcodevalidation: string;
+      pjchallenge_language_languagerequired: string;
+      pjchallenge_file_filerequired: string;
+      pjchallenge_title_titlerequired: string;
+      pjchallenge_tandc_tandcacceptance: string;
+      pjchallenge_joke_jokerequired: string;
+      editprofile_age_agevalidation: string;
+      plusaddmyprofile_address1_address1required: string;
+      plusaddmyprofile_pincode_pincoderequired: string;
+      plusaddmyprofile_state_staterequired: string;
+      plusaddmyprofile_city_cityerror: string;
+      referafriend_brocodewefollow_userexist_useralreadyexisterror: string;
+    };
     vote_is_in_pop_up: {
       id: number;
       documentId: string;

@@ -128,7 +128,7 @@ export class ReferralService extends MainService {
     }
   }
 
-  public async verifyReferral({ referral_code }: TReferralVerify) {
+  public async verifyReferral({ referral_code, validationMessage }: TReferralVerify) {
     try {
       const response = await apiClient.post(
         API_ROUTES.REFERRAL.VERIFY_REFERRAL,
@@ -156,7 +156,7 @@ export class ReferralService extends MainService {
         };
         return SuccessResponse(responseData);
       }
-      return ErrorResponse(data?.message || "Invalid Referral Code");
+      return ErrorResponse(validationMessage as string);
     } catch (error) {
       throw new Error(error as string);
     }

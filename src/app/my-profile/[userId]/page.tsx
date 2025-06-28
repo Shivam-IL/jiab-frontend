@@ -119,7 +119,7 @@ const EditProfilePage = () => {
     }
 
     if (age < minAge) {
-      return `Sorry, you are below 18 years of age."`;
+      return cmsData.validation.editProfileAgeValidation;
     }
     return "";
   };
@@ -274,7 +274,7 @@ const EditProfilePage = () => {
           data?.gender
         );
       }
-      router.push('/profile')
+      router.push("/profile");
     } else if (editUserProfileDetailsData?.ok === false) {
       const message =
         (editUserProfileDetailsData as { message?: string })?.message ||
@@ -379,9 +379,24 @@ const EditProfilePage = () => {
               name={"gender"}
               type="select"
               options={[
-                { id: 1, name: "male", value: "male", label: cmsData?.editProfile?.genderMale },
-                { id: 2, name: "female", value: "female", label: cmsData?.editProfile?.genderFemale },
-                { id: 3, name: "other", value: "other", label: cmsData?.editProfile?.genderOthers },
+                {
+                  id: 1,
+                  name: "male",
+                  value: "male",
+                  label: cmsData?.editProfile?.genderMale,
+                },
+                {
+                  id: 2,
+                  name: "female",
+                  value: "female",
+                  label: cmsData?.editProfile?.genderFemale,
+                },
+                {
+                  id: 3,
+                  name: "other",
+                  value: "other",
+                  label: cmsData?.editProfile?.genderOthers,
+                },
                 {
                   id: 4,
                   name: "perfer_not_to_say",

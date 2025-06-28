@@ -109,11 +109,11 @@ const OtpModal = () => {
   const handlerSubmitOtp = () => {
     triggerGAEvent(GA_EVENTS.SPRITE_J24_OTP_SUBMIT);
     if (otp.length === 0) {
-      setError(cmsData.otp.pleaseOtpEnter);
+      setError(cmsData.validation.otpVerificationRequired);
       return;
     }
     if (otp.length !== 6) {
-      setError(cmsData.otp.pleaseOtpEnter);
+      setError(cmsData.validation.otpVerificationRequired);
       return;
     }
     showLoader();
@@ -205,7 +205,7 @@ const OtpModal = () => {
         <div className="flex flex-col justify-center items-center md:gap-[12px] gap-[4px]">
           <AuthHeading title={cmsData.otp.otpVerification} />
           <p className="text-center text-[#000] font-400 text-[12px]">
-            {cmsData.otp.pleaseOtpEnter}
+            {cmsData.validation.otpVerificationRequired}
           </p>
         </div>
         <form

@@ -28,6 +28,13 @@ const ReferNowComponent = ({
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   setReferralCode?: React.Dispatch<React.SetStateAction<string>>;
 }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const cmsData = useCMSData(mounted);
   const [open2, setOpen2] = useState<boolean>(false);
   const [open3, setOpen3] = useState<boolean>(false);
 
@@ -67,7 +74,7 @@ const ReferNowComponent = ({
     }
 
     if (value?.length === 10 && parseInt(value?.[0]) < 6) {
-      setError("Please enter a valid 10 digit mobile number");
+      setError(cmsData.validation.loginMobileNumberRequired);
     }
 
     const numericValue = value?.replace(/[^0-9]/g, "");
@@ -85,7 +92,7 @@ const ReferNowComponent = ({
     }
 
     if (phoneNumber?.length < 10 && parseInt(phoneNumber?.[0]) < 6) {
-      setError("Please enter a valid 10 digit mobile number");
+      setError(cmsData.validation.loginMobileNumberRequired);
       setOpen2(true);
       setOpen?.(false);
       setReferStatus(REFERRAL_CODE.INVALID_MOBILE_NUMBER);
@@ -141,7 +148,7 @@ const ReferNowComponent = ({
         setOpen3(false);
         setReferStatus1(false);
         setReferStatus2(false);
-        setError("Please enter a valid 10 digit mobile number");
+        setError(cmsData.validation.loginMobileNumberRequired);
         onClose();
       } else if (status === REFERRAL_CODE.EXISTING_USER) {
         setOpen?.(true);
