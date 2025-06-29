@@ -125,15 +125,15 @@ const PJChallenge: React.FC<{
           </div>
 
           {/* Subheading - "BOTTLE YOUR JOKES..." */}
-          <div className="absolute top-[31%] left-1/2 transform -translate-x-1/2 -w-[60%]">
+          <div className="absolute top-[32%] left-1/2 transform -translate-x-1/2 -w-[60%]">
             <h2
               className="text-green font-bold italic uppercase text-center
-              text-[14px] leading-[15px] max-w-[200px]
+              text-[14px] leading-[18px] max-w-[180px]
               sm:text-[16px] sm:leading-[20px] sm:max-w-[200px]
               md:text-[24px] md:leading-[30px] md:max-w-[300px]
               lg:text-[32px] lg:leading-[40px] lg:max-w-[415px]
               xl:text-[37.94px] xl:leading-[48px] xl:max-w-[500px]
-              2xl:text-[37.94px] 2xl:leading-[56px] 2xl:max-w-[750px]"
+              2xl:text-[37.94px] 2xl:leading-[56px] 2xl:max-w-[500px]"
             >
               {subheading}
             </h2>
@@ -156,7 +156,7 @@ const PJChallenge: React.FC<{
                 fontSize: `${getCurrentFontSize()}px`,
                 letterSpacing:
                   selectedLanguage !== LANGUAGE_MNEMONICS.ENGLISH && isWindows
-                    ? "-2px"
+                    ? "-0.5px"
                     : "normal",
               }}
             >

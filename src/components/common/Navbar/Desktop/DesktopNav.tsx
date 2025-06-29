@@ -8,7 +8,6 @@ import NotificationItem from "../../NotificationItem/NotificationItem";
 import { GA_EVENTS, ICONS_NAMES, LANGUAGE_MNEMONICS } from "@/constants";
 import useAppDispatch from "@/hooks/useDispatch";
 import { updateLoginModal } from "@/store/auth/auth.slice";
-import SvgIcons from "../../SvgIcons";
 import useAppSelector from "@/hooks/useSelector";
 import useLogout from "@/hooks/useLogout";
 import ReferNowComponent from "@/components/common/ReferNowComponent";
@@ -33,13 +32,11 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   profileImage,
 }) => {
   const [mounted, setMounted] = useState(false);
-  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const [isExploreDropdownOpen, setIsExploreDropdownOpen] = useState(false);
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
     useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const { selectedLanguage, changeLanguage } = useLanguage();
-  const langDropdownRef = useRef<HTMLDivElement>(null);
   const exploreDropdownRef = useRef<HTMLDivElement>(null);
   const notificationDropdownRef = useRef<HTMLDivElement>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
@@ -149,12 +146,6 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        langDropdownRef.current &&
-        !langDropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsLangDropdownOpen(false);
-      }
-      if (
         exploreDropdownRef.current &&
         !exploreDropdownRef.current.contains(event.target as Node)
       ) {
@@ -178,11 +169,6 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  const getSelectedLanguageLabel = () => {
-    const selected = languages.find((lang) => lang.value === selectedLanguage);
-    return selected ? selected.label : "ENGLISH";
-  };
 
   const [refer1, setRefer1] = useState<boolean>(false);
 
@@ -412,41 +398,26 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
           )}
           <LanguageHydration
             fallback={
-              <div className="relative w-[120px]">
-                <div className="border border-black rounded px-3 py-1 flex justify-between items-center cursor-pointer">
-                  <span className="mr-1">ENGLISH</span>
-                  <ChevronDown className="h-5 w-5" />
-                </div>
+              <div className="w-[120px]">
+                <select className="w-full border text-[18px] font-normal border-black rounded p-1 bg-white focus:outline-none focus:ring-0">
+                  <option value="en">ENGLISH</option>
+                </select>
               </div>
             }
           >
-            <div className="relative" ref={langDropdownRef}>
-              <button
-                className="w-[116.71px] border border-black rounded px-3 py-1 flex justify-between items-center cursor-pointer"
-                onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+            <div className="w-[116.71px]">
+              <select
+                id={DesktopBoxIds.LANGUAGE}
+                className="w-full border text-[18px] font-normal border-black rounded p-1 bg-white cursor-pointer focus:outline-none focus:ring-0"
+                value={selectedLanguage}
+                onChange={(e) => changeLanguage(e.target.value)}
               >
-                <span id={DesktopBoxIds.LANGUAGE} className="mr-1">
-                  {getSelectedLanguageLabel()}
-                </span>
-                <ChevronDown className="h-5 w-5" />
-              </button>
-
-              {isLangDropdownOpen && (
-                <div className="absolute top-full mt-1 w-[116.71px] rounded-md shadow-md z-20 bg-white">
-                  {languages.map((lang) => (
-                    <div
-                      key={lang.id}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => {
-                        changeLanguage(lang.value);
-                        setIsLangDropdownOpen(false);
-                      }}
-                    >
-                      {lang.label}
-                    </div>
-                  ))}
-                </div>
-              )}
+                {languages.map((lang) => (
+                  <option key={lang.id} value={lang.value}>
+                    {lang.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </LanguageHydration>
 

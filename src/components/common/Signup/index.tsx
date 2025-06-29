@@ -112,16 +112,16 @@ const Signup = () => {
 
     const timeoutId = setTimeout(() => {
       if (userData.name.length < 2) {
-        setNameError("Name should be at least 2 characters long");
+        setNameError(cmsData.validation.signupNameTwoCharLong);
       } else if (!/^[a-zA-Z\s]*$/.test(userData.name)) {
-        setNameError("Name should only contain letters and spaces");
+        setNameError(cmsData.validation.signupNameContainAlphabet);
       } else {
         setNameError("");
       }
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [userData.name]);
+  }, [userData.name, cmsData]);
 
   const router = useRouter();
 
@@ -356,7 +356,11 @@ const Signup = () => {
       }
     } else if (signupData?.ok === false) {
       const { message } = signupData as unknown as { message: string };
-      setError(message);
+      if (message === "Invalid referral code") {
+        setError(cmsData.validation.signupReferralCodeValidation);
+      } else {
+        setError(message);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signupData, dispatch]);

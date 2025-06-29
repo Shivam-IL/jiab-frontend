@@ -2,7 +2,12 @@
 
 import MobileTempNavBar from "@/components/common/MobileTempNavBar";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
-import { GA_EVENTS, ICONS_NAMES, LIMIT_EXCEED } from "@/constants";
+import {
+  GA_EVENTS,
+  ICONS_NAMES,
+  LIMIT_EXCEED,
+  CATEGORY_ID_CMS_KEY_MAPPING,
+} from "@/constants";
 import useWindowWidth from "@/hooks/useWindowWidth";
 import { FileType, IJokeData } from "@/types";
 import React, { forwardRef, useEffect, useMemo, useRef, useState } from "react";
@@ -253,7 +258,10 @@ const SubmitYourJoke = () => {
       formValid = false;
     }
     if (!jokeData.title) {
-      setFormError((prev) => ({ ...prev, title: cmsData.validation.pjChallengeTitleRequired }));
+      setFormError((prev) => ({
+        ...prev,
+        title: cmsData.validation.pjChallengeTitleRequired,
+      }));
       formValid = false;
     }
     if (!jokeData.agreeToTerms) {
@@ -264,7 +272,10 @@ const SubmitYourJoke = () => {
       formValid = false;
     }
     if (jokeData.format !== FORMAT_OPTIONS?.[1].label && !jokeData.file) {
-      setFormError((prev) => ({ ...prev, joke: cmsData.validation.pjChallengeFileRequired }));
+      setFormError((prev) => ({
+        ...prev,
+        joke: cmsData.validation.pjChallengeFileRequired,
+      }));
       formValid = false;
       return false;
     }
@@ -272,7 +283,10 @@ const SubmitYourJoke = () => {
       jokeData.format === FORMAT_OPTIONS?.[1]?.label &&
       jokeData.jokeText === ""
     ) {
-      setFormError((prev) => ({ ...prev, joke: cmsData.validation.pjChallengeJokeRequired }));
+      setFormError((prev) => ({
+        ...prev,
+        joke: cmsData.validation.pjChallengeJokeRequired,
+      }));
       formValid = false;
     }
 
@@ -372,17 +386,29 @@ const SubmitYourJoke = () => {
 
   useEffect(() => {
     if (genres?.length > 0) {
+      const CATEGORY_ID_CMS_KEY_MAPPING_TYPED =
+        CATEGORY_ID_CMS_KEY_MAPPING as Record<number, string>;
+
       const modifiedGenres = genres?.map((item: IGenre) => {
+        const key = CATEGORY_ID_CMS_KEY_MAPPING_TYPED[item.id];
+        const isValidKey =
+          typeof key === "string" && key in cmsData.jokeBoxFilter;
+        const mappedName = isValidKey
+          ? (cmsData.jokeBoxFilter[
+              key as keyof typeof cmsData.jokeBoxFilter
+            ] as string)
+          : item.genre; // fallback to original genre name
+
         return {
           id: item.id,
-          name: item.genre,
-          value: item.genre,
+          name: mappedName,
+          value: item.genre, // Keep original for API calls
           image: item.image_url,
         };
       });
       setCategoryData(modifiedGenres);
     }
-  }, [genres]);
+  }, [genres, cmsData.jokeBoxFilter, cmsData]);
 
   useEffect(() => {
     if (languages?.length > 0) {

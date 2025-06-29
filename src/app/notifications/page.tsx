@@ -5,7 +5,6 @@ import Header from "@/components/common/Header/Header";
 import MobileTempNavBar from "@/components/common/MobileTempNavBar";
 import NotificationItem from "@/components/common/NotificationItem/NotificationItem";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
-import { MOBILE_TEMP_NAVBAR_DATA } from "@/constants";
 import useWindowWidth from "@/hooks/useWindowWidth";
 import {
   useGetNotifications,
@@ -14,8 +13,14 @@ import {
 import { INotification } from "@/api/types/NotificationTypes";
 import { useQueryClient } from "@tanstack/react-query";
 import { keys } from "@/api/utils";
+import { useCMSData } from "@/data";
 
 const NotificationsPage: React.FC = () => {
+  const [mounted, setMounted] = useState(false);
+  const cmsData = useCMSData(mounted);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const queryClient = useQueryClient();
   const [hasMarkedAsRead, setHasMarkedAsRead] = useState(false);
 
@@ -110,8 +115,8 @@ const NotificationsPage: React.FC = () => {
     return (
       <div className="bg-lightGray min-h-screen">
         <MobileTempNavBar
-          title={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.TITLE}
-          subtitle={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.SUB_TITLE}
+          title={cmsData?.notification?.notificationHeader}
+          subtitle={cmsData?.notification?.notificationSubHeading}
         />
         <ScreenWrapper
           className={` ${
@@ -121,8 +126,8 @@ const NotificationsPage: React.FC = () => {
           }`}
         >
           <Header
-            title="Notifications"
-            description="Keep up with the build-up."
+            title={cmsData?.notification?.notificationHeader}
+            description={cmsData?.notification?.notificationSubHeading}
             className="md:my-[40px] my-[20px] hidden md:block"
           />
           <div className="flex justify-center items-center py-20">
@@ -141,8 +146,8 @@ const NotificationsPage: React.FC = () => {
     return (
       <div className="bg-lightGray min-h-screen">
         <MobileTempNavBar
-          title={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.TITLE}
-          subtitle={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.SUB_TITLE}
+          title={cmsData?.notification?.notificationHeader}
+          subtitle={cmsData?.notification?.notificationSubHeading}
         />
         <ScreenWrapper
           className={` ${
@@ -178,8 +183,8 @@ const NotificationsPage: React.FC = () => {
     return (
       <div className="bg-lightGray min-h-screen">
         <MobileTempNavBar
-          title={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.TITLE}
-          subtitle={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.SUB_TITLE}
+          title={cmsData?.notification?.notificationHeader}
+          subtitle={cmsData?.notification?.notificationSubHeading}
         />
         <ScreenWrapper
           className={` ${
@@ -209,8 +214,8 @@ const NotificationsPage: React.FC = () => {
   return (
     <div className="bg-lightGray min-h-screen">
       <MobileTempNavBar
-        title={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.TITLE}
-        subtitle={MOBILE_TEMP_NAVBAR_DATA.NOTIFICATIONS.SUB_TITLE}
+        title={cmsData?.notification?.notificationHeader}
+        subtitle={cmsData?.notification?.notificationSubHeading}
       />
 
       <ScreenWrapper

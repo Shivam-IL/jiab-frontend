@@ -103,7 +103,7 @@ const ProfileCard = () => {
           let value = user[itemKey];
           if (item.type === "gender" && value) {
             // Map gender value to CMS label
-            switch (String(value).toLowerCase()) {
+            switch (String(value).toLowerCase().replace(/\s+/g, "_")) {
               case "male":
                 value = cmsData.editProfile.genderMale;
                 break;
@@ -113,7 +113,7 @@ const ProfileCard = () => {
               case "other":
                 value = cmsData.editProfile.genderOthers;
                 break;
-              case "perfer_not_to_say":
+              case "prefer_not_to_say":
                 value = cmsData.editProfile.genderPreferNotToSay;
                 break;
               default:

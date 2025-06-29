@@ -10,6 +10,7 @@ import { TModifiedUGCContent } from "@/api/types/GluedinTypes";
 import useAppDispatch from "@/hooks/useDispatch";
 import { updateUgcLoadMore, updateUgcOffset } from "@/store/ugc";
 import useAppSelector from "@/hooks/useSelector";
+import { useCMSData } from "@/data";
 
 const UgcComponent: React.FC<IUgcComponent> = ({
   isUnmounting,
@@ -18,6 +19,12 @@ const UgcComponent: React.FC<IUgcComponent> = ({
   isLoadingGluedinFeedList = false,
   noMoreData = false,
 }) => {
+  const [mounted, setMounted] = useState(false);
+  const cmsData = useCMSData(mounted);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [showExitModal, setShowExitModal] = useState(false);
   const { filterChnageId } = useAppSelector((state) => state.ugc);
   const dispatch = useAppDispatch();
@@ -55,7 +62,7 @@ const UgcComponent: React.FC<IUgcComponent> = ({
       <div className="flex justify-center items-center md:mt-[32px] mt-[16px]">
         {!noMoreData && (
           <GreenCTA
-            text={isLoadingGluedinFeedList ? "Loading..." : "Load More"}
+            text={cmsData.jokeBox.loadMoreButtonText}
             disabled={isLoadingGluedinFeedList}
             className="leading-tight"
             paddingClass="px-[36px] py-[8px] md:py-[8px] md:px-[16px] border-[1px]"
