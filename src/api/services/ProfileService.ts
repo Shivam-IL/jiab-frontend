@@ -255,4 +255,19 @@ export class ProfileService extends MainService {
       throw new Error(error as string);
     }
   }
+
+  public async getVoucherInfo() {
+    try {
+      const response = await apiClient.get(API_ROUTES.USER.MY_WALLET.GET_VOOCHER_INFO, {
+        headers: this.getAuthHeaders(),
+      });
+      const data = response.data;
+      if (data?.success) {
+        return SuccessResponse(data?.data);
+      }
+      return ErrorResponse(data?.message || "Invalid Voucher Info");
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
 }

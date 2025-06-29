@@ -363,6 +363,11 @@ export const INVITE_CODE_POPUP_DATA = {
   },
 };
 
+export const VOUCHER_TYPES = {
+  PHONE_PAY_VOUCHER:'Reward worth Rs.25,000!',
+  MMT_VOUCHER:"The Ultimate Retreat"
+}
+
 export const LANG_VERNICULAR_MAP = {
   English: "English",
   Hindi: "हिंदी",

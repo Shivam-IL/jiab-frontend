@@ -113,3 +113,22 @@ export const formatDateToMonthYear = (date: string): string => {
   const year = dateObj.getFullYear();
   return `${day} ${month}, ${year}`;
 }
+
+export const converDateDayMonthYear = (date: string) => {
+  const dateObj = new Date(date);
+  const day = dateObj.getDate();
+  const month = dateObj.getMonth() + 1;
+  const year = dateObj.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
+export const converDateToHumanReadable = (date: string) => {
+  const monthNames = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+  const dateObj = new Date(date);
+  const day = dateObj.getDate();
+  const month = monthNames[dateObj.getMonth()];
+  return `${day} ${month}, ${dateObj.getFullYear()}`;
+}

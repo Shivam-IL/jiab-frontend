@@ -4,6 +4,7 @@ import AktivGroteskText from "@/components/common/AktivGroteskText";
 import GreenCTA from "@/components/GreenCTA";
 import { ICONS_NAMES } from "@/constants";
 import Image from "next/image";
+import { converDateToHumanReadable } from "@/utils";
 
 interface PhonePeVoucherPopupProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ interface PhonePeVoucherPopupProps {
   expiryDate?: string;
   onRedeem?: () => void;
   onShare?: () => void;
+  imageUrl?: string;
 }
 
 const PhonePeVoucherPopup: React.FC<PhonePeVoucherPopupProps> = ({
@@ -25,7 +27,7 @@ const PhonePeVoucherPopup: React.FC<PhonePeVoucherPopupProps> = ({
   pin = "315724",
   expiryDate = "31st Dec 2024",
   onRedeem,
-  onShare,
+  imageUrl = "/other-svgs/reward-popup.svg",
 }) => {
   const [copiedCode, setCopiedCode] = useState(false);
   const [copiedPin, setCopiedPin] = useState(false);
@@ -58,11 +60,11 @@ const PhonePeVoucherPopup: React.FC<PhonePeVoucherPopupProps> = ({
     }
   };
 
-  const handleShareClick = () => {
-    if (onShare) {
-      onShare();
-    }
-  };
+  // const handleShareClick = () => {
+  //   if (onShare) {
+  //     onShare();
+  //   }
+  // };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -84,16 +86,16 @@ const PhonePeVoucherPopup: React.FC<PhonePeVoucherPopupProps> = ({
         {/* Header Banner */}
         <div className="mt-[14.5px] px-[12px]">
           <Image
-            src="/other-svgs/reward-popup.svg"
+            src={imageUrl}
             alt="PhonePe"
             width={120}
             height={60}
-            className="object-contain w-full h-full"
+            className="object-contain w-full h-full rounded-[4px]"
           />
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="px-6 pt-[22px] pb-[16px]">
           <div className="text-center md:mb-[20px] mb-[12px]">
             <AktivGroteskText
               text="It's Yours!"
@@ -153,7 +155,7 @@ const PhonePeVoucherPopup: React.FC<PhonePeVoucherPopupProps> = ({
           {/* Redeem Button */}
           <div className="text-center md:mb-4 mb-[8px]">
             <GreenCTA
-              text="Redeem Now"
+              text="Redeem"
               onClick={handleRedeemClick}
               paddingClass="md:py-[12px] py-[8px] md:px-[16px] px-[12px]"
               fontSize="md:text-[16px] text-[12px]"
@@ -162,22 +164,22 @@ const PhonePeVoucherPopup: React.FC<PhonePeVoucherPopupProps> = ({
           </div>
 
           {/* Expiry Date */}
-          <div className="text-center md:mb-4 mb-[16px]">
+          <div className="text-center">
             <p className="md:text-[16px] text-[12px] text-gray-600 leading-[20px]">
               Last date to redeem:{" "}
-              <span className="text-green font-semibold">{expiryDate}</span>
+              <span className="text-green font-semibold">{converDateToHumanReadable(expiryDate)}</span>
             </p>
           </div>
 
           {/* Share Button */}
-          <div className="text-center">
+          {/* <div className="text-center">
             <button
               onClick={handleShareClick}
               className="text-green underline md:text-[16px] text-[12px] font-semibold hover:text-green transition-colors leading-[16px]"
             >
               Share with Friends
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

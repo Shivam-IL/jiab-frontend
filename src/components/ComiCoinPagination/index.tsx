@@ -61,7 +61,7 @@ const ComiCoinPagination: React.FC<ComiCoinPaginationProps> = ({
     onPageChange(page)
   }
 
-  if (totalPages <= 1) {
+  if (totalPages < 1) {
     return null
   }
 

@@ -165,6 +165,17 @@ const useChangeChatLanguage = () => {
   });
 };
 
+const useGetVoucherInfo = () => {
+  const { isAuthenticated, token } = useAppSelector((state) => state.auth);
+  return useQuery({
+    queryKey: keys.profile.getVoucherInfo(),
+    queryFn: () => profileService.getVoucherInfo(),
+    enabled: isAuthenticated && token ? true : false,
+    retry: 3,
+    staleTime: 0,
+  });
+};
+
 export {
   useGetUserProfileDetails,
   useEditUserProfileDetails,
@@ -177,4 +188,5 @@ export {
   useGetAvatarsData,
   useGetPincodeData,
   useChangeChatLanguage,
+  useGetVoucherInfo,
 };
