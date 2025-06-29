@@ -113,7 +113,7 @@ const Signup = () => {
     const timeoutId = setTimeout(() => {
       if (userData.name.length < 2) {
         setNameError(cmsData.validation.signupNameTwoCharLong);
-      } else if (!/^[a-zA-Z\s]*$/.test(userData.name)) {
+      } else if (!/^[^\d!@#$%^&*()_+\-=\[\]{}|;':",./<>?\\]+$/.test(userData.name)) {
         setNameError(cmsData.validation.signupNameContainAlphabet);
       } else {
         setNameError("");
