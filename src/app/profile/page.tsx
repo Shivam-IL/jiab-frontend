@@ -21,15 +21,12 @@ import { getSessionStorageItem, setSessionStorageItem } from "@/utils";
 const ProfilePage = () => {
   const [mounted, setMounted] = useState(false);
 
-  // Ref to track previous profile percentage
   const prevProfilePercentageRef = useRef<number | null>(null);
 
   const cmsData = useCMSData(mounted);
 
-  // Coin animation hook
   const { user } = useAppSelector((state) => state.profile);
 
-  // Coin animation hook
   const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation();
 
   useEffect(() => {
@@ -137,6 +134,8 @@ const ProfilePage = () => {
             status={cmsData?.myProfile?.status}
             referAnother={cmsData?.myProfile?.referAnother}
             myReferrals={cmsData?.myProfile?.myReferrals}
+            pending={cmsData?.myProfile?.pending}
+            accepted={cmsData?.myProfile?.accepted}
           />
           <HelpUsToKnowYourBetter
             id={"qna"}

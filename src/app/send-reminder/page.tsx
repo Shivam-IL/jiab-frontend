@@ -122,7 +122,7 @@ const SendReminderPage = () => {
                 >
                   <AktivGroteskText
                     className="text-[#1985D3]"
-                    text="Send Again"
+                    text={cmsData?.myProfile?.sendAgain}
                     fontSize="text-[12px] md:text-[20px]"
                     fontWeight="font-[400]"
                   />

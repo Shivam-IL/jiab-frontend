@@ -6,6 +6,7 @@ export interface JokeBoxData {
   hallOfLameNextPageSwitchText: string;
   filter: string;
   surpriseMe: string;
+  loadMoreButtonText: string;
 }
 
 export const mapJokeBoxData = (
@@ -21,6 +22,7 @@ export const mapJokeBoxData = (
       jokeBoxCMS?.hall_of_lame_next_page_switch_text ?? "Next Page",
     filter: jokeBoxCMS?.filter ?? "Filter",
     surpriseMe: jokeBoxCMS?.surprise_me ?? "Surprise Me",
+    loadMoreButtonText: jokeBoxCMS?.load_more_button_text ?? "Load More",
   };
 };
 
@@ -31,4 +33,5 @@ export const defaultJokeBoxData: JokeBoxData = {
   hallOfLameNextPageSwitchText: "Next Page",
   filter: "Filter",
   surpriseMe: "Surprise Me",
+  loadMoreButtonText: "Load More",
 };

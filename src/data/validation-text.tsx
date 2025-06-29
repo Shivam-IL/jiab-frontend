@@ -19,6 +19,10 @@ export interface ValidationData {
   plusAddMyProfileCityError: string;
   referAFriendUserAlreadyExistError: string;
   reportPopupUrlValidation: string;
+  signupNameContainAlphabet: string;
+  signupNameTwoCharLong: string;
+  signupNameIsRequired: string;
+  invalidAlternateNumber: string;
 }
 
 export const mapValidationData = (
@@ -74,6 +78,16 @@ export const mapValidationData = (
       "Referred User already Exist",
     reportPopupUrlValidation:
       validationCMS?.reportpopup_url_validurl ?? "Please enter a valid URL",
+    signupNameContainAlphabet:
+      validationCMS?.signup_name_namecontainsalphabet ??
+      "Name should only contain letters and spaces",
+    signupNameTwoCharLong:
+      validationCMS?.signup_name_nametwocharlong ??
+      "Name should be at least 2 characters long",
+    signupNameIsRequired:
+      validationCMS?.signup_name_nameisrequired ?? "Name is required",
+    invalidAlternateNumber:
+      validationCMS?.invalid_alternate_number ?? "Invalid Alternate Number",
   };
 };
 
@@ -97,4 +111,8 @@ export const defaultValidationData: ValidationData = {
   plusAddMyProfileCityError: "City is required",
   referAFriendUserAlreadyExistError: "Referred User already Exist",
   reportPopupUrlValidation: "Please enter a valid URL",
+  signupNameContainAlphabet: "Name should only contain letters and spaces",
+  signupNameTwoCharLong: "Name should be at least 2 characters long",
+  signupNameIsRequired: "Name is required",
+  invalidAlternateNumber: "Invalid Alternate Number",
 };

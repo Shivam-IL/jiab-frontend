@@ -162,7 +162,7 @@ const AddressModal: React.FC<IAddressModal> = ({
     ) {
       setError((prev) => ({
         ...prev,
-        alternate_phone_number: "Invalid Alternate Number",
+        alternate_phone_number: cmsData?.validation?.invalidAlternateNumber,
       }));
       errorValidation = true;
     }
@@ -303,7 +303,7 @@ const AddressModal: React.FC<IAddressModal> = ({
     ) {
       setError((prev) => ({
         ...prev,
-        alternate_phone_number: "Invalid Alternate Mobile Number",
+        alternate_phone_number: cmsData?.validation?.invalidAlternateNumber,
       }));
     } else {
       setError((prev) => ({
@@ -311,7 +311,7 @@ const AddressModal: React.FC<IAddressModal> = ({
         alternate_phone_number: "",
       }));
     }
-  }, [data?.alternate_phone_number]);
+  }, [data?.alternate_phone_number, cmsData]);
 
   useEffect(() => {
     if (pincodeData?.ok) {

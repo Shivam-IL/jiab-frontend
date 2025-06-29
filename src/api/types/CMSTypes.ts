@@ -150,6 +150,7 @@ export type TCMSResponse = {
       publishedAt: string;
       locale: string;
       surprise_me: string;
+      load_more_button_text: string;
     };
     hall_of_lame: {
       id: number;
@@ -220,7 +221,7 @@ export type TCMSResponse = {
       banner_7_header: string;
       banner_7_content: string;
     };
-    notification_text_after_click: string | null;
+
     my_profile: {
       id: number;
       documentId: string;
@@ -254,6 +255,13 @@ export type TCMSResponse = {
       other: string;
       prefer_not_to_say: string;
       reminder_once_in_a_week: string;
+      saved: string;
+      save_and_submit: string;
+      submitted: string;
+      show_more: string;
+      show_less: string;
+      pending: string;
+      accepted: string;
     };
     comic_coins: {
       id: number;
@@ -379,6 +387,31 @@ export type TCMSResponse = {
       plusaddmyprofile_city_cityerror: string;
       referafriend_brocodewefollow_userexist_useralreadyexisterror: string;
       reportpopup_url_validurl: string;
+      signup_name_namecontainsalphabet: string;
+      signup_name_nametwocharlong: string;
+      signup_name_nameisrequired: string;
+      invalid_alternate_number: string;
+    };
+    notification_text_after_click: {
+      id: number;
+      documentId: string;
+      if_no_notfications_are_there: string | null;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
+      notification_header: string;
+      notification_sub_heading: string;
+    };
+    refresh_ring: {
+      id: number;
+      documentId: string;
+      refresh_rings_header: string;
+      refresh_ring_content: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      locale: string;
     };
     vote_is_in_pop_up: {
       id: number;

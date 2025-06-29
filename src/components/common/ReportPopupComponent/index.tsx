@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import CustomPopupWrapper from '../CustomPopupWrapper'
-import { GA_EVENTS, ICONS_NAMES } from '@/constants'
-import { triggerGAEvent } from '@/utils/gTagEvents'
-import ReportPopup from '../ReportPopup'
-import { usePathname, useRouter } from 'next/navigation'
-import { useSendReportToGluedin } from '@/api/hooks/GluedinHooks'
-import { useSendReport } from '@/api/hooks/ReportHooks'
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import CustomPopupWrapper from "../CustomPopupWrapper";
+import { GA_EVENTS, ICONS_NAMES } from "@/constants";
+import { triggerGAEvent } from "@/utils/gTagEvents";
+import ReportPopup from "../ReportPopup";
+import { usePathname, useRouter } from "next/navigation";
+import { useSendReportToGluedin } from "@/api/hooks/GluedinHooks";
+import { useSendReport } from "@/api/hooks/ReportHooks";
 import {
   BaseCDPEventPayload,
   CDPEventPayloadBuilder,
@@ -14,9 +14,9 @@ import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
 import { useCMSData } from "@/data";
 
 const isValidUrl = (url: string) => {
-  const regex = /^https:\/\/([\da-z.-]+)\.([a-z.]{2,4})([\/\w .-]*)*\/?$/i
-  return regex.test(url)
-}
+  const regex = /^https:\/\/([\da-z.-]+)\.([a-z.]{2,4})([\/\w .-]*)*\/?$/i;
+  return regex.test(url);
+};
 
 const isValidUrl2 = (url: string) => {
   const regex = /^http:\/\/([\da-z.-]+)\.([a-z.]{2,4})([\/\w .-]*)*\/?$/i;
@@ -50,19 +50,19 @@ const ReportPopupComponent = ({
     useSendReportToGluedin();
   const { mutate: sendReport } = useSendReport();
   const pathName = usePathname();
-  const { reportPopup, thandRakh } = useCMSData()
-  const errorRef = useRef(false)
+  const { reportPopup, thandRakh } = useCMSData();
+  const errorRef = useRef(false);
 
   const handleChange = (key: string, value: string) => {
     if (value?.length === 0) {
-      errorRef.current = true
-      setError('url is a required field')
+      errorRef.current = true;
+      setError(cmsData.validation.reportPopupUrlValidation);
     } else {
       if (isValidUrl(value) || isValidUrl2(value)) {
-        setError('')
+        setError("");
       } else {
         if (errorRef.current) {
-          setError('Please enter a valid URL')
+          setError(cmsData.validation.reportPopupUrlValidation);
         }
       }
     }
@@ -77,10 +77,10 @@ const ReportPopupComponent = ({
       return;
     }
 
-    console.log('Is valid url', isValidUrl(refferalLink))
+    console.log("Is valid url", isValidUrl(refferalLink));
     //validate url
     if (!isValidUrl(refferalLink) && !isValidUrl2(refferalLink)) {
-      errorRef.current = true
+      errorRef.current = true;
       setError(cmsData.validation.reportPopupUrlValidation);
       return;
     }
@@ -127,7 +127,7 @@ const ReportPopupComponent = ({
       onClose();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  }, []);
 
   return (
     <>
@@ -146,17 +146,17 @@ const ReportPopupComponent = ({
           error={error}
           onBlur={() => {
             if (refferalLink.length === 0) {
-              setError('url is a required field')
-              errorRef.current = true
+              setError(cmsData.validation.reportPopupUrlValidation);
+              errorRef.current = true;
             }
           }}
           onClose={() => {
-            onClose()
-            setOpen?.(false)
-            setOpen2(false)
-            setRefferalLink('')
-            setError('')
-            errorRef.current = false
+            onClose();
+            setOpen?.(false);
+            setOpen2(false);
+            setRefferalLink("");
+            setError("");
+            errorRef.current = false;
           }}
         />
       )}
@@ -177,12 +177,12 @@ const ReportPopupComponent = ({
           }}
           open={open2}
           onClose={() => {
-            onClose()
-            setOpen?.(false)
-            setOpen2(false)
-            setRefferalLink('')
-            setError('')
-            errorRef.current = false
+            onClose();
+            setOpen?.(false);
+            setOpen2(false);
+            setRefferalLink("");
+            setError("");
+            errorRef.current = false;
           }}
         />
       )}

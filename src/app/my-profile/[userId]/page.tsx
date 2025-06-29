@@ -76,13 +76,13 @@ const EditProfilePage = () => {
 
   const validateName = (name: string) => {
     if (!name.trim()) {
-      return 'Name is required'
+      return cmsData.validation.signupNameIsRequired
     }
     if (name.length < 2) {
-      return 'Name should be at least 2 characters long'
+      return cmsData.validation.signupNameTwoCharLong
     }
     if (!/^[a-zA-Z\s]*$/.test(name)) {
-      return 'Name should only contain letters and spaces'
+      return cmsData.validation.signupNameContainAlphabet
     }
     return ''
   }

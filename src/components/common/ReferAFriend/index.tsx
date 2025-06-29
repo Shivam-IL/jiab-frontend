@@ -19,6 +19,8 @@ const ReferAFriend = ({
   status,
   referAnother,
   myReferrals,
+  pending,
+  accepted,
 }: {
   referToFriendHeader: string;
   referNowButtonText: string;
@@ -29,6 +31,8 @@ const ReferAFriend = ({
   status: string;
   referAnother: string;
   myReferrals: string;
+  pending: string;
+  accepted: string;
 }) => {
   const [page, setPage] = useState<number>(1);
   const [pages, setPages] = useState<number>(1);
@@ -51,6 +55,18 @@ const ReferAFriend = ({
   }, [referrals]);
 
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+
+  // Helper function to get display text based on status
+  const getStatusDisplayText = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case "pending":
+        return pending;
+      case "accepted":
+        return accepted;
+      default:
+        return status;
+    }
+  };
 
   return (
     <>
@@ -109,18 +125,18 @@ const ReferAFriend = ({
                     fontSize="text-[12px] md:text-[20px]"
                     fontWeight="font-[400]"
                     className={`${
-                      item.status === "Pending"
+                      item.status?.toLowerCase() === "pending"
                         ? "text-[rgba(0,0,0,0.5)]"
                         : "text-black"
                     }`}
                   />
                 </div>
                 <AktivGroteskText
-                  text={item.status}
+                  text={getStatusDisplayText(item.status)}
                   fontSize="text-[12px] md:text-[20px]"
                   fontWeight="font-[400]"
                   className={`${
-                    item.status === "Pending"
+                    item.status?.toLowerCase() === "pending"
                       ? "text-[rgba(0,0,0,0.5)]"
                       : "text-black"
                   }`}

@@ -156,7 +156,7 @@ const ReferNowComponent = ({
         setReferStatus1(false);
         setReferStatus2(false);
         setOpen2?.(true);
-        setError("Cannot refer an existing user");
+        setError(cmsData.validation.referAFriendUserAlreadyExistError);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

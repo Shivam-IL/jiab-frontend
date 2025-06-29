@@ -27,6 +27,13 @@ export interface MyProfileData {
   other: string;
   preferNotToSay: string;
   reminderOnceInAWeek: string;
+  saved: string;
+  saveAndSubmit: string;
+  submitted: string;
+  showMore: string;
+  showLess: string;
+  pending: string;
+  accepted: string;
 }
 
 export const mapMyProfileData = (
@@ -65,6 +72,13 @@ export const mapMyProfileData = (
     reminderOnceInAWeek:
       myProfileCMS?.reminder_once_in_a_week ??
       "You can only remind your friend once in a week!",
+    saved: myProfileCMS?.saved ?? "Saved",
+    saveAndSubmit: myProfileCMS?.save_and_submit ?? "Save and Submit",
+    submitted: myProfileCMS?.submitted ?? "Submitted",
+    showMore: myProfileCMS?.show_more ?? "Show More",
+    showLess: myProfileCMS?.show_less ?? "Show Less",
+    pending: myProfileCMS?.pending ?? "Pending",
+    accepted: myProfileCMS?.accepted ?? "Accepted",
   };
 };
 
@@ -96,4 +110,11 @@ export const defaultMyProfileData: MyProfileData = {
   other: "Other",
   preferNotToSay: "Prefer Not to Say",
   reminderOnceInAWeek: "You can only remind your friend once in a week!",
+  saved: "Saved",
+  saveAndSubmit: "Save and Submit",
+  submitted: "Submitted",
+  showMore: "Show More",
+  showLess: "Show Less",
+  pending: "Pending",
+  accepted: "Accepted",
 };

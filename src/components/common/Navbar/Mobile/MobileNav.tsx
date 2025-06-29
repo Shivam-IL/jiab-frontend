@@ -1,8 +1,8 @@
 "use client";
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ILogoAndProfileImageProps } from "@/interfaces";
 import Image from "next/image";
-import { ChevronDown } from "lucide-react";
+
 import hamburgerMenu from "../../../../../public/other-svgs/hamburger-menu.svg";
 import Sidebar from "./Sidebar";
 import {
@@ -21,12 +21,10 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
   profileImage,
 }) => {
-  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const { selectedLanguage, changeLanguage } = useLanguage();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [hideNavbar, setHideNavbar] = useState<boolean>(false);
   const isVisible = true;
-  const langDropdownRef = useRef<HTMLDivElement>(null);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   // Fetch notification count
@@ -36,22 +34,6 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   const notificationCount = notificationCountResponse?.data?.count || 0;
 
   console.log(profileImage);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        langDropdownRef.current &&
-        !langDropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsLangDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   // Prevent body scroll when sidebar is open
   useEffect(() => {
@@ -80,13 +62,6 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
     { value: LANGUAGE_MNEMONICS.TAMIL, id: "10", label: "தமிழ்" },
     { value: LANGUAGE_MNEMONICS.TULU, id: "11", label: "ತುಳು" },
   ];
-
-  const getSelectedLanguageLabel = () => {
-    return (
-      languages.find((lang) => lang.value === selectedLanguage)?.label ??
-      "ENGLISH"
-    );
-  };
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -177,41 +152,25 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
             {/* Language Selector */}
             <LanguageHydration
               fallback={
-                <div id={BoxIds.LANG} className="relative">
-                  <div className="w-[66px] border border-black px-1 py-0.5 flex justify-between items-center cursor-pointer rounded-[2px]">
-                    <span className="mr-1 text-[10px]">ENGLISH</span>
-                    <ChevronDown className="h-4 w-4" />
-                  </div>
+                <div id={BoxIds.LANG}>
+                  <select className="w-[72px] border border-black px-1 py-0.5 text-[10px] rounded-[2px] focus:outline-none focus:ring-0">
+                    <option value="en">ENGLISH</option>
+                  </select>
                 </div>
               }
             >
-              <div id={BoxIds.LANG} className="relative" ref={langDropdownRef}>
-                <div
-                  className="w-[66px] border border-black px-1 py-0.5 flex justify-between items-center cursor-pointer rounded-[2px]"
-                  onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+              <div id={BoxIds.LANG}>
+                <select
+                  className="w-[72px] border border-black px-1 py-0.5 text-[10px] rounded-[2px] focus:outline-none focus:ring-0"
+                  value={selectedLanguage}
+                  onChange={(e) => changeLanguage(e.target.value)}
                 >
-                  <span className="mr-1 text-[10px]">
-                    {getSelectedLanguageLabel()}
-                  </span>
-                  <ChevronDown className="h-4 w-4" />
-                </div>
-
-                {isLangDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-1 w-auto min-w-full rounded-md shadow-md z-20 bg-white">
-                    {languages.map((lang) => (
-                      <div
-                        key={lang.id}
-                        className="px-3 py-1.5 hover:bg-gray-100 cursor-pointer text-[10px]"
-                        onClick={() => {
-                          changeLanguage(lang.value);
-                          setIsLangDropdownOpen(false);
-                        }}
-                      >
-                        {lang.label}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                  {languages.map((lang) => (
+                    <option key={lang.id} value={lang.value}>
+                      {lang.label}
+                    </option>
+                  ))}
+                </select>
               </div>
             </LanguageHydration>
           </div>
