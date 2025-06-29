@@ -64,6 +64,9 @@ export const API_ROUTES = {
       GET: "/profile/questions",
     },
     CHANGE_CHAT_LANG: "/profile/change-chat-language",
+    MY_WALLET: {
+      GET_VOOCHER_INFO: "/voucher/info",
+    },
   },
   REFERRAL: {
     SEND_REFERRAL: "/referral/",

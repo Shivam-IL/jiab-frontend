@@ -6,11 +6,10 @@ import AktivGroteskText from '@/components/common/AktivGroteskText'
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '@/components/common/Header/Header'
-import WalletCard from '@/components/WalletCard'
 import { useCMSData } from '@/data'
 import ReferNowComponent from '@/components/common/ReferNowComponent'
 import PJChallenge from '@/components/Banners/PJChallenge'
-import { GA_EVENTS, ICONS_NAMES } from '@/constants'
+import { GA_EVENTS } from '@/constants'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import { useRouter } from 'next/navigation'
 import ShareLaugh from '@/components/Banners/ShareLaugh'
@@ -18,49 +17,47 @@ import { useGetComicCoins } from '@/api/hooks/JokeHooks'
 import useAppSelector from '@/hooks/useSelector'
 import useAppDispatch from '@/hooks/useDispatch'
 import { updateLoginModal } from '@/store/auth/auth.slice'
-import SvgIcons from '@/components/common/SvgIcons'
-import PhonePeVoucherPopup from '@/components/PhonePeVoucherPopup'
 import RedeemSuccessPopup from '@/components/RedeemSuccessPopup'
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi
+  // Carousel,
+  // CarouselContent,
+  // CarouselItem,
+  // type CarouselApi
 } from '@/components/ui/carousel'
 import ComicCoinMyWinSection from '@/components/ComicCoinMyWinSection'
 
-interface WalletCard {
-  id: number
-  imageUrl: string
-  title: string
-  description: string
-  isRedeemed: boolean
-  expiryDate: string
-  voucherCode?: string
-  pin?: string
-}
+// interface WalletCard {
+//   id: number
+//   imageUrl: string
+//   title: string
+//   description: string
+//   isRedeemed: boolean
+//   expiryDate: string
+//   voucherCode?: string
+//   pin?: string
+// }
 
 const ComicCoinsPage = () => {
   const [mounted, setMounted] = useState(false)
   const [isReferModalOpen, setIsReferModalOpen] = useState(false)
-  const [redemptionStates, setRedemptionStates] = useState<{
-    [key: number]: boolean
-  }>({
-    1: true, // Card with id 1 is redeemable
-    2: true // Card with id 2 is redeemable
-    // Add more cards as needed
-  })
+  // const [redemptionStates, setRedemptionStates] = useState<{
+  //   [key: number]: boolean
+  // }>({
+  //   1: true, // Card with id 1 is redeemable
+  //   2: true // Card with id 2 is redeemable
+  //   // Add more cards as needed
+  // })
   const [activeTooltipId, setActiveTooltipId] = useState<number | null>(null)
-  const [isVoucherPopupOpen, setIsVoucherPopupOpen] = useState(false)
-  const [selectedVoucher, setSelectedVoucher] = useState<WalletCard | null>(
-    null
-  )
+  // const [isVoucherPopupOpen, setIsVoucherPopupOpen] = useState(false)
+  // const [selectedVoucher, setSelectedVoucher] = useState<WalletCard | null>(
+  //   null
+  // )
   const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false)
 
   // Carousel state management
-  const [api, setApi] = useState<CarouselApi>()
-  const [current, setCurrent] = useState(0)
-  const [count, setCount] = useState(0)
+  // const [api, setApi] = useState<CarouselApi>()
+  // const [current, setCurrent] = useState(0)
+  // const [count, setCount] = useState(0)
 
   // Fetch comic coins data
   const { data: comicCoinsData, isLoading: isComicCoinsLoading } =
@@ -71,18 +68,18 @@ const ComicCoinsPage = () => {
   }, [])
 
   // Carousel effect
-  useEffect(() => {
-    if (!api) {
-      return
-    }
+  // useEffect(() => {
+  //   if (!api) {
+  //     return
+  //   }
 
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap() + 1)
+  //   setCount(api.scrollSnapList().length)
+  //   setCurrent(api.selectedScrollSnap() + 1)
 
-    api.on('select', () => {
-      setCurrent(api.selectedScrollSnap() + 1)
-    })
-  }, [api])
+  //   api.on('select', () => {
+  //     setCurrent(api.selectedScrollSnap() + 1)
+  //   })
+  // }, [api])
 
   const cmsData = useCMSData(mounted)
   const router = useRouter()
@@ -98,31 +95,31 @@ const ComicCoinsPage = () => {
   const dispatch = useAppDispatch()
 
   // Sample wallet cards data - you can replace this with actual data
-  const walletCards: WalletCard[] = [
-    {
-      id: 1,
-      imageUrl: '/other-svgs/phone-pe.svg',
-      title: 'Cashback worth Rs.10',
-      description:
-        "Here's a pocket-sized perk just for you. Grab this Rs.10 PhonePe voucher now!",
-      isRedeemed: redemptionStates[1] || false,
-      expiryDate: '31st Dec 2025',
-      voucherCode: 'AJ5739EY93HYS',
-      pin: '315724'
-    },
-    {
-      id: 2,
-      imageUrl: '/other-svgs/phone-pe.svg',
-      title: 'Cashback worth Rs.10',
-      description:
-        "Here's a pocket-sized perk just for you. Grab this Rs.10 PhonePe voucher now!",
-      isRedeemed: redemptionStates[2] || false,
-      expiryDate: '31st Dec 2025',
-      voucherCode: 'BK7845FG12LMN',
-      pin: '892341'
-    }
-    // Add more wallet cards here as needed
-  ]
+  // const walletCards: WalletCard[] = [
+  //   {
+  //     id: 1,
+  //     imageUrl: '/other-svgs/phone-pe.svg',
+  //     title: 'Cashback worth Rs.10',
+  //     description:
+  //       "Here's a pocket-sized perk just for you. Grab this Rs.10 PhonePe voucher now!",
+  //     isRedeemed: redemptionStates[1] || false,
+  //     expiryDate: '31st Dec 2025',
+  //     voucherCode: 'AJ5739EY93HYS',
+  //     pin: '315724'
+  //   },
+  //   {
+  //     id: 2,
+  //     imageUrl: '/other-svgs/phone-pe.svg',
+  //     title: 'Cashback worth Rs.10',
+  //     description:
+  //       "Here's a pocket-sized perk just for you. Grab this Rs.10 PhonePe voucher now!",
+  //     isRedeemed: redemptionStates[2] || false,
+  //     expiryDate: '31st Dec 2025',
+  //     voucherCode: 'BK7845FG12LMN',
+  //     pin: '892341'
+  //   }
+  //   // Add more wallet cards here as needed
+  // ]
 
   return (
     <>
@@ -172,8 +169,8 @@ const ComicCoinsPage = () => {
         />
         <ComicCoinMyWinSection />
 
-        {/* <div className='mt-4 w-full'>
-          <Carousel
+        <div className='mt-4 w-full'>
+          {/* <Carousel
             setApi={setApi}
             className='w-full'
             opts={{
@@ -270,9 +267,9 @@ const ComicCoinsPage = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-          </Carousel>
+          </Carousel> */}
 
-          {count > 1 && (
+          {/* {count > 1 && (
             <div className='flex justify-center md:gap-1 gap-[1.77px] md:mb-10 mb-0 md:mt-[30px] mt-[8px]'>
               {Array.from({ length: count }).map((_, index) => {
                 const isActive = index === current - 1
@@ -295,18 +292,10 @@ const ComicCoinsPage = () => {
                 )
               })}
             </div>
-          )}
-        </div> */}
+          )} */}
+        </div>
 
-        {/* <div className="bg-white rounded-[10.68px] flex flex-col items-center text-center p-6 md:p-10 gap-6 mt-4">
-          <Image
-            src="/other-svgs/bummer.svg"
-            alt="no-wins"
-            width={180}
-            height={180}
-            className="w-[120px] md:w-[180px] h-auto"
-          />
-        </div> */}
+       
 
         {/* Previous Winners Banner */}
         {/* */}
@@ -372,7 +361,7 @@ const ComicCoinsPage = () => {
       )}
 
       {/* PhonePe Voucher Popup */}
-      <PhonePeVoucherPopup
+      {/* <PhonePeVoucherPopup
         isOpen={isVoucherPopupOpen}
         onClose={() => {
           setIsVoucherPopupOpen(false)
@@ -401,7 +390,7 @@ const ComicCoinsPage = () => {
           // Handle share logic here
           console.log('Voucher shared:', selectedVoucher)
         }}
-      />
+      /> */}
 
       {/* Global tooltip overlay */}
       {activeTooltipId !== null && (

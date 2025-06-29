@@ -5,6 +5,7 @@ export const keys = {
     getUserBalanceAndRank: () => ["get-user-balance-and-rank"],
     getUserQuestions: () => ["get-user-questions"],
     getAvatarsData: () => ["get-avatars-data"],
+    getVoucherInfo: () => ["get-voucher-info"],
   },
   referral: {
     getAllReferrals: () => ["get-all-referrals"],
