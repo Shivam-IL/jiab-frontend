@@ -112,10 +112,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
     if (diffInDays > 0) {
       return `${diffInDays}d`;
     } else if (diffInHours > 0) {
-      return `${diffInHours}h`;
+      return `${diffInHours} hr`;
     } else {
       const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
-      return diffInMinutes > 0 ? `${diffInMinutes}m` : "Now";
+      return diffInMinutes > 0 ? `${diffInMinutes} min` : "Now";
     }
   };
 
@@ -370,6 +370,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                               description={notification.notification_text}
                               timestamp={getTimeAgo(notification.launch_date)}
                               iconUrl={notification.icon_url}
+                              isLast={index === notifications.length - 1}
                               onClick={() => {}} // No-op since we're already marking as read on dropdown open
                               titleFontSize={{
                                 desktop: "md:text-[20px]",

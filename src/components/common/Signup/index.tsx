@@ -358,9 +358,9 @@ const Signup = () => {
       const { message } = signupData as unknown as { message: string };
       if (message === "Invalid referral code") {
         setError(cmsData.validation.signupReferralCodeValidation);
-      } else {
-        setError(message);
-      }
+      } else if (message === "Email already in use") {
+        setError(cmsData.validation.profileEditProfileEmailAlreadyInUsed);
+      } 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signupData, dispatch]);

@@ -80,10 +80,10 @@ const NotificationsPage: React.FC = () => {
     if (diffInDays > 0) {
       return `${diffInDays}d`;
     } else if (diffInHours > 0) {
-      return `${diffInHours}h`;
+      return `${diffInHours} hr`;
     } else {
       const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
-      return diffInMinutes > 0 ? `${diffInMinutes}m` : "Now";
+      return diffInMinutes > 0 ? `${diffInMinutes} min` : "Now";
     }
   };
 
@@ -240,6 +240,7 @@ const NotificationsPage: React.FC = () => {
               description={notification.notification_text}
               timestamp={getTimeAgo(notification.launch_date)}
               iconUrl={notification.icon_url}
+              isLast={index === notifications.length - 1}
               onClick={handleNotificationClick}
             />
           ))}

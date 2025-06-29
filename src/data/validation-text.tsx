@@ -24,6 +24,9 @@ export interface ValidationData {
   signupNameIsRequired: string;
   invalidAlternateNumber: string;
   profileEditProfileEmailAlreadyInUsed: string;
+  profileEditProfileInvalidEmail: string;
+  profileEditProfileSelectGender: string;
+  inviteCodeFirstModalEnterRefCode: string;
 }
 
 export const mapValidationData = (
@@ -92,6 +95,15 @@ export const mapValidationData = (
     profileEditProfileEmailAlreadyInUsed:
       validationCMS?.profile_editprofile_emailalreadyinused ??
       "Email already in use",
+    profileEditProfileInvalidEmail:
+      validationCMS?.profile_editprofile_invalidemail ??
+      "Invalid email address",
+    profileEditProfileSelectGender:
+      validationCMS?.profile_editprofile_selectgender ??
+      "Select your gender",
+    inviteCodeFirstModalEnterRefCode:
+      validationCMS?.invitecode_firstmodal_enterrefcode ??
+      "Please enter refer code.",
   };
 };
 
@@ -120,4 +132,7 @@ export const defaultValidationData: ValidationData = {
   signupNameIsRequired: "Name is required",
   invalidAlternateNumber: "Invalid Alternate Number",
   profileEditProfileEmailAlreadyInUsed: "Email already in use",
+  profileEditProfileInvalidEmail: "Invalid email address",
+  profileEditProfileSelectGender: "Select your gender",
+  inviteCodeFirstModalEnterRefCode: "Please enter refer code.",
 };

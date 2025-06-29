@@ -137,6 +137,10 @@ export type TCMSResponse = {
       image_file_upload_limit: string | null;
       audio_file_upload_limit: string | null;
       video_file_upload_limit: string | null;
+      five_jokes_per_day: string;
+      image_alert: string;
+      audio_alert: string;
+      video_alert: string;
     };
     joke_box: {
       id: number;
@@ -262,6 +266,7 @@ export type TCMSResponse = {
       show_less: string;
       pending: string;
       accepted: string;
+      save_details: string;
     };
     comic_coins: {
       id: number;
@@ -392,6 +397,9 @@ export type TCMSResponse = {
       signup_name_nameisrequired: string;
       invalid_alternate_number: string;
       profile_editprofile_emailalreadyinused: string;
+      profile_editprofile_invalidemail: string;
+      profile_editprofile_selectgender: string;
+      invitecode_firstmodal_enterrefcode: string;
     };
     notification_text_after_click: {
       id: number;

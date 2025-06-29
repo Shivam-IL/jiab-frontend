@@ -30,6 +30,10 @@ export interface PjChallengeData {
   imageFileUploadLimit: string | null;
   audioFileUploadLimit: string | null;
   videoFileUploadLimit: string | null;
+  fiveJokesPerDay: string;
+  imageAlert: string;
+  audioAlert: string;
+  videoAlert: string;
 }
 
 export const mapPjChallengeData = (
@@ -88,6 +92,11 @@ export const mapPjChallengeData = (
     imageFileUploadLimit: pjChallengeCMS?.image_file_upload_limit ?? "Max 5MB",
     audioFileUploadLimit: pjChallengeCMS?.audio_file_upload_limit ?? "Max 10MB",
     videoFileUploadLimit: pjChallengeCMS?.video_file_upload_limit ?? "Max 50MB",
+    // ishaan to check this
+    fiveJokesPerDay: pjChallengeCMS?.five_jokes_per_day ?? "5 jokes per day",
+    imageAlert: pjChallengeCMS?.image_alert ?? "Max size 5MB",
+    audioAlert: pjChallengeCMS?.audio_alert ?? "Max size 10MB",
+    videoAlert: pjChallengeCMS?.video_alert ?? "Max size 50MB",
   };
 };
 
@@ -122,4 +131,8 @@ export const defaultPjChallengeData: PjChallengeData = {
   imageFileUploadLimit: "Max 5MB",
   audioFileUploadLimit: "Max 10MB",
   videoFileUploadLimit: "Max 50MB",
+  fiveJokesPerDay: "5 jokes per day",
+  imageAlert: "Max size 5MB",
+  audioAlert: "Max size 10MB",
+  videoAlert: "Max size 50MB",
 };
