@@ -230,7 +230,7 @@ export const REFER_NOW_MODAL_DATA = {
   },
 };
 export const DAILY_WINNERS = "Daily Winners";
-
+export const PORTAL_ID = "portal-id";
 export const IMAGES = {
   COUPON: "coupon.png",
   SURPRISE_ME_LOCK_MODAL: "lock_story_modal.png",
