@@ -152,13 +152,7 @@ export const DisplayTable = ({
                         className='w-[43px] h-[31px] md:w-[45px] md:h-[32px]'
                       />
                     ) : (
-                      <Image
-                        src={image}
-                        alt='coupon'
-                        width={45}
-                        height={32}
-                        className='w-[43px] h-[31px] md:w-[45px] md:h-[32px]'
-                      />
+                      <>-</>
                     )}
                   </div>
                 </td>
