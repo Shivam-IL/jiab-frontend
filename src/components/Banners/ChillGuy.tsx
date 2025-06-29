@@ -39,7 +39,7 @@ const ChillGuyBanner = () => {
     <Banner
       type={getBannerType()}
       src={getBannerImage()}
-      className="rounded-lg banner-section mx-5 md:mx-0"
+      className="rounded-[16px] banner-section mx-5 md:mx-0"
     />
   );
 };

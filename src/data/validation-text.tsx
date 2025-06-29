@@ -23,6 +23,7 @@ export interface ValidationData {
   signupNameTwoCharLong: string;
   signupNameIsRequired: string;
   invalidAlternateNumber: string;
+  profileEditProfileEmailAlreadyInUsed: string;
 }
 
 export const mapValidationData = (
@@ -88,6 +89,9 @@ export const mapValidationData = (
       validationCMS?.signup_name_nameisrequired ?? "Name is required",
     invalidAlternateNumber:
       validationCMS?.invalid_alternate_number ?? "Invalid Alternate Number",
+    profileEditProfileEmailAlreadyInUsed:
+      validationCMS?.profile_editprofile_emailalreadyinused ??
+      "Email already in use",
   };
 };
 
@@ -115,4 +119,5 @@ export const defaultValidationData: ValidationData = {
   signupNameTwoCharLong: "Name should be at least 2 characters long",
   signupNameIsRequired: "Name is required",
   invalidAlternateNumber: "Invalid Alternate Number",
+  profileEditProfileEmailAlreadyInUsed: "Email already in use",
 };
