@@ -105,7 +105,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
           <div id={BoxIds.MENU_BAR} className="absolute left-[17px]">
             <button
               onClick={handleSidebarToggle}
-              className={`p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 transform hover:scale-110 ${
+              className={`py-2 pr-3 pl-0 hover:bg-gray-100 rounded-lg transition-all duration-200 transform hover:scale-110 ${
                 isSidebarOpen ? "bg-gray-100 scale-110" : ""
               }`}
               aria-label="Open menu"

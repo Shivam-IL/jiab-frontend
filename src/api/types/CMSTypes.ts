@@ -391,6 +391,7 @@ export type TCMSResponse = {
       signup_name_nametwocharlong: string;
       signup_name_nameisrequired: string;
       invalid_alternate_number: string;
+      profile_editprofile_emailalreadyinused: string;
     };
     notification_text_after_click: {
       id: number;
