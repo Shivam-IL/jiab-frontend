@@ -9,6 +9,7 @@ interface NotificationItemProps {
   iconUrl?: string | null;
   isRead?: boolean;
   isNew?: boolean;
+  isLast?: boolean;
   onClick?: () => void;
   titleFontSize?: {
     mobile?: string;
@@ -30,6 +31,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   timestamp,
   iconUrl,
   onClick,
+  isLast = false,
   titleFontSize = {
     mobile: "text-[12px]",
     desktop: "md:text-[20px]",
@@ -45,7 +47,9 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
 }) => {
   return (
     <div
-      className={`flex items-center gap-[8px] md:py-4 py-1 border-b border-[#D3D3D3] md:mb-3 mb-0 h-[73px] md:h-auto ${
+      className={`flex items-center gap-[8px] md:py-4 py-1 ${
+        !isLast ? "border-b border-[#D3D3D3]" : ""
+      } md:mb-3 mb-0 h-[73px] md:h-auto ${
         onClick ? "cursor-pointer transition-colors" : ""
       }`}
       onClick={onClick}
@@ -86,7 +90,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
 
       {/* Timestamp */}
       <div
-        className={`text-gray-400 ${timestampFontSize.desktop} ${timestampFontSize.mobile} flex-shrink-0 md:mt-0 mt-[50px] absolute right-1`}
+        className={`text-gray-400 ${timestampFontSize.desktop} ${timestampFontSize.mobile} flex-shrink-0 md:mt-0 mt-[-24px] absolute right-1`}
       >
         {timestamp}
       </div>

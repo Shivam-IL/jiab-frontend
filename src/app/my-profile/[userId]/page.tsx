@@ -92,7 +92,7 @@ const EditProfilePage = () => {
       return "Email is required";
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return "Invalid email address";
+      return cmsData.validation.profileEditProfileInvalidEmail;
     }
     return "";
   };
@@ -393,7 +393,9 @@ const EditProfilePage = () => {
                 value={userData.gender}
                 onChange={(e) => handleChange("gender", e.target.value)}
               >
-                <option value="">Select your gender</option>
+                <option value="">
+                  {cmsData?.validation.profileEditProfileSelectGender}
+                </option>
                 <option value="male">{cmsData?.editProfile?.genderMale}</option>
                 <option value="female">
                   {cmsData?.editProfile?.genderFemale}
@@ -433,7 +435,7 @@ const EditProfilePage = () => {
               onClick={submitHandler}
               className="md:mt-[24px]"
               paddingClass="py-[17px]"
-              text="Save Details"
+              text={cmsData?.myProfile?.saveDetails}
               fontSize="text-[16px]"
               fontWeight="font-[700]"
             />

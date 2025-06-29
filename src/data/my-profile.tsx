@@ -34,6 +34,7 @@ export interface MyProfileData {
   showLess: string;
   pending: string;
   accepted: string;
+  saveDetails: string;
 }
 
 export const mapMyProfileData = (
@@ -79,6 +80,7 @@ export const mapMyProfileData = (
     showLess: myProfileCMS?.show_less ?? "Show Less",
     pending: myProfileCMS?.pending ?? "Pending",
     accepted: myProfileCMS?.accepted ?? "Accepted",
+    saveDetails: myProfileCMS?.save_details ?? "Save Details",
   };
 };
 
@@ -117,4 +119,5 @@ export const defaultMyProfileData: MyProfileData = {
   showLess: "Show Less",
   pending: "Pending",
   accepted: "Accepted",
+  saveDetails: "Save Details",
 };

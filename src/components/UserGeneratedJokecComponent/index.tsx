@@ -11,6 +11,7 @@ import {
 } from "@/store/profile/profile.slice";
 import { dateConvert } from "@/utils";
 import GreenCTA from "../GreenCTA";
+import { useCMSData } from "@/data";
 
 const UserGeneratedJokecComponent = ({
   myJokeText,
@@ -19,9 +20,13 @@ const UserGeneratedJokecComponent = ({
   myJokeText: string;
   hallOfLameText: string;
 }) => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const cmsData = useCMSData(mounted);
   const router = useRouter();
   const dispatch = useAppDispatch();
-
   const [currentItems, setCurrentItems] = useState<number>(4);
   const [allJokes, setAllJokes] = useState<IUserSubmittedJoke[]>([]);
   const [currentJokes, setCurrentJokes] = useState<IUserSubmittedJoke[]>([]);
@@ -96,7 +101,7 @@ const UserGeneratedJokecComponent = ({
         {allJokes.length > 4 && (
           <GreenCTA
             className=""
-            text={isAllShown ? "Show Less" : "Show More"}
+            text={isAllShown ? cmsData.myProfile.showLess : cmsData.myProfile.showMore}
             onClick={() => {
               if (isAllShown) {
                 setCurrentItems(4);
