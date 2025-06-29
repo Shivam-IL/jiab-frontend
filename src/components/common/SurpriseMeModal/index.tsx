@@ -368,27 +368,28 @@ const SurpriseMeModal = ({
                 height={102}
               />
             </div>
-            <div className='flex justify-between items-start p-[12px]'>
-              <div className='w-[80%] relative flex gap-[10px]'>
+            <div className='flex relative max-w-[37dvh] justify-between items-start p-[12px]'>
+              <div className='w-[90%] relative flex gap-[10px]'>
                 <SvgIcons
                   name={ICONS_NAMES.MAN_WITH_SEARCH}
-                  className='w-[23px] h-[28px]'
+                  className='max-w-[23px] max-h-[28px] min-w-[23px] min-h-[28px] relative'
                 />
-                <div className='flex flex-col gap-[2px]'>
+                <div className='flex max-w-full relative flex-col gap-[2px]'>
                   <p
-                    className={`${aktivGrotesk.className} truncate font-[700] md:text-[12px] sm:text-[14px] text-[10px]  text-[#000000]`}
-                  >
+                      className={`${aktivGrotesk.className}  font-[700] md:text-[12px] sm:text-[14px] text-[10px] text-[#000000]`}
+                    >
                     {joke?.title ?? ''}
                   </p>
+
                   <p
-                    className={`${aktivGrotesk.className} font-[400] md:text-[10px] sm:text-[12px] text-[8px] text-[#000000]`}
+                    className={`${aktivGrotesk.className} w-full  font-[400] md:text-[10px] sm:text-[12px] text-[8px] text-[#000000] overflow-hidden`}
                   >
                     {joke?.joke_creator ?? ''}
                   </p>
                 </div>
               </div>
               <button
-                className='flex justify-center items-center cursor-pointer border-none outline-none'
+                className='flex  justify-center items-center cursor-pointer border-none outline-none'
                 onClick={() => {
                   if (joke?.reactionType) {
                     //modal is clicking 2
@@ -404,25 +405,33 @@ const SurpriseMeModal = ({
                 />
               </button>
             </div>
-            <div className='relative  ml-[11px] mr-[11px]'>
-              <video
-                src={joke?.url ?? ''}
-                preload='auto'
-                autoPlay
-                controls
-                disablePictureInPicture
-                controlsList='nodownload'
-                playsInline
-                muted={false}
-                webkit-playsinline=''
-                x5-playsinline=''
-                style={{
-                  position: 'relative',
-                  height: 'inherit',
-                  aspectRatio: '9/16',
-                  objectFit: 'contain'
-                }}
-              />
+            <div className='relative ml-[11px] mr-[11px]'>
+              {joke?.url && (
+                <div className='relative w-full mx-0 max-w-[35dvh] aspect-[9/16] overflow-hidden rounded-[8px] max-h-[60vh]'>
+                  <video
+                    src={joke?.url ?? ''}
+                    preload='auto'
+                    autoPlay
+                    controls
+                    disablePictureInPicture
+                    controlsList='nodownload'
+                    playsInline
+                    muted={false}
+                    webkit-playsinline=''
+                    x5-playsinline=''
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      maxWidth: '100%',
+                      maxHeight: '100%'
+                    }}
+                  />
+                </div>
+              )}
             </div>
             <div className='bg-white rounded-[10px] p-[8px]  pb-[12px] flex justify-between ml-[12px]'>
               <div className='flex gap-[10px] md:gap-[9px] pl-[2px]'>
