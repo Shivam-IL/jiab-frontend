@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react'
 import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES, SESSION_STORAGE_KEYS } from '@/constants'
 import { aktivGrotesk } from '@/app/layout'
-import { updateEnableCoachMarks, updateSurpriseMe } from '@/store/auth/auth.slice'
+import {
+  updateEnableCoachMarks,
+  updateSurpriseMe
+} from '@/store/auth/auth.slice'
 import useAppDispatch from '@/hooks/useDispatch'
 import { BoxIds } from '../CircularBoxesModal'
 import AktivGroteskText from '../AktivGroteskText'
-import { getSessionStorageItem } from '@/utils'
+import { removeSessionStorageItem } from '@/utils'
+import useAppSelector from '@/hooks/useSelector'
 
 // Export box IDs for reuse in other components
 export const DesktopBoxIds = {
@@ -45,6 +49,7 @@ const HomePageDesktopOnboarding = ({
   onClose
 }: CircularBoxesModalProps) => {
   const [currentBox, setCurrentBox] = useState(0)
+  const { enableCoachMarks } = useAppSelector(state => state.auth)
   const dispatch = useAppDispatch()
   const [coordinates, setCoordinates] = useState<CoordinatesState>({
     explore: { x: 0, y: 0, width: 0, height: 0 },
@@ -58,9 +63,8 @@ const HomePageDesktopOnboarding = ({
 
   const handleClose = () => {
     dispatch(updateEnableCoachMarks({ enableCoachMarks: false }))
-    if(!getSessionStorageItem(SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL)){
-      dispatch(updateSurpriseMe({ surpriseMe: true }))
-    }
+    removeSessionStorageItem(SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL)
+    dispatch(updateSurpriseMe({ surpriseMe: true }))
     onClose()
   }
 
@@ -147,6 +151,22 @@ const HomePageDesktopOnboarding = ({
     }
   }, [currentBox])
 
+  // Auto-advance through onboarding steps
+  useEffect(() => {
+    if (!enableCoachMarks) return
+
+    const timer = setTimeout(() => {
+      if (currentBox < 5) {
+        setCurrentBox(prev => prev + 1)
+      } else {
+        handleClose()
+      }
+    }, 2000) // 3 seconds per step
+
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentBox, enableCoachMarks])
+
   return (
     <div className='fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center'>
       <style jsx>{`
@@ -165,16 +185,7 @@ const HomePageDesktopOnboarding = ({
           transition: opacity 0.3s ease-in-out;
         }
       `}</style>
-      <div
-        onClick={() => {
-          if (currentBox === 5) {
-            handleClose()
-          } else {
-            setCurrentBox(prev => (prev + 1) % 6)
-          }
-        }}
-        className='relative w-full h-full'
-      >
+      <div className='relative w-full h-full'>
         {/* Explore Box */}
         {currentBox === 0 && coordinates.explore.y !== 0 && (
           <div

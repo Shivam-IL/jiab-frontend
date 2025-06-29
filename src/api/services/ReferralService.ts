@@ -81,7 +81,7 @@ export class ReferralService extends MainService {
 
   public async getAllReferrals(page: number, query?: string) {
     try {
-      let endpoint = `${API_ROUTES.REFERRAL.GET_INVITEES}?page=${page}`;
+      let endpoint = `${API_ROUTES.REFERRAL.GET_INVITEES}?page=${page}&page_size=5`;
       if (query) {
         endpoint += query;
       }
@@ -128,7 +128,10 @@ export class ReferralService extends MainService {
     }
   }
 
-  public async verifyReferral({ referral_code, validationMessage }: TReferralVerify) {
+  public async verifyReferral({
+    referral_code,
+    validationMessage,
+  }: TReferralVerify) {
     try {
       const response = await apiClient.post(
         API_ROUTES.REFERRAL.VERIFY_REFERRAL,
@@ -144,14 +147,21 @@ export class ReferralService extends MainService {
           phone_number: data?.data?.phone_number,
         };
         return SuccessResponse(responseData);
-      } else if (data?.code === 1010) {
+      } else if (data?.message === "Wrong referral code") {
         const responseData = {
           status: INVITE_CODE_STATUS.INVALID_REFERRAL_CODE,
           message: data?.message,
         };
         return SuccessResponse(responseData);
-      } else if (data?.code === 1002) {
+      } else if (data?.message === "Referral code is already used") {
         const responseData = {
+          status: INVITE_CODE_STATUS.REFERRAL_CODE_IS_ALREADY_USED,
+          message: data?.message,
+        };
+        return SuccessResponse(responseData);
+      } else if (data?.message === "You cannot verify your own referral code") {
+        const responseData = {
+          status: INVITE_CODE_STATUS.CANT_VERIFY_OWN_REFERRAL_CODE,
           message: data?.message,
         };
         return SuccessResponse(responseData);

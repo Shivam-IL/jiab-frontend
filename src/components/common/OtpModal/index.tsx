@@ -21,10 +21,19 @@ import {
 } from '@/store/auth/auth.slice'
 import { useMutateRequestOTP, useMutateVerifyOTP } from '@/api/hooks/LoginHooks'
 import SvgIcons from '../SvgIcons'
-import { GA_EVENTS, ICONS_NAMES, TOKEN_TYPE } from '@/constants'
+import {
+  GA_EVENTS,
+  ICONS_NAMES,
+  SESSION_STORAGE_KEYS,
+  TOKEN_TYPE
+} from '@/constants'
 import { MainService } from '@/api/services/MainService'
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config'
-import { getLocalStorageItem, setLocalStorageItem } from '@/utils'
+import {
+  getLocalStorageItem,
+  removeSessionStorageItem,
+  setLocalStorageItem
+} from '@/utils'
 
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import { useGlobalLoader } from '@/hooks/useGlobalLoader'
@@ -93,8 +102,6 @@ const OtpModal = () => {
     }
   }, [otpSent])
 
-
-
   const resendOTP = () => {
     showLoader()
     requestOTP({ mobile_number: phoneNumber })
@@ -151,6 +158,9 @@ const OtpModal = () => {
         const refreshToken = verifyTokenData?.refresh_token ?? ''
         dispatch(updateIsFirstLogin({ isFirstLogin: false }))
         setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, refreshToken)
+        removeSessionStorageItem(
+          SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL
+        )
         dispatch(updateSurpriseMe({ surpriseMe: true }))
         //TODO: Have to Add user Id
         triggerLoginCDPEvent(verifyTokenData?.user_id ?? '')

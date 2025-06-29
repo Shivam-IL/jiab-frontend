@@ -346,6 +346,7 @@ export const ICONS_NAMES = {
   CROSS2: "cross2",
   HASHTAG: "hashtag",
   ARROW: "arrow",
+  REFRESH_RINGS_SMILE: "refresh-ring-smile",
 };
 
 export const INVITE_CODE_POPUP_DATA = {
@@ -563,6 +564,7 @@ export const INVITE_CODE_STATUS = {
   SUCCESS: "success",
   INVALID_REFERRAL_CODE: "invalid_referral_code",
   CANT_VERIFY_OWN_REFERRAL_CODE: "cant_verify_own_referral_code",
+  REFERRAL_CODE_IS_ALREADY_USED: "referral_code_is_already_used",
 };
 
 export const ARE_YOU_SURE_YOU_WANT_TO_EXIT = "Are you sure you want to exit?";
