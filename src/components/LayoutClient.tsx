@@ -51,6 +51,7 @@ export default function LayoutClient({
               <div className="hidden lg:block">
                 {!pathname.includes("/scroll-and-lol") && <DesktopFooter />}
               </div>
+              <div id="portal-id"></div>
             </ProtectedRoutedWrapper>
           </InitialDataLoader>
           <BreakTheIceComponent />

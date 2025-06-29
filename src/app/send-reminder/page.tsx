@@ -61,6 +61,11 @@ const SendReminderPage = () => {
       setSendAgainStatus(status as string);
       setReferralCode(code as string);
       setSendReminder(true);
+      if (status === SEND_AGAIN_STATUS.CANT_SEND_AGAIN_IN_A_WEEK) {
+        setTimeout(() => {
+          setSendReminder(false)
+        }, 3000)
+      }
     }
   }, [sendReferralAgainData]);
 

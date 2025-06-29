@@ -42,6 +42,7 @@ export interface IInput {
   rows?: number;
   borderRadius?: string;
   errorClassName?: string;
+  placeholderClassName?: string;
 }
 
 export interface IGreenCTA {

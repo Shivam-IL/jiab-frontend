@@ -209,7 +209,7 @@ const Signup = () => {
     if (isFirstLogin) {
       setUserData({
         ...userData,
-        number: `+91-${phoneNumber}`,
+        number: `+91 ${phoneNumber}`,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -377,7 +377,7 @@ const Signup = () => {
       if (data.phoneNumber) {
         setUserData({
           ...userData,
-          number: `+91-${data.phoneNumber}`,
+          number: `+91 ${data.phoneNumber}`,
         });
         dispatch(updatePhoneNumber({ phoneNumber: data.phoneNumber }));
       }
@@ -480,7 +480,7 @@ const Signup = () => {
               id="agree"
               checked={userData.agree}
               onChange={(e) => handleChange("agree", e.target.checked)}
-              className="relative top-[2px] w-4 h-4 cursor-pointer accent-[#003087]"
+              className="relative rounded-none top-[2px] w-4 h-4 cursor-pointer accent-black"
               type="checkbox"
             />
             <label

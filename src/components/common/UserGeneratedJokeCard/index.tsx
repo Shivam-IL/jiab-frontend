@@ -11,7 +11,7 @@ const UserGeneratedJokeCard: React.FC<IUserGeneratedJokeCard> = ({
   status,
 }) => {
   return (
-    <div className="w-full md:w-[49%] bg-white rounded-[5px] px-[8px] py-[12px] md:p-[12px] flex items-center  gap-[16px] md:gap-[40px]">
+    <div className="w-full bg-white rounded-[5px] px-[8px] py-[12px] md:p-[12px] flex items-center  gap-[16px] md:gap-[40px]">
       <div
         className={`min-w-[57px] max-w-[57px] min-h-[57px] max-h-[57px] md:min-w-[108px] md:max-w-[108px] md:min-h-[108px] md:max-h-[108px] rounded-[3px] md:rounded-[8px] relative bg-[#11A64B]`}
       >

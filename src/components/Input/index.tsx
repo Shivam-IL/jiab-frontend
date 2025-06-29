@@ -23,7 +23,8 @@ const Input: React.FC<IInput> = ({
   borderRadius = 'rounded-[100px]',
   rows,
   errorClassName = '',
-  onBlur
+  onBlur,
+  placeholderClassName = 'placeholder:text-[rgba(0,0,0,0.3)]'
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -201,7 +202,7 @@ const Input: React.FC<IInput> = ({
           } ${
             readonly ? 'cursor-not-allowed' : 'cursor-pointer'
           } outline-none ${fontSize} ${
-            readonly ? 'text-[rgba(0,0,0,0.3)]' : 'text-black placeholder:text-[rgba(0,0,0,0.3)]'
+            readonly ? 'text-[rgba(0,0,0,0.3)]' : `text-black ${placeholderClassName}`
           } font-[400]  ${
             aktivGrotesk.className
           } ${paddingClass} leading-tight ${
