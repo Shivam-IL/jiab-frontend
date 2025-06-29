@@ -312,12 +312,12 @@ const UgcCard: React.FC<UgcCardProps> = ({
             <audio
               src={item?.content}
               controls
-              className='w-[60%] h-full absolute  right-4 bottom-10'
+              className='w-[90%] h-full absolute  bottom-5'
             />
           )}
         </div>
         <div className='bg-white border-x-[1px] border-b-[1px] border-[#D9D9D9] rounded-b-[5px] p-[8px] flex justify-between'>
-          <div className='flex gap-[10px] md:gap-[20px] pl-[10px]'>
+          <div className='flex gap-[10px] md:gap-[8px]'>
             <SurpriseMeCTA
               isReacted={item?.isReacted}
               disabled={

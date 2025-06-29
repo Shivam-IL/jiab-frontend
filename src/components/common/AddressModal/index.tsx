@@ -357,11 +357,10 @@ const AddressModal: React.FC<IAddressModal> = ({
     };
   }, []);
 
-  console.log("data", data);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="box-border p-0  overflow-scroll md:rouned-[20px] rounded-[20px] md:max-w-[398px] flex flex-col px-0 gap-[32px]  py-[20px] md:pt-[28px] md:pb-[20px] max-w-[358px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="box-border p-0 fixed scroll-y-auto  !max-h-none !h-auto  md:rouned-[20px] rounded-[20px] md:max-w-[398px] flex flex-col px-0 gap-[32px]  py-[20px] md:pt-[28px] md:pb-[20px] max-w-[358px]">
         <div className="w-full flex px-[15px] md:px-[19px] justify-between items-center box-border ">
           <AktivGroteskText
             text={
