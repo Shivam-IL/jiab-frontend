@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import SvgIcons from './SvgIcons'
-import { ICONS_NAMES } from '@/constants'
+import { ICONS_NAMES, SESSION_STORAGE_KEYS } from '@/constants'
 import { aktivGrotesk } from '@/app/layout'
-import { updateEnableCoachMarks } from '@/store/auth/auth.slice'
+import { updateEnableCoachMarks, updateSurpriseMe } from '@/store/auth/auth.slice'
 import useAppDispatch from '@/hooks/useDispatch'
+import useAppSelector from '@/hooks/useSelector'
+import { removeSessionStorageItem } from '@/utils'
 
 // Export box IDs for reuse in other components
 export const BoxIds = {
@@ -47,6 +49,7 @@ interface CircularBoxesModalProps {
 
 const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
   const [currentBox, setCurrentBox] = useState(0)
+  const { enableCoachMarks } = useAppSelector(state => state.auth)
   const dispatch = useAppDispatch()
   const [coordinates, setCoordinates] = useState<CoordinatesState>({
     home: { x: 0, y: 0, width: 0, height: 0 },
@@ -64,6 +67,8 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
 
   const handleClose = () => {
     dispatch(updateEnableCoachMarks({ enableCoachMarks: false }))
+    removeSessionStorageItem(SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL)
+    dispatch(updateSurpriseMe({ surpriseMe: true }))
     onClose()
   }
 
@@ -168,6 +173,22 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
     }
   }, [currentBox])
 
+  // Auto-advance through onboarding steps
+  useEffect(() => {
+    if (!enableCoachMarks) return
+
+    const timer = setTimeout(() => {
+      if (currentBox < 9) {
+        setCurrentBox(prev => prev + 1)
+      } else {
+        handleClose()
+      }
+    }, 2000) // 2 seconds per step
+
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentBox, enableCoachMarks])
+
   return (
     <div className='fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center'>
       <style jsx>{`
@@ -187,13 +208,6 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
         }
       `}</style>
       <div
-        onClick={() => {
-          if (currentBox === 9) {
-            handleClose()
-          } else {
-            setCurrentBox(prev => (prev + 1) % 10)
-          }
-        }}
         className='relative w-full h-full'
       >
         {/* Menu Bar Box */}

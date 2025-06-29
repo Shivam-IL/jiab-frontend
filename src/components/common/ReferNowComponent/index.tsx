@@ -114,6 +114,7 @@ const ReferNowComponent = ({
       setReferStatus(status);
       if (status === REFERRAL_CODE.SUCCESS) {
         setReferStatus1(true);
+        setError("");
         setOpen2(false);
         setOpen3(false);
 
