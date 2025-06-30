@@ -91,6 +91,10 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
     handleHideNavbarForMobile();
   }, [pathName, handleHideNavbarForMobile]);
 
+  if(pathName === '/refresh-rings') {
+    return null
+  }
+
   return (
     <>
       <div
