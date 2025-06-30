@@ -37,6 +37,7 @@ export * from "./joke_report_popup";
 export * from "./thand_rakh_popup";
 export * from "./notification";
 export * from "./refresh_rings";
+export * from "./coach-markers";
 
 // Import all the mapping functions
 import {
@@ -244,6 +245,11 @@ import {
   mapRefreshRingsData,
   RefreshRingsData,
 } from "./refresh_rings";
+import {
+  mapCoachMarkersData,
+  CoachMarkersData,
+  defaultCoachMarkersData,
+} from "./coach-markers";
 
 // Combined interface for all CMS data
 export interface AllCMSData {
@@ -292,6 +298,7 @@ export interface AllCMSData {
   thandRakh: IThandRakhPopupData;
   notification: NotificationData;
   refreshRings: RefreshRingsData;
+  coachMarkers: CoachMarkersData;
 }
 
 // Hook to get all mapped CMS data
@@ -347,6 +354,7 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
         thandRakh: defaultThandRakhPopupData,
         notification: defaultNotificationData,
         refreshRings: defaultRefreshRingsData,
+        coachMarkers: defaultCoachMarkersData,
       };
     }
 
@@ -397,6 +405,7 @@ export const useCMSData = (mounted: boolean = true): AllCMSData => {
       thandRakh: mapThandRakhPopupData(homePageContent),
       notification: mapNotificationData(homePageContent),
       refreshRings: mapRefreshRingsData(homePageContent),
+      coachMarkers: mapCoachMarkersData(homePageContent),
     };
   }, [homePageContent, mounted]);
 };
@@ -451,5 +460,6 @@ export const mapAllCMSData = (
     thandRakh: mapThandRakhPopupData(cmsData),
     notification: mapNotificationData(cmsData),
     refreshRings: mapRefreshRingsData(cmsData),
+    coachMarkers: mapCoachMarkersData(cmsData),
   };
 };

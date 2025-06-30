@@ -27,6 +27,8 @@ export interface ValidationData {
   profileEditProfileInvalidEmail: string;
   profileEditProfileSelectGender: string;
   inviteCodeFirstModalEnterRefCode: string;
+  wrongReferralCode: string;
+  uniqueCodeAlreadyRedeemed: string;
 }
 
 export const mapValidationData = (
@@ -99,11 +101,15 @@ export const mapValidationData = (
       validationCMS?.profile_editprofile_invalidemail ??
       "Invalid email address",
     profileEditProfileSelectGender:
-      validationCMS?.profile_editprofile_selectgender ??
-      "Select your gender",
+      validationCMS?.profile_editprofile_selectgender ?? "Select your gender",
     inviteCodeFirstModalEnterRefCode:
       validationCMS?.invitecode_firstmodal_enterrefcode ??
       "Please enter refer code.",
+    wrongReferralCode:
+      validationCMS?.wrong_referral_code ?? "Wrong referral code",
+    uniqueCodeAlreadyRedeemed:
+      validationCMS?.uniquecode_codealreadyredeemed ??
+      "Unique code already redeemed",
   };
 };
 
@@ -135,4 +141,6 @@ export const defaultValidationData: ValidationData = {
   profileEditProfileInvalidEmail: "Invalid email address",
   profileEditProfileSelectGender: "Select your gender",
   inviteCodeFirstModalEnterRefCode: "Please enter refer code.",
+  wrongReferralCode: "Wrong referral code",
+  uniqueCodeAlreadyRedeemed: "Unique code already redeemed",
 };
