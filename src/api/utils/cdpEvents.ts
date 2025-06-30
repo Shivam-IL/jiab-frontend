@@ -279,7 +279,7 @@ export class CDPEventPayloadBuilder {
           user_identifier_sub_type: CDP_USER_IDENTIFIER_SUB_TYPE,
           user_identifier: userIdentifier, // This should be dynamic
         },
-      ],
+      ]
     };
   }
 
@@ -300,7 +300,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_SUB_TYPES.LANDING_PAGE_LOAD_FROM_WA,
         data.user_identifier
       ),
-      ...data,
+      ...data
     };
   }
 
@@ -322,7 +322,7 @@ export class CDPEventPayloadBuilder {
       geo_state_province_code: data.geo_state_province_code,
       geo_city_name: data.geo_city_name,
       geo_postal_code: data.geo_postal_code,
-      ip_address: data.ip_address,
+      ip_address: data.ip_address
     };
   }
 
@@ -356,7 +356,7 @@ export class CDPEventPayloadBuilder {
       geo_state_province_code: data.geo_state_province_code,
       geo_city_name: data.geo_city_name,
       geo_postal_code: data.geo_postal_code,
-      ip_address: data.ip_address,
+      ip_address: data.ip_address
     };
   }
 
@@ -381,7 +381,7 @@ export class CDPEventPayloadBuilder {
       geo_state_province_code: data.geo_state_province_code,
       geo_city_name: data.geo_city_name,
       geo_postal_code: data.geo_postal_code,
-      ip_address: data.ip_address,
+      ip_address: data.ip_address
     };
   }
 
@@ -407,7 +407,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_SUB_TYPES.CHANGE_LANGUAGE,
         user_identifier
       ),
-      language_code: languageCode,
+      language_code: languageCode
     };
   }
 
@@ -421,7 +421,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_TYPES.CLICK,
         eventSubType,
         user_identifier
-      ),
+      )
     };
   }
 
@@ -443,7 +443,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_TYPES.CLICK,
         eventSubTypeMap[cdpReactionType],
         user_identifier
-      ),
+      )
     };
   }
 
@@ -531,7 +531,7 @@ export class CDPEventPayloadBuilder {
         data.user_identifier
       ),
       language_code: data.languageCode.toUpperCase(),
-      first_name: data.firstName,
+      first_name: data.firstName
     };
   }
 
@@ -545,7 +545,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_TYPES.CLICK,
         `${CDP_EVENT_SUB_TYPES.PULL_JOKE}_${category}`,
         user_identifier
-      ),
+      )
     };
   }
 
@@ -558,7 +558,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_TYPES.CLICK,
         `${CDP_EVENT_SUB_TYPES.VIEW_JOKE}_${jokeId}`,
         user_identifier
-      ),
+      )
     };
   }
 
@@ -571,7 +571,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_TYPES.CLICK,
         `${CDP_EVENT_SUB_TYPES.VOTE_JOKE}_${jokeId}`,
         user_identifier
-      ),
+      )
     };
   }
 
@@ -588,7 +588,7 @@ export class CDPEventPayloadBuilder {
         `${CDP_EVENT_SUB_TYPES.UGC_FILTER}_${language ?? ""}_${category ?? ""}`,
         user_identifier
       ),
-      language_code: languageCode.toUpperCase() ?? "",
+      language_code: languageCode.toUpperCase() ?? ""
     };
   }
 
@@ -622,7 +622,7 @@ export class CDPEventPayloadBuilder {
       first_name: data.first_name,
       email: data.email,
       dob: data.dob,
-      gender: data.gender,
+      gender: data.gender
     };
   }
 
@@ -645,7 +645,7 @@ export class CDPEventPayloadBuilder {
       address_line2: data.address_line2,
       address_city: data.address_city,
       address_state: data.address_state,
-      geo_postal_code: data.geo_postal_code,
+      geo_postal_code: data.geo_postal_code
     };
   }
 
@@ -663,7 +663,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_SUB_TYPES.UPDATE_ADDRESS,
         data.user_identifier
       ),
-      ...data,
+      ...data
     };
   }
 
@@ -680,7 +680,7 @@ export class CDPEventPayloadBuilder {
         eventSubType,
         user_identifier
       ),
-      phone_e164: `+91${phoneNumber}`,
+      phone_e164: `+91${phoneNumber}`
     };
   }
 
@@ -695,7 +695,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_SUB_TYPES.SUBMIT_TRANSACTION_CODE,
         user_identifier
       ),
-      phone_e164: phoneNumber,
+      phone_e164: phoneNumber
     };
   }
 
@@ -716,7 +716,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_TYPES.CLICK,
         eventSubTypeMap[reactionType],
         user_identifier
-      ),
+      )
     };
   }
 
@@ -729,7 +729,7 @@ export class CDPEventPayloadBuilder {
         CDP_EVENT_TYPES.CLICK,
         `${CDP_EVENT_SUB_TYPES.SCROLL_LOL_VIEW}${jokeId}`,
         user_identifier
-      ),
+      )
     };
   }
 }
