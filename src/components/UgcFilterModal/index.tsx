@@ -83,6 +83,7 @@ const UgcFilterModal: React.FC<IUgcFilterModal> = ({
       },
       ...modifiedGenres
     ]
+    console.log('newModifiedGenres', newModifiedGenres)
     setCategoryOptions(newModifiedGenres)
   }, [genres, jokeBoxFilter])
 

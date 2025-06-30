@@ -99,6 +99,8 @@ export const CMS_CATEGORY_KEY_ID_MAPPING = {
   office: 15,
   relationships: 31,
   family: 17,
+  wedding: 10,
+  childhood: 29,
 };
 
 export const CATEGORY_ID_CMS_KEY_MAPPING = {
@@ -114,6 +116,8 @@ export const CATEGORY_ID_CMS_KEY_MAPPING = {
   15: "office",
   31: "relationships",
   17: "family",
+  10: "wedding",
+  29: "childhood",
 };
 
 export const LIMIT_EXCEED = "Limit Exceed";
@@ -365,9 +369,9 @@ export const INVITE_CODE_POPUP_DATA = {
 };
 
 export const VOUCHER_TYPES = {
-  PHONE_PAY_VOUCHER:'Reward worth Rs.25,000!',
-  MMT_VOUCHER:"The Ultimate Retreat"
-}
+  PHONE_PAY_VOUCHER: "Reward worth Rs.25,000!",
+  MMT_VOUCHER: "The Ultimate Retreat",
+};
 
 export const LANG_VERNICULAR_MAP = {
   English: "English",

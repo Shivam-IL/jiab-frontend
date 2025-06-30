@@ -494,6 +494,8 @@ export type TCMSResponse = {
       locale: string;
       family: string;
       applty_button_text: string;
+      wedding: string;
+      childhood: string;
     };
     joke_is_in_pop_up: {
       id: number;
