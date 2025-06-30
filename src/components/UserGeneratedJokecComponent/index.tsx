@@ -33,6 +33,18 @@ const UserGeneratedJokecComponent = ({
 
   const { data: userSubmittedJokesData } = useGetUserSubmittedJokes();
 
+  // Function to map status based on response
+  const mapStatusBasedOnResponse = (status: string): string => {
+    switch (status?.toLowerCase()) {
+      case "pending":
+        return cmsData?.myProfile?.pending ?? "Pending";
+      case "accepted":
+        return cmsData?.myProfile?.accepted ?? "Accepted";
+      default:
+        return status ?? PENDING;
+    }
+  };
+
   useEffect(() => {
     if (userSubmittedJokesData?.ok) {
       const { data } = userSubmittedJokesData ?? {};
@@ -80,7 +92,7 @@ const UserGeneratedJokecComponent = ({
               key={joke.id}
               title={joke.title ?? ""}
               date={dateConvert(joke.date ?? "") ?? ""}
-              status={joke.status ?? PENDING}
+              status={mapStatusBasedOnResponse(joke.status ?? "")}
               image={joke.thumbnail_url ?? ""}
             />
           ))}
@@ -92,7 +104,7 @@ const UserGeneratedJokecComponent = ({
               key={joke.id}
               title={joke.title ?? ""}
               date={dateConvert(joke.date ?? "") ?? ""}
-              status={joke.status ?? PENDING}
+              status={mapStatusBasedOnResponse(joke.status ?? "")}
               image={joke.thumbnail_url ?? ""}
             />
           ))}
@@ -101,7 +113,11 @@ const UserGeneratedJokecComponent = ({
         {allJokes.length > 4 && (
           <GreenCTA
             className=""
-            text={isAllShown ? cmsData.myProfile.showLess : cmsData.myProfile.showMore}
+            text={
+              isAllShown
+                ? cmsData.myProfile.showLess
+                : cmsData.myProfile.showMore
+            }
             onClick={() => {
               if (isAllShown) {
                 setCurrentItems(4);

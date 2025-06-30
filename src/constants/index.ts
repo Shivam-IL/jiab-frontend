@@ -593,6 +593,7 @@ export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE: string[] = [
   "/privacy-policy",
   "/faqs",
   "/sitemap",
+  "/refresh-rings",
 ];
 
 export const USER_INFO_NUMBER_DATE_ARRAY = [
