@@ -3,6 +3,7 @@ import SvgIcons from "../SvgIcons";
 import { ICONS_NAMES, SESSION_STORAGE_KEYS } from "@/constants";
 import {
   updateEnableCoachMarks,
+  updatePauseVideo,
   updateSurpriseMe,
 } from "@/store/auth/auth.slice";
 import useAppDispatch from "@/hooks/useDispatch";
@@ -70,6 +71,7 @@ const HomePageDesktopOnboarding = ({
     dispatch(updateEnableCoachMarks({ enableCoachMarks: false }));
     removeSessionStorageItem(SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL);
     dispatch(updateSurpriseMe({ surpriseMe: true }));
+    dispatch(updatePauseVideo({ pauseVideo: true }));
     onClose();
   };
 

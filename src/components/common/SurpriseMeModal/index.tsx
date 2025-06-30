@@ -27,6 +27,7 @@ import {
 import useAppSelector from '@/hooks/useSelector'
 import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 import Image from 'next/image'
+import { updatePauseVideo } from '@/store/auth/auth.slice'
 
 export interface ISurpriseMeJoke {
   artist_id: string
@@ -78,6 +79,7 @@ const SurpriseMeModal = ({
   const [serialChill, setSerialChill] = useState<boolean>(false)
   useGlobalLoader()
   const { user } = useAppSelector(state => state.profile)
+  const { pauseVideo } = useAppSelector(state => state.auth)
 
   // Coin animation hook
   const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation()
@@ -375,8 +377,8 @@ const SurpriseMeModal = ({
                 />
                 <div className='flex max-w-full relative flex-col gap-[2px]'>
                   <p
-                      className={`line-clamp-1  font-[700] md:text-[12px] sm:text-[14px] text-[10px] text-[#000000]`}
-                    >
+                    className={`line-clamp-1  font-[700] md:text-[12px] sm:text-[14px] text-[10px] text-[#000000]`}
+                  >
                     {joke?.title ?? ''}
                   </p>
 
@@ -410,7 +412,7 @@ const SurpriseMeModal = ({
                   <video
                     src={joke?.url ?? ''}
                     preload='auto'
-                    autoPlay
+                    autoPlay={!pauseVideo}
                     controls
                     disablePictureInPicture
                     controlsList='nodownload'
@@ -503,13 +505,16 @@ const SurpriseMeModal = ({
               setOpen(false)
               onClose()
               setJoke(null)
+              dispatch(updatePauseVideo({ pauseVideo: false }))
             }}
             noButtonClick={() => {
               setMakeLaughExitPopup(false)
+              dispatch(updatePauseVideo({ pauseVideo: false }))
             }}
             open={makeLaughExitPopup}
             onClose={() => {
               setMakeLaughExitPopup(false)
+              dispatch(updatePauseVideo({ pauseVideo: false }))
             }}
             setOpen={setMakeLaughExitPopup}
           />
