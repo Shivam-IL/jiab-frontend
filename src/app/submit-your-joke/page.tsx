@@ -38,7 +38,7 @@ import { useCoinAnimation } from "@/components/common/CoinAnimation";
 import BottleAnimation from "@/components/common/BottleAnimation";
 import { CDPEventPayloadBuilder, JOKE_FORMATS } from "@/api/utils/cdpEvents";
 import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
-import { aktivGrotesk } from "../layout";
+
 
 interface FileContainerProps {
   title: string;
@@ -651,7 +651,7 @@ const SubmitYourJoke = () => {
           >
             <div className="relative">
               <select
-                className={`w-full cursor-pointer border border-transparent outline-none text-[14px] md:text-[18px] font-[400] ${aktivGrotesk.className} md:py-[10px] md:px-[17px] pl-[16px] pr-[40px] py-[16px] bg-white rounded-[100px] transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B] focus-visible:border-[#11A64B] appearance-none`}
+                className={`w-full cursor-pointer border border-transparent outline-none text-[14px] md:text-[18px] font-[400] md:py-[10px] md:px-[17px] pl-[16px] pr-[40px] py-[16px] bg-white rounded-[100px] transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B] focus-visible:border-[#11A64B] appearance-none`}
                 name="language"
                 value={jokeData.language}
                 onChange={(e) => handleChange("language", e.target.value)}

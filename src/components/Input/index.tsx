@@ -13,7 +13,7 @@ const Input: React.FC<IInput> = ({
   onChange,
   error = "",
   readonly = false,
-  fontSize = "text-[14px]",
+  fontSize = "text-[16px]",
   bgColor = "bg-[#F3F3F3]",
   options = [],
   isSearchable = false,
@@ -23,7 +23,7 @@ const Input: React.FC<IInput> = ({
   rows,
   errorClassName = "",
   onBlur,
-  placeholderClassName = 'placeholder:text-[rgba(0,0,0,0.3)]',
+  placeholderClassName = "placeholder:text-[rgba(0,0,0,0.3)]",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -205,7 +205,9 @@ const Input: React.FC<IInput> = ({
           } ${
             readonly ? "cursor-not-allowed" : "cursor-pointer"
           } outline-none ${fontSize} ${
-            readonly ? 'text-[rgba(0,0,0,0.3)]' : `text-black ${placeholderClassName}`
+            readonly
+              ? "text-[rgba(0,0,0,0.3)]"
+              : `text-black ${placeholderClassName}`
           } font-[400] ${paddingClass} leading-tight ${
             readonly ? "bg-[#f9f9f9]" : bgColor
           } ${borderRadius}  transition-all duration-200 `}

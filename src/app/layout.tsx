@@ -1,9 +1,32 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import LayoutClient from "@/components/LayoutClient";
-import { metadata } from "./metadata";
 import LoadGAScript from "@/components/common/LoadGAScript";
 export const dynamic = "force-dynamic";
+import { Metadata } from "next";
+
+// Application-wide metadata
+export const metadata: Metadata = {
+  title: "Sprite Joke-In-A-Bottle | Scan Karo, Joke Suno, Thand Rakho",
+  description:
+    "Listen to your favorite comedians as per your mood with Sprite's refreshing humor hub! Submit your own joke and stand a chance to win fabulous prizes. Enjoy a laughter bonanza.",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/icons/apple-touch-icon.png",
+  },
+  manifest: "/manifest.json",
+  themeColor: "#11A64B",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    viewportFit: "cover",
+  },
+  alternates: {
+    canonical: "https://sprite-joke-in-a-bottle.coke2home.com/",
+  },
+};
 
 export const aktivGrotesk = localFont({
   src: [
@@ -118,25 +141,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>{String(metadata?.title ?? "")}</title>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#11A64B" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta
-          name="description"
-          content="Listen to your favorite comedians as per your mood with Sprite's refreshing humor hub! Submit your own joke and stand a chance to win fabulous prizes. Enjoy a laughter bonanza."
-        />
-        <link
-          rel="apple-touch-icon"
-          href="./assets/img/favicons/apple-touch-icon.png"
-        />
-        <link
-          rel="canonical"
-          href="https://sprite-joke-in-a-bottle.coke2home.com/"
-        />
-
-        {/* Font preload hints for better performance */}
         <link
           rel="preload"
           href="/fonts/AktivGroteskCorp-Regular.woff2"
@@ -169,6 +173,7 @@ export default function RootLayout({
           textRendering: "optimizeLegibility",
           WebkitFontSmoothing: "antialiased",
           MozOsxFontSmoothing: "grayscale",
+          touchAction: "manipulation",
         }}
       >
         <LayoutClient>{children}</LayoutClient>
