@@ -72,7 +72,7 @@ const DisplayTable = ({
                       </div>
                       <div className='flex flex-col text-start box justify-between w-full'>
                         <div className='flex flex-col md:gap-0 gap-[4px] justify-start'>
-                          <div className='truncate max-w-[60%] md:max-w-[75%]'>
+                          <div className='max-w-[100%] md:max-w-[75%]'>
                             <AktivGroteskText
                               text={item?.title ?? ''}
                               className='leading-tight w-full text-start'
@@ -86,7 +86,7 @@ const DisplayTable = ({
                                 ? item?.artistName
                                 : item?.jokeOwnerName
                             }
-                            className='leading-tight w-full text-start'
+                            className='leading-tight  w-full text-start'
                             fontSize='text-[10px] md:text-[16px]'
                             fontWeight='font-[400]'
                           />

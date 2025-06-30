@@ -376,13 +376,13 @@ const SurpriseMeModal = ({
                 />
                 <div className='flex max-w-full relative flex-col gap-[2px]'>
                   <p
-                      className={`${aktivGrotesk.className}  font-[700] md:text-[12px] sm:text-[14px] text-[10px] text-[#000000]`}
+                      className={`${aktivGrotesk.className} line-clamp-1  font-[700] md:text-[12px] sm:text-[14px] text-[10px] text-[#000000]`}
                     >
                     {joke?.title ?? ''}
                   </p>
 
                   <p
-                    className={`${aktivGrotesk.className} w-full  font-[400] md:text-[10px] sm:text-[12px] text-[8px] text-[#000000] overflow-hidden`}
+                    className={`${aktivGrotesk.className} w-full line-clamp-1  font-[400] md:text-[10px] sm:text-[12px] text-[8px] text-[#000000] overflow-hidden`}
                   >
                     {joke?.joke_creator ?? ''}
                   </p>

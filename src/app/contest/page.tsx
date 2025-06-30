@@ -66,6 +66,8 @@ const ContestPage: React.FC = () => {
 
   // Joyride tour state
   const [runTour, setRunTour] = useState<boolean>(false);
+  const [autoAdvance, setAutoAdvance] = useState<boolean>(true);
+  const [autoAdvanceInterval, setAutoAdvanceInterval] = useState<number>(3000); // 3 seconds per step
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -282,6 +284,8 @@ const ContestPage: React.FC = () => {
         continuous={true}
         disableOverlayClose={false}
         disableScrolling={false}
+        autoAdvance={autoAdvance}
+        autoAdvanceInterval={autoAdvanceInterval}
       />{" "}
       <ScreenWrapper className="overflow-hidden pt-20">
         {isContestOver ? (

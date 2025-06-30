@@ -103,7 +103,7 @@ export const DisplayTable = ({
                       />
                     </div>
                   )}
-                  {item?.user_rank}
+                  {item?.user_rank ? item?.user_rank : '-'}
                 </td>
                 <td
                   className={`min-h-full  relative font-[400]  md:py-[19px]  text-center py-[6px]`}
