@@ -18,6 +18,8 @@ export interface IJokeBoxFilter {
   relationships: string;
   applty_button_text: string;
   family: string;
+  wedding: string;
+  childhood: string;
 }
 
 export const mapJokeBoxFilter = (
@@ -46,6 +48,8 @@ export const mapJokeBoxFilter = (
     relationships: joke_box_filter?.relationships ?? "Relationships",
     applty_button_text: joke_box_filter?.applty_button_text ?? "Apply",
     family: joke_box_filter?.family ?? "Family",
+    wedding: joke_box_filter?.wedding ?? "Wedding",
+    childhood: joke_box_filter?.childhood ?? "Childhood",
   };
 };
 
@@ -68,4 +72,6 @@ export const defaultJokeBoxFilterData: IJokeBoxFilter = {
   relationships: "Relationships",
   applty_button_text: "Apply",
   family: "Family",
+  wedding: "Wedding",
+  childhood: "Childhood",
 };
