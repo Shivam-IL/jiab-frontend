@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import { aktivGrotesk } from '@/app/layout'
 
 interface IClampedText {
   text: string
@@ -40,7 +39,7 @@ const ClampedAktivGroteskText: React.FC<IClampedText> = ({
             position: 'relative'
           }}
         >
-          <p className={`${aktivGrotesk.className} ${className} ${fontSize} ${fontWeight} inline`}>
+          <p className={`${className} ${fontSize} ${fontWeight} inline`}>
             {text}
             {!isExpanded && <span>...</span>}
             <button

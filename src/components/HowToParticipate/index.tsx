@@ -1,5 +1,4 @@
 import React from "react";
-import { aktivGrotesk } from "@/app/layout";
 import SvgIcons from "../common/SvgIcons";
 import { ICONS_NAMES } from "@/constants";
 
@@ -44,7 +43,7 @@ const HowToParticipate: React.FC = () => {
 
       {/* Step Number */}
       <h3
-        className={`${aktivGrotesk.className} text-[8px] md:text-2xl font-semibold mb-1 md:mb-3`}
+        className={` text-[8px] md:text-2xl font-semibold mb-1 md:mb-3`}
         style={{ color: step.color }}
       >
         {step.stepNumber}
@@ -53,7 +52,7 @@ const HowToParticipate: React.FC = () => {
       {/* Title and Subtitle */}
       <div className="space-y-1">
         <p
-          className={`${aktivGrotesk.className} text-[8px] md:text-lg text-black font-[500]`}
+          className={` text-[8px] md:text-lg text-black font-[500]`}
         >
           {step.title}
           <br />
@@ -68,7 +67,7 @@ const HowToParticipate: React.FC = () => {
       <div className="container mx-auto px-2 md:px-4">
         {/* Title */}
         <h2
-          className={`${aktivGrotesk.className} text-center text-[16px] md:text-4xl font-bold text-black mb-[10px] md:mb-16`}
+          className={` text-center text-[16px] md:text-4xl font-bold text-black mb-[10px] md:mb-16`}
         >
           How to Participate
         </h2>

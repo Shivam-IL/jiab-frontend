@@ -1,7 +1,6 @@
 import React from 'react'
 import { Calendar } from '@/components/ui/calendar'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
-import { aktivGrotesk } from '@/app/layout'
 import { format } from 'date-fns'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
@@ -131,7 +130,7 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
               <ChevronLeft className='h-4 w-4' />
             </button>
             <h2
-              className={`${aktivGrotesk.className} text-[14px] font-[500] text-gray-800`}
+              className={`text-[14px] font-[500] text-gray-800`}
             >
               {currentDate.getFullYear()}
             </h2>
@@ -172,7 +171,7 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
         `}
               >
                 <span
-                  className={`${aktivGrotesk.className} text-[14px] font-[400]`}
+                  className={` text-[14px] font-[400]`}
                 >
                   {month}
                 </span>
@@ -198,7 +197,7 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
               <ChevronLeft className='h-4 w-4' />
             </button>
             <h2
-              className={`${aktivGrotesk.className} text-[14px] font-[500] text-gray-800`}
+              className={` text-[14px] font-[500] text-gray-800`}
             >
               {years[0]} - {years[years.length - 1]}
             </h2>
@@ -228,7 +227,7 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
               `}
             >
               <span
-                className={`${aktivGrotesk.className} text-[14px] font-[400]`}
+                className={` text-[14px] font-[400]`}
               >
                 {year}
               </span>
@@ -296,13 +295,13 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
                   <div className='flex items-center gap-2'>
                     <span
                       onClick={() => setViewMode('month')}
-                      className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
+                      className={` text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
                     >
                       {format(displayMonth, 'MMM')}
                     </span>
                     <span
                       onClick={() => setViewMode('year')}
-                      className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
+                      className={` text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
                     >
                       {format(displayMonth, 'yyyy')}
                     </span>
@@ -313,17 +312,17 @@ const SingleDateSelector: React.FC<CalendarDialogProps> = ({
                 months: 'space-y-4',
                 month: 'space-y-[32px] w-full',
                 caption: 'flex justify-between items-center relative mb-4',
-                caption_label: `${aktivGrotesk.className} text-[18px] font-[600]`,
+                caption_label: ` text-[18px] font-[600]`,
                 nav: 'flex items-center space-x-2',
                 nav_button: 'bg-transparent hover:bg-transparent',
                 nav_button_previous: 'relative',
                 nav_button_next: 'relative',
                 table: 'w-full border-collapse space-y-[7px]',
                 head_row: 'flex w-full justify-between mb-2',
-                head_cell: `${aktivGrotesk.className} text-[14px] font-[500] w-[40px] text-center`,
+                head_cell: ` text-[14px] font-[500] w-[40px] text-center`,
                 row: 'flex w-full mb-2',
-                cell: `${aktivGrotesk.className} flex-1 relative p-0 text-center text-sm focus-within:relative focus-within:z-20`,
-                day: `${aktivGrotesk.className} text-[#666666] h-[35px] w-[35px] p-0 font-[400] text-[14px] aria-selected:opacity-100 hover:bg-[#11A64B] hover:text-white hover:rounded-[50%] rounded-none flex items-center justify-center mx-auto [&.rdp-day_selected]:text-white [&.rdp-day_selected]:bg-[#11A64B] [&.rdp-day_selected]:rounded-[50%] [&.rdp-day_selected]:w-[35px] [&.rdp-day_selected]:h-[35px] [&.rdp-day_selected]:mx-auto`,
+                cell: ` flex-1 relative p-0 text-center text-sm focus-within:relative focus-within:z-20`,
+                day: ` text-[#666666] h-[35px] w-[35px] p-0 font-[400] text-[14px] aria-selected:opacity-100 hover:bg-[#11A64B] hover:text-white hover:rounded-[50%] rounded-none flex items-center justify-center mx-auto [&.rdp-day_selected]:text-white [&.rdp-day_selected]:bg-[#11A64B] [&.rdp-day_selected]:rounded-[50%] [&.rdp-day_selected]:w-[35px] [&.rdp-day_selected]:h-[35px] [&.rdp-day_selected]:mx-auto`,
                 day_selected:
                   '!bg-[#11A64B] !text-white !rounded-[50%] !w-[35px] !h-[35px] !mx-auto !flex !items-center !justify-center',
                 day_today: 'bg-transparent text-black',

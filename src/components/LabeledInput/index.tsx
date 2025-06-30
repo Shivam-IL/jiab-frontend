@@ -1,4 +1,3 @@
-import { aktivGrotesk } from '@/app/layout'
 import { ILabeledInput } from '@/interfaces'
 import {
   Tooltip,
@@ -28,7 +27,7 @@ const LabeledInput: React.FC<ILabeledInput> = ({
       }`}
     >
       <label
-        className={`${aktivGrotesk.className} ${labelClassName} ${labelFontSize} ${labelFontWeight}`}
+        className={`${labelClassName} ${labelFontSize} ${labelFontWeight}`}
       >
         {label}
         {tooltip && (

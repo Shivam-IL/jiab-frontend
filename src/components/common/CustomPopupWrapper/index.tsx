@@ -4,7 +4,6 @@ import CustomDialogWrapper from "../CustomDialogWrapper";
 import SvgIcons from "../SvgIcons";
 import AktivGroteskText from "../AktivGroteskText";
 import GreenCTA from "@/components/GreenCTA";
-import { aktivGrotesk } from "@/app/layout";
 
 const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
   open,
@@ -68,7 +67,7 @@ const CustomPopupWrapper: React.FC<IExitPopupWrapper> = ({
                   yesButtonClick();
                 }
               }}
-              className={`py-[10px] ${aktivGrotesk.className} leading-tight px-[28px] bg-white border-[1px] border-black rounded-[100px] text-[14px] md:text-[18px] font-[700]`}
+              className={`py-[10px] leading-tight px-[28px] bg-white border-[1px] border-black rounded-[100px] text-[14px] md:text-[18px] font-[700]`}
             >
               {yesButtonText || "Yes"}
             </button>

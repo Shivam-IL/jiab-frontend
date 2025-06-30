@@ -1,6 +1,5 @@
 "use client";
 
-import { aktivGrotesk } from "@/app/layout";
 import { IInput } from "@/interfaces";
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
@@ -110,9 +109,7 @@ const Input: React.FC<IInput> = ({
             error !== ""
               ? "border-[#FD0202] border-[1px]"
               : "border border-transparent"
-          } outline-none ${fontSize} font-[400] ${
-            aktivGrotesk.className
-          } ${paddingClass} ${bgColor} rounded-[100px] transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B] focus-visible:border-[#11A64B] ${
+          } outline-none ${fontSize} font-[400] ${paddingClass} ${bgColor} rounded-[100px] transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B] focus-visible:border-[#11A64B] ${
             isOpen ? "border-[#11A64B]" : ""
           }`}
           onClick={handleDropdownToggle}
@@ -150,7 +147,7 @@ const Input: React.FC<IInput> = ({
               <div className="p-2 border-b border-gray-100">
                 <input
                   type="text"
-                  className={`w-full outline-none ${fontSize} font-[400] ${aktivGrotesk.className} px-3 py-2 rounded-[100px] border border-transparent transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B]`}
+                  className={`w-full outline-none ${fontSize} font-[400] px-3 py-2 rounded-[100px] border border-transparent transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B]`}
                   placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -209,9 +206,7 @@ const Input: React.FC<IInput> = ({
             readonly ? "cursor-not-allowed" : "cursor-pointer"
           } outline-none ${fontSize} ${
             readonly ? 'text-[rgba(0,0,0,0.3)]' : `text-black ${placeholderClassName}`
-          } font-[400]  ${
-            aktivGrotesk.className
-          } ${paddingClass} leading-tight ${
+          } font-[400] ${paddingClass} leading-tight ${
             readonly ? "bg-[#f9f9f9]" : bgColor
           } ${borderRadius}  transition-all duration-200 `}
           onChange={(event) => onChange(event.target.name, event.target.value)}
@@ -228,9 +223,7 @@ const Input: React.FC<IInput> = ({
         <textarea
           className={`w-full ${className} ${
             error !== "" ? "border-[#FD0202] border-[1px]" : ""
-          } outline-none ${fontSize} font-[400] placeholder:text-[rgba(0,0,0,0.3)] ${
-            aktivGrotesk.className
-          } ${paddingClass} ${bgColor} ${borderRadius} border border-transparent transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B]`}
+          } outline-none ${fontSize} font-[400] placeholder:text-[rgba(0,0,0,0.3)] ${paddingClass} ${bgColor} ${borderRadius} border border-transparent transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B]`}
           onChange={(event) => onChange(event.target.name, event.target.value)}
           value={value}
           placeholder={placeholder}

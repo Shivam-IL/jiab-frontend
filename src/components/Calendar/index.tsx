@@ -14,7 +14,6 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover'
-import { aktivGrotesk } from '@/app/layout'
 
 interface CalendarProps {
   value?: string
@@ -223,7 +222,7 @@ const Calendar: React.FC<CalendarProps> = ({
               <ChevronLeft className='h-4 w-4' />
             </button>
             <h2
-              className={`${aktivGrotesk.className} text-[14px] font-[500] text-gray-800`}
+              className={`text-[14px] font-[500] text-gray-800`}
             >
               {currentDate.getFullYear()}
             </h2>
@@ -250,7 +249,7 @@ const Calendar: React.FC<CalendarProps> = ({
               `}
             >
               <span
-                className={`${aktivGrotesk.className} text-[14px] font-[400]`}
+                className={`text-[14px] font-[400]`}
               >
                 {month}
               </span>
@@ -276,7 +275,7 @@ const Calendar: React.FC<CalendarProps> = ({
               <ChevronLeft className='h-4 w-4' />
             </button>
             <h2
-              className={`${aktivGrotesk.className} text-[14px] font-[500] text-gray-800`}
+              className={` text-[14px] font-[500] text-gray-800`}
             >
               {years[0]} - {years[years.length - 1]}
             </h2>
@@ -303,7 +302,7 @@ const Calendar: React.FC<CalendarProps> = ({
               `}
             >
               <span
-                className={`${aktivGrotesk.className} text-[14px] font-[400]`}
+                className={` text-[14px] font-[400]`}
               >
                 {year}
               </span>
@@ -333,13 +332,13 @@ const Calendar: React.FC<CalendarProps> = ({
                 <div className='flex items-center gap-2'>
                   <span
                     onClick={() => setViewMode('month')}
-                    className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
+                    className={` text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
                   >
                     {format(displayMonth, 'MMM')}
                   </span>
                   <span
                     onClick={() => setViewMode('year')}
-                    className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
+                    className={`text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
                   >
                     {format(displayMonth, 'yyyy')}
                   </span>
@@ -374,9 +373,7 @@ const Calendar: React.FC<CalendarProps> = ({
           <div
             className={`w-full cursor-pointer flex items-center justify-between ${
               error !== '' ? 'border-[#FD0202] border-[1px]' : ''
-            } outline-none ${fontSize} font-[400] ${
-              aktivGrotesk.className
-            } ${paddingClass} ${bgColor} rounded-[100px] border border-transparent transition-all duration-200 hover:border-gray-200 data-[state=open]:border-[#11A64B] focus-visible:border-[#11A64B]`}
+            } outline-none ${fontSize} font-[400] ${paddingClass} ${bgColor} rounded-[100px] border border-transparent transition-all duration-200 hover:border-gray-200 data-[state=open]:border-[#11A64B] focus-visible:border-[#11A64B]`}
           >
             <span className={!value ? 'text-[rgba(0,0,0,0.3)]' : ''}>
               {displayValue || placeholder}

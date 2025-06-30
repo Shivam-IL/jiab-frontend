@@ -2,7 +2,6 @@ import { IImageIconCard } from '@/interfaces'
 import { generateImageurl } from '@/utils'
 import React from 'react'
 import SvgIcons from '../SvgIcons'
-import { aktivGrotesk } from '@/app/layout'
 import Image from 'next/image'
 
 const ImageIconCard: React.FC<IImageIconCard> = ({
@@ -53,7 +52,7 @@ const ImageIconCard: React.FC<IImageIconCard> = ({
         />
       )}
       <p
-        className={`${aktivGrotesk.className} ${fontSize} ${fontWeight}  ${textColor}`}
+        className={`${fontSize} ${fontWeight}  ${textColor}`}
       >
         {text}
       </p>

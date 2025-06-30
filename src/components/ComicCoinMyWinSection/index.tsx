@@ -7,7 +7,6 @@ import PhonePeVoucherPopup from '../PhonePeVoucherPopup'
 import { useGetVoucherInfo } from '@/api/hooks/ProfileHooks'
 import MmtVoucher from '../MmtVoucher'
 import { converDateDayMonthYear } from '@/utils'
-import Image from 'next/image'
 
 export interface IVoucherInfo {
   assigned_on: string
@@ -233,13 +232,12 @@ const ComicCoinMyWinSection = () => {
         </>
       )}
       {allVoucherData?.length === 0 && !isLoading && (
-        <div className='bg-white rounded-[10.68px] flex flex-col items-center text-center p-6 md:p-10 gap-6 mt-4'>
-          <Image
+        <div className='bg-white rounded-[10.68px] flex flex-col items-center text-center p-6 md:p-10 gap-6'>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src='/other-svgs/bummer.svg'
             alt='no-wins'
-            width={180}
-            height={180}
-            className='w-[120px] md:w-[180px] h-auto'
+            className='w-[120px] md:w-[180px] h-auto md:h-[30vh] object-contain'
           />
         </div>
       )}

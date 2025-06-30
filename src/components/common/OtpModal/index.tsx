@@ -3,7 +3,6 @@ import LoginSignupWrapper, {
 } from '@/components/LoginSignupWrapper'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { aktivGrotesk } from '@/app/layout'
 import Input from '@/components/Input'
 import GreenCTA from '@/components/GreenCTA'
 import useAppSelector from '@/hooks/useSelector'
@@ -261,7 +260,7 @@ const OtpModal = () => {
                   setCounter('59')
                   resendOTP()
                 }}
-                className={`text-[#606060] self-center border-b-[#606060] border-b-[1px] ${aktivGrotesk.className} font-[500] text-[13px] md:text-[16px] outline-none`}
+                className={`text-[#606060] self-center border-b-[#606060] border-b-[1px]  font-[500] text-[13px] md:text-[16px] outline-none`}
               >
                 {cmsData.otp.resend}
               </button>

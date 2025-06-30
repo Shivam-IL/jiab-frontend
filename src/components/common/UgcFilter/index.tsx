@@ -1,4 +1,3 @@
-import { aktivGrotesk } from '@/app/layout'
 import UgcFilterModal from '@/components/UgcFilterModal'
 import React, { useEffect, useState } from 'react'
 import SvgIcons from '../SvgIcons'
@@ -61,7 +60,7 @@ const UgcFilter = ({ filter,text }: { filter: string,text:string }) => {
           <input
             type='text'
             placeholder='Search by Name...'
-            className={`w-full outline-none border-none bg-transparent ${aktivGrotesk.className} font-[400] text-[10px] md:text-[16px] text-[#383838]`}
+            className={`w-full outline-none border-none bg-transparent  font-[400] text-[10px] md:text-[16px] text-[#383838]`}
             onChange={e => setSearch(e.target.value)}
           />
         </div>

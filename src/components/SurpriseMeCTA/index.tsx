@@ -1,6 +1,5 @@
 import { ISurpriseMeCTA } from "@/interfaces";
 import React from "react";
-import { aktivGrotesk } from "@/app/layout";
 import Image from "next/image";
 
 const SurpriseMeCTA: React.FC<ISurpriseMeCTA> = ({
@@ -30,7 +29,7 @@ const SurpriseMeCTA: React.FC<ISurpriseMeCTA> = ({
         className="w-[20px] h-[20px]  md:min-w-[23px] md:min-h-[23px]"
       />
       <span
-        className={`${aktivGrotesk.className} font-[500] md:text-[12px] text-[9px]`}
+        className={` font-[500] md:text-[12px] text-[9px]`}
       >
         {text}
       </span>
