@@ -1,7 +1,7 @@
 'use client'
 
 import useWindowWidth from '@/hooks/useWindowWidth'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Joyride, {
   Step,
   CallBackProps,
@@ -22,6 +22,8 @@ interface CustomJoyrideProps {
   disableOverlayClose?: boolean
   disableScrolling?: boolean
   scrollOffset?: number
+  autoAdvance?: boolean
+  autoAdvanceInterval?: number
 }
 
 const CustomJoyride: React.FC<CustomJoyrideProps> = ({
@@ -35,9 +37,12 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
   continuous = false,
   disableOverlayClose = false,
   disableScrolling = false,
-  scrollOffset = 100
+  scrollOffset = 100,
+  autoAdvance = false,
+  autoAdvanceInterval = 3000
 }) => {
   const [stepIndex, setStepIndex] = useState(0)
+  const currentStepRef = useRef(0)
 
   const width = useWindowWidth()
   const [fontSize, setFontSize] = useState(32)
@@ -57,8 +62,33 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
   useEffect(() => {
     if (!run) {
       setStepIndex(0)
+      currentStepRef.current = 0
     }
   }, [run])
+
+  // Auto-advance functionality
+  useEffect(() => {
+    if (!run || !autoAdvance) return
+
+    const interval = setInterval(() => {
+      currentStepRef.current += 1
+
+      if (currentStepRef.current >= steps.length) {
+        // Auto-close the tour when reaching the end
+        clearInterval(interval)
+        onComplete()
+        currentStepRef.current = 0
+        setStepIndex(0)
+      } else {
+        setStepIndex(currentStepRef.current)
+      }
+    }, autoAdvanceInterval)
+
+    return () => {
+      clearInterval(interval)
+      currentStepRef.current = 0
+    }
+  }, [run, autoAdvance, steps.length, autoAdvanceInterval, onComplete])
 
   // Function to scroll element to specific height
   const scrollToElement = (target: string) => {
@@ -67,7 +97,7 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
       if (element) {
         // Use different scroll offset for mobile vs desktop
         const currentScrollOffset = width < 768 ? 120 : scrollOffset
-        
+
         const elementRect = element.getBoundingClientRect()
         const elementTop = elementRect.top + window.pageYOffset
         const targetScrollPosition = elementTop - currentScrollOffset
@@ -82,7 +112,7 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
           const newElementRect = element.getBoundingClientRect()
           const newElementTop = newElementRect.top + window.pageYOffset
           const newTargetScrollPosition = newElementTop - currentScrollOffset
-          
+
           // If position is still not correct, adjust it
           if (Math.abs(window.pageYOffset - newTargetScrollPosition) > 10) {
             window.scrollTo({
@@ -98,6 +128,7 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { status, type, index, action, step } = data
 
+    console.log('data', data, status, type, index, action, step)
     // Handle tour completion
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
       if (status === STATUS.FINISHED) {
@@ -119,7 +150,7 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
         setStepIndex(0)
       } else {
         setStepIndex(nextStepIndex)
-        
+
         // Scroll to the next step's target element
         const nextStep = steps[nextStepIndex]
         if (nextStep && nextStep.target) {
@@ -252,7 +283,7 @@ const CustomJoyride: React.FC<CustomJoyrideProps> = ({
         locale={locale}
         floaterProps={{
           disableAnimation: false,
-          placement: 'bottom',
+          placement: 'bottom'
         }}
       />
 

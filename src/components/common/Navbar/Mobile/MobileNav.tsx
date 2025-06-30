@@ -9,7 +9,7 @@ import {
   ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE,
   LANGUAGE_MNEMONICS,
 } from "../../../../constants/index";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { BoxIds } from "../../CircularBoxesModal";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -26,7 +26,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
   const [hideNavbar, setHideNavbar] = useState<boolean>(false);
   const isVisible = true;
   const { isAuthenticated } = useAppSelector((state) => state.auth);
-
+  const router = useRouter(); 
   // Fetch notification count
   const { data: notificationCountResponse } = useGetNotificationCount();
 
@@ -122,7 +122,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
 
           {/* Logo - Centered */}
           <div className="flex-1 flex justify-center">
-            <Image src={spriteLogo} alt="Sprite Logo" />
+            <Image onClick={() => router.push("/")} src={spriteLogo} alt="Sprite Logo" />
           </div>
 
           <div className="flex items-center gap-4 absolute right-[17px]">

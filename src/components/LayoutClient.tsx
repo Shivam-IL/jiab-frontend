@@ -1,32 +1,33 @@
-"use client";
+'use client'
 
-import { ReactNode, useEffect } from "react";
-import QueryClientAndReduxWrapper from "@/components/QueryClientAndReduxWrapper";
-import Navbar from "@/components/common/Navbar/Navbar";
-import HomePageSurpriseButton from "@/components/HomePageSurpriseButton";
-import { usePathname } from "next/navigation";
-import MobileFooter from "@/components/common/Footer/Mobile/MobileFooter";
-import DesktopFooter from "@/components/common/Footer/Desktop/DesktopFooter";
-import InitialDataLoader from "./common/InitialDataLoader";
-import ProtectedRoutedWrapper from "./common/ProtectedRoutedWrapper";
-import CMSWrapper from "./common/CMSWrapper";
-import GlobalLoader from "./common/GlobalLoader";
-import FCMProvider from "./FCMProvider";
-import { pageview } from "@/utils/gTagEvents";
-import BreakTheIceComponent from "./BreakTheIceComponent";
+import { ReactNode, useEffect } from 'react'
+import QueryClientAndReduxWrapper from '@/components/QueryClientAndReduxWrapper'
+import Navbar from '@/components/common/Navbar/Navbar'
+import HomePageSurpriseButton from '@/components/HomePageSurpriseButton'
+import { usePathname } from 'next/navigation'
+import MobileFooter from '@/components/common/Footer/Mobile/MobileFooter'
+import DesktopFooter from '@/components/common/Footer/Desktop/DesktopFooter'
+import InitialDataLoader from './common/InitialDataLoader'
+import ProtectedRoutedWrapper from './common/ProtectedRoutedWrapper'
+import CMSWrapper from './common/CMSWrapper'
+import GlobalLoader from './common/GlobalLoader'
+import FCMProvider from './FCMProvider'
+import { pageview } from '@/utils/gTagEvents'
+import BreakTheIceComponent from './BreakTheIceComponent'
+import { LOGIN_SIGNUP_DIALOG_ID, PORTAL_ID } from '@/constants'
 
 interface LayoutClientProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
-export default function LayoutClient({
-  children,
+export default function LayoutClient ({
+  children
 }: Readonly<LayoutClientProps>) {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   useEffect(() => {
-    pageview(window.location.pathname);
-  }, [pathname]);
+    pageview(window.location.pathname)
+  }, [pathname])
 
   return (
     <QueryClientAndReduxWrapper>
@@ -37,21 +38,22 @@ export default function LayoutClient({
               <Navbar />
               {children}
               {/* Show Surprise button only when not on /scroll-and-lol or /notification */}
-              {!pathname.includes("/scroll-and-lol") &&
-                !pathname.includes("/notifications") && (
+              {!pathname.includes('/scroll-and-lol') &&
+                !pathname.includes('/notifications') && (
                   <HomePageSurpriseButton />
                 )}
 
               {/* Mobile Footer */}
-              <div className="block lg:hidden">
+              <div className='block lg:hidden'>
                 <MobileFooter />
               </div>
 
               {/* Desktop Footer - visible on screens 900px and above (lg breakpoint) */}
-              <div className="hidden lg:block">
-                {!pathname.includes("/scroll-and-lol") && <DesktopFooter />}
+              <div className='hidden lg:block'>
+                {!pathname.includes('/scroll-and-lol') && <DesktopFooter />}
               </div>
-              <div id="portal-id"></div>
+              <div id={PORTAL_ID}></div>
+              <div id={LOGIN_SIGNUP_DIALOG_ID}></div>
             </ProtectedRoutedWrapper>
           </InitialDataLoader>
           <BreakTheIceComponent />
@@ -60,5 +62,5 @@ export default function LayoutClient({
       {/* Global Loading Component */}
       <GlobalLoader />
     </QueryClientAndReduxWrapper>
-  );
+  )
 }
