@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SvgIcons from "../SvgIcons";
 import { ICONS_NAMES, SESSION_STORAGE_KEYS } from "@/constants";
-import { aktivGrotesk } from "@/app/layout";
 import {
   updateEnableCoachMarks,
   updateSurpriseMe,
@@ -216,7 +215,7 @@ const HomePageDesktopOnboarding = ({
                 />
 
                 <div
-                  className={`text-start relative text-[12px] ${aktivGrotesk.className} font-[400]`}
+                  className={`text-start relative text-[12px]  font-[400]`}
                 >
                   {cmsData.coachMarkers.exploreArrowSubheadingThinkOfitLikeamap}
                 </div>
@@ -343,7 +342,7 @@ const HomePageDesktopOnboarding = ({
                   className="text-start w-[80%]"
                 />
                 <div
-                  className={`text-start relative w-[70%] text-[12px] ${aktivGrotesk.className} font-[400]`}
+                  className={`text-start relative w-[70%] text-[12px] font-[400]`}
                 >
                   {cmsData.coachMarkers.pickyourmoodSubheadingTellusWhatsAnnoyingYouToday}
                 </div>
@@ -373,7 +372,7 @@ const HomePageDesktopOnboarding = ({
                   className="text-start w-[80%]"
                 />
                 <div
-                  className={`text-start relative w-[70%] text-[12px] ${aktivGrotesk.className} font-[400]`}
+                  className={`text-start relative w-[70%] text-[12px]  font-[400]`}
                 >
                   {cmsData.coachMarkers.jokeboxSubHeadingAllyourjokes}
                 </div>

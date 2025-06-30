@@ -1,4 +1,3 @@
-import { aktivGrotesk } from "@/app/layout";
 import { IAktivGroteskText } from "@/interfaces";
 import React from "react";
 
@@ -10,7 +9,7 @@ const AktivGroteskText: React.FC<IAktivGroteskText> = ({
 }) => {
   return (
     <h1
-      className={`${aktivGrotesk.className} ${className} ${fontSize} ${fontWeight}`}
+      className={`${className} ${fontSize} ${fontWeight}`}
     >
       {text}
     </h1>

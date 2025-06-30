@@ -2,7 +2,6 @@ import React from 'react'
 import AktivGroteskText from '../common/AktivGroteskText'
 import { ICONS_NAMES } from '@/constants'
 import SvgIcons from '../common/SvgIcons'
-import { aktivGrotesk } from '@/app/layout'
 import CalendarDialog from '../CalendarDialog'
 import { DateRange } from 'react-day-picker'
 import GreenCTA from '../GreenCTA'
@@ -31,17 +30,17 @@ const DisplayTable = ({
         <thead>
           <tr className='border-none bg-[#FFE200] w-full'>
             <th
-              className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700] text-start p-[10px] md:pl-[32px] rounded-l-[5px] md:rounded-l-[10px]`}
+              className={` mb-[12px] box-border text-[12px] md:text-[20px] font-[700] text-start p-[10px] md:pl-[32px] rounded-l-[5px] md:rounded-l-[10px]`}
             >
               {rank}
             </th>
             <th
-              className={`${aktivGrotesk.className} mb-[12px] box-border text-[12px] md:text-[20px] font-[700]  text-start p-[10px]`}
+              className={` mb-[12px] box-border text-[12px] md:text-[20px] font-[700]  text-start p-[10px]`}
             >
               {jokes}
             </th>
             <th
-              className={`${aktivGrotesk.className} mb-[12px] text-start box-border text-[12px] md:text-[20px] font-[700] p-[10px] md:pr-[32px] rounded-r-[5px] md:rounded-r-[10px]`}
+              className={` mb-[12px] text-start box-border text-[12px] md:text-[20px] font-[700] p-[10px] md:pr-[32px] rounded-r-[5px] md:rounded-r-[10px]`}
             >
               {votes}
             </th>
@@ -53,16 +52,17 @@ const DisplayTable = ({
               return (
                 <tr key={item.id} className='border-none mt-[12px] bg-white'>
                   <td
-                    className={`${aktivGrotesk.className} relative text-[12px] md:text-[16px] font-[400] text-start box-border p-[10px] md:pl-[32px] rounded-l-[5px] md:rounded-l-[10px]`}
+                    className={` relative text-[12px] md:text-[16px] font-[400] text-start box-border p-[10px] md:pl-[32px] rounded-l-[5px] md:rounded-l-[10px]`}
                   >
                     {(offset - 1) * 5 + (item?.rank ?? 0)}
                   </td>
                   <td
-                    className={`${aktivGrotesk.className} relative box-border text-[12px] md:text-[16px] font-[400] p-[10px]`}
+                    className={` relative box-border text-[12px] md:text-[16px] font-[400] p-[10px]`}
                   >
                     <div className='flex gap-[19px] box-border relative w-full'>
                       <div className='min-w-[57px] max-w-[57px] max-h-[57px] md:min-w-[72px] min-h-[57px] md:min-h-[72px] md:max-w-[72px] md:max-h-[72px] rounded-[3px] bg-green'>
                         {item?.thumbnailUrl && (
+                          // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src={item?.thumbnailUrl ?? ''}
                             alt=''
@@ -101,7 +101,7 @@ const DisplayTable = ({
                     </div>
                   </td>
                   <td
-                    className={`${aktivGrotesk.className} box-border text-[12px] md:text-[16px] font-[400] text-center p-[10px] md:pr-[32px] rounded-r-[5px] md:rounded-r-[10px]`}
+                    className={` box-border text-[12px] md:text-[16px] font-[400] text-center p-[10px] md:pr-[32px] rounded-r-[5px] md:rounded-r-[10px]`}
                   >
                     <div className='flex flex-col justify-between md:justify-start gap-[2px] md:gap-[9px] items-start h-[57px] md:h-fit relative w-full'>
                       <AktivGroteskText

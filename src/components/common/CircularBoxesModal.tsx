@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SvgIcons from "./SvgIcons";
 import { ICONS_NAMES, SESSION_STORAGE_KEYS } from "@/constants";
-import { aktivGrotesk } from "@/app/layout";
 import {
   updateEnableCoachMarks,
   updateSurpriseMe,
@@ -316,12 +315,12 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
             <div className="flex w-full text-center h-full flex-col justify-center items-center gap-[9px]">
               <div className="flex flex-col items-start top-[61px] absolute w-[128px] bottom-[58px] right-[18px]">
                 <div
-                  className={`text-start text-[16px] ${aktivGrotesk.className} font-[700]`}
+                  className={`text-start text-[16px]  font-[700]`}
                 >
                   {cmsData.coachMarkers.pickYourMood}
                 </div>
                 <div
-                  className={`text-start relative  text-[12px] ${aktivGrotesk.className} font-[400]`}
+                  className={`text-start relative  text-[12px]  font-[400]`}
                 >
                   {
                     cmsData.coachMarkers
@@ -347,12 +346,12 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
             <div className="flex w-full text-center h-full flex-col justify-center items-center gap-[9px]">
               <div className="flex w-[81px] items-start flex-col absolute bottom-[56px] right-[21px]">
                 <div
-                  className={`text-[16px] ${aktivGrotesk.className} font-[700]`}
+                  className={`text-[16px]  font-[700]`}
                 >
                   {cmsData.coachMarkers.jokeBoxHeading}
                 </div>
                 <div
-                  className={`text-start relative text-[12px] ${aktivGrotesk.className} font-[400]`}
+                  className={`text-start relative text-[12px]  font-[400]`}
                 >
                   {cmsData.coachMarkers.jokeboxSubHeadingAllyourjokes}
                 </div>

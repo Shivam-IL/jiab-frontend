@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import { IGreenCTA } from "@/interfaces";
-import { aktivGrotesk } from "@/app/layout";
 
 const GreenCTA: React.FC<IGreenCTA> = ({
   onClick,
@@ -26,9 +25,7 @@ const GreenCTA: React.FC<IGreenCTA> = ({
           : isCoinIcon
           ? "hover:bg-yellow/60  bg-yellow text-black"
           : "hover:bg-[#73C392]  bg-[#11A64B] text-white"
-      } ${fontSize} ${fontWeight} ${borderRadius} leading-tight transition-all duration-300 ${paddingClass} ${
-        aktivGrotesk.className
-      } ${isCoinIcon ? "flex items-center gap-2" : ""}`}
+      } ${fontSize} ${fontWeight} ${borderRadius} leading-tight transition-all duration-300 ${paddingClass} ${isCoinIcon ? "flex items-center gap-2" : ""}`}
     >
       {childrenPosition === "left" && children}
       {text}

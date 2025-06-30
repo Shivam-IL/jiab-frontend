@@ -1,6 +1,5 @@
 "use client";
 
-import { aktivGrotesk } from "@/app/layout";
 import AktivGroteskText from "@/components/common/AktivGroteskText";
 import ArtistExploreMoreComponent from "@/components/common/ArtistExploreMoreComponent";
 import ScreenWrapper from "@/components/common/ScreenWrapper";
@@ -79,7 +78,7 @@ const ArtistDetailsPage = () => {
             <ClampedText
               text={userData?.profile?.description}
               maxLines={3}
-              className={`${aktivGrotesk.className} font-[400] text-[12px] md:text-[20px] text-center`}
+              className={`font-[400] text-[12px] md:text-[20px] text-center`}
               readMoreText="Read more"
               readLessText="Read less"
               readMoreClassName="text-blue-600 hover:text-blue-800 text-[12px] md:text-[20px] font-medium cursor-pointer ml-1"

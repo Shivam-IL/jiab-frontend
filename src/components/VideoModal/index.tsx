@@ -3,7 +3,6 @@
 import React, { useState } from 'react'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { ICONS_NAMES } from '@/constants'
-import { aktivGrotesk } from '@/app/layout'
 import SurpriseMeCTA from '@/components/SurpriseMeCTA'
 import { MakeLaughExitPopup } from '@/components/ExitPopUps'
 import { formatNumberToK } from '@/utils'
@@ -143,12 +142,12 @@ const SurpriseMeModal = ({
               />
               <div className='flex flex-col gap-[2px]'>
                 <p
-                  className={`${aktivGrotesk.className} font-[700] md:text-[12px] text-[14px] text-[#000000]`}
+                  className={`font-[700] md:text-[12px] text-[14px] text-[#000000]`}
                 > 
                   {joke?.title ?? ''}
                 </p>
                 <p
-                  className={`${aktivGrotesk.className} font-[400] md:text-[10px] text-[12px] text-[#000000]`}
+                  className={`font-[400] md:text-[10px] text-[12px] text-[#000000]`}
                 >
                   {joke?.user.fullName ?? ''}
                 </p>

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { Calendar } from '@/components/ui/calendar'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
-import { aktivGrotesk } from '@/app/layout'
 import { format } from 'date-fns'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { DateRange } from 'react-day-picker'
@@ -190,7 +189,7 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
               <ChevronLeft className='h-4 w-4' />
             </button>
             <h2
-              className={`${aktivGrotesk.className} text-[14px] font-[500] text-gray-800`}
+              className={`text-[14px] font-[500] text-gray-800`}
             >
               {currentDate.getFullYear()}
             </h2>
@@ -229,7 +228,7 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
                 `}
               >
                 <span
-                  className={`${aktivGrotesk.className} text-[14px] font-[400]`}
+                  className={`text-[14px] font-[400]`}
                 >
                   {month}
                 </span>
@@ -255,7 +254,7 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
               <ChevronLeft className='h-4 w-4' />
             </button>
             <h2
-              className={`${aktivGrotesk.className} text-[14px] font-[500] text-gray-800`}
+              className={` text-[14px] font-[500] text-gray-800`}
             >
               {years[0]} - {years[years.length - 1]}
             </h2>
@@ -294,7 +293,7 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
                 `}
               >
                 <span
-                  className={`${aktivGrotesk.className} text-[14px] font-[400]`}
+                  className={`text-[14px] font-[400]`}
                 >
                   {year}
                 </span>
@@ -340,13 +339,13 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
                   <div className='flex items-center gap-2'>
                     <span
                       onClick={() => setViewMode('month')}
-                      className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
+                      className={`text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
                     >
                       {format(displayMonth, 'MMM')}
                     </span>
                     <span
                       onClick={() => setViewMode('year')}
-                      className={`${aktivGrotesk.className} text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
+                      className={`text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
                     >
                       {format(displayMonth, 'yyyy')}
                     </span>
@@ -357,17 +356,17 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
                 months: 'space-y-4',
                 month: 'space-y-[32px] w-full',
                 caption: 'flex justify-between items-center relative mb-4',
-                caption_label: `${aktivGrotesk.className} text-[18px] font-[600]`,
+                caption_label: `text-[18px] font-[600]`,
                 nav: 'flex items-center space-x-2',
                 nav_button: 'bg-transparent hover:bg-transparent',
                 nav_button_previous: 'relative',
                 nav_button_next: 'relative',
                 table: 'w-full border-collapse space-y-[7px]',
                 head_row: 'flex w-full justify-between mb-2',
-                head_cell: `${aktivGrotesk.className} text-[14px] font-[500] w-[40px] text-center`,
+                head_cell: ` text-[14px] font-[500] w-[40px] text-center`,
                 row: 'flex w-full mb-2',
-                cell: `${aktivGrotesk.className} flex-1 relative p-0 text-center text-sm focus-within:relative focus-within:z-20`,
-                day: `${aktivGrotesk.className} text-[#666666] h-[35px] w-full p-0 font-[400] text-[14px] aria-selected:opacity-100 hover:bg-[#11A64B] hover:text-white hover:rounded-full rounded-none flex items-center justify-center [&.rdp-day_selected]:text-white [&.rdp-day_range_start]:text-white [&.rdp-day_range_end]:text-white`,
+                cell: `flex-1 relative p-0 text-center text-sm focus-within:relative focus-within:z-20`,
+                day: ` text-[#666666] h-[35px] w-full p-0 font-[400] text-[14px] aria-selected:opacity-100 hover:bg-[#11A64B] hover:text-white hover:rounded-full rounded-none flex items-center justify-center [&.rdp-day_selected]:text-white [&.rdp-day_range_start]:text-white [&.rdp-day_range_end]:text-white`,
                 day_range_start:
                   '!rounded-full text-white relative before:absolute before:inset-y-0 before:right-0 before:w-1/2 before:bg-[#CFEDDB] before:-z-10 [&:not(.show-range-bg)]:before:hidden [&:not(disabled)]:bg-[#11A64B]',
                 day_range_end:

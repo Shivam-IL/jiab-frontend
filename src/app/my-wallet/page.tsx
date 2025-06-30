@@ -18,12 +18,11 @@ import useAppSelector from '@/hooks/useSelector'
 import useAppDispatch from '@/hooks/useDispatch'
 import { updateLoginModal } from '@/store/auth/auth.slice'
 import RedeemSuccessPopup from '@/components/RedeemSuccessPopup'
-import {
-  // Carousel,
-  // CarouselContent,
-  // CarouselItem,
-  // type CarouselApi
-} from '@/components/ui/carousel'
+import // Carousel,
+// CarouselContent,
+// CarouselItem,
+// type CarouselApi
+'@/components/ui/carousel'
 import ComicCoinMyWinSection from '@/components/ComicCoinMyWinSection'
 
 // interface WalletCard {
@@ -125,39 +124,41 @@ const ComicCoinsPage = () => {
     <>
       <div className='bg-white -mt-5 pt-5'>
         {/* Top Section */}
-        <div className='flex justify-between items-end h-full container mx-auto mt-20 md:mb-0 mb-3'>
-          {/* Comic Coins */}
-          <div className='mx-4 md:mx-0'>
-            <AktivGroteskText
-              text={cmsData.comic.comicCoinHeader}
-              fontSize='text-[14px] md:text-[30px] text-uppercase'
-              fontWeight='font-[700]'
-            />
-            <div className='flex items-center gap-2 md:gap-3 mt-1'>
+        <div className='w-full flex flex-col items-center justify-center px-[17px]'>
+          <div className='flex justify-between md:w-[78.57%] w-full items-end h-full  mt-20 md:mb-0 mb-3'>
+            {/* Comic Coins */}
+            <div className='flex flex-col gap-[5px]'>
               <AktivGroteskText
-                text={isComicCoinsLoading ? '--' : comicCoinsValue.toString()}
-                fontSize='text-[28px] md:text-[64px]'
+                text={cmsData.comic.comicCoinHeader}
+                fontSize='text-[14px] md:text-[30px] text-uppercase'
                 fontWeight='font-[700]'
               />
-              <Image
-                src='/assets/images/sprite-gold.png'
-                alt='coin'
-                width={50}
-                height={50}
-                className='w-[21px] md:w-[50px] h-[21px] md:h-[50px]'
+              <div className='flex items-center gap-2 md:gap-3 '>
+                <AktivGroteskText
+                  text={isComicCoinsLoading ? '--' : comicCoinsValue.toString()}
+                  fontSize='text-[28px] md:text-[64px]'
+                  fontWeight='font-[700] leading-tight'
+                />
+                <Image
+                  src='/assets/images/sprite-gold.png'
+                  alt='coin'
+                  width={50}
+                  height={50}
+                  className='w-[21px] md:w-[50px] h-[21px] md:h-[50px]'
+                />
+              </div>
+            </div>
+            <div className='md:mt-0 mt-[16px] md:mb-[30px] mb-[12px]'>
+              <GreenCTA
+                text={cmsData.comic.howToCollect}
+                onClick={() => {
+                  router.push('/contest#how-to-gather')
+                }}
+                paddingClass='py-[8px] px-[20px] md:py-[16px] md:px-[50px]'
+                fontSize='text-[12px] md:text-[28px]'
+                isCoinIcon={true}
               />
             </div>
-          </div>
-          <div className='md:mt-0 mt-[16px] md:mr-0 mr-[16px] md:mb-[30px] mb-[12px]'>
-            <GreenCTA
-              text={cmsData.comic.howToCollect}
-              onClick={() => {
-                router.push('/contest#how-to-gather')
-              }}
-              paddingClass='py-[8px] px-[20px] md:py-[16px] md:px-[50px]'
-              fontSize='text-[12px] md:text-[28px]'
-              isCoinIcon={true}
-            />
           </div>
         </div>
       </div>
@@ -294,8 +295,6 @@ const ComicCoinsPage = () => {
             </div>
           )} */}
         </div>
-
-       
 
         {/* Previous Winners Banner */}
         {/* */}

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES } from '@/constants'
-import { aktivGrotesk } from '@/app/layout'
 import SurpriseMeCTA from '@/components/SurpriseMeCTA'
 import { MakeLaughExitPopup } from '@/components/ExitPopUps'
 import { useGetSurpriseMeJoke } from '@/api/hooks/JokeHooks'
@@ -376,13 +375,13 @@ const SurpriseMeModal = ({
                 />
                 <div className='flex max-w-full relative flex-col gap-[2px]'>
                   <p
-                      className={`${aktivGrotesk.className} line-clamp-1  font-[700] md:text-[12px] sm:text-[14px] text-[10px] text-[#000000]`}
+                      className={`line-clamp-1  font-[700] md:text-[12px] sm:text-[14px] text-[10px] text-[#000000]`}
                     >
                     {joke?.title ?? ''}
                   </p>
 
                   <p
-                    className={`${aktivGrotesk.className} w-full line-clamp-1  font-[400] md:text-[10px] sm:text-[12px] text-[8px] text-[#000000] overflow-hidden`}
+                    className={` w-full line-clamp-1  font-[400] md:text-[10px] sm:text-[12px] text-[8px] text-[#000000] overflow-hidden`}
                   >
                     {joke?.joke_creator ?? ''}
                   </p>

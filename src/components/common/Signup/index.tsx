@@ -2,7 +2,6 @@ import LoginSignupWrapper, {
   AuthHeading,
 } from "@/components/LoginSignupWrapper";
 import React, { useCallback, useEffect, useState } from "react";
-import { aktivGrotesk } from "@/app/layout";
 import Input from "@/components/Input";
 import GreenCTA from "@/components/GreenCTA";
 import EditProfileImage from "@/components/EditProfileImage";
@@ -419,7 +418,7 @@ const Signup = () => {
           <AuthHeading title={cmsData.signup.sign_up} />
 
           <p
-            className={`${aktivGrotesk.className} font-[400] text-[#313131] md:text-[20px] text-[16px] w-[80%] flex justify-center text-center`}
+            className={` font-[400] text-[#313131] md:text-[20px] text-[16px] w-[80%] flex justify-center text-center`}
           >
             {cmsData.signup.let_break_the_ice}
           </p>
@@ -485,7 +484,7 @@ const Signup = () => {
             />
             <label
               htmlFor="agree"
-              className={`${aktivGrotesk.className} font-[400] text-[12px] cursor-pointer`}
+              className={`font-[400] text-[12px] cursor-pointer`}
             >
               {
                 cmsData.signup.term_condition_privacy_policy.split(
