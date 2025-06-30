@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import comicCoin from "../../../../../public/other-svgs/comic-coin-footer.svg";
 import comicCoinActive from "../../../../../public/other-svgs/comic-active-footer.svg";
+import refreshActive from "../../../../../public/other-svgs/refresh-active.svg";
 import { BoxIds } from "../../../common/CircularBoxesModal";
 import { useCMSData } from "@/data";
 import { useGetComicCoins } from "@/api/hooks/JokeHooks";
@@ -191,47 +192,50 @@ const MobileFooter = () => {
               selectedLanguage === "kn" ? "gap-1" : ""
             )}
           >
-            <svg
-              width="22"
-              height="17"
-              viewBox="0 0 22 17"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g clipPath="url(#clip0_28913_15130)">
-                <path
-                  d="M1 14.602C1 15.4517 1.68764 16.1405 2.53589 16.1405H19.4642C20.3123 16.1405 21 15.4517 21 14.602V11.4727C19.6703 11.1117 18.6922 9.89437 18.6922 8.44817C18.6922 7.00197 19.6703 5.7846 21 5.4236V2.29432C21 1.44466 20.3123 0.755859 19.4642 0.755859H2.53589C1.68765 0.755859 1 1.44464 1 2.29432V5.41683C2.34262 5.76918 3.33317 6.9928 3.33317 8.44817C3.33317 9.90354 2.34262 11.1272 1 11.4795V14.602Z"
-                  stroke={
-                    currentPath === "/refresh-rings" ? "#00953B" : "#909090"
-                  }
-                  strokeWidth="1.1"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M8 11.3834V8.61418C8 8.23184 8.30996 7.92188 8.69231 7.92188H13.5385C13.9208 7.92188 14.2308 8.23184 14.2308 8.61418V11.3834C14.2308 11.7658 13.9208 12.0757 13.5385 12.0757H8.69231C8.30996 12.0757 8 11.7658 8 11.3834Z"
-                  stroke={
-                    currentPath === "/refresh-rings" ? "#00953B" : "#909090"
-                  }
-                  strokeWidth="1.1"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M9 7.9215V6.53688C9 5.38983 9.92987 4.45996 11.0769 4.45996C12.224 4.45996 13.1538 5.38983 13.1538 6.53688V7.9215"
-                  stroke={
-                    currentPath === "/refresh-rings" ? "#00953B" : "#909090"
-                  }
-                  strokeWidth="1.1"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_28913_15130">
-                  <rect width="22" height="17" fill="white" />
-                </clipPath>
-              </defs>
-            </svg>
+            {currentPath === "/refresh-rings" ? (
+              <Image
+                src={refreshActive}
+                alt="refresh-rings-active"
+                width={20}
+                height={17}
+              />
+            ) : (
+              <svg
+                width="22"
+                height="17"
+                viewBox="0 0 22 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clipPath="url(#clip0_28913_15130)">
+                  <path
+                    d="M1 14.602C1 15.4517 1.68764 16.1405 2.53589 16.1405H19.4642C20.3123 16.1405 21 15.4517 21 14.602V11.4727C19.6703 11.1117 18.6922 9.89437 18.6922 8.44817C18.6922 7.00197 19.6703 5.7846 21 5.4236V2.29432C21 1.44466 20.3123 0.755859 19.4642 0.755859H2.53589C1.68765 0.755859 1 1.44464 1 2.29432V5.41683C2.34262 5.76918 3.33317 6.9928 3.33317 8.44817C3.33317 9.90354 2.34262 11.1272 1 11.4795V14.602Z"
+                    stroke="#909090"
+                    strokeWidth="1.1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M8 11.3834V8.61418C8 8.23184 8.30996 7.92188 8.69231 7.92188H13.5385C13.9208 7.92188 14.2308 8.23184 14.2308 8.61418V11.3834C14.2308 11.7658 13.9208 12.0757 13.5385 12.0757H8.69231C8.30996 12.0757 8 11.7658 8 11.3834Z"
+                    stroke="#909090"
+                    strokeWidth="1.1"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M9 7.9215V6.53688C9 5.38983 9.92987 4.45996 11.0769 4.45996C12.224 4.45996 13.1538 5.38983 13.1538 6.53688V7.9215"
+                    stroke="#909090"
+                    strokeWidth="1.1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_28913_15130">
+                    <rect width="22" height="17" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+            )}
 
             <span
               className={cn(

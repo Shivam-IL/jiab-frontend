@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import SvgIcons from "../common/SvgIcons";
 import { ICONS_NAMES } from "@/constants";
 import { IUserReaction } from "@/api/types/JokeTypes";
 import { formatNumberToK } from "@/utils";

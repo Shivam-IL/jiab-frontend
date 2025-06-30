@@ -153,7 +153,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
             <LanguageHydration
               fallback={
                 <div id={BoxIds.LANG}>
-                  <select className="w-[72px] border border-black px-1 py-0.5 text-[10px] rounded-[2px] focus:outline-none focus:ring-0">
+                  <select className="w-[72px] border border-black px-1 py-[0.25rem] text-[10px] rounded-[2px] focus:outline-none focus:ring-0">
                     <option value="en">ENGLISH</option>
                   </select>
                 </div>
@@ -161,7 +161,7 @@ const MobileNav: React.FC<ILogoAndProfileImageProps> = ({
             >
               <div id={BoxIds.LANG}>
                 <select
-                  className="w-[72px] border border-black px-1 py-0.5 text-[10px] rounded-[2px] focus:outline-none focus:ring-0"
+                  className="w-[72px] border border-black px-1 py-[0.25rem] text-[10px] rounded-[2px] focus:outline-none focus:ring-0"
                   value={selectedLanguage}
                   onChange={(e) => changeLanguage(e.target.value)}
                 >

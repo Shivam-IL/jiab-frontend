@@ -108,10 +108,10 @@ const InviteCodeComponent = ({
         setInvite2(false);
         setOpen(true);
         setError(cmsData.validation.signupReferralCodeValidation);
-      } else if (status === INVITE_CODE_STATUS.CANT_VERIFY_OWN_REFERRAL_CODE) {
+      } else {
         setInvite2(false);
         setOpen(true);
-        setError(message as string);
+        setError(cmsData.validation.wrongReferralCode);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

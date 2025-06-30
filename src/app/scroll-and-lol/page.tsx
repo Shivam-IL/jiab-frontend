@@ -762,7 +762,7 @@ const ScrollAndLol: React.FC = () => {
             {activeVideoIndex !== undefined &&
               activeVideoIndex !== null &&
               activeVideoIndex < videos.length && (
-                <div className="absolute bottom-[135px] right-[10px] md:bottom-[12vh] md:right-[clamp(-8rem,0vw,-3rem)] z-20 md:scale-[clamp(0.7,1.2vh,1.2)] origin-bottom-right">
+                <div className="absolute bottom-[135px] right-[10px] md:bottom-[12vh] md:right-[clamp(-8rem,0vw,-3rem)] z-20 md:scale-[clamp(0.7,1.2vh,1.2)] origin-bottom-right md:mb-0 mb-10">
                   <ReactionEmojies
                     key={currentVideoData?.id}
                     videoId={currentVideoData?.id}
