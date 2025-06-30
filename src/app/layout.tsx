@@ -15,17 +15,19 @@ export const metadata: Metadata = {
     apple: "/icons/apple-touch-icon.png",
   },
   manifest: "/manifest.json",
-  themeColor: "#11A64B",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-    viewportFit: "cover",
-  },
   alternates: {
     canonical: "https://sprite-joke-in-a-bottle.coke2home.com/",
   },
+};
+
+// Viewport configuration
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+  themeColor: "#11A64B",
 };
 
 export const aktivGrotesk = localFont({
