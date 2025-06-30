@@ -130,12 +130,6 @@ const NotificationsPage: React.FC = () => {
             description={cmsData?.notification?.notificationSubHeading}
             className="md:my-[40px] my-[20px] hidden md:block"
           />
-          <div className="flex justify-center items-center py-20">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading notifications...</p>
-            </div>
-          </div>
         </ScreenWrapper>
       </div>
     );
@@ -143,72 +137,12 @@ const NotificationsPage: React.FC = () => {
 
   // Handle error state
   if (isError) {
-    return (
-      <div className="bg-lightGray min-h-screen">
-        <MobileTempNavBar
-          title={cmsData?.notification?.notificationHeader}
-          subtitle={cmsData?.notification?.notificationSubHeading}
-        />
-        <ScreenWrapper
-          className={` ${
-            width > 750
-              ? "mt-20 flex justify-center bg-lightGray"
-              : "mt-0 border-t-[14px] border-t-lightGray bg-white"
-          }`}
-        >
-          <Header
-            title="Notifications"
-            description="Keep up with the build-up."
-            className="md:my-[40px] my-[20px] hidden md:block"
-          />
-          <div className="flex justify-center items-center py-20">
-            <div className="text-center">
-              <div className="text-red-500 text-6xl mb-4">⚠️</div>
-              <p className="text-gray-600 mb-4">Failed to load notifications</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark transition-colors"
-              >
-                Try Again
-              </button>
-            </div>
-          </div>
-        </ScreenWrapper>
-      </div>
-    );
+    return <></>;
   }
 
   // Handle empty state
   if (notifications.length === 0) {
-    return (
-      <div className="bg-lightGray min-h-screen">
-        <MobileTempNavBar
-          title={cmsData?.notification?.notificationHeader}
-          subtitle={cmsData?.notification?.notificationSubHeading}
-        />
-        <ScreenWrapper
-          className={` ${
-            width > 750
-              ? "mt-20 flex justify-center bg-lightGray"
-              : "mt-0 border-t-[14px] border-t-lightGray bg-white"
-          }`}
-        >
-          <Header
-            title="Notifications"
-            description="Keep up with the build-up."
-            className="md:my-[40px] my-[20px] hidden md:block"
-          />
-          <div className="flex justify-center items-center py-20">
-            <div className="text-center">
-              <p className="text-gray-600 mb-2">No notifications yet</p>
-              <p className="text-gray-500 text-sm">
-                Check back later for updates!
-              </p>
-            </div>
-          </div>
-        </ScreenWrapper>
-      </div>
-    );
+    return <div className="bg-lightGray min-h-screen"></div>;
   }
 
   return (
@@ -238,6 +172,10 @@ const NotificationsPage: React.FC = () => {
               key={index}
               title={notification.notification_title}
               description={notification.notification_text}
+              descriptionFontSize={{
+                mobile: "text-[10px] w-[315px]",
+                desktop: "md:text-[16px]",
+              }}
               timestamp={getTimeAgo(notification.launch_date)}
               iconUrl={notification.icon_url}
               isLast={index === notifications.length - 1}

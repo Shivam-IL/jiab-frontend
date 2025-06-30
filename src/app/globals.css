@@ -127,6 +127,24 @@
         #00C853 0 8px,
         transparent 8px 16px) 1;
   }
+
+  /* iOS accessibility zoom prevention */
+  .ios-zoom-disable {
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
+  }
+
+  /* Prevent iOS input zoom on focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  textarea,
+  select {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+  }
 }
 
 @keyframes slideDown {
@@ -227,6 +245,9 @@
     text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
+    /* iOS accessibility zoom prevention */
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
   }
 
   body {

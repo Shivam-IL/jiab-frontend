@@ -246,7 +246,9 @@ const HomePageDesktopOnboarding = ({
                   fontWeight="font-[700] leading-tight"
                 />
                 <AktivGroteskText
-                  text={cmsData.coachMarkers.contestSubheadingJumpinTheRewardGame}
+                  text={
+                    cmsData.coachMarkers.contestSubheadingJumpinTheRewardGame
+                  }
                   fontSize="text-[12px]"
                   fontWeight="font-[400] leading-tight"
                   className="text-start"
@@ -271,7 +273,7 @@ const HomePageDesktopOnboarding = ({
             <div className="flex w-full text-center h-full flex-col justify-center items-center gap-[9px]">
               <div className="flex items-center absolute bottom-[92px] px-[11px] justify-between">
                 <AktivGroteskText
-                  text="We speak many languages, take your pick!"
+                  text={cmsData.coachMarkers.weSpeakManyLanguages}
                   fontSize="text-[16px]"
                   fontWeight="font-[700] leading-tight"
                   className="text-start w-[80%]"
@@ -346,7 +348,10 @@ const HomePageDesktopOnboarding = ({
                 <div
                   className={`text-start relative w-[70%] text-[12px] font-[400]`}
                 >
-                  {cmsData.coachMarkers.pickyourmoodSubheadingTellusWhatsAnnoyingYouToday}
+                  {
+                    cmsData.coachMarkers
+                      .pickyourmoodSubheadingTellusWhatsAnnoyingYouToday
+                  }
                 </div>
               </div>
             </div>

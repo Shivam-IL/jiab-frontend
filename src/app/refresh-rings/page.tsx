@@ -109,7 +109,7 @@ const RefreshRings = () => {
         name={ICONS_NAMES.REFRESH_RINGS_SMILE}
       />
     </div>
-  )
-}
+  );
+};
 
-export default RefreshRings
+export default RefreshRings;

@@ -155,6 +155,9 @@ export type TCMSResponse = {
       locale: string;
       surprise_me: string;
       load_more_button_text: string;
+      Loading: string;
+      Search_by_name: string;
+      no_more_data: string;
     };
     hall_of_lame: {
       id: number;
