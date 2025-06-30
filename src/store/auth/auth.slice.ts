@@ -15,6 +15,7 @@ export interface AuthState {
   gludeinIsAuthenticated: boolean;
   enableCoachMarks: boolean;
   refreshTokenNotVerified: boolean;
+  pauseVideo: boolean;
 }
 
 const initialState: AuthState = {
@@ -32,6 +33,7 @@ const initialState: AuthState = {
   gludeinIsAuthenticated: false,
   enableCoachMarks: false,
   refreshTokenNotVerified: false,
+  pauseVideo: false,
 };
 
 const authSlice = createSlice({
@@ -80,6 +82,9 @@ const authSlice = createSlice({
     updateRefreshTokenNotVerified: (state, action) => {
       state.refreshTokenNotVerified = action.payload.refreshTokenNotVerified;
     },
+    updatePauseVideo: (state, action) => {
+      state.pauseVideo = action.payload.pauseVideo;
+    },
     resetAuth: (state) => {
       state.phoneNumber = "";
       state.loginModal = false;
@@ -114,5 +119,6 @@ export const {
   updateGludeinIsAuthenticated,
   updateEnableCoachMarks,
   updateRefreshTokenNotVerified,
+  updatePauseVideo,
 } = authSlice.actions;
 export default authSlice.reducer;
