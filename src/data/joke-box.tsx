@@ -7,6 +7,9 @@ export interface JokeBoxData {
   filter: string;
   surpriseMe: string;
   loadMoreButtonText: string;
+  loadingText: string;
+  searchByName: string;
+  noMoreData: string;
 }
 
 export const mapJokeBoxData = (
@@ -23,6 +26,9 @@ export const mapJokeBoxData = (
     filter: jokeBoxCMS?.filter ?? "Filter",
     surpriseMe: jokeBoxCMS?.surprise_me ?? "Surprise Me",
     loadMoreButtonText: jokeBoxCMS?.load_more_button_text ?? "Load More",
+    loadingText: jokeBoxCMS?.Loading ?? "Loading",
+    searchByName: jokeBoxCMS?.Search_by_name ?? "Search by Name...",
+    noMoreData: jokeBoxCMS?.no_more_data ?? "No more data",
   };
 };
 
@@ -34,4 +40,7 @@ export const defaultJokeBoxData: JokeBoxData = {
   filter: "Filter",
   surpriseMe: "Surprise Me",
   loadMoreButtonText: "Load More",
+  loadingText: "Loading",
+  searchByName: "Search by Name...",
+  noMoreData: "No more data",
 };

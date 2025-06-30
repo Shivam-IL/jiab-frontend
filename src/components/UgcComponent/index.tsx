@@ -53,7 +53,7 @@ const UgcComponent: React.FC<IUgcComponent> = ({
       {jokesData?.length === 0 && (
         <div className="flex justify-center items-center md:mt-[32px] mt-[16px]">
           <AktivGroteskText
-            text="No more data"
+            text={cmsData.jokeBox.noMoreData}
             fontSize="text-[16px]"
             fontWeight="font-[700]"
           />

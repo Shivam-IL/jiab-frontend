@@ -1,7 +1,7 @@
 import React from "react";
 import { IUserGeneratedJokeCard } from "@/interfaces";
 import AktivGroteskText from "../AktivGroteskText";
-import {  PENDING } from "@/constants";
+import { PENDING } from "@/constants";
 import { formatDateToMonthYear } from "@/utils";
 
 const UserGeneratedJokeCard: React.FC<IUserGeneratedJokeCard> = ({

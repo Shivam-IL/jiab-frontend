@@ -56,11 +56,18 @@ interface VideoData {
 
 // Loading Spinner Component
 const LoadingSpinner: React.FC = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const cmsData = useCMSData(mounted);
   return (
     <div className="relative md:w-fit md:h-full w-full h-screen flex items-center justify-center">
       <div className="flex flex-col items-center">
         <div className="w-16 h-16 border-[8px] border-[#08C270] border-t-[#009639] rounded-full animate-spin mb-4"></div>
-        <p className="text-green text-xl font-bold">Loading...</p>
+        <p className="text-green text-xl font-bold">
+          {cmsData.jokeBox.searchByName}...
+        </p>
       </div>
     </div>
   );
