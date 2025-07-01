@@ -116,7 +116,6 @@ const SurpriseMeModal = ({
 
   useEffect(() => {
     if (jokeData?.ok) {
-      viewGludeinJokes({ assetIds: [jokeData?.data?.id] })
       setOpen(true)
       setJoke(jokeData?.data ?? {})
       setSerialChill(false)
@@ -417,6 +416,10 @@ const SurpriseMeModal = ({
                     disablePictureInPicture
                     controlsList='nodownload'
                     playsInline
+                    onEnded={() => {
+                      console.log('onEnded', joke?.id)
+                      viewGludeinJokes({ assetIds: [joke?.id] })
+                    }}
                     muted={false}
                     webkit-playsinline=''
                     x5-playsinline=''
