@@ -23,7 +23,8 @@ import {
   updateLoginModal,
   updateIsFirstLogin,
   updateOtpVerified,
-  updateOtpFilled
+  updateOtpFilled,
+  updateSurpriseMe
 } from '@/store/auth/auth.slice'
 import {
   updateAddresses,
@@ -203,6 +204,10 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, refresh_token)
       setLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, access_token)
       setTokenUpdated(true)
+      if (refreshTokenFromParams) {
+        dispatch(updateSurpriseMe({ surpriseMe: true }))
+        removeSessionStorageItem(SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE)
+      }
     } else if (refreshTokenData?.ok === false) {
       localStorage.clear()
       dispatch(updateIsAuthenticated({ isAuthenticated: false }))
