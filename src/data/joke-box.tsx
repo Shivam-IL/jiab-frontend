@@ -10,6 +10,8 @@ export interface JokeBoxData {
   loadingText: string;
   searchByName: string;
   noMoreData: string;
+  vote: string;
+  voted: string;
 }
 
 export const mapJokeBoxData = (
@@ -29,6 +31,8 @@ export const mapJokeBoxData = (
     loadingText: jokeBoxCMS?.Loading ?? "Loading",
     searchByName: jokeBoxCMS?.Search_by_name ?? "Search by Name...",
     noMoreData: jokeBoxCMS?.no_more_data ?? "No more data",
+    vote: jokeBoxCMS?.vote ?? "Vote",
+    voted: jokeBoxCMS?.voted ?? "Voted",
   };
 };
 
@@ -43,4 +47,6 @@ export const defaultJokeBoxData: JokeBoxData = {
   loadingText: "Loading",
   searchByName: "Search by Name...",
   noMoreData: "No more data",
+  vote: "Vote",
+  voted: "Voted",
 };

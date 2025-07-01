@@ -158,6 +158,8 @@ export type TCMSResponse = {
       Loading: string;
       Search_by_name: string;
       no_more_data: string;
+      vote: string;
+      voted: string;
     };
     hall_of_lame: {
       id: number;

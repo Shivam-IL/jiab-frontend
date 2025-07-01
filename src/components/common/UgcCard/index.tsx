@@ -86,9 +86,6 @@ const UgcCard: React.FC<UgcCardProps> = ({
   };
 
   const trigger_CDP_VOTE_JOKES = (jokeId: string) => {
-    console.log("jokeId", jokeId);
-    console.log("user?.id", user?.id);
-    console.log("voteCDP", voteCDP);
     if (jokeId && user?.id && voteCDP) {
       const payload: BaseCDPEventPayload =
         CDPEventPayloadBuilder.buildVoteJokePayload(jokeId, user?.id);
@@ -187,7 +184,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
   };
   console.log(disclaimerText);
 
-  const { homePage } = useCMSData();
+  const { homePage, jokeBox } = useCMSData();
 
   return (
     <div
@@ -381,7 +378,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
                   }
                   trigger_CDP_VOTE_JOKES(item?.videoId ?? "");
                 }}
-                text={item?.isLiked ? "Voted" : "Vote"}
+                text={item?.isLiked ? jokeBox.voted : jokeBox.vote}
                 disabled={item?.isLiked ?? false}
                 className="leading-tight flex items-center justify-center"
                 paddingClass="px-[26px] py-[8px] md:px-[21px] md:py-[7px]"
