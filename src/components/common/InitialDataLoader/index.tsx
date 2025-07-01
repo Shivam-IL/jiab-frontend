@@ -206,7 +206,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       setTokenUpdated(true)
       if (refreshTokenFromParams) {
         dispatch(updateSurpriseMe({ surpriseMe: true }))
-        removeSessionStorageItem(SESSION_STORAGE_KEYS.SIGNUP_KEEP_ALIVE)
+      removeSessionStorageItem(SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL)
       }
     } else if (refreshTokenData?.ok === false) {
       localStorage.clear()
