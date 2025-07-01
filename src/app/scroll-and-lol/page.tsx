@@ -6,7 +6,7 @@ import ReactionEmojies from '@/components/ReactionEmojies'
 import { ICONS_NAMES } from '@/constants' // Import ICONS_NAMES
 import { useCMSData } from '@/data'
 import { useSearchParams } from 'next/navigation'
-import { useGetJokes } from '@/api/hooks/JokeHooks'
+import { useGetJokes, usePostReelReaction } from '@/api/hooks/JokeHooks'
 import { useLanguage } from '@/hooks/useLanguage'
 import { IUserReaction } from '@/api/types/JokeTypes'
 import {
@@ -20,6 +20,7 @@ import {
 import useAppSelector from '@/hooks/useSelector'
 import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 import ExhaustVideo from '@/components/ExhaustVideo'
+import { CoinAnimation, useCoinAnimation } from '@/components/common/CoinAnimation'
 
 export interface IModifiedJoke {
   id: string
@@ -162,6 +163,10 @@ const ScrollAndLol: React.FC = () => {
   const [currentVideoData, setCurrentVideoData] = useState<VideoData | null>(
     null
   )
+  const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation()
+
+  const { mutate: postReelReaction, data: postReelReactionData } =
+    usePostReelReaction()
   const [completlyPlayedVideoIndex, setCompletlyPlayedVideoIndex] =
     useState<number>(-1)
   const { user } = useAppSelector(state => state.profile)
@@ -446,7 +451,10 @@ const ScrollAndLol: React.FC = () => {
       const currentVideoId = videos[activeVideoIndex]?.id
       const reactionType = sendGluedinUserReactionData?.data?.reactionType
       triggerCDPEvent(reactionType, currentVideoId)
-
+      postReelReaction({
+        assetId: currentVideoId,
+        reaction: reactionType
+      })
       setVideos((prev: VideoData[]) => {
         const newArr = [...prev]
         const currentVideoIndexData = newArr.findIndex(
@@ -505,6 +513,13 @@ const ScrollAndLol: React.FC = () => {
       }
     }
   }
+
+  useEffect(() => {
+    if (postReelReactionData?.ok) {
+      triggerAnimation()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [postReelReactionData])
 
   const toggleMute = (index: number) => {
     if (index === activeVideoIndex) {
@@ -824,6 +839,7 @@ const ScrollAndLol: React.FC = () => {
           </button>
         </div>
       )}
+      <CoinAnimation isVisible={isAnimating} animationKey={animationKey} />
     </div>
   )
 }

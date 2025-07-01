@@ -4,7 +4,7 @@ import { API_ROUTES, LOCAL_STORAGE_KEYS } from "../client/config";
 import { MainService } from "./MainService";
 import { getLocalStorageItem } from "@/utils";
 import { AUTHORIZATION_TYPES } from "../client/constant";
-import { TSubmitJokeParams } from "../types/JokeTypes";
+import { IReelReaction, TSubmitJokeParams } from "../types/JokeTypes";
 import gluedin from "gluedin";
 import { LIMIT_EXCEED } from "@/constants";
 
@@ -198,6 +198,27 @@ export class JokeService extends MainService {
           ...this.getAuthHeaders(),
         },
       });
+      const responseData = response.data;
+      if (responseData?.success) {
+        return SuccessResponse(responseData.data);
+      }
+      return ErrorResponse(responseData?.message ?? "Something went wrong");
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async PostReelReaction(data: IReelReaction) {
+    try {
+      const response = await apiClient.post(
+        API_ROUTES.JOKES.POST_REACTION_ON_REEL,
+        data,
+        {
+          headers: {
+            ...this.getAuthHeaders(),
+          },
+        }
+      );
       const responseData = response.data;
       if (responseData?.success) {
         return SuccessResponse(responseData.data);

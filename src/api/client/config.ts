@@ -89,6 +89,7 @@ export const API_ROUTES = {
     GET_CONTENT_BY_IDS: "/joke/ugc/content-by-ids",
     INCREASE_COMIC_COINS: "/comic-coin/increment",
     GET_HALL_OF_LAME_ARTIST: "/joke/ugc/content-artist",
+    POST_REACTION_ON_REEL: "/joke/reel-reaction",
   },
   CMS: {
     GET_HOME_PAGE_CONTENT: () =>

@@ -49,3 +49,8 @@ export interface IComicCoinsResponse {
   status: number;
   success: boolean;
 }
+
+export interface IReelReaction {
+  assetId: string;
+  reaction: string;
+}
