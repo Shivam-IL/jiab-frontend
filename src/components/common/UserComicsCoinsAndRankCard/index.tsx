@@ -21,6 +21,7 @@ const UserComicsCoinsAndRankCard = ({
 }) => {
   const router = useRouter();
   const { current_balance, rank } = useAppSelector((state) => state.profile);
+  const { selectedLanguage } = useAppSelector((state) => state.language);
 
   // Fetch comic coins data
   const {
@@ -80,7 +81,7 @@ const UserComicsCoinsAndRankCard = ({
               isComicCoinsLoading ? "--" : comicCoinsValue.toString() || "0"
             }
             className="text-black"
-            fontSize="text-[16px] md:text-[32px]"
+            fontSize={"text-[16px] md:text-[32px]"}
             fontWeight="font-[700]"
           />
           <div className="flex justify-center">
@@ -89,7 +90,7 @@ const UserComicsCoinsAndRankCard = ({
               imageClassName="w-[12px] h-[12px] object-cover md:w-[28px] md:h-[28px]"
               image={LOCAL_IMAGES.SPRITE_GOLD}
               text={comicCoins}
-              fontSize="text-[12px] md:text-[28px]"
+              fontSize={`${selectedLanguage === 'ta' ? 'xxs:text-[7px] text-[10px] md:text-[20px] lg:text-[20px] xl:text-[20px] 2xl:text-[20px]' : 'text-[12px] md:text-[28px]'}`}
               fontWeight="font-[700]"
               textColor="text-black"
             />
@@ -114,7 +115,7 @@ const UserComicsCoinsAndRankCard = ({
               icon={ICONS_NAMES.RANK}
               iconClassName="w-[9px] h-[12px] md:w-[18px] md:h-[28px]"
               text={ranks}
-              fontSize="text-[12px] md:text-[28px]"
+              fontSize={`${selectedLanguage === 'ta' ? 'xxs:text-[7px] text-[10px] md:text-[20px] lg:text-[20px] xl:text-[20px] 2xl:text-[20px]' : 'text-[12px] md:text-[28px]'}`}
               fontWeight="font-[700]"
               textColor="text-black"
             />
@@ -125,7 +126,7 @@ const UserComicsCoinsAndRankCard = ({
       <div className="relative md:w-[25%] w-[35%] flex justify-end items-center">
         <GreenCTA
           className=""
-          fontSize="text-[12px] md:text-[20px]"
+          fontSize={`${selectedLanguage === 'ta' ? 'xxs:text-[7px] text-[10px] md:text-[20px] lg:text-[20px] xl:text-[20px] 2xl:text-[20px]' : 'text-[12px] md:text-[20px]'}`}
           fontWeight="font-[700] md:font-[600]"
           paddingClass="py-[8px] md:py-[20px] px-[17px] md:px-[60px] flex items-center justify-center gap-[4px] md:gap-[12px]"
           text={leaderboardButtonText}
@@ -139,4 +140,4 @@ const UserComicsCoinsAndRankCard = ({
   );
 };
 
-export default UserComicsCoinsAndRankCard;
+export default UserComicsCoinsAndRankCard

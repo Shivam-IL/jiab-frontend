@@ -1,4 +1,3 @@
-import { Dialog, DialogContent } from '@/components/ui/dialog'
 import React, { useEffect, useState } from 'react'
 import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES, REDUX_UPDATION_TYPES } from '@/constants'
@@ -42,6 +41,7 @@ const AddressModal: React.FC<IAddressModal> = ({
   const cmsData = useCMSData(mounted)
   const { user } = useAppSelector(state => state.profile)
   const { mutate: sendCDPEvent } = useSendCDPEvent()
+  const { selectedLanguage } = useAppSelector(state => state.language)
 
   const [data, setData] = useState<IAddressData>({
     address_line_1: '',
@@ -497,7 +497,7 @@ const AddressModal: React.FC<IAddressModal> = ({
             >
               <AktivGroteskText
                 text={cmsData?.plusAddInsideProfile?.tAndC}
-                fontSize='text-[7px]'
+                fontSize={`${selectedLanguage === "ta" ? "text-[6px] xxs:text-[3px]" : "text-[7px]"}`}
                 fontWeight='font-[400]'
               />
             </button>
@@ -508,7 +508,7 @@ const AddressModal: React.FC<IAddressModal> = ({
             >
               <AktivGroteskText
                 text={cmsData?.plusAddInsideProfile?.privacyPolicy}
-                fontSize='text-[7px]'
+                fontSize={`${selectedLanguage === "ta" ? "text-[6px] xxs:text-[3px]" : "text-[7px]"}`}
                 fontWeight='font-[400]'
               />
             </button>
@@ -516,7 +516,7 @@ const AddressModal: React.FC<IAddressModal> = ({
           <div className='relative flex gap-2 items-center'>
             <AktivGroteskText
               text={cmsData?.plusAddInsideProfile?.trademark}
-              fontSize='text-[6px]'
+              fontSize={`${selectedLanguage === "ta" ? "text-[6px] xxs:text-[3px]" : "text-[7px]"}`}
               fontWeight='font-[400]'
             />
             <div className='relative min-w-[4.75px] min-h-[4.75px] bg-[#00953B] flex flex-col justify-center items-center'>
