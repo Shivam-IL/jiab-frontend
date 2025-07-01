@@ -26,6 +26,7 @@ import {
 import { INotification } from "@/api/types/NotificationTypes";
 import { useQueryClient } from "@tanstack/react-query";
 import { keys } from "@/api/utils";
+import { cn } from "@/lib/utils";
 
 const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   spriteLogo,
@@ -178,6 +179,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
 
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const { user } = useAppSelector((state) => state.profile);
+  const isTamil = selectedLanguage === "ta";
 
   const loginHandler = () => {
     dispatch(updateLoginModal({ loginModal: true }));
@@ -228,7 +230,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                               setIsExploreDropdownOpen(false);
                             }}
                             key={item.id}
-                            className="px-[20px] py-[10px] hover:bg-gray-50 text-start text-[18px] font-normal leading-tight"
+                            className={cn(
+                              "px-[20px] py-[10px] hover:bg-gray-50 text-start text-[18px] font-normal leading-tight",
+                              isTamil && "text-[14px]"
+                            )}
                           >
                             {item.label}
                           </button>
@@ -248,7 +253,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                               setIsExploreDropdownOpen(false);
                             }}
                             key={item.id}
-                            className="px-[20px] py-[10px] text-start hover:bg-gray-50 text-[18px] font-normal leading-tight"
+                            className={cn(
+                              "px-[20px] py-[10px] text-start hover:bg-gray-50 text-[18px] font-normal leading-tight",
+                              isTamil && "text-[14px]"
+                            )}
                           >
                             {item.label}
                           </button>
@@ -263,7 +271,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                               router.push(item.href);
                             }}
                             key={item.id}
-                            className="px-[20px] py-[10px] text-start hover:bg-gray-50 text-[18px] font-normal leading-tight"
+                            className={cn(
+                              "px-[20px] py-[10px] text-start hover:bg-gray-50 text-[18px] font-normal leading-tight",
+                              isTamil && "text-[14px]"
+                            )}
                           >
                             {item.label}
                           </button>
@@ -293,7 +304,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         <Link
                           key={item.id}
                           href={item.href}
-                          className="px-[20px] py-[10px] hover:bg-gray-50 text-[18px] font-normal leading-tight"
+                          className={cn(
+                            "px-[20px] py-[10px] hover:bg-gray-50 text-[18px] font-normal leading-tight",
+                            isTamil && "text-[14px]"
+                          )}
                           onClick={() => setIsExploreDropdownOpen(false)}
                         >
                           {item.label}
@@ -304,13 +318,26 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                     <div className="px-[20px] py-[10px]">
                       <Link
                         href="/user-generated-jokes"
-                        className="block bg-green text-white rounded-lg p-3"
+                        className={cn(
+                          "block bg-green text-white rounded-lg p-3",
+                          isTamil && "p-2"
+                        )}
                         onClick={() => setIsExploreDropdownOpen(false)}
                       >
-                        <div className="text-sm font-[400]">
+                        <div
+                          className={cn(
+                            "text-sm font-[400]",
+                            isTamil && "text-[12px]"
+                          )}
+                        >
                           {cmsData.navBar.navBarInsideExploreBannerHeading}
                         </div>
-                        <div className="text-md font-bold">
+                        <div
+                          className={cn(
+                            "text-md font-bold",
+                            isTamil && "text-[15px]"
+                          )}
+                        >
                           {cmsData.navBar.navBarInsideExploreBannerSubHeading}
                         </div>
                       </Link>
@@ -386,9 +413,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                         )
                       )
                     ) : (
-                      <div className="flex justify-center items-center py-8 text-gray-500">
-                        <span>No notifications yet</span>
-                      </div>
+                      <div className="flex justify-center items-center py-8 text-gray-500"></div>
                     )}
                   </div>
                 </div>
@@ -467,7 +492,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                     {isAuthenticated && (
                       <Link
                         href="/profile"
-                        className="hover:bg-gray-50 flex justify-between items-center px-[20px] py-[10px]"
+                        className="hover:bg-gray-50 flex justify-between items-center px-[20px] py-[10px] text-[12px]"
                       >
                         {cmsData.navBar.myProfile}
                         <Image
@@ -481,7 +506,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                     {isAuthenticated && (
                       <Link
                         href="/my-wallet"
-                        className="px-[20px] py-[10px] hover:bg-gray-50 flex justify-between items-center"
+                        className="px-[20px] py-[10px] hover:bg-gray-50 flex justify-between items-center text-[10px]"
                       >
                         {cmsData.navBar.comicCoins}
                         <Image
@@ -495,7 +520,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                     {isAuthenticated && (
                       <button
                         onClick={logoutHandler}
-                        className="w-full text-left px-[20px] py-[10px] hover:bg-gray-50 text-red-500 flex items-center justify-between"
+                        className="w-full text-left px-[20px] py-[10px] hover:bg-gray-50 text-red-500 flex items-center justify-between text-[12px]"
                       >
                         <span>{cmsData.navBar.logout}</span>
                         <Image

@@ -6,8 +6,12 @@ import AktivGroteskText from "../AktivGroteskText";
 import { updateUgcFilters } from "@/store/ugc";
 import useAppDispatch from "@/hooks/useDispatch";
 import { useCMSData } from "@/data";
+import { useLanguage } from "@/hooks/useLanguage";
+
 const UgcFilter = ({ filter, text }: { filter: string; text: string }) => {
   const [mounted, setMounted] = useState(false);
+  const { selectedLanguage } = useLanguage();
+  const isTamil = selectedLanguage === "ta";
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -87,6 +91,7 @@ const UgcFilter = ({ filter, text }: { filter: string; text: string }) => {
         open={openUgcFilterModal}
         onClose={() => setOpenUgcFilterModal(false)}
         onApply={handleApplyFilters}
+        isTamil={isTamil}
       />
     </>
   );
