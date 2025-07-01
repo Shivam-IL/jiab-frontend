@@ -257,7 +257,7 @@ const LeaderBoardTable = ({
       </div>
       <div className='w-full flex flex-col gap-[28px] md:gap-[40px]'>
         <div className='w-full flex flex-col gap-[12px]'>
-          <DisplayTable
+          {leaderboard?.length > 0 && <DisplayTable
             rankData={my_rank}
             data={leaderboard}
             avatarText={avatarText}
@@ -266,7 +266,7 @@ const LeaderBoardTable = ({
             prizeText={prizeText}
             rankText={rankText}
             yourRankText={yourRankText}
-          />
+          />}
           {leaderboard?.length === 0 && (
             <div className='flex  justify-center items-center'>
               <AktivGroteskText
