@@ -39,6 +39,7 @@ import ComicCoinMyWinSection from '@/components/ComicCoinMyWinSection'
 const ComicCoinsPage = () => {
   const [mounted, setMounted] = useState(false)
   const [isReferModalOpen, setIsReferModalOpen] = useState(false)
+  const { selectedLanguage } = useAppSelector(state => state.language)
   // const [redemptionStates, setRedemptionStates] = useState<{
   //   [key: number]: boolean
   // }>({
@@ -130,7 +131,7 @@ const ComicCoinsPage = () => {
             <div className='flex flex-col gap-[5px]'>
               <AktivGroteskText
                 text={cmsData.comic.comicCoinHeader}
-                fontSize='text-[14px] md:text-[30px] text-uppercase'
+                fontSize={`text-uppercase  ${selectedLanguage === 'ta' ? ' xxs:text-[8px] text-[14px] md:text-[30px] xl:text-[30px] 2xl:text-[30px] lg:text-[30px]' : 'text-[14px] md:text-[30px] '}`}
                 fontWeight='font-[700]'
               />
               <div className='flex items-center gap-2 md:gap-3 '>
@@ -301,7 +302,7 @@ const ComicCoinsPage = () => {
         <div className="md:mt-[40px] mt-[16px] bg-[url('/other-svgs/banner-explore.svg')] bg-cover bg-center md:rounded-[20px] rounded-[10px] flex justify-between items-center p-4 md:p-6 ">
           <AktivGroteskText
             text={cmsData.comic.previousWinnerBanner1Text}
-            fontSize='text-[16px] md:text-[30px]'
+            fontSize={` ${selectedLanguage === 'ta' ? 'xxs:text-[10px] text-[16px] md:text-[30px] lg:text-[30px] xl:text-[30px] 2xl:text-[30px]' : 'text-[16px] md:text-[30px]'}`}
             fontWeight='font-[700]'
             className='text-white'
           />
@@ -310,7 +311,7 @@ const ComicCoinsPage = () => {
               text={cmsData.comic.leaderboardButtonBanner1Text}
               onClick={() => {}}
               paddingClass='py-[6px] px-[20px] md:py-[14px] md:px-[60px]'
-              fontSize='text-[12px] md:text-[28px] md:font-bold'
+              fontSize={`md:font-bold ${selectedLanguage === 'ta' ? 'xxs:text-[10px] text-[12px] md:text-[28px] lg:text-[28px] xl:text-[28px] 2xl:text-[28px]' : 'text-[12px] md:text-[28px]'}`}
               className='md:w-auto'
             />
           </Link>

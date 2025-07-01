@@ -90,7 +90,7 @@ const HelpUsToKnowYourBetter = ({
 
   // Get mapped CMS data using our data layer
   const cmsData = useCMSData(mounted);
-
+  
   const { user } = useAppSelector((state) => state.profile);
   const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
     null
@@ -358,7 +358,7 @@ const HelpUsToKnowYourBetter = ({
                         : "text-black"
                     } md:hidden`}
                     text={prevButtonText}
-                    fontSize="text-[14px]"
+                    fontSize={`${selectedLanguage === 'ta' ? 'xxs:text-[10px] text-[14px]' : 'text-[14px]'}`}
                     fontWeight="font-[700]"
                   />
                   <SvgIcons
@@ -390,7 +390,7 @@ const HelpUsToKnowYourBetter = ({
                         : "text-black"
                     } md:hidden`}
                     text={nextButtonText}
-                    fontSize="text-[14px]"
+                    fontSize={`${selectedLanguage === 'ta' ? 'xxs:text-[10px] text-[14px]' : 'text-[14px]'}`}
                     fontWeight="font-[700]"
                   />
                   <SvgIcons

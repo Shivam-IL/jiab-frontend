@@ -15,6 +15,7 @@ import FCMProvider from "./FCMProvider";
 import { pageview } from "@/utils/gTagEvents";
 import BreakTheIceComponent from "./BreakTheIceComponent";
 import { LOGIN_SIGNUP_DIALOG_ID, PORTAL_ID } from "@/constants";
+import FontProvider from "./FontProvider";
 
 interface LayoutClientProps {
   children: ReactNode;
@@ -31,6 +32,7 @@ export default function LayoutClient({
 
   return (
     <QueryClientAndReduxWrapper>
+      <FontProvider />
       <FCMProvider>
         <CMSWrapper>
           <InitialDataLoader>

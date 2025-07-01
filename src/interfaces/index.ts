@@ -152,6 +152,7 @@ export interface IUgcFilterModal {
   open: boolean;
   onClose: () => void;
   onApply?: (filters: { language: string; category: string }) => void;
+  isTamil?: boolean;
 }
 
 export interface IReferNowModal {

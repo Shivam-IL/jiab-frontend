@@ -135,6 +135,36 @@ export const aktivGrotesk = localFont({
   ],
 });
 
+export const octoberCompressed = localFont({
+  src: [
+    {
+      path: "./fonts/OctoberCompressedHairline.woff2",
+      weight: "100",
+      style: "regular",
+    },
+  ],
+  variable: "--font-october-compressed",
+  display: "swap",
+  preload: false,
+  fallback: [
+    // Mac fallbacks
+    "-apple-system",
+    "BlinkMacSystemFont",
+    // Windows fallbacks
+    "Segoe UI",
+    // Generic fallbacks
+    "Roboto",
+    "Helvetica Neue",
+    "Arial",
+    "sans-serif",
+    // Emoji fallbacks
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji",
+  ],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -168,7 +198,7 @@ export default function RootLayout({
         <LoadGAScript />
       </head>
       <body
-        className={`${aktivGrotesk.variable} antialiased bg-[#F2F2F2]`}
+        className={`${aktivGrotesk.variable} ${octoberCompressed.variable} antialiased bg-[#F2F2F2]`}
         style={{
           fontFeatureSettings: "'kern' 1, 'liga' 1, 'calt' 1",
           fontOpticalSizing: "auto",

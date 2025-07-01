@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/hooks/useLanguage";
 import { LANGUAGE_MNEMONICS } from "@/constants";
+import { cn } from "@/lib/utils";
 
 const PJChallenge: React.FC<{
   heading: string;
@@ -93,6 +94,8 @@ const PJChallenge: React.FC<{
     return baseFontSize * fontScale;
   };
 
+  const isTamil = selectedLanguage === "ta";
+
   return (
     <div className="relative w-full">
       {/* Background Image */}
@@ -125,15 +128,17 @@ const PJChallenge: React.FC<{
           </div>
 
           {/* Subheading - "BOTTLE YOUR JOKES..." */}
-          <div className="absolute top-[32%] left-1/2 transform -translate-x-1/2 -w-[60%]">
+          <div
+            className={cn(
+              "absolute top-[32%] left-1/2 transform -translate-x-1/2 -w-[60%]",
+              isTamil && "md:top-[35%]"
+            )}
+          >
             <h2
-              className="text-green font-bold italic uppercase text-center
-              text-[14px] leading-[18px] max-w-[180px]
-              sm:text-[16px] sm:leading-[20px] sm:max-w-[200px]
-              md:text-[24px] md:leading-[30px] md:max-w-[300px]
-              lg:text-[32px] lg:leading-[40px] lg:max-w-[415px]
-              xl:text-[37.94px] xl:leading-[48px] xl:max-w-[500px]
-              2xl:text-[37.94px] 2xl:leading-[56px] 2xl:max-w-[500px]"
+              className={cn(
+                "text-green font-bold italic uppercase text-center text-[14px] leading-[18px] max-w-[180px] sm:text-[16px] sm:leading-[20px] sm:max-w-[200px] md:text-[24px] md:leading-[30px] md:max-w-[300px] lg:text-[32px] lg:leading-[40px] lg:max-w-[415px] 2xl:text-[37.94px] 2xl:leading-[56px] 2xl:max-w-[500px]",
+                isTamil && "text-[10px] leading-[14px] max-w-[190px] sm:text-[12px] sm:leading-[16px] sm:max-w-[140px] md:text-[16px] md:leading-[20px] md:max-w-[300px] lg:text-[20px] lg:leading-[24px] lg:max-w-[370px] 2xl:text-[31px] 2xl:leading-[37px] 2xl:max-w-[500px]"
+              )}
             >
               {subheading}
             </h2>

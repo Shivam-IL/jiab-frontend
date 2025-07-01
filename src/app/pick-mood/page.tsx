@@ -14,6 +14,8 @@ import { GA_EVENTS, CATEGORY_ID_CMS_KEY_MAPPING } from "@/constants";
 import { useGlobalLoader } from "@/hooks/useGlobalLoader";
 import SurpriseMeModal from "@/components/common/SurpriseMeModal";
 import { useCMSData } from "@/data";
+import { useLanguage } from "@/hooks/useLanguage";
+import { cn } from "@/lib/utils";
 
 const PickMood: React.FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -28,7 +30,8 @@ const PickMood: React.FC = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const { forceHideLoader } = useGlobalLoader();
-
+  const { selectedLanguage } = useLanguage();
+  const isTamil = selectedLanguage === "ta";
   // Genre-specific surprise me modal state
   const [genreSurpriseModal, setGenreSurpriseModal] = useState<boolean>(false);
   const [selectedGenreId, setSelectedGenreId] = useState<number | undefined>(
@@ -125,7 +128,11 @@ const PickMood: React.FC = () => {
               </div>
               <AktivGroteskText
                 text={category.name}
-                fontSize="text-[12px] md:text-[20px]"
+                fontSize={cn(
+                  "text-[12px] md:text-[20px]",
+                  isTamil &&
+                    "text-[10px] md:text-[15px] md:max-w-[160px] max-w-[100px] text-center"
+                )}
                 fontWeight="font-[400]"
               />
             </div>

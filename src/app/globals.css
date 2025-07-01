@@ -235,7 +235,22 @@
 @layer base {
   * {
     @apply border-border font-optimize;
+    /* Default font family - will be overridden by language-specific classes */
     font-family: var(--font-aktiv-grotesk), -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+
+  /* Language-specific font overrides */
+  .font-aktiv-grotesk * {
+    font-family: var(--font-aktiv-grotesk), -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+
+  /* Tamil font override */
+  .font-october-compressed * {
+    font-family: var(--font-october-compressed), -apple-system, BlinkMacSystemFont,
       "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   }

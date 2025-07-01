@@ -297,11 +297,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
 
               {/* Explore Sub-items */}
               {isExploreOpen && (
-                <ul className="pt-2">
+                <ul className="pt-2 text-left">
                   {exploreSubItems.map((subItem, subIndex) => {
                     if (subItem.label === cmsData.navBar.referAFriend) {
                       return (
-                        <li key={subIndex} className="text-xs ml-8">
+                        <li key={subIndex} className="text-xs ml-8 text-left">
                           <button
                             onClick={() => {
                               if (isAuthenticated) {
@@ -313,7 +313,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                               }
                               onClose();
                             }}
-                            className="block px-[10px] py-[6px] text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200"
+                            className="block px-[10px] py-[6px] text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200 text-left"
                           >
                             {subItem.label}
                           </button>
@@ -322,7 +322,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                     }
                     if (subItem.label === cmsData.navBar.haveAnInviteCode) {
                       return (
-                        <li key={subIndex} className="text-xs ml-8">
+                        <li key={subIndex} className="text-xs ml-8 text-left">
                           <button
                             onClick={() => {
                               if (isAuthenticated) {
@@ -335,7 +335,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                               onClose();
                             }}
                             key={subItem.label}
-                            className="block px-[10px] py-[6px] text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200"
+                            className="block px-[10px] py-[6px] text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200 text-left"
                           >
                             {subItem.label}
                           </button>
@@ -351,7 +351,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                               router.push(subItem.href);
                               onClose();
                             }}
-                            className="block px-[10px] py-[6px] text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200"
+                            className="block px-[10px] py-[6px] text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200 text-left"
                           >
                             {subItem.label}
                           </button>
@@ -372,7 +372,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                               }
                               onClose();
                             }}
-                            className="block px-[10px] py-[6px] text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200"
+                            className="block px-[10px] py-[6px] text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200 text-left"
                           >
                             {subItem.label}
                           </button>
@@ -383,7 +383,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                       <li key={subIndex} className="text-xs ml-8">
                         <Link
                           href={subItem.href}
-                          className="block px-[10px] py-[6px] text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200"
+                          className="block px-[10px] py-[6px] text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200 text-left"
                           onClick={onClose}
                         >
                           {subItem.label}
@@ -393,7 +393,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                   })}
                   {/* Vote Button */}
                   <li
-                    className={`transition-all duration-300 ease-out mx-4 ${
+                    className={`transition-all duration-300 ease-out mx-4 text-left ${
                       isOpen
                         ? "opacity-100 translate-x-0"
                         : "opacity-0 -translate-x-8"
@@ -406,10 +406,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                   >
                     <div className="mt-4 ml-[24px]">
                       <Link href="/user-generated-jokes" onClick={onClose}>
-                        <button className="w-full bg-green text-white text-[10px] py-3 px-4 transition-colors duration-200 text-left rounded-[5px] font-[700] ">
+                        <button className="w-full bg-green text-white text-[10px] py-3 px-4 transition-colors duration-200 rounded-[5px] font-[700] text-left">
                           {cmsData.navBar.navBarInsideExploreBannerHeading}
                           <br />
-                          <span className="font-[700] text-[12px]">
+                          <span className="font-[700] text-[12px] text-left">
                             {cmsData.navBar.navBarInsideExploreBannerSubHeading}
                           </span>
                         </button>
@@ -483,7 +483,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                         setIsContactCardOpen(true);
                         onClose();
                       }}
-                      className="w-full flex items-center px-4 py-3 mx-2 text-gray-700 rounded-xl hover:bg-gradient-to-r hover:from-green-50 hover:to-lime-50 hover:shadow-sm transition-all duration-200 group"
+                      className="w-full flex items-center px-4 py-3 mx-2 text-gray-700 rounded-xl hover:bg-gradient-to-r hover:from-green-50 hover:to-lime-50 hover:shadow-sm transition-all duration-200 group text-left"
                     >
                       <Image
                         src={item.icon}
@@ -499,7 +499,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
                   ) : (
                     <Link
                       href={item.href}
-                      className="flex items-center px-4 py-3 mx-2 text-gray-700 rounded-xl hover:bg-gradient-to-r hover:from-green-50 hover:to-lime-50 hover:shadow-sm transition-all duration-200 group"
+                      className="flex items-center px-4 py-3 mx-2 text-gray-700 rounded-xl hover:bg-gradient-to-r hover:from-green-50 hover:to-lime-50 hover:shadow-sm transition-all duration-200 group text-left"
                       onClick={onClose}
                     >
                       <Image

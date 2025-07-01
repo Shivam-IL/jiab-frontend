@@ -56,6 +56,7 @@ import {
 } from "@/api/utils/cdpEvents";
 import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
 import { INFOBIP_WHATSAPP_URL } from "@/config";
+import { cn } from "@/lib/utils";
 
 export default function HomePageClient() {
   const {
@@ -284,6 +285,8 @@ export default function HomePageClient() {
     }
   };
 
+  const isTamil = selectedLanguage === "ta";
+
   return (
     <div className="bg-lightGray min-h-screen md:pb-[28px]">
       {/* SerialChillerPopup only once after login */}
@@ -361,7 +364,13 @@ export default function HomePageClient() {
                         className="w-[51.7px] h-[51.7px] xxs:w-[30px] xxs:h-[30px] md:w-[6rem] md:h-[6rem] object-contain"
                       />
                     </div>
-                    <p className="text-center font-medium mt-3 text-xs md:text-[16px]">
+                    <p
+                      className={cn(
+                        "text-center font-medium mt-3 text-xs md:text-[16px]",
+                        isTamil &&
+                          "md:max-w-[140px] max-w-[80px] text-center text-[8px] md:text-[16px]"
+                      )}
+                    >
                       {category.name}
                     </p>
                   </button>

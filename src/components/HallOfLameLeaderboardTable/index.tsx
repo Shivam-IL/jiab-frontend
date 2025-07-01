@@ -12,6 +12,8 @@ import {
 } from "@/types";
 import { formatNumberToK, formatTimestampToDate, getLabel } from "@/utils";
 import { useCMSData } from "@/data";
+import { useLanguage } from "@/hooks/useLanguage";
+import { cn } from "@/lib/utils";
 
 const DisplayTable = ({
   rank,
@@ -22,6 +24,8 @@ const DisplayTable = ({
 }: IHallOfLameDisplayTableProps) => {
   const [mounted, setMounted] = useState(false);
   const cmsData = useCMSData(mounted);
+  const { selectedLanguage } = useLanguage();
+  const isTamil = selectedLanguage === "ta";
 
   useEffect(() => {
     setMounted(true);
@@ -38,17 +42,26 @@ const DisplayTable = ({
         <thead>
           <tr className="border-none bg-[#FFE200] w-full">
             <th
-              className={` mb-[12px] box-border text-[12px] md:text-[20px] font-[700] text-start p-[10px] md:pl-[32px] rounded-l-[5px] md:rounded-l-[10px]`}
+              className={cn(
+                ` mb-[12px] box-border text-[12px] md:text-[20px] font-[700] text-start p-[10px] md:pl-[32px] rounded-l-[5px] md:rounded-l-[10px]`,
+                isTamil && "text-[8px] md:text-[15px]"
+              )}
             >
               {rank}
             </th>
             <th
-              className={` mb-[12px] box-border text-[12px] md:text-[20px] font-[700]  text-start p-[10px]`}
+              className={cn(
+                ` mb-[12px] box-border text-[12px] md:text-[20px] font-[700]  text-start p-[10px]`,
+                isTamil && "text-[8px] md:text-[15px]"
+              )}
             >
               {jokes}
             </th>
             <th
-              className={` mb-[12px] text-start box-border text-[12px] md:text-[20px] font-[700] p-[10px] md:pr-[32px] rounded-r-[5px] md:rounded-r-[10px]`}
+              className={cn(
+                ` mb-[12px] text-start box-border text-[12px] md:text-[20px] font-[700] p-[10px] md:pr-[32px] rounded-r-[5px] md:rounded-r-[10px]`,
+                isTamil && "text-[8px] md:text-[15px]"
+              )}
             >
               {votes}
             </th>
