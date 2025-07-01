@@ -369,7 +369,7 @@ export const INVITE_CODE_POPUP_DATA = {
 };
 
 export const VOUCHER_TYPES = {
-  PHONE_PAY_VOUCHER: "Reward worth Rs.25,000!",
+  PHONE_PAY_VOUCHER: "Cashback worth Rs.10",
   MMT_VOUCHER: "The Ultimate Retreat",
 };
 
