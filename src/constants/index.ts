@@ -133,6 +133,8 @@ export const LANGUAGE_IDS = {
   8: "gu",
   9: "bho",
   10: "mai",
+  11: "ta",
+  12: "tu",
 };
 
 export const MNEMONICS_TO_ID = {
@@ -146,6 +148,8 @@ export const MNEMONICS_TO_ID = {
   gu: 8,
   bho: 9,
   mai: 10,
+  ta: 11,
+  tu: 12,
 };
 
 // Language mnemonics constant
@@ -369,8 +373,8 @@ export const INVITE_CODE_POPUP_DATA = {
 };
 
 export const VOUCHER_TYPES = {
-  PHONE_PAY_VOUCHER: "Cashback worth Rs.10",
-  MMT_VOUCHER: "The Ultimate Retreat",
+  PHONE_PAY_VOUCHER: " www.phonepe.com",
+  MMT_VOUCHER: "www.makemytrip.com",
 };
 
 export const LANG_VERNICULAR_MAP = {

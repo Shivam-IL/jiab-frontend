@@ -256,9 +256,9 @@ export class ProfileService extends MainService {
     }
   }
 
-  public async getVoucherInfo() {
+  public async getVoucherInfo(language_id: number) {
     try {
-      const response = await apiClient.get(API_ROUTES.USER.MY_WALLET.GET_VOOCHER_INFO, {
+      const response = await apiClient.get(API_ROUTES.USER.MY_WALLET.GET_VOOCHER_INFO + `?language_id=${language_id}`, {
         headers: this.getAuthHeaders(),
       });
       const data = response.data;

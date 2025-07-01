@@ -20,6 +20,7 @@ export interface IVoucherInfo {
   voucher_name: string
   voucher_url: string
   type?: string
+  button_value?: string
 }
 
 const ComicCoinCard = ({
@@ -82,7 +83,7 @@ const ComicCoinCard = ({
                 setIsVoucherPopupOpen(true)
                 setSelectedVoucher(voucherInfo)
               }}
-              text='Redeem'
+              text={voucherInfo?.button_value ?? 'Redeem'}
               paddingClass='md:px-[40px] md:py-[16px] px-[24px] py-[8px]'
               fontSize='md:text-[20px] text-[12px]'
               fontWeight='font-[700]'
@@ -107,6 +108,7 @@ const ComicCoinCard = ({
         pin={selectedVoucher?.secure_code?.toString()}
         expiryDate={selectedVoucher?.last_date_to_redeem}
         imageUrl={selectedVoucher?.voucher_image}
+        buttonValue={selectedVoucher?.button_value ?? 'Redeem'}
         onRedeem={() => {
           // Handle redeem logic here
           if (selectedVoucher?.voucher_url) {
@@ -152,7 +154,7 @@ const ComicCoinMyWinSection = () => {
       const getPhonePayVoucherData = getThreeData
         ?.filter(
           (item: IVoucherInfo) =>
-            item.voucher_name === VOUCHER_TYPES.PHONE_PAY_VOUCHER
+            item.voucher_url === VOUCHER_TYPES.PHONE_PAY_VOUCHER
         )
         ?.map((item: IVoucherInfo) => {
           return {
@@ -162,8 +164,7 @@ const ComicCoinMyWinSection = () => {
         })
       const getMMTVoucherData = getThreeData
         ?.filter(
-          (item: IVoucherInfo) =>
-            item.voucher_name === VOUCHER_TYPES.MMT_VOUCHER
+          (item: IVoucherInfo) => item.voucher_url === VOUCHER_TYPES.MMT_VOUCHER
         )
         ?.map((item: IVoucherInfo) => {
           return {
@@ -184,7 +185,7 @@ const ComicCoinMyWinSection = () => {
       const getPhonePayVoucherData = getThreeData
         ?.filter(
           (item: IVoucherInfo) =>
-            item.voucher_name === VOUCHER_TYPES.PHONE_PAY_VOUCHER
+            item.voucher_url === VOUCHER_TYPES.PHONE_PAY_VOUCHER
         )
         ?.map((item: IVoucherInfo) => {
           return {
@@ -194,8 +195,7 @@ const ComicCoinMyWinSection = () => {
         })
       const getMMTVoucherData = getThreeData
         ?.filter(
-          (item: IVoucherInfo) =>
-            item.voucher_name === VOUCHER_TYPES.MMT_VOUCHER
+          (item: IVoucherInfo) => item.voucher_url === VOUCHER_TYPES.MMT_VOUCHER
         )
         ?.map((item: IVoucherInfo) => {
           return {
