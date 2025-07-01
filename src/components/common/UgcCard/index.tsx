@@ -5,7 +5,7 @@ import AktivGroteskText from "../AktivGroteskText";
 import SurpriseMeCTA from "@/components/SurpriseMeCTA";
 import GreenCTA from "@/components/GreenCTA";
 import { UgcCardProps } from "@/interfaces";
-import {  generateImageurl } from "@/utils";
+import { generateImageurl } from "@/utils";
 import {
   useSendGluedinUserReaction,
   useSendVoteToGluedinAssets,
@@ -26,6 +26,8 @@ import {
 } from "@/api/utils/cdpEvents";
 import VideoModal from "@/components/VideoModal";
 import { useCMSData } from "@/data";
+import { useLanguage } from "@/hooks/useLanguage";
+import { cn } from "@/lib/utils";
 
 const UgcCard: React.FC<UgcCardProps> = ({
   disclaimerText = "The content displayed above is user generated and may not reflect the opinions of Sprite®",
@@ -34,6 +36,8 @@ const UgcCard: React.FC<UgcCardProps> = ({
   home = false,
   voteCDP = false,
 }) => {
+  const { selectedLanguage } = useLanguage();
+  const isTamil = selectedLanguage === "ta";
   const dispatch = useAppDispatch();
   const { mutate: sendGluedinUserReaction, data: gludeinUserReactionData } =
     useSendGluedinUserReaction();
@@ -381,8 +385,14 @@ const UgcCard: React.FC<UgcCardProps> = ({
                 text={item?.isLiked ? jokeBox.voted : jokeBox.vote}
                 disabled={item?.isLiked ?? false}
                 className="leading-tight flex items-center justify-center"
-                paddingClass="px-[26px] py-[8px] md:px-[21px] md:py-[7px]"
-                fontSize="text-[12px] md:text-[16px]"
+                paddingClass={cn(
+                  "px-[26px] py-[8px] md:px-[21px] md:py-[7px]",
+                  isTamil && "px-[26px] py-[8px] md:px-[16px] md:py-[7px]"
+                )}
+                fontSize={cn(
+                  "text-[12px] md:text-[16px]",
+                  isTamil && "text-[11px] md:text-[10px]"
+                )}
                 fontWeight="font-[700]"
               />
             </div>
