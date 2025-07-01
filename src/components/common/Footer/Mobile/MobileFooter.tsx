@@ -70,7 +70,10 @@ const MobileFooter = () => {
   }, []);
 
   return (
-    <div id="mobile-footer" className="bg-white w-full h-[71px] fixed bottom-0 left-0 right-0 flex flex-col z-10">
+    <div
+      id="mobile-footer"
+      className="bg-white w-full h-[71px] fixed bottom-0 left-0 right-0 flex flex-col z-10"
+    >
       <div className="h-[54px] w-full bg-white text-black border-t border-gray-200">
         <div className="flex justify-evenly items-end h-full py-[5px]">
           {/* Home */}
@@ -113,7 +116,11 @@ const MobileFooter = () => {
               )}
 
               <span
-                className={`${selectedLanguage === "ta" ? "text-[8px] xxs:text-[6px]" : "text-[9px]"} mt-1 font-medium ${
+                className={`${
+                  selectedLanguage === "ta"
+                    ? "text-[8px] xxs:text-[6px]"
+                    : "text-[9px]"
+                } mt-1 font-medium ${
                   currentPath === "/" ? "text-green" : "text-black"
                 }`}
               >
@@ -146,7 +153,11 @@ const MobileFooter = () => {
             </svg>
 
             <span
-              className={`${selectedLanguage === "ta" ? "text-[8px] xxs:text-[6px]" : "text-[9px]"} mt-1 font-medium ${
+              className={`${
+                selectedLanguage === "ta"
+                  ? "text-[8px] xxs:text-[6px]"
+                  : "text-[9px]"
+              } mt-1 font-medium ${
                 currentPath === "/contest" ? "text-[#00953B]" : "text-black"
               }`}
             >
@@ -175,7 +186,9 @@ const MobileFooter = () => {
               </div>
             </div>
             <span
-              className={`${selectedLanguage === "ta" ? "text-[8px] xxs:text-[6px]" : "text-[9px]"} mt-1 font-medium ${
+              className={`${
+                selectedLanguage === "ta" ? "text-[7px]" : "text-[9px]"
+              } mt-1 font-medium ${
                 currentPath === "/my-wallet" ? "text-[#00953B]" : "text-black"
               }`}
             >
@@ -240,7 +253,7 @@ const MobileFooter = () => {
             <span
               className={cn(
                 "mt-1 font-medium",
-                  selectedLanguage === "ta" ? "text-[8px] xxs:text-[6px]" : "text-[9px]",
+                selectedLanguage === "ta" ? "text-[7px]" : "text-[9px]",
                 currentPath === "/refresh-rings"
                   ? "text-[#00953B]"
                   : "text-black"
@@ -288,7 +301,9 @@ const MobileFooter = () => {
               </svg>
             )}
             <span
-              className={`${selectedLanguage === "ta" ? "text-[8px] xxs:text-[6px]" : "text-[9px]"} mt-1 font-medium ${
+              className={`${
+                selectedLanguage === "ta" ? "text-[7px]" : "text-[9px]"
+              } mt-1 font-medium ${
                 currentPath === "/profile" ? "text-[#00953B]" : "text-black"
               }`}
             >
@@ -300,19 +315,45 @@ const MobileFooter = () => {
       <div className="h-[17px] w-full bg-[#E0E0E0] flex flex-row items-center justify-between px-5">
         <div className="flex flex-row gap-[2px]">
           <Link href="/terms-and-conditions">
-            <p className={`text-center ${selectedLanguage === "ta" ? "text-[6px] xxs:text-[4px]" : "text-[7px]"} text-black`}>
+            <p
+              className={`text-center ${
+                selectedLanguage === "ta"
+                  ? "text-[6px] xxs:text-[4px]"
+                  : "text-[7px]"
+              } text-black`}
+            >
               {cmsData.navFooter.tAndC.toUpperCase()}
             </p>
           </Link>
-          <p className={`text-center ${selectedLanguage === "ta" ? "text-[6px] xxs:text-[4px]" : "text-[7px]"} text-black`}>|</p>
+          <p
+            className={`text-center ${
+              selectedLanguage === "ta"
+                ? "text-[6px] xxs:text-[4px]"
+                : "text-[7px]"
+            } text-black`}
+          >
+            |
+          </p>
           <Link href="/privacy-policy">
-            <p className={`text-center ${selectedLanguage === "ta" ? "text-[6px] xxs:text-[4px]" : "text-[7px]"} text-black`}>
+            <p
+              className={`text-center ${
+                selectedLanguage === "ta"
+                  ? "text-[6px] xxs:text-[4px]"
+                  : "text-[7px]"
+              } text-black`}
+            >
               {cmsData.navFooter.privacyPolicy}
             </p>
           </Link>
         </div>
         <div className="flex flex-row gap-[2px]">
-          <p className={`${selectedLanguage === "ta" ? "text-[6px] xxs:text-[4px]" : "text-[7px]"} text-black flex flex-row gap-[2px] items-center`}>
+          <p
+            className={`${
+              selectedLanguage === "ta"
+                ? "text-[6px] xxs:text-[4px]"
+                : "text-[7px]"
+            } text-black flex flex-row gap-[2px] items-center`}
+          >
             {cmsData.navFooter.trademark}
             <svg
               width="7"
