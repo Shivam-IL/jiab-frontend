@@ -360,11 +360,11 @@ const SurpriseMeModal = ({
             }
           `}</style>
           <DialogContent className='z-[50] border-none max-w-[37dvh] gap-[4px] shadow-none p-0 rounded-[10px]'>
-            <div className='absolute border-none outline-none top-[-95px] md:top-[-100px] left-0 flex justify-center items-center w-full'>
+            <div className='absolute border-none outline-none -top-[12.5dvh] md:-top-[10dvh] flex justify-center items-center w-full'>
               <Image
                 src={`/static/sprite/icons/${ICONS_NAMES.SURPRISE_ME}.svg`}
                 alt={ICONS_NAMES.SURPRISE_ME}
-                className='w-[136px] h-[97px]'
+                className='w-[136px] h-[12.5dvh] md:h-[10dvh]'
                 width={145}
                 height={102}
               />
