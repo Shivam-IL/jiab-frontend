@@ -452,6 +452,7 @@ export class GluedinService extends MainService {
       );
       const coinResponseData = coinResponse?.data ?? {};
 
+      console.log("coinResponse", coinResponse);
       // For voting, we need to check coin increment success
       let coinIncrementSuccess = false;
       if (type === "vote") {
@@ -465,7 +466,9 @@ export class GluedinService extends MainService {
 
         // Only trigger coin animation when response.status === 200
         if (coinResponse?.status === 200) {
-          coinIncrementSuccess = true;
+          coinIncrementSuccess = coinResponseData?.data?.show_coin_animation
+            ? coinResponseData?.data?.show_coin_animation
+            : false;
         } else {
           return ErrorResponse(
             coinResponseData?.statusMessage || "Failed to increase comic coins"
