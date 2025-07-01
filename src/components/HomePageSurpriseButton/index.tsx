@@ -87,7 +87,8 @@ const HomePageSurpriseButton = () => {
             'text-[#11A64B] uppercase leading-tight text-center break-words whitespace-normal text-[9px] md:text-[16px] font-bold',
             {
               'text-[6px] md:text-[11px]': selectedLanguage === 'kn',
-              'text-[7px] md:text-[13px]': selectedLanguage === 'hi'
+              'text-[7px] md:text-[13px]': selectedLanguage === 'hi',
+              'xxs:text-[5px] text-[6px] lg:text-[14px] md:text-[14px] xl:text-[14px] 2xl:text-[14px] break-all': selectedLanguage === 'ta'
             }
           )}
         >

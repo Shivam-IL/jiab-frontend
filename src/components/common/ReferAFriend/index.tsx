@@ -39,6 +39,7 @@ const ReferAFriend = ({
   const [open, setOpen] = useState<boolean>(false);
   const [referralCode, setReferralCode] = useState<string>("");
   const { data: referrals } = useGetAllReferrals({ page, referralCode });
+  const { selectedLanguage } = useAppSelector((state) => state.language);
 
   const [data, setData] = useState<IInviteeData[]>([]);
 
@@ -199,13 +200,13 @@ const ReferAFriend = ({
               <AktivGroteskText
                 text={sendReminder}
                 className="leading-tight"
-                fontSize="text-[14px] md:text-[20px]"
+                fontSize={`${selectedLanguage === 'ta' ? 'xxs:text-[6px] text-[8px] md:text-[20px] xl:text-[20px] 2xl:text-[20px]' : 'text-[14px] md:text-[20px]'}`}
                 fontWeight="font-[700]"
               />
             </button>
             <GreenCTA
               className="leading-tight"
-              fontSize="text-[14px] md:text-[20px]"
+              fontSize={`${selectedLanguage === 'ta' ? 'xxs:text-[6px] text-[8px] md:text-[20px] xl:text-[20px] 2xl:text-[20px]' : 'text-[14px] md:text-[20px]'}`}
               fontWeight="font-[700]"
               paddingClass="px-[20px] py-[8px] md:py-[20px] md:px-[60px]"
               text={referAnother}
