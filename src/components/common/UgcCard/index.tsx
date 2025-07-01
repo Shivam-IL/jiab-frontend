@@ -5,7 +5,7 @@ import AktivGroteskText from "../AktivGroteskText";
 import SurpriseMeCTA from "@/components/SurpriseMeCTA";
 import GreenCTA from "@/components/GreenCTA";
 import { UgcCardProps } from "@/interfaces";
-import { formatNumberToK, generateImageurl } from "@/utils";
+import {  generateImageurl } from "@/utils";
 import {
   useSendGluedinUserReaction,
   useSendVoteToGluedinAssets,
@@ -324,7 +324,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
                 item?.isReacted && item?.reactionType !== ReactionType.LAUGH
               }
               name={ICONS_NAMES.FUNNY}
-              text={formatNumberToK(item?.reactions?.laugh ?? 0)}
+              text={item?.reactions?.laugh?.toString() ?? "0"}
               onClick={() => {
                 handlerUserReaction(ReactionType.LAUGH, item?.videoId ?? "");
                 triggerReactionCDPEvent(ReactionType.LAUGH);
@@ -336,7 +336,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
                 item?.isReacted && item?.reactionType !== ReactionType.NEUTRAL
               }
               name={ICONS_NAMES.MAD}
-              text={formatNumberToK(item?.reactions?.neutral ?? 0)}
+              text={item?.reactions?.neutral?.toString() ?? "0"}
               onClick={() => {
                 handlerUserReaction(ReactionType.NEUTRAL, item?.videoId ?? "");
                 triggerReactionCDPEvent(ReactionType.NEUTRAL);
@@ -348,7 +348,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
                 item?.isReacted && item?.reactionType !== ReactionType.SAD
               }
               name={ICONS_NAMES.ANGRY}
-              text={formatNumberToK(item?.reactions?.sad ?? 0)}
+              text={item?.reactions?.sad?.toString() ?? "0"}
               onClick={() => {
                 handlerUserReaction(ReactionType.SAD, item?.videoId ?? "");
                 triggerReactionCDPEvent(ReactionType.SAD);
@@ -391,7 +391,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
             </div>
             <SurpriseMeCTA
               name={ICONS_NAMES.VIEWS}
-              text={formatNumberToK(item?.viewsCount ?? 0)}
+              text={item?.viewsCount?.toString() ?? "0"}
               onClick={() => {}}
             />
             {voteIsInPopup && (

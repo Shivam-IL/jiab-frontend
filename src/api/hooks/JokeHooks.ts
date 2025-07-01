@@ -2,7 +2,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { JokeService } from "../services/JokeService";
 import { keys } from "../utils";
 import useAppSelector from "@/hooks/useSelector";
-import { TGetJokesParams, TSubmitJokeParams } from "../types/JokeTypes";
+import {
+  IReelReaction,
+  TGetJokesParams,
+  TSubmitJokeParams,
+} from "../types/JokeTypes";
 import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
 import { MNEMONICS_TO_ID } from "@/constants";
 
@@ -73,10 +77,17 @@ const useGetComicCoins = () => {
   });
 };
 
+const usePostReelReaction = () => {
+  return useMutation({
+    mutationFn: (data: IReelReaction) => jokeInstance.PostReelReaction(data),
+  });
+};
+
 export {
   useGetSurpriseMeJoke,
   useGetJokes,
   useSubmitJoke,
   useGetUserSubmittedJokes,
   useGetComicCoins,
+  usePostReelReaction,
 };
