@@ -176,7 +176,6 @@ const SurpriseMeModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewGludeinJokesData])
 
-  console.log(gluedinUserReactionData, 'gluedinUserReactionData')
   useEffect(() => {
     if (gluedinUserReactionData?.ok) {
       dispatch(incrementComicCoins())
@@ -207,8 +206,6 @@ const SurpriseMeModal = ({
     setOpen(false)
     onClose()
   }
-
-  
 
   if (serialChill && !joke) {
     return (
@@ -419,7 +416,6 @@ const SurpriseMeModal = ({
                     controlsList='nodownload'
                     playsInline
                     onEnded={() => {
-                      console.log('onEnded', joke?.id)
                       viewGludeinJokes({ assetIds: [joke?.id] })
                     }}
                     muted={false}

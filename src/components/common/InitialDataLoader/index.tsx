@@ -296,14 +296,6 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   }, [userProfileData, dispatch])
 
   useEffect(() => {
-    return () => {
-      removeSessionStorageItem(
-        SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL
-      )
-    }
-  }, [])
-
-  useEffect(() => {
     if (userAddressesData?.ok) {
       const { data } = userAddressesData ?? {}
       dispatch(
