@@ -86,7 +86,7 @@ export class LoginService extends MainService {
     try {
       const formData: Record<string, string | number | boolean> = {};
       if (data?.avatar) {
-        formData["avatar_id"] = data.avatar;
+        formData["avatar_id"] = parseInt(data.avatar as string, 10);
         formData["is_avatar"] = "true";
       }
       if (data?.referral_code) {
@@ -124,12 +124,14 @@ export class LoginService extends MainService {
       );
       let errrMessage = "";
       for (const item of errorEntries) {
-        const value = (Array.isArray(item[1]) ? item[1][0] : undefined) as string | undefined;
+        const value = (Array.isArray(item[1]) ? item[1][0] : undefined) as
+          | string
+          | undefined;
         errrMessage = value ?? "Something Went Wrong!";
         break;
       }
-      if(responseData?.message && errorEntries?.length===0){
-        errrMessage = responseData?.message
+      if (responseData?.message && errorEntries?.length === 0) {
+        errrMessage = responseData?.message;
       }
       return ErrorResponse(errrMessage ?? "Something went wrong");
     } catch (error) {
