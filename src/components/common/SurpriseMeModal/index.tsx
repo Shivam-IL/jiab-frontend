@@ -7,7 +7,7 @@ import { ICONS_NAMES, SESSION_STORAGE_KEYS } from '@/constants'
 import SurpriseMeCTA from '@/components/SurpriseMeCTA'
 import { MakeLaughExitPopup } from '@/components/ExitPopUps'
 import { useGetSurpriseMeJoke } from '@/api/hooks/JokeHooks'
-import { formatNumberToK, setSessionStorageItem } from '@/utils'
+import {  setSessionStorageItem } from '@/utils'
 import {
   useSendGluedinUserReaction,
   useGetGluedinAssetById,
@@ -445,7 +445,7 @@ const SurpriseMeModal = ({
                       ? joke?.reactionType !== ReactionType.LAUGH
                       : false
                   }
-                  text={formatNumberToK(joke?.user_reaction?.laugh ?? 0)}
+                  text={joke?.user_reaction?.laugh?.toString() ?? '0'}
                   onClick={() => {
                     if (isSendingGluedinUserReaction) return
                     handleSendGluedinUserReaction(ReactionType.LAUGH, joke?.id)
@@ -460,7 +460,7 @@ const SurpriseMeModal = ({
                       ? joke?.reactionType !== ReactionType.NEUTRAL
                       : false
                   }
-                  text={formatNumberToK(joke?.user_reaction?.neutral ?? 0)}
+                  text={joke?.user_reaction?.neutral?.toString() ?? '0'}
                   onClick={() => {
                     if (isSendingGluedinUserReaction) return
                     handleSendGluedinUserReaction(
@@ -478,7 +478,7 @@ const SurpriseMeModal = ({
                       ? joke?.reactionType !== ReactionType.SAD
                       : false
                   }
-                  text={formatNumberToK(joke?.user_reaction?.sad ?? 0)}
+                  text={joke?.user_reaction?.sad?.toString() ?? '0'}
                   onClick={() => {
                     if (isSendingGluedinUserReaction) return
                     handleSendGluedinUserReaction(ReactionType.SAD, joke?.id)
@@ -489,7 +489,7 @@ const SurpriseMeModal = ({
               <div className='pr-[10px]'>
                 <SurpriseMeCTA
                   name={ICONS_NAMES.VIEWS}
-                  text={formatNumberToK(joke?.view_count ?? 0)}
+                  text={joke?.view_count?.toString() ?? '0'}
                   onClick={() => {}}
                 />
               </div>
