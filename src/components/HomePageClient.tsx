@@ -41,7 +41,6 @@ import { useGlobalLoader } from "@/hooks/useGlobalLoader";
 import HomePageDesktopOnboarding, {
   DesktopBoxIds,
 } from "./common/HomePageDesktopOnboarding";
-import { useSessionModal } from "@/hooks/useSessionModal";
 import { getSessionStorageItem } from "@/utils";
 import {
   CoinAnimation,
@@ -137,9 +136,6 @@ export default function HomePageClient() {
 
   // SerialChillerPopup session logic
   const [serialChillerOpen, setSerialChillerOpen] = useState(false);
-  const { markAsShown: markSerialChillerAsShown } = useSessionModal(
-    "hasShownSerialChiller"
-  );
 
   // Coin animation hooks
   const {
@@ -246,9 +242,8 @@ export default function HomePageClient() {
       ) === "true";
     if (isAuthenticated && !hasShownSerialChiller) {
       setSerialChillerOpen(true);
-      markSerialChillerAsShown();
     }
-  }, [isAuthenticated, markSerialChillerAsShown, enableCoachMarks]);
+  }, [isAuthenticated, enableCoachMarks]);
 
   // Function to handle successful vote animation
   const handleVoteSuccess = useCallback(() => {

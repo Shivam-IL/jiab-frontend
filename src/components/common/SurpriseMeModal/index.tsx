@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from 'react'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import SvgIcons from '../SvgIcons'
-import { ICONS_NAMES } from '@/constants'
+import { ICONS_NAMES, SESSION_STORAGE_KEYS } from '@/constants'
 import SurpriseMeCTA from '@/components/SurpriseMeCTA'
 import { MakeLaughExitPopup } from '@/components/ExitPopUps'
 import { useGetSurpriseMeJoke } from '@/api/hooks/JokeHooks'
-import { formatNumberToK } from '@/utils'
+import { formatNumberToK, setSessionStorageItem } from '@/utils'
 import {
   useSendGluedinUserReaction,
   useGetGluedinAssetById,
@@ -204,17 +204,11 @@ const SurpriseMeModal = ({
 
   // Handle modal close with proper cleanup
   const handleClose = () => {
-    // forceHideLoader(); // Ensure any loading states are cleared
     setOpen(false)
     onClose()
   }
 
-  // useEffect(() => {
-  //   return () => {
-  //     setJoke(null);
-  //     forceHideLoader(); // Cleanup on unmount
-  //   };
-  // }, [forceHideLoader]);
+  
 
   if (serialChill && !joke) {
     return (
@@ -223,6 +217,10 @@ const SurpriseMeModal = ({
         onClose={() => {
           setSerialChill(false)
           handleClose()
+          setSessionStorageItem(
+            SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL,
+            'true'
+          )
         }}
       />
     )
@@ -254,6 +252,10 @@ const SurpriseMeModal = ({
               //modal is clicking 2
               handleClose()
               setJoke(null)
+              setSessionStorageItem(
+                SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL,
+                'true'
+              )
             }
           }}
         >
@@ -509,6 +511,10 @@ const SurpriseMeModal = ({
               onClose()
               setJoke(null)
               dispatch(updatePauseVideo({ pauseVideo: false }))
+              setSessionStorageItem(
+                SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL,
+                'true'
+              )
             }}
             noButtonClick={() => {
               setMakeLaughExitPopup(false)

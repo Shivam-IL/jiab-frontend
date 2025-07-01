@@ -645,6 +645,7 @@ export const SESSION_STORAGE_KEYS = {
   LANDING_PAGE_EVENT_TRIGGERED: "landingPageEventTriggered",
   CONSENT_PUSH_EVENT_TRIGGERED: "consentPushEventTriggered",
   PROFILE_GA_EVENT_TRIGGERED: "profileCompletionGAEventTriggered",
+  LOGEED_IN_USING_WHATSAPP: "logeedInUsingWhatsapp",
 };
 
 export const LOCAL_IMAGES = {
