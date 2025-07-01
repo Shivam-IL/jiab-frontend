@@ -10,6 +10,7 @@ import {
 } from "../types/ProfileTypes";
 import useAppSelector from "@/hooks/useSelector";
 import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
+import { MNEMONICS_TO_ID } from "@/constants";
 
 const profileService = ProfileService.getInstance();
 
@@ -167,9 +168,12 @@ const useChangeChatLanguage = () => {
 
 const useGetVoucherInfo = () => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
+  const { selectedLanguage } = useAppSelector((state) => state.language);
+  const languageNewId =
+    MNEMONICS_TO_ID[selectedLanguage as keyof typeof MNEMONICS_TO_ID] ?? 1;
   return useQuery({
-    queryKey: keys.profile.getVoucherInfo(),
-    queryFn: () => profileService.getVoucherInfo(),
+    queryKey: [keys.profile.getVoucherInfo(), { languageNewId }],
+    queryFn: () => profileService.getVoucherInfo(languageNewId),
     enabled: isAuthenticated && token ? true : false,
     retry: 3,
     staleTime: 0,

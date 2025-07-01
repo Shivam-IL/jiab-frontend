@@ -57,7 +57,7 @@ import {
 } from '@/store/reference'
 import { useGetUserSubmittedJokes } from '@/api/hooks/JokeHooks'
 import { clearAllModalSessions } from '@/hooks/useSessionModal'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import useAppSelector from '@/hooks/useSelector'
 import { setLanguage } from '@/store/language/language.slice'
 import { useGetUserGeolocation } from '@/api/hooks/GeolocationHooks'
@@ -68,7 +68,7 @@ import {
   LandingPageCDPEventPayload
 } from '@/api/utils/cdpEvents'
 import { ILocalGeoData } from '@/api/types/GeolocationTypes'
-
+import { useQueryParams } from '@/hooks/useQueryParams'
 const mainServiceInstance = MainService.getInstance()
 
 const InitialDataLoader = ({ children }: { children: ReactNode }) => {
@@ -81,9 +81,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   const { mutate: mutateGludeinLogin, data: gluedinLoginData } =
     useMutateGludeinLogin()
 
-  const searchParams = useSearchParams()
-  const refreshTokenFromParams = searchParams.get('refresh')
-  const langKey = searchParams.get('lang')
+  const { refresh: refreshTokenFromParams, lang: langKey } = useQueryParams()
 
   const gluedInSDKInitilize = new gluedin.GluedInSDKInitilize()
   gluedInSDKInitilize.initialize({
@@ -163,6 +161,13 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
   }, [langKey, dispatch])
 
   useEffect(() => {
+    if (
+      getSessionStorageItem(SESSION_STORAGE_KEYS.LOGEED_IN_USING_WHATSAPP) ===
+      'true'
+    ) {
+      removeSessionStorageItem(SESSION_STORAGE_KEYS.LOGEED_IN_USING_WHATSAPP)
+      return
+    }
     const refreshToken =
       getLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN) ??
       refreshTokenFromParams
@@ -204,9 +209,16 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, refresh_token)
       setLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, access_token)
       setTokenUpdated(true)
+      dispatch(updateSurpriseMe({ surpriseMe: true }))
       if (refreshTokenFromParams) {
-        dispatch(updateSurpriseMe({ surpriseMe: true }))
-      removeSessionStorageItem(SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL)
+        removeSessionStorageItem(
+          SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL
+        )
+        setSessionStorageItem(
+          SESSION_STORAGE_KEYS.LOGEED_IN_USING_WHATSAPP,
+          'true'
+        )
+        window.history.replaceState(null, '', window.location.pathname)
       }
     } else if (refreshTokenData?.ok === false) {
       localStorage.clear()
@@ -282,14 +294,6 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfileData, dispatch])
-
-  useEffect(() => {
-    return () => {
-      removeSessionStorageItem(
-        SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL
-      )
-    }
-  }, [])
 
   useEffect(() => {
     if (userAddressesData?.ok) {

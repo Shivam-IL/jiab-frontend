@@ -17,6 +17,7 @@ interface PhonePeVoucherPopupProps {
   onRedeem?: () => void;
   onShare?: () => void;
   imageUrl?: string;
+  buttonValue?: string;
 }
 
 const PhonePeVoucherPopup: React.FC<PhonePeVoucherPopupProps> = ({
@@ -28,6 +29,7 @@ const PhonePeVoucherPopup: React.FC<PhonePeVoucherPopupProps> = ({
   expiryDate = "31st Dec 2024",
   onRedeem,
   imageUrl = "/other-svgs/reward-popup.svg",
+  buttonValue = 'Redeem'
 }) => {
   const [copiedCode, setCopiedCode] = useState(false);
   const [copiedPin, setCopiedPin] = useState(false);
@@ -155,7 +157,7 @@ const PhonePeVoucherPopup: React.FC<PhonePeVoucherPopupProps> = ({
           {/* Redeem Button */}
           <div className="text-center md:mb-4 mb-[8px]">
             <GreenCTA
-              text="Redeem"
+              text={buttonValue}
               onClick={handleRedeemClick}
               paddingClass="md:py-[12px] py-[8px] md:px-[16px] px-[12px]"
               fontSize="md:text-[16px] text-[12px]"

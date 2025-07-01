@@ -18,7 +18,11 @@ const useGetSurpriseMeJoke = (genreId?: number, languageId?: number) => {
     MNEMONICS_TO_ID[selectedLanguage as keyof typeof MNEMONICS_TO_ID] ?? 1;
   console.log("languageNewId", languageNewId, languageId);
   return useQuery({
-    queryKey: [...keys.joke.getSurpriseMeJoke(), genreId, languageNewId],
+    queryKey: [
+      ...keys.joke.getSurpriseMeJoke(),
+      genreId,
+      languageNewId,
+    ],
     queryFn: () => jokeInstance.GetSurpriseMe(genreId, languageNewId),
     enabled: !!(isAuthenticated && token),
     staleTime: 0,

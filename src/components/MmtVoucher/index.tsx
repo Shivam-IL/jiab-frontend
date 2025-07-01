@@ -67,7 +67,7 @@ const MmtVoucher = ({ voucherInfo }: { voucherInfo: IVoucherInfo }) => {
           </div>
           {true ? (
             <GreenCTA
-              text='Redeem'
+              text={voucherInfo?.button_value ?? 'Redeem'}
               onClick={() => {
                 setSelectedVoucher(voucherInfo)
                 setIsVoucherPopupOpen(true)
@@ -112,6 +112,7 @@ const MmtVoucher = ({ voucherInfo }: { voucherInfo: IVoucherInfo }) => {
         pin={selectedVoucher?.secure_code?.toString()}
         expiryDate={selectedVoucher?.last_date_to_redeem}
         imageUrl={selectedVoucher?.voucher_image}
+        buttonValue={selectedVoucher?.button_value ?? 'Redeem'}
         onRedeem={() => {
           if (selectedVoucher?.voucher_url) {
             const url = selectedVoucher.voucher_url
