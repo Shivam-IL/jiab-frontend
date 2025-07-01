@@ -163,6 +163,7 @@ const ScrollAndLol: React.FC = () => {
   const [currentVideoData, setCurrentVideoData] = useState<VideoData | null>(
     null
   );
+  const [completlyPlayedVideoIndex, setCompletlyPlayedVideoIndex] = useState<number>(-1);
   const { user } = useAppSelector((state) => state.profile);
   const { mutate: sendCDPEvent } = useSendCDPEvent();
   const { mutate: sendGluedinUserReaction, data: sendGluedinUserReactionData } =
@@ -539,18 +540,24 @@ const ScrollAndLol: React.FC = () => {
   };
 
   useEffect(() => {
-    if (activeVideoIndex < videos.length) {
-      const getCurrentVideoId = videos[activeVideoIndex]?.id ?? "";
+    if (
+      completlyPlayedVideoIndex &&
+      activeVideoIndex < videos.length &&
+      completlyPlayedVideoIndex !== -1
+    ) {
+      const getCurrentVideoId = videos[completlyPlayedVideoIndex]?.id ?? "";
+      console.log("getCurrentVideoId", getCurrentVideoId);
       viewGludeinJokes({
         assetIds: [getCurrentVideoId],
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeVideoIndex]);
+  }, [completlyPlayedVideoIndex]);
 
   useEffect(() => {
-    if (viewGludeinJokesData?.ok) {
-      const currentVideoId = videos[activeVideoIndex]?.id;
+    if (viewGludeinJokesData?.ok && completlyPlayedVideoIndex !== -1) {
+      console.log("viewGludeinJokesData", viewGludeinJokesData);
+      const currentVideoId = videos[completlyPlayedVideoIndex]?.id;
       triger_CDP_View_Scroll_LOL(currentVideoId);
       setVideos((prev: VideoData[]) => {
         const newArr = [...prev];
@@ -566,6 +573,7 @@ const ScrollAndLol: React.FC = () => {
         }
         return newArr;
       });
+      setCompletlyPlayedVideoIndex(-1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewGludeinJokesData]);
@@ -650,10 +658,14 @@ const ScrollAndLol: React.FC = () => {
                       }}
                       className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] h-full w-full md:object-cover object-cover relative"
                       src={video.url}
-                      loop
+                      loop={false}
                       playsInline
                       muted={isMuted}
                       autoPlay={false}
+                      onEnded={() => {
+                        console.log("onEnded", index);
+                        setCompletlyPlayedVideoIndex(index);
+                      }}
                       preload="metadata"
                       onLoadedData={() => handleVideoLoad(index)}
                       onCanPlay={() => handleVideoCanPlay(index)}
