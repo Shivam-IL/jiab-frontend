@@ -20,6 +20,8 @@ const useLogout = () => {
     clearAllModalSessions();
     sessionStorage.clear();
     setUniqueId(Math.random().toString(36).substring(2, 15));
+    // Refresh the page to homepage after logout
+    window.location.href = '/';
   };
 
   return { logoutHandler };
