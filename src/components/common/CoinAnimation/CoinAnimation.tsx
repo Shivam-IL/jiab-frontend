@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 interface CoinAnimationProps {
   isVisible: boolean;
   animationKey?: number;
   onAnimationEnd?: () => void;
-  animation?: boolean;
 }
 
 const CoinAnimation: React.FC<CoinAnimationProps> = ({
@@ -13,24 +12,33 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({
   animationKey = 0,
   onAnimationEnd,
 }) => {
-  if (!isVisible) return null;
+  const [gifSrc, setGifSrc] = useState("");
+
+  useEffect(() => {
+    if (isVisible) {
+      // Force GIF to restart from first frame by adding timestamp
+      const timestamp = Date.now();
+      setGifSrc(`/videos/coin-animation.gif?t=${timestamp}`);
+
+      // Set animation end callback with fixed duration
+      if (onAnimationEnd) {
+        const timer = setTimeout(onAnimationEnd, 2800);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [isVisible, animationKey, onAnimationEnd]);
+
+  if (!isVisible || !gifSrc) return null;
 
   return (
     <div className="fixed inset-0 z-[9999] pointer-events-none flex justify-center items-center">
       <Image
-        key={animationKey} // Force remount to restart animation from beginning
-        src="/videos/coin-animation.gif"
+        src={gifSrc}
         alt="Coin Animation"
         width={1000}
         height={1000}
         className="w-[800px] h-[800px] md:w-[2000px] md:h-[2000px] object-contain translate-y-[25%] md:translate-y-[0]"
-        unoptimized // Required for GIFs
-        onLoad={() => {
-          // Trigger animation end callback after gif duration
-          if (onAnimationEnd) {
-            setTimeout(onAnimationEnd, 2800); // Slightly less than hook timeout
-          }
-        }}
+        unoptimized // Required for GIFs to play from first to last frame
         priority // Load immediately for smooth animation
       />
     </div>
