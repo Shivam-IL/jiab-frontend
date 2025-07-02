@@ -29,6 +29,7 @@ const UserGeneratedJokeCard: React.FC<IUserGeneratedJokeCard> = ({
           text={title}
           fontSize="text-[12px] md:text-[20px]"
           fontWeight="font-[700]"
+          className="break-words whitespace-normal overflow-hidden md:w-[200px]"
         />
         <div className="flex justify-between items-center">
           <AktivGroteskText

@@ -492,7 +492,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                     {isAuthenticated && (
                       <Link
                         href="/profile"
-                        className="hover:bg-gray-50 flex justify-between items-center px-[20px] py-[10px] text-[12px]"
+                        className={cn(
+                          "hover:bg-gray-50 flex justify-between items-center px-[20px] py-[10px] text-[16px]",
+                          isTamil && "text-[10px]"
+                        )}
                       >
                         {cmsData.navBar.myProfile}
                         <Image
@@ -506,7 +509,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                     {isAuthenticated && (
                       <Link
                         href="/my-wallet"
-                        className="px-[20px] py-[10px] hover:bg-gray-50 flex justify-between items-center text-[10px]"
+                        className={cn(
+                          "px-[20px] py-[10px] hover:bg-gray-50 flex justify-between items-center text-[16px]",
+                          isTamil && "text-[10px]"
+                        )}
                       >
                         {cmsData.navBar.comicCoins}
                         <Image
@@ -520,7 +526,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                     {isAuthenticated && (
                       <button
                         onClick={logoutHandler}
-                        className="w-full text-left px-[20px] py-[10px] hover:bg-gray-50 text-red-500 flex items-center justify-between text-[12px]"
+                        className={cn(
+                          "w-full text-left px-[20px] py-[10px] hover:bg-gray-50 text-red-500 flex items-center justify-between text-[16px]",
+                          isTamil && "text-[10px]"
+                        )}
                       >
                         <span>{cmsData.navBar.logout}</span>
                         <Image
@@ -534,7 +543,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                     {!isAuthenticated && (
                       <button
                         onClick={loginHandler}
-                        className="w-full text-left px-[20px] py-[10px] hover:bg-gray-50 text-red-500 flex items-center justify-between"
+                        className={cn(
+                          "w-full text-left px-[20px] py-[10px] hover:bg-gray-50 text-red-500 flex items-center justify-between text-[16px]",
+                          isTamil && "text-[10px]"
+                        )}
                       >
                         <span>{cmsData.navBar.login}</span>
                       </button>
