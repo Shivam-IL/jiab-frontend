@@ -11,10 +11,8 @@ import UgcFilter from "@/components/common/UgcFilter";
 import { useCMSData } from "@/data";
 import {
   useGetGluedinFeedList,
-  useViewGludeinJokes,
 } from "@/api/hooks/GluedinHooks";
-import { TModifiedUGCContent } from "@/api/types/GluedinTypes";
-import { resetUgcData, updateUgcData, updateUgcViewData } from "@/store/ugc";
+import { resetUgcData, updateUgcData } from "@/store/ugc";
 import { REDUX_UPDATION_TYPES } from "@/constants";
 import useAppDispatch from "@/hooks/useDispatch";
 import useAppSelector from "@/hooks/useSelector";
@@ -39,8 +37,7 @@ const UserGeneratedJokes = () => {
       ...ugcFilters,
       filterChnageId: filterChnageId ? filterChnageId : undefined,
     });
-  const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
-    useViewGludeinJokes();
+ 
   const [noMoreData, setNoMoreData] = useState(false);
   // Coin animation hook
   const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation();
@@ -61,10 +58,6 @@ const UserGeneratedJokes = () => {
   useEffect(() => {
     if (gluedinFeedList?.ok) {
       const { data } = gluedinFeedList ?? {};
-      const assetIds = gluedinFeedList?.data?.map(
-        (item: TModifiedUGCContent) => item?.videoId
-      );
-      viewGludeinJokes({ assetIds });
 
       if (data?.length === 0) {
         setNoMoreData(true);
@@ -87,21 +80,16 @@ const UserGeneratedJokes = () => {
         setInitialLoading(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     gluedinFeedList,
     filterChnageId,
     dispatch,
-    viewGludeinJokes,
     loadMore,
     initialLoading,
   ]);
 
-  useEffect(() => {
-    if (viewGludeinJokesData?.ok) {
-      const { data } = viewGludeinJokesData ?? {};
-      dispatch(updateUgcViewData({ assetIds: data }));
-    }
-  }, [viewGludeinJokesData, dispatch]);
+
 
   // Function to handle successful vote animation
   const handleVoteSuccess = useCallback(() => {

@@ -447,7 +447,7 @@ const Signup = () => {
             required={true}
             name='name'
             value={userData.name}
-            placeholder={cmsData.signup.full_name}
+            placeholder={`${cmsData.signup.full_name}*`}
             onChange={handleChange}
             type='text'
             error={nameError}
