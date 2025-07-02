@@ -97,7 +97,10 @@ const PJChallenge: React.FC<{
   const isTamil = selectedLanguage === "ta";
 
   return (
-    <div className="relative w-full">
+    <div
+      className="relative w-full cursor-pointer transition-transform duration-200"
+      onClick={onClick}
+    >
       {/* Background Image */}
       <Image
         src="/assets/images/pj-challenge-bg.svg"
@@ -137,7 +140,8 @@ const PJChallenge: React.FC<{
             <h2
               className={cn(
                 "text-green font-bold italic uppercase text-center text-[14px] leading-[18px] max-w-[180px] sm:text-[16px] sm:leading-[20px] sm:max-w-[200px] md:text-[24px] md:leading-[30px] md:max-w-[300px] lg:text-[32px] lg:leading-[40px] lg:max-w-[415px] 2xl:text-[37.94px] 2xl:leading-[56px] 2xl:max-w-[500px]",
-                isTamil && "text-[10px] leading-[14px] max-w-[190px] sm:text-[12px] sm:leading-[16px] sm:max-w-[140px] md:text-[16px] md:leading-[20px] md:max-w-[300px] lg:text-[20px] lg:leading-[24px] lg:max-w-[370px] 2xl:text-[31px] 2xl:leading-[37px] 2xl:max-w-[500px]"
+                isTamil &&
+                  "text-[10px] leading-[14px] max-w-[190px] sm:text-[12px] sm:leading-[16px] sm:max-w-[140px] md:text-[16px] md:leading-[20px] md:max-w-[300px] lg:text-[20px] lg:leading-[24px] lg:max-w-[370px] 2xl:text-[31px] 2xl:leading-[37px] 2xl:max-w-[500px]"
               )}
             >
               {subheading}
@@ -148,9 +152,8 @@ const PJChallenge: React.FC<{
           <div className="absolute bottom-[20%] left-1/2 xl:top-[69%] top-[70%] transform -translate-x-1/2">
             <button
               ref={buttonRef}
-              onClick={onClick}
               className="bg-black text-white font-bold rounded-full 
-              transition-all duration-200 hover:bg-gray-800 active:scale-95
+              transition-all duration-200 pointer-events-none
               px-[12px] py-[6px]
               sm:px-[20px] sm:py-[10px]
               md:px-[28px] md:py-[14px]
