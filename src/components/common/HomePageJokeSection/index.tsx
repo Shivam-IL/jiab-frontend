@@ -11,20 +11,15 @@ import { useCMSData } from "@/data";
 import useWindowWidth from "@/hooks/useWindowWidth";
 import {
   useGetHomePageJokeList,
-  useViewGludeinJokes,
 } from "@/api/hooks/GluedinHooks";
 import { TModifiedUGCContent } from "@/api/types/GluedinTypes";
-import { resetUgcData, updateUgcViewData, updateUgcData } from "@/store/ugc";
+import { resetUgcData, updateUgcData } from "@/store/ugc";
 import { REDUX_UPDATION_TYPES } from "@/constants";
 import useAppDispatch from "@/hooks/useDispatch";
 import useAppSelector from "@/hooks/useSelector";
 import { BoxIds } from "../CircularBoxesModal";
 import { DesktopBoxIds } from "../HomePageDesktopOnboarding";
-import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
-import {
-  BaseCDPEventPayload,
-  CDPEventPayloadBuilder,
-} from "@/api/utils/cdpEvents";
+
 
 const HomePageJokeSection = ({
   isClient,
@@ -41,8 +36,6 @@ const HomePageJokeSection = ({
   const [activeTab, setActiveTab] = useState<"Latest" | "Trending">("Latest");
   const [jokeBoxCurrent, setJokeBoxCurrent] = useState(0);
   const [jokeBoxPageCount, setJokeBoxPageCount] = useState(3);
-  const { user } = useAppSelector((state) => state.profile);
-  const { mutate: sendCDPEvent } = useSendCDPEvent();
 
   const { data: jokeBoxData, isFetched: isJokeBoxFetched } =
     useGetHomePageJokeList({
@@ -50,8 +43,7 @@ const HomePageJokeSection = ({
     });
 
   const dispatch = useAppDispatch();
-  const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
-    useViewGludeinJokes();
+  
 
   useEffect(() => {
     if (!jokeBoxApi) {
@@ -68,23 +60,11 @@ const HomePageJokeSection = ({
     jokeBoxApi.scrollTo(pageIndex);
   };
 
-  const trigger_CDP_VIEW_JOKES = (jokesId: string[]) => {
-    if (jokesId.length > 0 && user?.id) {
-      for (const jokeId of jokesId) {
-        const payload: BaseCDPEventPayload =
-          CDPEventPayloadBuilder.buildViewJokePayload(jokeId, user?.id);
-        sendCDPEvent(payload);
-      }
-    }
-  };
+
 
   useEffect(() => {
     if (jokeBoxData?.ok && isJokeBoxFetched) {
       const { data } = jokeBoxData ?? {};
-      console.log("data", data);
-      const assetIds = data?.map((item: { videoId: string }) => item?.videoId);
-      viewGludeinJokes({ assetIds });
-      trigger_CDP_VIEW_JOKES(assetIds);
       dispatch(
         updateUgcData({
           type: REDUX_UPDATION_TYPES.REPLACED,
@@ -95,13 +75,7 @@ const HomePageJokeSection = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jokeBoxData, isJokeBoxFetched]);
 
-  useEffect(() => {
-    if (viewGludeinJokesData?.ok) {
-      const { data } = viewGludeinJokesData ?? {};
-      dispatch(updateUgcViewData({ assetIds: data }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewGludeinJokesData]);
+
 
   useEffect(() => {
     return () => {

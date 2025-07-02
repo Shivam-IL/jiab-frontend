@@ -42,7 +42,6 @@ const UgcComponent: React.FC<IUgcComponent> = ({
       <div className="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[16px] xl:gap-x-[60px] md:gap-x-[45px] md:gap-y-[24px]">
         {jokesData?.map((item: TModifiedUGCContent, index: number) => (
           <UgcCard
-            home={true}
             item={item}
             key={index}
             onVoteSuccess={onVoteSuccess}
