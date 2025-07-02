@@ -1,21 +1,21 @@
 "use client";
 
-import { useEditUserProfileDetails } from '@/api/hooks/ProfileHooks'
-import AktivGroteskText from '@/components/common/AktivGroteskText'
-import MobileTempNavBar from '@/components/common/MobileTempNavBar'
-import ScreenWrapper from '@/components/common/ScreenWrapper'
-import EditProfileImage from '@/components/EditProfileImage'
-import GreenCTA from '@/components/GreenCTA'
-import Input from '@/components/Input'
-import { Separator } from '@/components/ui/separator'
-import { IAvatarsData, updateUser } from '@/store/profile/profile.slice'
-import useAppSelector from '@/hooks/useSelector'
-import useWindowWidth from '@/hooks/useWindowWidth'
-import { newMonthDayYearConvert } from '@/utils'
-import { useParams, useRouter } from 'next/navigation'
-import React, { useCallback, useEffect, useState } from 'react'
-import useAppDispatch from '@/hooks/useDispatch'
-import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
+import { useEditUserProfileDetails } from "@/api/hooks/ProfileHooks";
+import AktivGroteskText from "@/components/common/AktivGroteskText";
+import MobileTempNavBar from "@/components/common/MobileTempNavBar";
+import ScreenWrapper from "@/components/common/ScreenWrapper";
+import EditProfileImage from "@/components/EditProfileImage";
+import GreenCTA from "@/components/GreenCTA";
+import Input from "@/components/Input";
+import { Separator } from "@/components/ui/separator";
+import { IAvatarsData, updateUser } from "@/store/profile/profile.slice";
+import useAppSelector from "@/hooks/useSelector";
+import useWindowWidth from "@/hooks/useWindowWidth";
+import { newMonthDayYearConvert } from "@/utils";
+import { useParams, useRouter } from "next/navigation";
+import React, { useCallback, useEffect, useState } from "react";
+import useAppDispatch from "@/hooks/useDispatch";
+import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
 
 import {
   CDPEventPayloadBuilder,
@@ -439,41 +439,6 @@ const EditProfilePage = () => {
               fontWeight="font-[700]"
             />
           </form>
-          <div className="md:hidden flex justify-between mt-[18px]">
-            <div className="flex items-center gap-[5px]">
-              <button
-                onClick={() => router.push("/terms-and-conditions")}
-                className="cursor-pointer border-none outline-none"
-              >
-                <AktivGroteskText
-                  text="T&C*"
-                  fontSize="text-[7px]"
-                  fontWeight="font-[400]"
-                />
-              </button>
-              <Separator className="h-[80%] self-center w-[0.5px] bg-black" />
-              <button
-                onClick={() => router.push("/privacy-policy")}
-                className="cursor-pointer border-none outline-none"
-              >
-                <AktivGroteskText
-                  text="Privacy Policy*"
-                  fontSize="text-[7px]"
-                  fontWeight="font-[400]"
-                />
-              </button>
-            </div>
-            <div className="relative flex gap-2 items-center">
-              <AktivGroteskText
-                text="CARBONATED WATER. TRADEMARK OWNER: THE COCA-COLA COMPANY."
-                fontSize="text-[6px]"
-                fontWeight="font-[400]"
-              />
-              <div className="relative min-w-[4.75px] min-h-[4.75px] bg-[#00953B] flex flex-col justify-center items-center">
-                <div className="relative bottom-[0.0107px] left-[0.070px] rounded-full min-w-[3px] min-h-[3px] bg-[#E0E0E0] self-center"></div>
-              </div>
-            </div>
-          </div>
         </ScreenWrapper>
       </div>
     </div>
