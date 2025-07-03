@@ -16,6 +16,7 @@ import { pageview } from "@/utils/gTagEvents";
 import BreakTheIceComponent from "./BreakTheIceComponent";
 import { LOGIN_SIGNUP_DIALOG_ID, PORTAL_ID } from "@/constants";
 import FontProvider from "./FontProvider";
+import MadeYouLolComponent from "./MadeYouLolComponent";
 
 interface LayoutClientProps {
   children: ReactNode;
@@ -59,6 +60,7 @@ export default function LayoutClient({
             </ProtectedRoutedWrapper>
           </InitialDataLoader>
           <BreakTheIceComponent />
+          <MadeYouLolComponent />
         </CMSWrapper>
       </FCMProvider>
       {/* Global Loading Component */}

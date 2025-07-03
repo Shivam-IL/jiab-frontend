@@ -6,7 +6,6 @@ import UgcComponent from "@/components/UgcComponent";
 import UgcPageLoader from "@/components/UgcPageLoader";
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { MadeYouLaughExitPopup } from "@/components/ExitPopUps";
 import UgcFilter from "@/components/common/UgcFilter";
 import { useCMSData } from "@/data";
 import {
@@ -23,7 +22,6 @@ import {
 
 const UserGeneratedJokes = () => {
   const router = useRouter();
-  const [isUnmounting, setIsUnmounting] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const dispatch = useAppDispatch();
@@ -50,7 +48,6 @@ const UserGeneratedJokes = () => {
 
   useEffect(() => {
     return () => {
-      setIsUnmounting(true);
       dispatch(resetUgcData());
     };
   }, [dispatch]);
@@ -145,14 +142,6 @@ const UserGeneratedJokes = () => {
           onVoteSuccess={handleVoteSuccess}
         />
       </div>
-      {isUnmounting && (
-        <MadeYouLaughExitPopup
-          open={isUnmounting}
-          onClose={() => {
-            setIsUnmounting(false);
-          }}
-        />
-      )}
 
       {/* Coin Animation */}
       <CoinAnimation isVisible={isAnimating} animationKey={animationKey} />

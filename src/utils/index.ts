@@ -74,6 +74,12 @@ export const newMonthDayYearConvert = (date: string) => {
   return `${month}/${day}/${year}`;
 };
 
+export const newDayMonthYearConvert = (date: string) => {
+  const dateArr = date.split('/')
+  const [day, month, year] = dateArr
+  return `${day}/${month}/${year}`;
+}
+
 export const getLabel = (labels: string[]) => {
   let newLabel = ''
   labels?.forEach((label: string, index: number) => {

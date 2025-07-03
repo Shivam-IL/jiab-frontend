@@ -209,6 +209,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
       setLocalStorageItem(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, refresh_token)
       setLocalStorageItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, access_token)
       setTokenUpdated(true)
+      console.log('refreshTokenData', refreshTokenData)
       dispatch(updateSurpriseMe({ surpriseMe: true }))
       if (refreshTokenFromParams) {
         removeSessionStorageItem(

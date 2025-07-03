@@ -129,9 +129,13 @@ const DontMissOutExitPopup = ({
 const MadeYouLaughExitPopup = ({
   open,
   onClose,
+  yesButtonClick,
+  noButtonClick,
 }: {
   open: boolean;
   onClose: () => void;
+  yesButtonClick: () => void;
+  noButtonClick: () => void;
 }) => {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -146,6 +150,8 @@ const MadeYouLaughExitPopup = ({
       title={cmsData?.madeYouLoL?.madeYouLolHeading}
       subtitle={cmsData?.madeYouLoL?.madeYouLolSubHeading}
       sureToExitText={cmsData?.madeYouLoL?.madeYouLolSubHeading2}
+      yesButtonClick={yesButtonClick}
+      noButtonClick={noButtonClick}
       yesButtonText={cmsData?.madeYouLoL?.madeYouLolYesButtonText}
       noButtonText={cmsData?.madeYouLoL?.madeYouLolNoButtonText}
       doubleButton={true}

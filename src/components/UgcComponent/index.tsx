@@ -35,7 +35,6 @@ const UgcComponent: React.FC<IUgcComponent> = ({
     }
   }, [isUnmounting]);
 
-  console.log("jokesData", jokesData);
 
   return (
     <div className="py-[16px] md:py-[24px]">

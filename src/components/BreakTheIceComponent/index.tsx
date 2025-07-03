@@ -128,6 +128,8 @@ const BreakTheIceComponent = () => {
             // Clear the "came from profile" state when user clicks no
             removeSessionStorageItem(SESSION_STORAGE_KEYS.CURRENT_PATH)
             removeSessionStorageItem(SESSION_STORAGE_KEYS.PREVIOUS_PATH)
+            removeSessionStorageItem(SESSION_STORAGE_KEYS.JOKES_CURRENT_PATH)
+            removeSessionStorageItem(SESSION_STORAGE_KEYS.JOKES_PREVIOUS_PATH)
             router.push('/profile')
           }}
         />
