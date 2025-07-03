@@ -8,6 +8,7 @@ import { updateBalance } from "@/store/profile/profile.slice";
 /**
  * Custom hook to handle comic coin revalidation
  * Provides centralized logic for updating comic coin data after actions that award coins
+ * Also invalidates notification queries simultaneously to keep notification data fresh
  */
 export const useComicCoinRevalidation = () => {
   const queryClient = useQueryClient();
@@ -18,6 +19,20 @@ export const useComicCoinRevalidation = () => {
     queryClient.invalidateQueries({
       queryKey: [...keys.joke.getComicCoins()],
     });
+    
+    // Simultaneously invalidate notification queries as coin-earning actions
+    // may trigger new notifications or update notification counts
+    queryClient.invalidateQueries({
+      queryKey: [...keys.notifications.getNotificationCount()],
+    });
+    
+    // Only invalidate notification list if user is currently viewing notifications
+    const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+    if (currentPath.includes('/notifications')) {
+      queryClient.invalidateQueries({
+        queryKey: [...keys.notifications.getNotifications()],
+      });
+    }
   }, [queryClient]);
 
   const revalidateComicCoinsAfterDelay = useCallback((delay: number = 1000) => {
@@ -26,6 +41,19 @@ export const useComicCoinRevalidation = () => {
       queryClient.invalidateQueries({
         queryKey: [...keys.joke.getComicCoins()],
       });
+      
+      // Simultaneously invalidate notification queries
+      queryClient.invalidateQueries({
+        queryKey: [...keys.notifications.getNotificationCount()],
+      });
+      
+      // Only invalidate notification list if user is currently viewing notifications
+      const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+      if (currentPath.includes('/notifications')) {
+        queryClient.invalidateQueries({
+          queryKey: [...keys.notifications.getNotifications()],
+        });
+      }
     }, delay);
   }, [queryClient]);
 
@@ -67,6 +95,19 @@ export const useComicCoinRevalidation = () => {
       queryClient.invalidateQueries({
         queryKey: [...keys.joke.getComicCoins()],
       });
+      
+      // Simultaneously invalidate notification queries
+      queryClient.invalidateQueries({
+        queryKey: [...keys.notifications.getNotificationCount()],
+      });
+      
+      // Only invalidate notification list if user is currently viewing notifications
+      const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+      if (currentPath.includes('/notifications')) {
+        queryClient.invalidateQueries({
+          queryKey: [...keys.notifications.getNotifications()],
+        });
+      }
       
       // Wait a bit more for the invalidation to trigger refetch
       setTimeout(() => {
