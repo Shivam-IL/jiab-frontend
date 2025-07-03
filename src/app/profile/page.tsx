@@ -124,6 +124,11 @@ const ProfilePage = () => {
             addClickableText={cmsData?.myProfile?.addClickableText}
             setAsDefault={cmsData?.myProfile?.setAsDefault}
           />
+          <HelpUsToKnowYourBetter
+            id={"qna"}
+            prevButtonText={cmsData?.myProfile?.prevButtonText}
+            nextButtonText={cmsData?.myProfile?.nextButtonText}
+          />
           <ReferAFriend
             referToFriendHeader={cmsData?.myProfile?.referToFriendHeader}
             referNowButtonText={cmsData?.myProfile?.referNowButtonText}
@@ -136,11 +141,6 @@ const ProfilePage = () => {
             myReferrals={cmsData?.myProfile?.myReferrals}
             pending={cmsData?.myProfile?.pending}
             accepted={cmsData?.myProfile?.accepted}
-          />
-          <HelpUsToKnowYourBetter
-            id={"qna"}
-            prevButtonText={cmsData?.myProfile?.prevButtonText}
-            nextButtonText={cmsData?.myProfile?.nextButtonText}
           />
           <UserGeneratedJokecComponent
             myJokeText={cmsData?.myProfile?.myJokes}
