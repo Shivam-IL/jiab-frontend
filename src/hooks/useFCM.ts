@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { messaging, getToken, onMessage, setupMessaging } from '@/lib/firebase';
-import { sendTokenToServer } from '@/utils/fcmUtils';
+
 import { useQueryClient } from '@tanstack/react-query';
 import { keys } from '@/api/utils';
 import { isSupported } from 'firebase/messaging';
@@ -48,19 +48,25 @@ export const useFCM = (): FCMHookResult => {
 
     checkSupport();
 
-    // Listen for messages from service worker
+    // Listen for messages from service worker with smart invalidation
     const handleServiceWorkerMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === 'NOTIFICATION_RECEIVED') {
         console.log('Background notification received via service worker:', event.data.payload);
         
-        // Update notification count and list immediately
+        // Smart invalidation - only invalidate what's needed
+        // Always invalidate count as it's lightweight and always changes
         queryClient.invalidateQueries({
           queryKey: [...keys.notifications.getNotificationCount()],
         });
         
-        queryClient.invalidateQueries({
-          queryKey: [...keys.notifications.getNotifications()],
-        });
+        // Only invalidate notification list if user is currently viewing notifications
+        // This prevents unnecessary API calls when user isn't actively viewing the list
+        const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+        if (currentPath.includes('/notifications')) {
+          queryClient.invalidateQueries({
+            queryKey: [...keys.notifications.getNotifications()],
+          });
+        }
       }
     };
 
@@ -124,12 +130,6 @@ export const useFCM = (): FCMHookResult => {
         console.log('Registration token:', currentToken);
         setToken(currentToken);
         
-        // Send the token to your backend
-        try {
-          await sendTokenToServer(currentToken);
-        } catch (error) {
-          console.error('Failed to send token to backend:', error);
-        }
         
         return currentToken;
       } else {
@@ -142,7 +142,7 @@ export const useFCM = (): FCMHookResult => {
     }
   };
 
-  // Set up foreground message listener
+  // Set up foreground message listener with smart invalidation
   useEffect(() => {
     const setupListener = async () => {
       if (permission === 'granted' && isFCMSupported) {
@@ -153,14 +153,20 @@ export const useFCM = (): FCMHookResult => {
         const unsubscribe = onMessage(messagingInstance, (payload) => {
           console.log('Foreground message received:', payload);
           
-          // Update notification count and list immediately
+          // Smart invalidation based on current context
+          // Always invalidate count as it's lightweight and always changes
           queryClient.invalidateQueries({
             queryKey: [...keys.notifications.getNotificationCount()],
           });
           
-          queryClient.invalidateQueries({
-            queryKey: [...keys.notifications.getNotifications()],
-          });
+          // Only invalidate notification list if user is currently viewing notifications
+          // This prevents unnecessary API calls and improves performance
+          const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+          if (currentPath.includes('/notifications')) {
+            queryClient.invalidateQueries({
+              queryKey: [...keys.notifications.getNotifications()],
+            });
+          }
           
           // Handle foreground message
           if (payload.notification) {
@@ -186,15 +192,22 @@ export const useFCM = (): FCMHookResult => {
     setupListener();
   }, [permission, isFCMSupported, queryClient]);
 
+  // Smart test function for manual invalidation
   const testNotificationUpdate = () => {
     console.log('Manual notification cache invalidation triggered');
+    
+    // Always invalidate count
     queryClient.invalidateQueries({
       queryKey: [...keys.notifications.getNotificationCount()],
     });
     
-    queryClient.invalidateQueries({
-      queryKey: [...keys.notifications.getNotifications()],
-    });
+    // Only invalidate notification list if user is currently viewing notifications
+    const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+    if (currentPath.includes('/notifications')) {
+      queryClient.invalidateQueries({
+        queryKey: [...keys.notifications.getNotifications()],
+      });
+    }
   };
 
   return {

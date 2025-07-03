@@ -24,8 +24,6 @@ import {
   useMarkAsRead,
 } from "@/api/hooks/NotificationHooks";
 import { INotification } from "@/api/types/NotificationTypes";
-import { useQueryClient } from "@tanstack/react-query";
-import { keys } from "@/api/utils";
 import { cn } from "@/lib/utils";
 
 const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
@@ -43,7 +41,6 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const profileDropdownRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const queryClient = useQueryClient();
 
   useEffect(() => {
     setMounted(true);
@@ -77,23 +74,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
     if (newState && notificationCount > 0) {
       try {
         // Don't await - fire and forget to avoid blocking UI
-        markAsReadMutation
-          .mutateAsync()
-          .then(() => {
-            // Use a timeout to batch invalidations and prevent rapid refetching
-            setTimeout(() => {
-              queryClient.invalidateQueries({
-                queryKey: [...keys.notifications.getNotifications()],
-              });
-
-              queryClient.invalidateQueries({
-                queryKey: [...keys.notifications.getNotificationCount()],
-              });
-            }, 100);
-          })
-          .catch((error) => {
-            console.error("Failed to mark notifications as read:", error);
-          });
+        markAsReadMutation.mutateAsync().catch((error) => {
+          console.error("Failed to mark notifications as read:", error);
+        });
+        // No need for manual invalidation - the mutation handles it optimally
       } catch (error) {
         console.error("Failed to mark notifications as read:", error);
       }

@@ -99,14 +99,20 @@ const useFCMToken = () => {
     const unsubscribe = onMessage(messagingInstance, (payload) => {
       console.log('Foreground message received:', payload);
       
-      // Update notification count and list immediately
+      // Smart invalidation based on current context
+      // Always invalidate count as it's lightweight and always changes
       queryClient.invalidateQueries({
         queryKey: [...keys.notifications.getNotificationCount()],
       });
       
-      queryClient.invalidateQueries({
-        queryKey: [...keys.notifications.getNotifications()],
-      });
+      // Only invalidate notification list if user is currently viewing notifications
+      // This prevents unnecessary API calls when user isn't actively viewing the list
+      const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+      if (currentPath.includes('/notifications')) {
+        queryClient.invalidateQueries({
+          queryKey: [...keys.notifications.getNotifications()],
+        });
+      }
       
       // Show notification even when app is in foreground
       if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {

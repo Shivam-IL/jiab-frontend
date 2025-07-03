@@ -44,17 +44,6 @@ const NotificationsPage: React.FC = () => {
       // Only for mobile, if not already pending, and hasn't been marked yet
       setHasMarkedAsRead(true);
       markAsReadMutation.mutate(undefined, {
-        onSuccess: () => {
-          // Invalidate and refetch notifications to update the UI
-          queryClient.invalidateQueries({
-            queryKey: [...keys.notifications.getNotifications()],
-          });
-
-          // Also invalidate notification count
-          queryClient.invalidateQueries({
-            queryKey: [...keys.notifications.getNotificationCount()],
-          });
-        },
         onError: (error) => {
           console.error("Failed to mark notifications as read:", error);
           setHasMarkedAsRead(false); // Reset flag on error
@@ -94,17 +83,7 @@ const NotificationsPage: React.FC = () => {
       if (markAsReadMutation.isPending) return;
 
       await markAsReadMutation.mutateAsync();
-
-      // Use a timeout to batch invalidations and prevent rapid refetching
-      setTimeout(() => {
-        queryClient.invalidateQueries({
-          queryKey: [...keys.notifications.getNotifications()],
-        });
-
-        queryClient.invalidateQueries({
-          queryKey: [...keys.notifications.getNotificationCount()],
-        });
-      }, 100);
+      // No need for manual invalidation - the mutation handles it optimally
     } catch (error) {
       console.error("Failed to mark notification as read:", error);
     }
