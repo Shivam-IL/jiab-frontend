@@ -9,6 +9,7 @@ import {
 } from "../types/JokeTypes";
 import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
 import { MNEMONICS_TO_ID } from "@/constants";
+import { useGetNotifications, useGetNotificationCount } from "./NotificationHooks";
 
 const jokeInstance = JokeService.getInstance();
 const useGetSurpriseMeJoke = (genreId?: number, languageId?: number) => {
@@ -69,9 +70,30 @@ const useGetUserSubmittedJokes = () => {
 
 const useGetComicCoins = () => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
+  
+  // Fetch notifications when comic coins are fetched
+  const { refetch: refetchNotifications } = useGetNotifications({
+    page_number: 1,
+    page_size: 10
+  });
+  
+  // Fetch notification count when comic coins are fetched
+  const { refetch: refetchNotificationCount } = useGetNotificationCount();
+  
   return useQuery({
     queryKey: [...keys.joke.getComicCoins()],
-    queryFn: () => jokeInstance.GetComicCoins(),
+    queryFn: async () => {
+      const result = await jokeInstance.GetComicCoins();
+      
+      // Fetch notifications when comic coins are successfully fetched
+      if (result?.ok && isAuthenticated && token) {
+        console.log('Fetching notifications after comic coins fetch');
+        refetchNotifications();
+        refetchNotificationCount();
+      }
+      
+      return result;
+    },
     enabled: isAuthenticated && token ? true : false,
     staleTime: 30 * 1000, // Consider data fresh for 30 seconds
     gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes
