@@ -62,6 +62,7 @@ const Calendar: React.FC<CalendarProps> = ({
     return new Date().getFullYear() - 6
   })
   const [isOpen, setIsOpen] = useState(false)
+  const [isYearNavigation, setIsYearNavigation] = useState(false)
 
   // Parse date string to Date object
   const parseDateString = (dateString: string): Date | null => {
@@ -161,12 +162,11 @@ const Calendar: React.FC<CalendarProps> = ({
     onChange(name, '')
   }
 
-
-
   const handleYearSelect = (year: number) => {
     const newDate = new Date(currentDate)
     newDate.setFullYear(year)
     setCurrentDate(newDate)
+    setIsYearNavigation(true)
     setViewMode('month')
   }
 
@@ -174,7 +174,18 @@ const Calendar: React.FC<CalendarProps> = ({
     const newDate = new Date(currentDate)
     newDate.setMonth(monthIndex)
     setCurrentDate(newDate)
+    setIsYearNavigation(false)
     setViewMode('calendar')
+  }
+
+  // Add touch event handlers to prevent long-press issues on mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault()
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent, callback: () => void) => {
+    e.preventDefault()
+    callback()
   }
 
   const handlePreviousYears = () => {
@@ -205,6 +216,8 @@ const Calendar: React.FC<CalendarProps> = ({
           <div className='flex items-center gap-3'>
             <button
               onClick={handlePreviousYear}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={(e) => handleTouchEnd(e, handlePreviousYear)}
               className='h-7 w-7 flex items-center justify-center hover:bg-[#E8F5E9] rounded-full transition-colors'
             >
               <ChevronLeft className='h-4 w-4' />
@@ -216,6 +229,8 @@ const Calendar: React.FC<CalendarProps> = ({
             </h2>
             <button
               onClick={handleNextYear}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={(e) => handleTouchEnd(e, handleNextYear)}
               className='h-7 w-7 flex items-center justify-center hover:bg-[#E8F5E9] rounded-full transition-colors'
             >
               <ChevronRight className='h-4 w-4' />
@@ -225,12 +240,16 @@ const Calendar: React.FC<CalendarProps> = ({
         <div className='grid grid-cols-3 gap-4'>
           {MONTHS.map((month, index) => (
             <button
-              key={month}
+              key={`month-${month}-${index}`}
               onClick={() => handleMonthSelect(index)}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={(e) => handleTouchEnd(e, () => handleMonthSelect(index))}
               className={`
                 p-3 border rounded-lg text-center transition-all
                 ${
-                  index === currentDate.getMonth()
+                  !isYearNavigation && selectedDate && 
+                  index === selectedDate.getMonth() && 
+                  currentDate.getFullYear() === selectedDate.getFullYear()
                     ? 'border-[#4CAF50] bg-[#E8F5E9] text-[#4CAF50]'
                     : 'border-gray-200 hover:border-[#4CAF50] hover:bg-[#E8F5E9]/50'
                 }
@@ -258,6 +277,8 @@ const Calendar: React.FC<CalendarProps> = ({
           <div className='flex items-center gap-3'>
             <button
               onClick={handlePreviousYears}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={(e) => handleTouchEnd(e, handlePreviousYears)}
               className='h-7 w-7 flex items-center justify-center hover:bg-[#E8F5E9] rounded-full transition-colors'
             >
               <ChevronLeft className='h-4 w-4' />
@@ -269,6 +290,8 @@ const Calendar: React.FC<CalendarProps> = ({
             </h2>
             <button
               onClick={handleNextYears}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={(e) => handleTouchEnd(e, handleNextYears)}
               className='h-7 w-7 flex items-center justify-center hover:bg-[#E8F5E9] rounded-full transition-colors'
             >
               <ChevronRight className='h-4 w-4' />
@@ -278,8 +301,10 @@ const Calendar: React.FC<CalendarProps> = ({
         <div className='grid grid-cols-3 gap-4'>
           {years.map(year => (
             <button
-              key={year}
+              key={`year-${year}`}
               onClick={() => handleYearSelect(year)}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={(e) => handleTouchEnd(e, () => handleYearSelect(year))}
               className={`
                 p-3 border rounded-lg text-center transition-all
                 ${
@@ -320,12 +345,16 @@ const Calendar: React.FC<CalendarProps> = ({
                 <div className='flex items-center gap-2'>
                   <span
                     onClick={() => setViewMode('month')}
+                    onTouchStart={handleTouchStart}
+                    onTouchEnd={(e) => handleTouchEnd(e, () => setViewMode('month'))}
                     className={` text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
                   >
                     {format(displayMonth, 'MMM')}
                   </span>
                   <span
                     onClick={() => setViewMode('year')}
+                    onTouchStart={handleTouchStart}
+                    onTouchEnd={(e) => handleTouchEnd(e, () => setViewMode('year'))}
                     className={`text-[18px] font-[600] cursor-pointer hover:text-[#4CAF50] transition-colors`}
                   >
                     {format(displayMonth, 'yyyy')}
@@ -355,7 +384,17 @@ const Calendar: React.FC<CalendarProps> = ({
 
   return (
     <div className='flex flex-col gap-[6px] w-full'>
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <Popover open={isOpen} onOpenChange={(open) => {
+        setIsOpen(open)
+        if (!open) {
+          setIsYearNavigation(false)
+          setViewMode('calendar')
+          // Reset currentDate to selectedDate when closing without selection
+          if (selectedDate) {
+            setCurrentDate(selectedDate)
+          }
+        }
+      }}>
         <PopoverTrigger asChild>
           <div
             className={`w-full cursor-pointer flex items-center justify-between ${
