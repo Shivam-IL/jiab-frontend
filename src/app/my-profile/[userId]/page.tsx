@@ -233,6 +233,8 @@ const EditProfilePage = () => {
     }
   }, [user, params?.userId, avatarsData])
 
+  console.log(userData, 'userData')
+
   const isFormValid = () => {
     const nameError = validateName(userData.name)
     let dobError = ''
@@ -257,10 +259,16 @@ const EditProfilePage = () => {
   const submitHandler = () => {
     if (isFormValid()) {
       const { name, dob, gender, avatar_id, email } = userData
-      console.log(dob, 'dob')
+      let newdate = dob
+      if (dob?.includes('T')) {
+        const dateArr = dob.split('T')
+        const dateStr = dateArr[0]
+        const [year, month, day] = dateStr.split('-')
+        newdate = `${day}/${month}/${year}`
+      }
       const payload = {
         name,
-        dob: dob ? newDayMonthYearConvert(dob) : '',
+        dob: newdate ? newDayMonthYearConvert(newdate) : '',
         email,
         gender,
         avatar_id
