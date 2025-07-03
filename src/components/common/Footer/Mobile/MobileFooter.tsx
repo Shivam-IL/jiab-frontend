@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import comicCoin from "../../../../../public/other-svgs/comic-coin-footer.svg";
-import comicCoinActive from "../../../../../public/other-svgs/comic-active-footer.svg";
+import comicCoinActive from "../../../../../public/assets/images/sprite-gold.png";
 import refreshActive from "../../../../../public/other-svgs/refresh-active.svg";
 import { BoxIds } from "../../../common/CircularBoxesModal";
 import { useCMSData } from "@/data";
