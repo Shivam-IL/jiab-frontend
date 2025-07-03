@@ -4,7 +4,22 @@ import { keys } from "../utils";
 import useAppSelector from "@/hooks/useSelector";
 import { TGetNotificationsParams, TRegisterDeviceRequest } from "../types/NotificationTypes";
 
+/**
+ * Notification Hooks - Optimized for Real-time Updates
+ * 
+ * This implementation uses FCM (Firebase Cloud Messaging) for real-time notifications.
+ * When new notifications arrive, FCM automatically invalidates React Query caches via:
+ * - useFCM.ts: Handles foreground notifications
+ * - useFCMToken.ts: Handles background notifications via service worker
+ * 
+ * No polling is needed - data is refetched only when:
+ * 1. New notifications arrive (FCM invalidation)
+ * 2. User focuses the window (refetchOnWindowFocus)
+ * 3. Manual invalidation (mark as read, etc.)
+ */
+
 // Hook to fetch notifications with pagination
+// Real-time updates are handled by FCM invalidation - no polling needed
 const useGetNotifications = (params: TGetNotificationsParams = {}) => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
   const notificationInstance = NotificationService.getInstance();
@@ -13,15 +28,16 @@ const useGetNotifications = (params: TGetNotificationsParams = {}) => {
     queryKey: [...keys.notifications.getNotifications(), params],
     queryFn: () => notificationInstance.GetNotifications(params),
     enabled: !!(isAuthenticated && token),
-    staleTime: 30 * 1000, // 30 seconds - reduced for more real-time updates
+    staleTime: 5 * 60 * 1000, // 5 minutes - data is fresh for 5 minutes
     refetchOnWindowFocus: true, // Refetch when user focuses window
     refetchIntervalInBackground: false, // Don't poll when tab is not active
-    refetchInterval: 30 * 1000, // Poll every 30 seconds for real-time updates
+    // FCM handles real-time updates via queryClient.invalidateQueries()
     retry: 3, // Retry failed requests
   });
 };
 
 // Hook to fetch notification count
+// Real-time updates are handled by FCM invalidation - no polling needed
 const useGetNotificationCount = () => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
   const notificationInstance = NotificationService.getInstance();
@@ -30,10 +46,10 @@ const useGetNotificationCount = () => {
     queryKey: [...keys.notifications.getNotificationCount()],
     queryFn: () => notificationInstance.GetNotificationCount(),
     enabled: !!(isAuthenticated && token),
-    staleTime: 15 * 1000, // 15 seconds - reduced for more real-time updates
-    refetchInterval: 30 * 1000, // Poll every 30 seconds for real-time updates
+    staleTime: 5 * 60 * 1000, // 5 minutes - data is fresh for 5 minutes
     refetchOnWindowFocus: true, // Refetch when user focuses window
     refetchIntervalInBackground: false, // Don't poll when tab is not active
+    // FCM handles real-time updates via queryClient.invalidateQueries()
     retry: 3, // Retry failed requests
   });
 };
