@@ -53,7 +53,7 @@ const Calendar: React.FC<CalendarProps> = ({
   fontSize = 'text-[14px]',
   paddingClass = 'pl-[16px] pr-[16px] py-[16px] md:py-[19px] md:pl-[25px]',
   bgColor = 'bg-[#F3F3F3]',
-  dateFormat = 'yyyy/MM/dd'
+  dateFormat = 'dd/MM/yyyy'
 }) => {
   // State management
   const [viewMode, setViewMode] = useState<ViewMode>('calendar')
@@ -137,15 +137,10 @@ const Calendar: React.FC<CalendarProps> = ({
   const displayValue = useMemo(() => {
     if (!value) return ''
 
-    // If value is already a string in YYYY/MM/DD format, use it directly
-    if (typeof value === 'string' && value.match(/^\d{4}\/\d{2}\/\d{2}$/)) {
-      return value
-    }
-
     // Parse the date (handles ISO format, YYYY/MM/DD, etc.)
     const parsedDate = parseDateString(value)
     if (parsedDate) {
-      return format(parsedDate, 'yyyy/MM/dd')
+      return format(parsedDate, 'dd/MM/yyyy')
     }
 
     return value
@@ -166,14 +161,7 @@ const Calendar: React.FC<CalendarProps> = ({
     onChange(name, '')
   }
 
-  useEffect(() => {
-    if (value) {
-      const date = new Date(value)
-      const formattedDate = formatDateToString(date)
-      onChange(name, formattedDate)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value])
+
 
   const handleYearSelect = (year: number) => {
     const newDate = new Date(currentDate)
@@ -364,7 +352,6 @@ const Calendar: React.FC<CalendarProps> = ({
     }
   }
 
-  console.log(value, 'value')
 
   return (
     <div className='flex flex-col gap-[6px] w-full'>

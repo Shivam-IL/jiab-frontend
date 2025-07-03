@@ -643,6 +643,8 @@ export const PROTECTED_ROUTES = [
 export const SESSION_STORAGE_KEYS = {
   CURRENT_PATH: "currentPath",
   PREVIOUS_PATH: "previousPath",
+  JOKES_PREVIOUS_PATH: "jokesPreviousPath",
+  JOKES_CURRENT_PATH: "jokesCurrentPath",
   HAS_SHOWN_LOCK_MODAL: "hasShownLockModal",
   HAS_SHOWN_SERIAL_CHILL_MODAL: "hasShownSerialChiller",
   SIGNUP_KEEP_ALIVE: "signupKeepAlive",

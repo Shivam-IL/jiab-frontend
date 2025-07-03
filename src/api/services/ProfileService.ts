@@ -49,7 +49,11 @@ export class ProfileService extends MainService {
     try {
       const formData = new FormData();
       formData.append("name", userData.name);
-      formData.append("dob", userData?.dob ?? "");
+      if (userData?.dob) {
+        const [day, month, year] = userData?.dob?.split("/");
+        const dob = `${month}/${day}/${year}`;
+        formData.append("dob", dob);
+      }
       if (userData?.gender) {
         formData.append("gender", userData.gender);
       }
@@ -258,9 +262,13 @@ export class ProfileService extends MainService {
 
   public async getVoucherInfo(language_id: number) {
     try {
-      const response = await apiClient.get(API_ROUTES.USER.MY_WALLET.GET_VOOCHER_INFO + `?language_id=${language_id}`, {
-        headers: this.getAuthHeaders(),
-      });
+      const response = await apiClient.get(
+        API_ROUTES.USER.MY_WALLET.GET_VOOCHER_INFO +
+          `?language_id=${language_id}`,
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
       const data = response.data;
       if (data?.success) {
         return SuccessResponse(data?.data);

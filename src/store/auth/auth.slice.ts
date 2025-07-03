@@ -29,7 +29,7 @@ const initialState: AuthState = {
   phoneNumber: "",
   token: "",
   isFirstLogin: false,
-  surpriseMe: true,
+  surpriseMe: false,
   gludeinIsAuthenticated: false,
   enableCoachMarks: false,
   refreshTokenNotVerified: false,

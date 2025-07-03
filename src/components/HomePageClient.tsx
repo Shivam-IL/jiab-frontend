@@ -281,6 +281,7 @@ export default function HomePageClient() {
   };
 
   const isTamil = selectedLanguage === "ta";
+  console.log('SurpriseMe',surpriseMe)
 
   return (
     <div className="bg-lightGray min-h-screen md:pb-[28px]">

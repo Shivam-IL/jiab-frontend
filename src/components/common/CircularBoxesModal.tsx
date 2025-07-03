@@ -3,13 +3,12 @@ import SvgIcons from "./SvgIcons";
 import { ICONS_NAMES, SESSION_STORAGE_KEYS } from "@/constants";
 import {
   updateEnableCoachMarks,
-  updatePauseVideo,
-  updateSurpriseMe,
 } from "@/store/auth/auth.slice";
 import useAppDispatch from "@/hooks/useDispatch";
 import useAppSelector from "@/hooks/useSelector";
 import { removeSessionStorageItem } from "@/utils";
 import { useCMSData } from "@/data";
+import { useRouter } from "next/navigation";
 
 // Export box IDs for reuse in other components
 export const BoxIds = {
@@ -54,6 +53,7 @@ interface CircularBoxesModalProps {
 const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
   const [mounted, setMounted] = useState(false);
   const cmsData = useCMSData(mounted);
+  const router = useRouter();
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -77,8 +77,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
   const handleClose = () => {
     dispatch(updateEnableCoachMarks({ enableCoachMarks: false }));
     removeSessionStorageItem(SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL);
-    dispatch(updateSurpriseMe({ surpriseMe: true }));
-    dispatch(updatePauseVideo({ pauseVideo: true }));
+    router.push('/contest')
     onClose();
   };
 
