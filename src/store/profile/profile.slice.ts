@@ -25,6 +25,7 @@ export interface User {
   ip_address: string;
   is_active: boolean;
   is_profile_complete: boolean;
+  is_profile_popup: boolean;
   is_referral: boolean;
   last_language_selection: number;
   name: string;
@@ -90,6 +91,7 @@ const initialState: UserState = {
     ip_address: "",
     is_active: false,
     is_profile_complete: false,
+    is_profile_popup: false,
     is_referral: false,
     last_language_selection: 0,
     name: "",
@@ -253,6 +255,7 @@ const profileSlice = createSlice({
         ip_address: "",
         is_active: false,
         is_profile_complete: false,
+        is_profile_popup: false,
         is_referral: false,
         last_language_selection: 0,
         name: "",

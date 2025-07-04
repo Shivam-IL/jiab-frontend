@@ -407,6 +407,13 @@ export type TCMSResponse = {
       invitecode_firstmodal_enterrefcode: string;
       wrong_referral_code: string;
       uniquecode_codealreadyredeemed: string;
+      uniquecode_invalidmixcode: string;
+      // --- new unique code error codes ---
+      uniquecode_Invaliduniquecode: string;
+      uniquecode_expired: string;
+      uniquecode_notactive: string;
+      uniquecode_failedtoredeem: string;
+      uniquecode_dailyredemptionlimit: string;
     };
     coach_marker: {
       id: number;

@@ -587,6 +587,16 @@ export const INVITE_CODE_STATUS = {
 
 export const ARE_YOU_SURE_YOU_WANT_TO_EXIT = "Are you sure you want to exit?";
 
+// Unique Code Error Codes
+export const UNIQUE_CODE_ERROR_CODES = {
+  INVALID_UNIQUE_CODE: 1014,
+  UNIQUE_CODE_ALREADY_REDEEMED: 1015,
+  UNIQUE_CODE_EXPIRED: 1016,
+  UNIQUE_CODE_NOT_ACTIVE: 1017,
+  FAILED_TO_REDEEM_UNIQUE_CODE: 1018,
+  DAILY_LIMIT_EXCEEDED: 1019,
+} as const;
+
 export const ROUTES_WHICH_DOES_NOT_NEED_DEFAULT_NAVBAR_FOR_MOBILE: string[] = [
   "/my-profile/",
   "/send-reminder",

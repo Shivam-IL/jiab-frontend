@@ -64,6 +64,7 @@ export const API_ROUTES = {
       GET: "/profile/questions",
     },
     CHANGE_CHAT_LANG: "/profile/change-chat-language",
+    COMIC_COIN_POP_UP: "/profile/comic-coin-pop-up",
     MY_WALLET: {
       GET_VOOCHER_INFO: "/voucher/info",
     },

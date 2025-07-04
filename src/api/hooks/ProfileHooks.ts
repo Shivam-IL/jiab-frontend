@@ -180,6 +180,20 @@ const useGetVoucherInfo = () => {
   });
 };
 
+const useUpdateComicCoinPopUp = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => profileService.updateComicCoinPopUp(),
+    onSuccess: () => {
+      // Revalidate user profile details as this might affect profile state
+      queryClient.invalidateQueries({
+        queryKey: [...keys.profile.userProfileDetails()],
+      });
+    },
+  });
+};
+
 export {
   useGetUserProfileDetails,
   useEditUserProfileDetails,
@@ -193,4 +207,5 @@ export {
   useGetPincodeData,
   useChangeChatLanguage,
   useGetVoucherInfo,
+  useUpdateComicCoinPopUp,
 };

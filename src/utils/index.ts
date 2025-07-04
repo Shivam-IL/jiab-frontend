@@ -138,3 +138,36 @@ export const converDateToHumanReadable = (date: string) => {
   const month = monthNames[dateObj.getMonth()];
   return `${day} ${month}, ${dateObj.getFullYear()}`;
 }
+
+/**
+ * Clears localStorage while preserving language data from Redux persist
+ * This ensures language selection persists after logout
+ */
+export const clearLocalStoragePreservingLanguage = () => {
+  try {
+    // Get the persisted root data which contains language information
+    const persistedRootData = localStorage.getItem('persist:root');
+    let preservedLanguageData = null;
+    
+    if (persistedRootData) {
+      const parsedData = JSON.parse(persistedRootData);
+      // Only preserve the language part and persist metadata
+      preservedLanguageData = {
+        language: parsedData.language,
+        _persist: parsedData._persist
+      };
+    }
+    
+    // Clear all localStorage data
+    localStorage.clear();
+    
+    // Restore only the language data
+    if (preservedLanguageData) {
+      localStorage.setItem('persist:root', JSON.stringify(preservedLanguageData));
+    }
+  } catch (error) {
+    console.error('Error preserving language data during logout:', error);
+    // If there's an error, just clear everything to avoid corruption
+    localStorage.clear();
+  }
+};

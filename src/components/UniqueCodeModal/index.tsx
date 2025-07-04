@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import SvgIcons from "../common/SvgIcons";
-import { GA_EVENTS, ICONS_NAMES } from "@/constants";
+import { GA_EVENTS, ICONS_NAMES, UNIQUE_CODE_ERROR_CODES } from "@/constants";
 import AktivGroteskText from "../common/AktivGroteskText";
 import Input from "@/components/Input";
 import GreenCTA from "@/components/GreenCTA";
 import Image from "next/image";
-import { useRedeemMixCode, MIX_CODE_STATUS } from "@/api";
+import { useRedeemMixCode } from "@/api";
 import useAppSelector from "@/hooks/useSelector";
 import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
 import {
@@ -22,21 +22,21 @@ interface UniqueCodeModalProps {
   onSuccess?: () => void;
 }
 
-// Define proper types for API responses
-interface MixCodeRedeemSuccessData {
-  status: MIX_CODE_STATUS;
-  message: string;
-}
-
 interface MixCodeRedeemErrorResponse {
-  ok: false;
-  data: [];
-  message: string;
+  data: {
+    code: number;
+    message: string;
+    status: 400 | 500;
+    success: false;
+  };
 }
 
 interface MixCodeRedeemSuccessResponse {
-  ok: true;
-  data: MixCodeRedeemSuccessData;
+  data: {
+    message: string;
+    status: 200;
+    success: true;
+  };
 }
 
 type MixCodeRedeemResponse =
@@ -52,7 +52,7 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
   const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [isDailyLimitReached, setIsDailyLimitReached] = useState(false);
-  const [coinsCollected, setCoinsCollected] = useState(20);
+  // const [coinsCollected, setCoinsCollected] = useState(20);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAppSelector((state) => state.profile);
   const { mutate: sendCDPEvent } = useSendCDPEvent();
@@ -72,8 +72,8 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
     // Handle both string values and change events from Input component
     const actualValue = typeof value === "string" ? value : value.target.value;
 
-    // Only allow alphanumeric characters and limit to 6 digits
-    const cleanValue = actualValue.replace(/[^A-Za-z0-9]/g, "").slice(0, 6);
+    // Only allow alphanumeric characters and limit to 10 digits
+    const cleanValue = actualValue.replace(/[^A-Za-z0-9]/g, "").slice(0, 10);
     setUniqueCode(cleanValue);
 
     // Clear error when user starts typing
@@ -81,8 +81,6 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
       setError("");
     }
   };
-
-  console.log(coinsCollected);
 
   const trigger_CDP_REDEEM_MIX_CODE = (mixCode: string) => {
     if (user?.id && mixCode && user?.phone_number) {
@@ -106,38 +104,37 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
     setError("");
 
     try {
-      const result = (await redeemMixCodeMutation.mutateAsync({
+      const response = (await redeemMixCodeMutation.mutateAsync({
         mix_code: uniqueCode,
-      })) as MixCodeRedeemResponse;
+      })) as unknown as MixCodeRedeemResponse;
+      const result = response.data;
 
-      if (result.ok) {
-        const data = result.data;
-
-        switch (data.status) {
-          case MIX_CODE_STATUS.SUCCESS:
-            trigger_CDP_REDEEM_MIX_CODE(uniqueCode);
-            triggerGAEvent(GA_EVENTS.SPRITE_J24_UNIQUE_CODE_SUBMIT);
-            setCoinsCollected(20); // Default coins for successful redemption
-            setIsSuccess(true);
-            break;
-          case MIX_CODE_STATUS.DAILY_LIMIT_EXCEEDED:
-            setIsDailyLimitReached(true);
-            break;
-          // case MIX_CODE_STATUS.INVALID_CODE:
-          //   setError("Please enter a valid unique code");
-          //   break;
-          // case MIX_CODE_STATUS.ALREADY_USED:
-          //   setError("Used code entered. Please try again with new code");
-          //   break;
-          default:
-            setError(validationData.uniqueCodeAlreadyRedeemed);
-        }
+      if (result?.success) {
+        trigger_CDP_REDEEM_MIX_CODE(uniqueCode);
+        triggerGAEvent(GA_EVENTS.SPRITE_J24_UNIQUE_CODE_SUBMIT);
+        setIsSuccess(true);
       } else {
-        const message = result.message ?? "Failed to redeem code";
-        if (message.toLowerCase() === "mix code has already been redeemed") {
-          setError(validationData.uniqueCodeAlreadyRedeemed);
-        } else {
-          setError(message.charAt(0).toUpperCase() + message.slice(1));
+        if (result.status === 400) {
+          const errorCode = result.code;
+          switch (errorCode) {
+            case UNIQUE_CODE_ERROR_CODES.INVALID_UNIQUE_CODE:
+              setError(validationData.uniqueCodeInvalidUniqueCode);
+              break;
+            case UNIQUE_CODE_ERROR_CODES.UNIQUE_CODE_ALREADY_REDEEMED:
+              setError(validationData.uniqueCodeAlreadyRedeemed);
+              break;
+            case UNIQUE_CODE_ERROR_CODES.UNIQUE_CODE_EXPIRED:
+              setError(validationData.uniqueCodeExpired);
+              break;
+            case UNIQUE_CODE_ERROR_CODES.UNIQUE_CODE_NOT_ACTIVE:
+              setError(validationData.uniqueCodeNotActive);
+              break;
+            case UNIQUE_CODE_ERROR_CODES.FAILED_TO_REDEEM_UNIQUE_CODE:
+              setError(validationData.failedToRedeemUniqueCode);
+              break;
+            default:
+              setError(validationData.dailyLimitExceeded);
+          }
         }
       }
     } catch (error) {
@@ -367,13 +364,11 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
 
             <div className="flex flex-col justify-center items-center">
               <GreenCTA
-                text={
-                  isLoading ? "Submitting..." : uniqueCodeCMSData.submit_buttom
-                }
+                text={uniqueCodeCMSData.submit_buttom}
                 fontSize="text-[16px]"
                 paddingClass="py-[13.5px]"
                 onClick={handleSubmit}
-                disabled={isLoading || !uniqueCode.trim()}
+                disabled={isLoading || uniqueCode.trim().length !== 10}
               />
               <AktivGroteskText
                 text={uniqueCodeCMSData.Note_under_submit_button}
