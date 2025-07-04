@@ -56,6 +56,7 @@ export class JokeService extends MainService {
     selected_joke,
     preferredJokes,
     language,
+    type,
   }: import("../types/JokeTypes").TGetJokesParams = {}) {
     try {
       const queryParams = new URLSearchParams();
@@ -63,6 +64,7 @@ export class JokeService extends MainService {
       if (selected_joke) queryParams.append("selected_joke", selected_joke);
       if (preferredJokes) queryParams.append("preferredJokes", preferredJokes);
       if (language) queryParams.append("language", language);
+      if (type) queryParams.append("type", type);
 
       const endpoint = `${API_ROUTES.JOKES.GET_SCROLL_AND_LOL}${
         queryParams.toString() ? `?${queryParams.toString()}` : ""
@@ -100,7 +102,18 @@ export class JokeService extends MainService {
       if (responseData?.success) {
         return SuccessResponse(transformedData);
       }
-      return ErrorResponse(responseData?.message ?? "Something went wrong");
+      
+      // Handle specific error code 1013
+      if (responseData?.code === 1013) {
+        return {
+          ok: false,
+          data: [],
+          message: responseData?.message,
+          code: 1013
+        };
+      }
+      
+      return ErrorResponse(responseData?.message);
     } catch (error) {
       throw error;
     }

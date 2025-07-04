@@ -16,6 +16,7 @@ import SurpriseMeModal from "@/components/common/SurpriseMeModal";
 import { useCMSData } from "@/data";
 import { useLanguage } from "@/hooks/useLanguage";
 import { cn } from "@/lib/utils";
+import { getLanguageId } from "@/utils/languageUtils";
 
 const PickMood: React.FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -37,6 +38,9 @@ const PickMood: React.FC = () => {
   const [selectedGenreId, setSelectedGenreId] = useState<number | undefined>(
     undefined
   );
+
+  // Get language ID for the selected language
+  const languageId = getLanguageId(selectedLanguage);
 
   // Transform genres from API to match the expected structure
   const categories =
@@ -149,7 +153,7 @@ const PickMood: React.FC = () => {
             )?.name ?? ""
           }
           genreId={selectedGenreId}
-          languageId={1}
+          languageId={languageId}
           pullJoke={true}
           onClose={() => {
             closeGenreSurpriseMe();

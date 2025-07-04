@@ -90,6 +90,7 @@ export default function HomePageClient() {
   const { data: jokesResponse } = useGetJokes({
     limit: 3,
     language: selectedLanguage,
+    type: "home",
   });
 
   // Map API response to the structure expected by <VideoScroll />
@@ -281,7 +282,7 @@ export default function HomePageClient() {
   };
 
   const isTamil = selectedLanguage === "ta";
-  console.log('SurpriseMe',surpriseMe)
+  console.log("SurpriseMe", surpriseMe);
 
   return (
     <div className="bg-lightGray min-h-screen md:pb-[28px]">
@@ -351,13 +352,13 @@ export default function HomePageClient() {
                     className="flex flex-col items-center cursor-pointer"
                     onClick={() => handleCategoryClick(category)}
                   >
-                    <div className="rounded-full bg-white w-[81.7px] h-[81.7px] xxs:w-[60px] xxs:h-[60px] md:w-[140px] md:h-[140px] flex items-center justify-center md:hover:border-2 hover:border hover:border-green transition-all duration-900 md:shadow-lg overflow-hidden shadow-sm">
+                    <div className="rounded-full bg-white w-[81.7px] h-[81.7px] xxs:w-[60px] xxs:h-[60px] lg:w-[140px] lg:h-[140px] flex items-center justify-center md:hover:border-2 hover:border hover:border-green transition-all duration-900 md:shadow-lg overflow-hidden shadow-sm">
                       <Image
                         src={category.image_url}
                         alt={category.name}
                         width={80}
                         height={80}
-                        className="w-[51.7px] h-[51.7px] xxs:w-[30px] xxs:h-[30px] md:w-[6rem] md:h-[6rem] object-contain"
+                        className="w-[51.7px] h-[51.7px] xxs:w-[30px] xxs:h-[30px] lg:w-[6rem] lg:h-[6rem] object-contain"
                       />
                     </div>
                     <p

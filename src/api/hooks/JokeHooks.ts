@@ -10,6 +10,7 @@ import {
 import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
 import { MNEMONICS_TO_ID } from "@/constants";
 import { useGetNotifications, useGetNotificationCount } from "./NotificationHooks";
+import { convertLanguageMnemonicToId } from "@/utils/languageUtils";
 
 const jokeInstance = JokeService.getInstance();
 const useGetSurpriseMeJoke = (genreId?: number, languageId?: number) => {
@@ -32,9 +33,16 @@ const useGetSurpriseMeJoke = (genreId?: number, languageId?: number) => {
 
 // Hook to fetch list of jokes for Scroll & LOL screen
 const useGetJokes = (params: TGetJokesParams = {}) => {
+  // Convert language mnemonic to language ID if language is provided
+  const modifiedParams = { ...params };
+  if (params.language) {
+    const languageId = convertLanguageMnemonicToId(params.language);
+    modifiedParams.language = languageId.toString();
+  }
+  
   return useQuery({
-    queryKey: [...keys.joke.getJokes(), params],
-    queryFn: () => jokeInstance.GetJokes(params),
+    queryKey: [...keys.joke.getJokes(), modifiedParams],
+    queryFn: () => jokeInstance.GetJokes(modifiedParams),
     staleTime: 0,
   });
 };

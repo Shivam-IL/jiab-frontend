@@ -37,6 +37,13 @@ export interface IModifiedJoke {
   isReacted: boolean;
 }
 
+interface ErrorResponse {
+  ok: false;
+  data: unknown[];
+  message: string;
+  code?: number;
+}
+
 // Define a type for the values of ICONS_NAMES (if not already global or imported appropriately)
 // This might be duplicative if ReactionEmojies exports its Reaction type, consider refactoring later.
 type IconName = (typeof ICONS_NAMES)[keyof typeof ICONS_NAMES];
@@ -104,10 +111,13 @@ const ScrollAndLol: React.FC = () => {
     limit: 15,
     selected_joke: selectedJokesParam,
     language: videoLanguage,
+    type: "scroll",
   });
 
   const [videos, setVideos] = useState<VideoData[]>([]);
   const [languageChangeKey, setLanguageChangeKey] = useState(0);
+  const [showSerialChillerForError, setShowSerialChillerForError] =
+    useState(false);
 
   // Handle language change - completely reset component state
   useEffect(() => {
@@ -128,6 +138,7 @@ const ScrollAndLol: React.FC = () => {
     setActiveVideoIndex(0);
     setCurrentVideoData(null);
     setIsLoading(true);
+    setShowSerialChillerForError(false); // Reset error state on language change
 
     // Clear video refs array
     videoRefs.current = [];
@@ -157,12 +168,19 @@ const ScrollAndLol: React.FC = () => {
         isReacted: joke.isReacted ?? false,
       }));
       setVideos(newData);
+      setShowSerialChillerForError(false); // Reset error state on successful response
 
       // If no videos returned, hide loading
       if (newData.length === 0) {
         setIsLoading(false);
       }
     } else if (jokesResponse && !jokesResponse.ok) {
+      // Check if the error code is 1013
+      const errorResponse = jokesResponse as ErrorResponse;
+      if (errorResponse?.code === 1013) {
+        setShowSerialChillerForError(true);
+        setVideos([]); // Clear videos array
+      }
       // If API returns error, also hide loading
       setIsLoading(false);
     }
@@ -934,7 +952,9 @@ const ScrollAndLol: React.FC = () => {
                       : mobilePageHeight,
                 }}
               >
-                {videos.length < 15 ? (
+                {showSerialChillerForError ? (
+                  <SerialChillerEndPage />
+                ) : videos.length < 15 ? (
                   <ExhaustVideo
                     selectedLanguage={videoLanguage}
                     onLanguageSelect={handleLanguageSelect}
@@ -979,7 +999,7 @@ const ScrollAndLol: React.FC = () => {
 
       {/* Scroll buttons - only visible when not loading */}
       {!isLoading && (
-        <div className="hidden md:flex flex-col gap-4 absolute bottom-[97.32px] right-[100px] transform z-20">
+        <div className="hidden md:flex flex-col gap-4 absolute bottom-[97.32px] md:right-[20px] lg:right-[100px] transform z-20">
           <button
             onClick={() => scrollToVideo("up")}
             className={`w-[64px] h-[64px] rounded-full border-2 border-green flex items-center justify-center transition-all duration-300 ${
