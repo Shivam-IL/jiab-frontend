@@ -946,6 +946,8 @@ const SubmitYourJoke = () => {
             setUgcPreview={setUgcPreview}
             jokeData={jokeData}
             onSubmitJoke={handleSubmitJoke}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
           />
         </div>
       )}
