@@ -25,6 +25,7 @@ export interface TGetJokesParams {
   selected_joke?: string; // comma separated IDs
   preferredJokes?: string; // comma separated IDs
   language?: string; // e.g. "en", "hi"
+  type?: "home" | "scroll"; // e.g. "home", "scroll"
 }
 
 export type TSubmitJokeParams = {
