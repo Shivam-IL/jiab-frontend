@@ -15,11 +15,15 @@ import VideoPlayer from '../common/VideoPlayer'
 const UgcPreviewCard = ({
   jokeData,
   onSubmitJoke,
-  setUgcPreview
+  setUgcPreview,
+  errorMessage,
+  setErrorMessage
 }: {
   jokeData: IJokeData
   onSubmitJoke: () => void
   setUgcPreview: React.Dispatch<React.SetStateAction<boolean>>
+  errorMessage: string
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>
 }) => {
   const [genreImage, setGenreImage] = useState<string>('')
   const [languageName, setLanguageName] = useState<string>('')
@@ -179,11 +183,17 @@ const UgcPreviewCard = ({
                 </div>
               </div>
             </div>
+            {errorMessage !== '' && (
+              <p className='text-[#FD0202] font-[400] text-start text-[12px] w-full'>
+                {errorMessage}
+              </p>
+            )}
           </div>
           <div className='flex flex-col gap-[10px] w-full justify-center items-center'>
             <button
               onClick={() => {
                 setUgcPreview(false)
+                setErrorMessage('')
               }}
               className='border-[2px] w-full border-black rounded-[100px] py-[12px] md:py-[14px] flex items-center justify-center gap-[10px]'
             >
