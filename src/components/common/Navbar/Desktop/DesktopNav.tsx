@@ -341,7 +341,7 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center space-x-[24px]">
+        <div id={DesktopBoxIds.NOTIFICATIONS} className="flex items-center space-x-[24px]">
           {isAuthenticated ? (
             <div className="relative" ref={notificationDropdownRef}>
               <button
