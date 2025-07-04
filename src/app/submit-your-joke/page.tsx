@@ -38,6 +38,7 @@ import { useCoinAnimation } from '@/components/common/CoinAnimation'
 import BottleAnimation from '@/components/common/BottleAnimation'
 import { CDPEventPayloadBuilder, JOKE_FORMATS } from '@/api/utils/cdpEvents'
 import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
+import UgcPreviewCard from '@/components/UgcPreviewCard/indes'
 
 interface FileContainerProps {
   title: string
@@ -141,6 +142,7 @@ const SubmitYourJoke = () => {
     useState<boolean>(false)
   const [openJokeOffensivePopup, setOpenJokeOffensivePopup] =
     useState<boolean>(false)
+  const [ugcPreview, setUgcPreview] = useState<boolean>(false)
 
   const [languageData, setLanguageData] = useState<
     {
@@ -297,7 +299,7 @@ const SubmitYourJoke = () => {
 
   const router = useRouter()
 
-  const handleSubmitJoke = () => {
+  const handleUgcPreview = () => {
     if (!isFormValid()) {
       console.log('form is not valid')
       return
@@ -312,6 +314,10 @@ const SubmitYourJoke = () => {
       }))
     }
     setErrorMessage('')
+    setUgcPreview(true)
+  }
+
+  const handleSubmitJoke = () => {
     const genreId =
       categoryData.find(item => item.name === jokeData.category)?.id ?? 0
 
@@ -624,310 +630,325 @@ const SubmitYourJoke = () => {
         title={cmsData.pjChallenge.submitYourJokeHeading}
         subtitle={cmsData.pjChallenge.submitYourJokeSubheading}
       />
-      <ScreenWrapper
-        className={`${
-          width > 750 ? 'mt-[71px] flex justify-center' : 'pb-[100px] mt-0'
-        }`}
-      >
-        <div className='md:flex md:flex-col justify-center items-center md:mt-[60px] md:mb-[86px] gap-[12px] hidden'>
-          <AktivGroteskText
-            text={cmsData.pjChallenge.submitYourJokeHeading.toUpperCase()}
-            fontSize='text-[30px]'
-            fontWeight='font-[700]'
-          />
-          <AktivGroteskText
-            text={cmsData.pjChallenge.submitYourJokeSubheading}
-            fontSize='text-[20px]'
-            fontWeight='font-[400]'
-          />
-        </div>
-        <form
-          onSubmit={event => {
-            event.preventDefault()
-          }}
-          className='md:mt-0 flex flex-col md:justify-center md:items-center gap-[24px] md:gap-[32px]'
+      {!ugcPreview && (
+        <ScreenWrapper
+          className={`${
+            width > 750 ? 'mt-[71px] flex justify-center' : 'pb-[100px] mt-0'
+          }`}
         >
-          <LabeledInput
-            labelClassName='md:text-center'
-            label={cmsData.pjChallenge.selectLanguage}
+          <div className='md:flex md:flex-col justify-center items-center md:mt-[60px] md:mb-[86px] gap-[12px] hidden'>
+            <AktivGroteskText
+              text={cmsData.pjChallenge.submitYourJokeHeading.toUpperCase()}
+              fontSize='text-[30px]'
+              fontWeight='font-[700]'
+            />
+            <AktivGroteskText
+              text={cmsData.pjChallenge.submitYourJokeSubheading}
+              fontSize='text-[20px]'
+              fontWeight='font-[400]'
+            />
+          </div>
+          <form
+            onSubmit={event => {
+              event.preventDefault()
+            }}
+            className='md:mt-0 flex flex-col md:justify-center md:items-center gap-[24px] md:gap-[32px]'
           >
-            <div className='relative'>
-              <select
-                className={`w-full cursor-pointer border border-transparent outline-none text-[14px] md:text-[18px] font-[400] md:py-[10px] md:px-[17px] pl-[16px] pr-[40px] py-[16px] bg-white rounded-[100px] transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B] focus-visible:border-[#11A64B] appearance-none`}
-                name='language'
-                value={jokeData.language}
-                onChange={e => handleChange('language', e.target.value)}
-              >
-                <option value=''>
-                  {cmsData.pjChallenge.selectLanguageDropbox}
-                </option>
-                {languageData?.map(item => {
-                  return (
-                    <option key={item.id} value={item.value}>
-                      {item.label}
-                    </option>
-                  )
-                })}
-              </select>
-              <div className='absolute right-[16px] top-1/2 transform -translate-y-1/2 pointer-events-none'>
-                <svg
-                  width='12'
-                  height='8'
-                  viewBox='0 0 12 8'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
+            <LabeledInput
+              labelClassName='md:text-center'
+              label={cmsData.pjChallenge.selectLanguage}
+            >
+              <div className='relative'>
+                <select
+                  className={`w-full cursor-pointer border border-transparent outline-none text-[14px] md:text-[18px] font-[400] md:py-[10px] md:px-[17px] pl-[16px] pr-[40px] py-[16px] bg-white rounded-[100px] transition-all duration-200 hover:border-gray-200 focus:border-[#11A64B] focus-visible:border-[#11A64B] appearance-none`}
+                  name='language'
+                  value={jokeData.language}
+                  onChange={e => handleChange('language', e.target.value)}
                 >
-                  <path
-                    d='M1 1L6 6L11 1'
-                    stroke='#666'
-                    strokeWidth='1.5'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                </svg>
-              </div>
-            </div>
-            {formError.language !== '' && (
-              <span className='text-[#FD0202] md:text-center font-[400] text-[12px]'>
-                {formError.language}
-              </span>
-            )}
-          </LabeledInput>
-          <LabeledInput
-            labelClassName='md:text-center'
-            width='w-full'
-            label={cmsData.pjChallenge.selectFormat}
-          >
-            <div className='flex w-full  md:flex-row md:justify-center'>
-              <div className='flex w-full md:w-[600px]   justify-between'>
-                {formatData?.length > 0 &&
-                  formatData?.map(item => {
+                  <option value=''>
+                    {cmsData.pjChallenge.selectLanguageDropbox}
+                  </option>
+                  {languageData?.map(item => {
                     return (
-                      <button
-                        key={item.id}
-                        type='button'
-                        className='w-1/4'
-                        onClick={() => {
-                          handleChange('format', item.label)
-                          handleChange('acceptedFormats', item.acceptedFormats)
-                          handleChange(
-                            'accptedFormatText',
-                            item.accptedFormatText
-                          )
-                          handleChange('file', null)
-                          handleChange('size', item.size)
-                        }}
-                      >
-                        <ImageIconCard
-                          key={item.label}
-                          boxWidth=''
-                          image={''}
-                          itemsGapClass='md:gap-[0px]'
-                          fontSize='text-[10px] md:text-[14px]'
-                          fontWeight='font-[500] md:font-[400]'
-                          iconClassName={
-                            'w-[31px] h-[39px] md:w-[43px] md:h-[56px]'
-                          }
-                          className={`${
-                            item?.label?.toLowerCase() ===
-                            jokeData?.format?.toLowerCase()
-                              ? 'border-[2px] border-[#009639]'
-                              : ''
-                          } max-w-[86px] box-border min-h-[86px] md:min-w-[120px] md:min-h-[120px] flex flex-col justify-center items-center bg-white px-[24px] py-[9px] rounded-[10px]`}
-                          icon={item.icon}
-                          text={item.label}
-                        />
-                      </button>
+                      <option key={item.id} value={item.value}>
+                        {item.label}
+                      </option>
                     )
                   })}
+                </select>
+                <div className='absolute right-[16px] top-1/2 transform -translate-y-1/2 pointer-events-none'>
+                  <svg
+                    width='12'
+                    height='8'
+                    viewBox='0 0 12 8'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      d='M1 1L6 6L11 1'
+                      stroke='#666'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                    />
+                  </svg>
+                </div>
               </div>
-              {formError.format !== '' && (
-                <span className='text-[#FD0202] font-[400] text-[12px] md:text-center'>
-                  {formError.format}
+              {formError.language !== '' && (
+                <span className='text-[#FD0202] md:text-center font-[400] text-[12px]'>
+                  {formError.language}
                 </span>
               )}
-            </div>
-            {jokeData.format.toLowerCase() !==
-              cmsData.pjChallenge.text.toLowerCase() && (
-              <div className='relative'>
-                <FileContainer
-                  removeFile={() => {
-                    handleChange('file', null)
-                    if (fileRef.current) {
-                      fileRef.current.value = ''
-                    }
-                  }}
-                  ref={fileRef}
-                  file={jokeData.file}
-                  title={
-                    FORMAT_OPTIONS.find(item => item.label === jokeData.format)
-                      ?.title ?? ''
-                  }
-                  isImageTrue={
-                    jokeData.format.toLowerCase() ===
-                    cmsData.pjChallenge.image.toLowerCase()
-                  }
-                  subtitle={jokeData.accptedFormatText}
-                />
-                <input
-                  ref={fileRef}
-                  hidden
-                  type='file'
-                  accept={jokeData.acceptedFormats}
-                  onChange={event => {
-                    if (event.target.files?.length === 0) {
-                      return
-                    }
-                    handleChange('file', event.target.files)
-                  }}
-                />
+            </LabeledInput>
+            <LabeledInput
+              labelClassName='md:text-center'
+              width='w-full'
+              label={cmsData.pjChallenge.selectFormat}
+            >
+              <div className='flex w-full  md:flex-row md:justify-center'>
+                <div className='flex w-full md:w-[600px]   justify-between'>
+                  {formatData?.length > 0 &&
+                    formatData?.map(item => {
+                      return (
+                        <button
+                          key={item.id}
+                          type='button'
+                          className='w-1/4'
+                          onClick={() => {
+                            handleChange('format', item.label)
+                            handleChange(
+                              'acceptedFormats',
+                              item.acceptedFormats
+                            )
+                            handleChange(
+                              'accptedFormatText',
+                              item.accptedFormatText
+                            )
+                            handleChange('file', null)
+                            handleChange('size', item.size)
+                          }}
+                        >
+                          <ImageIconCard
+                            key={item.label}
+                            boxWidth=''
+                            image={''}
+                            itemsGapClass='md:gap-[0px]'
+                            fontSize='text-[10px] md:text-[14px]'
+                            fontWeight='font-[500] md:font-[400]'
+                            iconClassName={
+                              'w-[31px] h-[39px] md:w-[43px] md:h-[56px]'
+                            }
+                            className={`${
+                              item?.label?.toLowerCase() ===
+                              jokeData?.format?.toLowerCase()
+                                ? 'border-[2px] border-[#009639]'
+                                : ''
+                            } max-w-[86px] box-border min-h-[86px] md:min-w-[120px] md:min-h-[120px] flex flex-col justify-center items-center bg-white px-[24px] py-[9px] rounded-[10px]`}
+                            icon={item.icon}
+                            text={item.label}
+                          />
+                        </button>
+                      )
+                    })}
+                </div>
+                {formError.format !== '' && (
+                  <span className='text-[#FD0202] font-[400] text-[12px] md:text-center'>
+                    {formError.format}
+                  </span>
+                )}
               </div>
-            )}
-            {jokeData.format.toLowerCase() ===
-              cmsData.pjChallenge.text.toLowerCase() && (
-              <div>
-                <div className='flex flex-col gap-[8px]'>
-                  <AktivGroteskText
-                    className='w-full md:text-center'
-                    text={cmsData.pjChallenge.textClickableHeading}
-                    fontSize='md:text-[16px] text-[14px]'
-                    fontWeight='font-[700]'
+              {jokeData.format.toLowerCase() !==
+                cmsData.pjChallenge.text.toLowerCase() && (
+                <div className='relative'>
+                  <FileContainer
+                    removeFile={() => {
+                      handleChange('file', null)
+                      if (fileRef.current) {
+                        fileRef.current.value = ''
+                      }
+                    }}
+                    ref={fileRef}
+                    file={jokeData.file}
+                    title={
+                      FORMAT_OPTIONS.find(
+                        item => item.label === jokeData.format
+                      )?.title ?? ''
+                    }
+                    isImageTrue={
+                      jokeData.format.toLowerCase() ===
+                      cmsData.pjChallenge.image.toLowerCase()
+                    }
+                    subtitle={jokeData.accptedFormatText}
                   />
-                  <Input
-                    name='jokeText'
-                    type='textarea'
-                    bgColor='bg-[#9BD4B1]'
-                    paddingClass='p-[12px]'
-                    borderRadius='rounded-[10px]'
-                    fontSize='text-[12px] md:text-[20px] font-[400]'
-                    className=''
-                    rows={6}
-                    onChange={handleChange}
-                    value={jokeData.jokeText}
-                    placeholder={cmsData.pjChallenge.textClickablePlaceholder}
-                    errorClassName='md:text-center'
+                  <input
+                    ref={fileRef}
+                    hidden
+                    type='file'
+                    accept={jokeData.acceptedFormats}
+                    onChange={event => {
+                      if (event.target.files?.length === 0) {
+                        return
+                      }
+                      handleChange('file', event.target.files)
+                    }}
                   />
                 </div>
-                <AktivGroteskText
-                  text={cmsData.pjChallenge.textClickableTextLimit}
-                  className='text-[rgba(0,0,0,0.5)] mt-[10px] md:mt-[12px]'
-                  fontSize='text-[8px] md:text-[16px]'
-                  fontWeight='font-[400]'
-                />
-              </div>
-            )}
-            {formError.joke !== '' && (
-              <span className='text-[#FD0202] font-[400] text-[12px] md:text-center'>
-                {formError.joke}
-              </span>
-            )}
-          </LabeledInput>
-          <LabeledInput
-            labelClassName='md:text-center'
-            label={cmsData.pjChallenge.title}
-          >
-            <Input
-              bgColor='bg-white'
-              name='title'
-              type='text'
-              onChange={handleChange}
-              value={jokeData.title}
-              error={formError.title}
-              paddingClass='md:p-[16px] py-[19px] px-[16px]'
-              placeholder={cmsData.pjChallenge.titleJokeTitleTextSpace}
-              errorClassName='md:text-center'
-            />
-            <AktivGroteskText
-              text={cmsData.pjChallenge.titleJokeTitleCharacterLimitText}
-              className='w-full md:text-center'
-              fontSize='text-[8px] md:text-[12px]'
-              fontWeight='font-[400]'
-            />
-          </LabeledInput>
-          <LabeledInput
-            labelClassName='md:text-center'
-            width='md:max-w-[720px] lg:max-w-[920px]'
-            label={cmsData.pjChallenge.category}
-          >
-            <CustomCarousel>
-              {categoryData?.map(item => {
-                return (
-                  <div
-                    onClick={() => handleChange('category', item.name)}
-                    key={item.id}
-                  >
-                    <ImageIconCard
-                      key={item.name}
-                      boxWidth=''
-                      imageUrl={item.image}
-                      itemsGapClass='gap-[8px]'
-                      fontSize='text-[12px] md:text-[14px]'
-                      fontWeight='font-[400]'
-                      iconClassName={
-                        'w-[31px] h-[39px] md:w-[55px] md:h-[56px]'
-                      }
-                      imageClassName='md:max-w-[48px] md:max-h-[48px] md:min-w-[48px] md:min-h-[48px] min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] object-fill'
-                      className={`cursor-pointer ${
-                        item.name.toLowerCase() ===
-                        jokeData.category.toLowerCase()
-                          ? 'border-[1px] border-[#11A64B]'
-                          : ''
-                      } text-center max-w-[86px] min-h-[86px] max-h-[86px] box-border md:max-w-[120px] md:min-h-[120px] flex-col justify-center items-center bg-white px-[24px] py-[9px] rounded-[10px]`}
-                      text={item.name}
+              )}
+              {jokeData.format.toLowerCase() ===
+                cmsData.pjChallenge.text.toLowerCase() && (
+                <div>
+                  <div className='flex flex-col gap-[8px]'>
+                    <AktivGroteskText
+                      className='w-full md:text-center'
+                      text={cmsData.pjChallenge.textClickableHeading}
+                      fontSize='md:text-[16px] text-[14px]'
+                      fontWeight='font-[700]'
+                    />
+                    <Input
+                      name='jokeText'
+                      type='textarea'
+                      bgColor='bg-[#9BD4B1]'
+                      paddingClass='p-[12px]'
+                      borderRadius='rounded-[10px]'
+                      fontSize='text-[12px] md:text-[20px] font-[400]'
+                      className=''
+                      rows={6}
+                      onChange={handleChange}
+                      value={jokeData.jokeText}
+                      placeholder={cmsData.pjChallenge.textClickablePlaceholder}
+                      errorClassName='md:text-center'
                     />
                   </div>
-                )
-              })}
-            </CustomCarousel>
-          </LabeledInput>
-          <div className='flex gap-[8px] items-start'>
-            <Checkbox
-              className='w-[16px] h-[16px] md:top-[3px] relative'
-              name='agreeToTerms'
-              id='agreeToTerms'
-              checked={jokeData.agreeToTerms}
-              onCheckedChange={() =>
-                handleChange('agreeToTerms', !jokeData.agreeToTerms)
-              }
-            />
-            <label htmlFor='agreeToTerms' className='cursor-pointer'>
+                  <AktivGroteskText
+                    text={cmsData.pjChallenge.textClickableTextLimit}
+                    className='text-[rgba(0,0,0,0.5)] mt-[10px] md:mt-[12px]'
+                    fontSize='text-[8px] md:text-[16px]'
+                    fontWeight='font-[400]'
+                  />
+                </div>
+              )}
+              {formError.joke !== '' && (
+                <span className='text-[#FD0202] font-[400] text-[12px] md:text-center'>
+                  {formError.joke}
+                </span>
+              )}
+            </LabeledInput>
+            <LabeledInput
+              labelClassName='md:text-center'
+              label={cmsData.pjChallenge.title}
+            >
+              <Input
+                bgColor='bg-white'
+                name='title'
+                type='text'
+                onChange={handleChange}
+                value={jokeData.title}
+                error={formError.title}
+                paddingClass='md:p-[16px] py-[19px] px-[16px]'
+                placeholder={cmsData.pjChallenge.titleJokeTitleTextSpace}
+                errorClassName='md:text-center'
+              />
               <AktivGroteskText
-                text={cmsData.pjChallenge.termsAndConditions}
-                fontSize='text-[12px] md:text-[16px] leading-tight'
+                text={cmsData.pjChallenge.titleJokeTitleCharacterLimitText}
+                className='w-full md:text-center'
+                fontSize='text-[8px] md:text-[12px]'
                 fontWeight='font-[400]'
               />
-            </label>
-          </div>
-          {formError.agreeToTerms !== '' && (
-            <span className='text-[#FD0202] font-[400] text-start text-[12px] w-full '>
-              {formError.agreeToTerms}
-            </span>
-          )}
-          {errorMessage !== '' && (
-            <p className='text-[#FD0202] font-[400] text-start text-[12px] w-full'>
-              {errorMessage}
-            </p>
-          )}
-          <div className='flex flex-col justify-center items-center gap-[4px]'>
-            <GreenCTA
-              onClick={() => {
-                handleSubmitJoke()
-              }}
-              disabled={isPending}
-              className='w-full md:w-[480px]'
-              fontSize='text-[16px] md:text-[32px]'
-              fontWeight='font-[400]'
-              text={cmsData.pjChallenge.submitButtonText}
-              paddingClass='pt-[17px] pb-[12px] md:py-[24px]'
-            />
-            <AktivGroteskText
-              text={cmsData.pjChallenge.allFieldsAreMandatory}
-              fontWeight='font-[400] md:font-[700]'
-              fontSize='text-[8px] md:text-[14px]'
-            />
-          </div>
-        </form>
-      </ScreenWrapper>
+            </LabeledInput>
+            <LabeledInput
+              labelClassName='md:text-center'
+              width='md:max-w-[720px] lg:max-w-[920px]'
+              label={cmsData.pjChallenge.category}
+            >
+              <CustomCarousel>
+                {categoryData?.map(item => {
+                  return (
+                    <div
+                      onClick={() => handleChange('category', item.name)}
+                      key={item.id}
+                    >
+                      <ImageIconCard
+                        key={item.name}
+                        boxWidth=''
+                        imageUrl={item.image}
+                        itemsGapClass='gap-[8px]'
+                        fontSize='text-[12px] md:text-[14px]'
+                        fontWeight='font-[400]'
+                        iconClassName={
+                          'w-[31px] h-[39px] md:w-[55px] md:h-[56px]'
+                        }
+                        imageClassName='md:max-w-[48px] md:max-h-[48px] md:min-w-[48px] md:min-h-[48px] min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] object-fill'
+                        className={`cursor-pointer ${
+                          item.name.toLowerCase() ===
+                          jokeData.category.toLowerCase()
+                            ? 'border-[1px] border-[#11A64B]'
+                            : ''
+                        } text-center max-w-[86px] min-h-[86px] max-h-[86px] box-border md:max-w-[120px] md:min-h-[120px] flex-col justify-center items-center bg-white px-[24px] py-[9px] rounded-[10px]`}
+                        text={item.name}
+                      />
+                    </div>
+                  )
+                })}
+              </CustomCarousel>
+            </LabeledInput>
+            <div className='flex gap-[8px] items-start'>
+              <Checkbox
+                className='w-[16px] h-[16px] md:top-[3px] relative'
+                name='agreeToTerms'
+                id='agreeToTerms'
+                checked={jokeData.agreeToTerms}
+                onCheckedChange={() =>
+                  handleChange('agreeToTerms', !jokeData.agreeToTerms)
+                }
+              />
+              <label htmlFor='agreeToTerms' className='cursor-pointer'>
+                <AktivGroteskText
+                  text={cmsData.pjChallenge.termsAndConditions}
+                  fontSize='text-[12px] md:text-[16px] leading-tight'
+                  fontWeight='font-[400]'
+                />
+              </label>
+            </div>
+            {formError.agreeToTerms !== '' && (
+              <span className='text-[#FD0202] font-[400] text-start text-[12px] w-full '>
+                {formError.agreeToTerms}
+              </span>
+            )}
+            {errorMessage !== '' && (
+              <p className='text-[#FD0202] font-[400] text-start text-[12px] w-full'>
+                {errorMessage}
+              </p>
+            )}
+            <div className='flex flex-col justify-center items-center gap-[4px]'>
+              <GreenCTA
+                onClick={() => {
+                  handleUgcPreview()
+                }}
+                disabled={isPending}
+                className='w-full md:w-[480px]'
+                fontSize='text-[16px] md:text-[32px]'
+                fontWeight='font-[400]'
+                text={cmsData.pjChallenge.submitButtonText}
+                paddingClass='pt-[17px] pb-[12px] md:py-[24px]'
+              />
+              <AktivGroteskText
+                text={cmsData.pjChallenge.allFieldsAreMandatory}
+                fontWeight='font-[400] md:font-[700]'
+                fontSize='text-[8px] md:text-[14px]'
+              />
+            </div>
+          </form>
+        </ScreenWrapper>
+      )}
+      {ugcPreview && (
+        <div className='flex w-full justify-center items-center'>
+          <UgcPreviewCard
+            setUgcPreview={setUgcPreview}
+            jokeData={jokeData}
+            onSubmitJoke={handleSubmitJoke}
+          />
+        </div>
+      )}
       {openApproveJokePopup && (
         <ApproveJokePopup
           open={openApproveJokePopup}
@@ -948,6 +969,7 @@ const SubmitYourJoke = () => {
             if (fileRef.current) {
               fileRef.current.value = ''
             }
+            setUgcPreview(false)
             setOpenApproveJokePopup(false)
             router.push('/user-generated-jokes')
           }}
@@ -968,6 +990,7 @@ const SubmitYourJoke = () => {
             if (fileRef.current) {
               fileRef.current.value = ''
             }
+            setUgcPreview(false)
             setOpenApproveJokePopup(false)
           }}
         />
