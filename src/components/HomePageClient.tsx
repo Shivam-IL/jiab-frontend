@@ -89,7 +89,7 @@ export default function HomePageClient () {
   const { selectedLanguage } = useLanguage()
   const { data: jokesResponse } = useGetJokes({
     limit: 3,
-    language: selectedLanguage
+    language: selectedLanguage,
     type: "home",
   })
 
