@@ -51,6 +51,7 @@ import { useSendCDPEvent } from "@/api/hooks/CDPHooks";
 import { useRouter } from "next/navigation";
 import { IAvatarsData } from "@/store/profile/profile.slice";
 import { useCMSData } from "@/data";
+import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
 
 interface IUserData {
   avatar: string;
@@ -92,6 +93,7 @@ const Signup = () => {
   const { avatarsData } = useAppSelector((state) => state.profile);
   const [fcmToken, setFcmToken] = useState<string>("");
   const { mutate: sendCDPEvent } = useSendCDPEvent();
+  const { revalidateComicCoinsAfterDelay } = useComicCoinRevalidation();
 
   const dispatch = useAppDispatch();
 
@@ -366,6 +368,14 @@ const Signup = () => {
             data?.user_id
           );
           triggerCDPInviteCodeEvent(data?.user_id ?? "");
+        }
+
+        // Invalidate comic coins if referral code was used (referrals give coins)
+        if (userData.invite_code && userData.invite_code.trim() !== "") {
+          console.log(
+            "Invalidating comic coins after successful signup with referral code"
+          );
+          revalidateComicCoinsAfterDelay(1000);
         }
 
         // Fetch notifications after successful signup
