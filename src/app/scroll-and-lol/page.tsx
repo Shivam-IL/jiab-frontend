@@ -640,7 +640,7 @@ const ScrollAndLol: React.FC = () => {
   };
 
   useEffect(() => {
-    if (postReelReactionData?.ok && !isLoading && videos.length > 0) {
+    if (postReelReactionData?.ok) {
       console.log("🎬 Triggering coin animation for reaction:", {
         activeVideoIndex,
         isLoading,
@@ -654,7 +654,7 @@ const ScrollAndLol: React.FC = () => {
       }, 100);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postReelReactionData, isLoading, videos.length]);
+  }, [postReelReactionData]);
 
   const toggleMute = (index: number) => {
     if (index === activeVideoIndex) {
