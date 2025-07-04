@@ -136,7 +136,7 @@ const UgcPreviewCard = ({
                           text={jokeData?.jokeText ?? ''}
                           fontSize='text-[16px]'
                           fontWeight='font-[400]'
-                          className='text-white'
+                          className='text-white text-start break-all'
                         />
                       </div>
                     </div>
