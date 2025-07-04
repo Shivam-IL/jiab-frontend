@@ -68,7 +68,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, fileName }) => {
         src={objectUrl}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
-        onEnded={() => setIsPlaying(false)}
+        onEnded={() => {
+          setIsPlaying(false)
+          setCurrentTime(duration)
+        }}
       />
       <div className='flex items-start gap-3'>
         <button
