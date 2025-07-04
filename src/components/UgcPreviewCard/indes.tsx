@@ -113,9 +113,7 @@ const UgcPreviewCard = ({
                   )})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                  minHeight: '261px',
-                  maxHeight: '340px'
+                  backgroundRepeat: 'no-repeat'
                 }}
                 className={`relative flex flex-col w-full rounded-[5px] min-h-[261px] max-h-[340px]`}
               >
@@ -128,12 +126,12 @@ const UgcPreviewCard = ({
                   style={{ minHeight: 0 }}
                 >
                   {jokeData?.format === pjChallenge.text && (
-                    <div className='flex relative w-full min-h-[261px] max-h-[340px]'>
+                    <div className='flex relative w-full max-h-[300px] min-h-[261px]'>
                       <SvgIcons
                         name={ICONS_NAMES.SPRITE_WITH_BUBBLE}
-                        className='relative w-[40%]  min-h-[261px] max-h-[340px]'
+                        className='relative w-[40%]  min-h-[340px] max-h-[340px]'
                       />
-                      <div className='relative w-[60%] flex items-center justify-center min-h-[261px] max-h-[340px]'>
+                      <div className='relative w-[60%] flex items-center justify-center min-h-[340px] max-h-[340px]'>
                         <AktivGroteskText
                           text={jokeData?.jokeText ?? ''}
                           fontSize='text-[16px]'
@@ -152,16 +150,16 @@ const UgcPreviewCard = ({
                     </div>
                   )}
                   {jokeData?.format === pjChallenge.image && (
-                    <>
+                    <div className='min-h-[261px] max-h-[300px] relative'>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={URL.createObjectURL(
                           jokeData?.file?.[0] ?? new Blob()
                         )}
                         alt='image'
-                        className='w-full h-full object-fill'
+                        className='w-auto max-h-[300px] min-h-[261px] object-cover rounded-[5px]'
                       />
-                    </>
+                    </div>
                   )}
                   {jokeData?.format === pjChallenge.audio && (
                     <AudioPlayer

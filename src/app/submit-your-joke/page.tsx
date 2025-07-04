@@ -487,6 +487,34 @@ const SubmitYourJoke = () => {
 
   const fileRef = useRef<HTMLInputElement>(null)
 
+  useEffect(() => {
+    if (selectedLanguage) {
+      setJokeData({
+        language: '',
+        format: cmsData.pjChallenge.image.toLowerCase(),
+        fileType: FileType.IMAGE,
+        acceptedFormats: '.jpg,.jpeg,.png',
+        accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading,
+        jokeText: '',
+        title: '',
+        file: null,
+        category: '',
+        agreeToTerms: false,
+        size: 1
+      })
+      setFormError({
+        format: '',
+        language: '',
+        title: '',
+        joke: '',
+        agreeToTerms: ''
+      })
+      setErrorMessage('')
+      setUgcPreview(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLanguage])
+
   // Helper function to validate file format
   const validateFileFormat = (file: File, acceptedFormats: string): boolean => {
     if (!acceptedFormats) return true
