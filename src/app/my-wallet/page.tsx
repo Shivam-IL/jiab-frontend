@@ -156,7 +156,7 @@ const ComicCoinsPage = () => {
                   router.push('/contest#how-to-gather')
                 }}
                 paddingClass='py-[8px] px-[20px] md:py-[16px] md:px-[50px]'
-                fontSize='text-[12px] md:text-[28px]'
+                fontSize={`text-[12px] md:text-[28px] ${selectedLanguage === 'ta' ? 'xxs:text-[10px] text-[12px] md:text-[23px]' : 'text-[12px] md:text-[28px]'}`}
                 isCoinIcon={true}
               />
             </div>

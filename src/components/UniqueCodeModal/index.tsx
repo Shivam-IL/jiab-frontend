@@ -364,13 +364,11 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
 
             <div className="flex flex-col justify-center items-center">
               <GreenCTA
-                text={
-                  isLoading ? "Submitting..." : uniqueCodeCMSData.submit_buttom
-                }
+                text={uniqueCodeCMSData.submit_buttom}
                 fontSize="text-[16px]"
                 paddingClass="py-[13.5px]"
                 onClick={handleSubmit}
-                disabled={isLoading || !uniqueCode.trim()}
+                disabled={isLoading || uniqueCode.trim().length !== 10}
               />
               <AktivGroteskText
                 text={uniqueCodeCMSData.Note_under_submit_button}

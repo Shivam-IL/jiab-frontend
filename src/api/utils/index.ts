@@ -6,6 +6,7 @@ export const keys = {
     getUserQuestions: () => ["get-user-questions"],
     getAvatarsData: () => ["get-avatars-data"],
     getVoucherInfo: () => ["get-voucher-info"],
+    updateComicCoinPopUp: () => ["update-comic-coin-pop-up"],
   },
   referral: {
     getAllReferrals: () => ["get-all-referrals"],

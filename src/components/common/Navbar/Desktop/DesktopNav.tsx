@@ -278,7 +278,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                               setIsExploreDropdownOpen(false);
                             }}
                             key={item.id}
-                            className="px-[20px] py-[10px] text-start hover:bg-gray-50 text-[18px] font-normal leading-tight"
+                            className={cn(
+                              "px-[20px] py-[10px] text-start hover:bg-gray-50 text-[18px] font-normal leading-tight",
+                              isTamil && "text-[14px]"
+                            )}
                           >
                             {item.label}
                           </button>
