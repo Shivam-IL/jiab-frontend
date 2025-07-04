@@ -356,6 +356,10 @@ export const ICONS_NAMES = {
   HASHTAG: "hashtag",
   ARROW: "arrow",
   REFRESH_RINGS_SMILE: "refresh-ring-smile",
+  RETRY: "retry",
+  MUSIC: "music",
+  PREVIEW_PLAY: "preview-play",
+  PREVIEW_PAUSE: "preview-pause",
 };
 
 export const INVITE_CODE_POPUP_DATA = {
@@ -661,6 +665,7 @@ export const LOCAL_IMAGES = {
   SURPRISE_ME: "surprise-me.gif",
   USER_JOKE_IMAGE: "user-joke-image.png",
   UGC_CARD_BG: "ugc-bg.webp",
+  UGC_PREVIEW_BG: "preview-ugc.png",
 };
 
 export const TOKEN_TYPE = {

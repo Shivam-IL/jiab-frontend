@@ -940,7 +940,15 @@ const SubmitYourJoke = () => {
           </form>
         </ScreenWrapper>
       )}
-      {ugcPreview && <UgcPreviewCard jokeData={jokeData} onSubmitJoke={handleSubmitJoke} />}
+      {ugcPreview && (
+        <div className='flex w-full justify-center items-center'>
+          <UgcPreviewCard
+            setUgcPreview={setUgcPreview}
+            jokeData={jokeData}
+            onSubmitJoke={handleSubmitJoke}
+          />
+        </div>
+      )}
       {openApproveJokePopup && (
         <ApproveJokePopup
           open={openApproveJokePopup}
@@ -961,6 +969,7 @@ const SubmitYourJoke = () => {
             if (fileRef.current) {
               fileRef.current.value = ''
             }
+            setUgcPreview(false)
             setOpenApproveJokePopup(false)
             router.push('/user-generated-jokes')
           }}
@@ -981,6 +990,7 @@ const SubmitYourJoke = () => {
             if (fileRef.current) {
               fileRef.current.value = ''
             }
+            setUgcPreview(false)
             setOpenApproveJokePopup(false)
           }}
         />
