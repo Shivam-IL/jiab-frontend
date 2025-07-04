@@ -4,9 +4,15 @@ import { resetProfile } from "@/store/profile/profile.slice";
 import { clearAllModalSessions } from "./useSessionModal";
 import { useGetUserGeolocation } from "@/api/hooks/GeolocationHooks";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { clearLocalStoragePreservingLanguage } from "@/utils";
+import { useQueryClient } from "@tanstack/react-query";
+import { keys } from "@/api/utils";
 
 const useLogout = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [uniqueId, setUniqueId] = useState<string>('');
   useGetUserGeolocation({
     enabled: true,
@@ -16,12 +22,64 @@ const useLogout = () => {
   const logoutHandler = () => {
     dispatch(resetAuth());
     dispatch(resetProfile());
-    localStorage.clear();
+    
+    // Clear localStorage while preserving language data
+    clearLocalStoragePreservingLanguage();
+    
+    // Clear session storage and modal sessions
     clearAllModalSessions();
     sessionStorage.clear();
+    
+    // Clear comic coin response from React Query cache
+    queryClient.removeQueries({
+      queryKey: [...keys.joke.getComicCoins()],
+    });
+    
+    // Clear all other user-specific queries
+    queryClient.removeQueries({
+      queryKey: [...keys.profile.userProfileDetails()],
+    });
+    
+    queryClient.removeQueries({
+      queryKey: [...keys.profile.getUserBalanceAndRank()],
+    });
+    
+    queryClient.removeQueries({
+      queryKey: [...keys.referral.getAllReferrals()],
+    });
+    
+    queryClient.removeQueries({
+      queryKey: [...keys.joke.getUserSubmittedJokes()],
+    });
+    
+    queryClient.removeQueries({
+      queryKey: [...keys.notifications.getNotifications()],
+    });
+    
+    queryClient.removeQueries({
+      queryKey: [...keys.notifications.getNotificationCount()],
+    });
+    
+    queryClient.removeQueries({
+      queryKey: [...keys.leaderboard.getLeaderboard()],
+    });
+    
+    queryClient.removeQueries({
+      queryKey: [...keys.profile.getUserAddresses()],
+    });
+    
+    queryClient.removeQueries({
+      queryKey: [...keys.profile.getUserQuestions()],
+    });
+    
+    queryClient.removeQueries({
+      queryKey: [...keys.profile.getVoucherInfo()],
+    });
+    
     setUniqueId(Math.random().toString(36).substring(2, 15));
-    // Refresh the page to homepage after logout
-    window.location.href = '/';
+    
+    // Use Next.js router to navigate to homepage instead of page refresh
+    router.push('/');
   };
 
   return { logoutHandler };

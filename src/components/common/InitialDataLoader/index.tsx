@@ -45,6 +45,7 @@ import {
   getSessionStorageItem,
   setSessionStorageItem,
   removeSessionStorageItem,
+  clearLocalStoragePreservingLanguage,
 } from "@/utils";
 import { ReactNode, useEffect, useState } from "react";
 import { useGetAllReferrals } from "@/api/hooks/ReferralHooks";
@@ -243,7 +244,7 @@ const InitialDataLoader = ({ children }: { children: ReactNode }) => {
         window.history.replaceState(null, "", window.location.pathname);
       }
     } else if (refreshTokenData?.ok === false) {
-      localStorage.clear();
+      clearLocalStoragePreservingLanguage();
       dispatch(updateIsAuthenticated({ isAuthenticated: false }));
       if (refreshTokenFromParams) {
         dispatch(updateLoginModal({ loginModal: true }));
