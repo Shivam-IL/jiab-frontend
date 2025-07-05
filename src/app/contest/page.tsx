@@ -14,16 +14,16 @@ import {
 } from '@/components/ui/carousel'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { GA_EVENTS, LOCAL_KEYS } from '@/constants'
+import { GA_EVENTS } from '@/constants'
 import ReferNowComponent from '@/components/common/ReferNowComponent'
 import InviteCodeComponent from '@/components/common/InviteCodeComponent'
 import UniqueCodeModal from '@/components/UniqueCodeModal'
 import { useCMSData } from '@/data'
 import { triggerGAEvent } from '@/utils/gTagEvents'
 import ComingSoon from '@/components/Banners/ComingSoon'
-import CustomJoyride from '@/components/ui/custom-joyride'
-import { Step } from 'react-joyride'
-import { getLocalStorageItem, removeLocalStorageItem } from '@/utils'
+// import CustomJoyride from '@/components/ui/custom-joyride'
+// import { Step } from 'react-joyride'
+// import { getLocalStorageItem, removeLocalStorageItem } from '@/utils'
 import {
   CoinAnimation,
   useCoinAnimation
@@ -34,8 +34,6 @@ import useAppSelector from '@/hooks/useSelector'
 import useAppDispatch from '@/hooks/useDispatch'
 import {
   updateLoginModal,
-  updatePauseVideo,
-  updateSurpriseMe
 } from '@/store/auth/auth.slice'
 
 interface IRewardPool {
@@ -71,9 +69,9 @@ const ContestPage: React.FC = () => {
   const [surpriseMeModalOpen, setSurpriseMeModalOpen] = useState<boolean>(false)
 
   // Joyride tour state
-  const [runTour, setRunTour] = useState<boolean>(false)
-  const [autoAdvance, setAutoAdvance] = useState<boolean>(true)
-  const [autoAdvanceInterval, setAutoAdvanceInterval] = useState<number>(3000) // 3 seconds per step
+  // const [runTour, setRunTour] = useState<boolean>(false)
+  // const [autoAdvance, setAutoAdvance] = useState<boolean>(true)
+  // const [autoAdvanceInterval, setAutoAdvanceInterval] = useState<number>(3000) // 3 seconds per step
 
   const [mounted, setMounted] = useState(false)
   const dispatch = useAppDispatch()
@@ -85,24 +83,24 @@ const ContestPage: React.FC = () => {
   // Coin animation hook for unique code modal
   const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation()
   const [imageLoaded, setImageLoaded] = useState(false)
-  const steps: Step[] = [
-    {
-      title: cmsData.coachMarkers.checkPreviousWinnerHeading,
-      content: cmsData.coachMarkers.checkpreviouswinnerSubheadingCheckrank,
-      target: '.previous-winner',
-      placement: 'bottom',
-      disableBeacon: true
-    },
-    {
-      title: cmsData.coachMarkers.levelUpHeading,
-      content:
-        cmsData.coachMarkers.levelupSubHeadingCheckouthowtoCollectComiccoins,
-      target: '.how-to-gather',
-      placement: 'bottom',
-      disableBeacon: true
-    }
-  ]
-
+  // const steps: Step[] = [
+  //   {
+  //     title: cmsData.coachMarkers.checkPreviousWinnerHeading,
+  //     content: cmsData.coachMarkers.checkpreviouswinnerSubheadingCheckrank,
+  //     target: '.previous-winner',
+  //     placement: 'bottom',
+  //     disableBeacon: true
+  //   },
+  //   {
+  //     title: cmsData.coachMarkers.levelUpHeading,
+  //     content:
+  //       cmsData.coachMarkers.levelupSubHeadingCheckouthowtoCollectComiccoins,
+  //     target: '.how-to-gather',
+  //     placement: 'bottom',
+  //     disableBeacon: true
+  //   }
+  // ]
+  console.log('imageLoaded', imageLoaded)
   const rewardPool = [
     {
       id: 1,
@@ -264,12 +262,12 @@ const ContestPage: React.FC = () => {
 
   const isContestOver = true
 
-  useEffect(() => {
-    const contestTour = getLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR)
-    if (contestTour === 'true' && imageLoaded) {
-      setRunTour(true)
-    }
-  }, [imageLoaded])
+  // useEffect(() => {
+  //   const contestTour = getLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR)
+  //   if (contestTour === 'true' && imageLoaded) {
+  //     setRunTour(true)
+  //   }
+  // }, [imageLoaded])
 
   // Handle fragment scrolling when page loads
   useEffect(() => {
@@ -301,16 +299,16 @@ const ContestPage: React.FC = () => {
     }
   }, [mounted]) // Depend on mounted to ensure DOM is ready
 
-  useEffect(() => {
-    return () => {
-      setRunTour(false)
-      removeLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR)
-    }
-  }, [])
+  // useEffect(() => {
+  //   return () => {
+  //     setRunTour(false)
+  //     removeLocalStorageItem(LOCAL_KEYS.CONTEST_TOUR)
+  //   }
+  // }, [])
 
   return (
     <>
-      <CustomJoyride
+      {/* <CustomJoyride
         steps={steps as Step[]}
         run={runTour}
         onComplete={() => {
@@ -329,7 +327,7 @@ const ContestPage: React.FC = () => {
         disableScrolling={false}
         autoAdvance={autoAdvance}
         autoAdvanceInterval={autoAdvanceInterval}
-      />{' '}
+      />{' '} */}
       <ScreenWrapper className='overflow-hidden pt-20'>
         {isContestOver ? (
           <div className='md:w-full h-auto md:mt-[40px] mt-[-4px] '>

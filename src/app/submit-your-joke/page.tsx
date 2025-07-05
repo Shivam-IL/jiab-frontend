@@ -976,6 +976,7 @@ const SubmitYourJoke = () => {
             onSubmitJoke={handleSubmitJoke}
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
+            isLoading={isPending}
           />
         </div>
       )}

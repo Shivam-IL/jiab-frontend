@@ -87,7 +87,7 @@ const UgcCard: React.FC<UgcCardProps> = ({
           }, 500)
         }
       },
-      { threshold: home ? 0.7 : 1 } // Adjust visibility percentage as needed
+      { threshold: home ? 0.95 : 1 } // Adjust visibility percentage as needed
     )
 
     const current = ugcCardRef.current
