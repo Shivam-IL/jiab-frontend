@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES, SESSION_STORAGE_KEYS } from '@/constants'
-import { updateEnableCoachMarks } from '@/store/auth/auth.slice'
+import {
+  updateEnableCoachMarks,
+  updatePauseVideo,
+  updateSurpriseMe
+} from '@/store/auth/auth.slice'
 import useAppDispatch from '@/hooks/useDispatch'
 import { BoxIds } from '../CircularBoxesModal'
 import AktivGroteskText from '../AktivGroteskText'
 import { removeSessionStorageItem } from '@/utils'
 import useAppSelector from '@/hooks/useSelector'
 import { useCMSData } from '@/data/'
-import { useRouter } from 'next/navigation'
 
 // Export box IDs for reuse in other components
 export const DesktopBoxIds = {
@@ -54,7 +57,6 @@ const HomePageDesktopOnboarding = ({
   useEffect(() => {
     setMounted(true)
   }, [])
-  const router = useRouter()
   const [currentBox, setCurrentBox] = useState(0)
   const { enableCoachMarks } = useAppSelector(state => state.auth)
   const dispatch = useAppDispatch()
@@ -70,9 +72,10 @@ const HomePageDesktopOnboarding = ({
   })
 
   const handleClose = () => {
-    dispatch(updateEnableCoachMarks({ enableCoachMarks: false }))
     removeSessionStorageItem(SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL)
-    router.push('/contest')
+    dispatch(updateEnableCoachMarks({ enableCoachMarks: false }))
+    dispatch(updatePauseVideo({ pauseVideo: true }))
+    dispatch(updateSurpriseMe({ surpriseMe: true }))
     onClose()
   }
 
@@ -144,7 +147,7 @@ const HomePageDesktopOnboarding = ({
 
   // Auto-scroll to the relevant section when currentBox is 4 or 5
   useEffect(() => {
-    if (currentBox === 4) {
+    if (currentBox === 5) {
       setTimeout(() => {
         const pickYourMoodEl = document.getElementById(BoxIds.PICK_YOUR_MOOD)
         if (pickYourMoodEl) {
@@ -154,7 +157,7 @@ const HomePageDesktopOnboarding = ({
           })
         }
       }, 100)
-    } else if (currentBox === 5) {
+    } else if (currentBox === 6) {
       setTimeout(() => {
         const jokeBoxEl = document.getElementById(BoxIds.JOKE_BOX)
         if (jokeBoxEl) {
@@ -269,7 +272,11 @@ const HomePageDesktopOnboarding = ({
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
               left: `${coordinates.notifications.x - 110}px`,
-              top: `${selectedLanguage === 'ta' ? coordinates.notifications.y - 80 : coordinates.notifications.y -100}px`,
+              top: `${
+                selectedLanguage === 'ta'
+                  ? coordinates.notifications.y - 80
+                  : coordinates.notifications.y - 100
+              }px`,
               width: '192px',
               height: '192px',
               position: 'fixed'

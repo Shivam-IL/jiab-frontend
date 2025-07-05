@@ -17,13 +17,15 @@ const UgcPreviewCard = ({
   onSubmitJoke,
   setUgcPreview,
   errorMessage,
-  setErrorMessage
+  setErrorMessage,
+  isLoading
 }: {
   jokeData: IJokeData
   onSubmitJoke: () => void
   setUgcPreview: React.Dispatch<React.SetStateAction<boolean>>
   errorMessage: string
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>
+  isLoading: boolean
 }) => {
   const [genreImage, setGenreImage] = useState<string>('')
   const [languageName, setLanguageName] = useState<string>('')
@@ -207,7 +209,8 @@ const UgcPreviewCard = ({
               />
             </button>
             <GreenCTA
-              text='Submit'
+              disabled={isLoading}
+              text={pjChallenge.submitButtonText}
               fontSize='text-[16px]'
               fontWeight='font-[600]'
               onClick={() => {
