@@ -61,7 +61,7 @@ export default function GlobalLoader() {
       if (isGlobalApiLoading) {
         dispatch(setGlobalApiLoading(false));
       }
-    }, 10000); // 10 second safety timeout
+    }, 2000); // 2 second safety timeout
 
     return () => clearTimeout(safetyTimeout);
   }, [isRouteLoading, isGlobalApiLoading, dispatch]);
