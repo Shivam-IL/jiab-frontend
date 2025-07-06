@@ -121,6 +121,7 @@ export const CATEGORY_ID_CMS_KEY_MAPPING = {
 };
 
 export const LIMIT_EXCEED = "Limit Exceed";
+export const OTHER_ERROR = "Something went wrong";
 
 export const LANGUAGE_IDS = {
   1: "en",

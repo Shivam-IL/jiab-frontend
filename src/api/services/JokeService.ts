@@ -6,7 +6,7 @@ import { getLocalStorageItem } from "@/utils";
 import { AUTHORIZATION_TYPES } from "../client/constant";
 import { IReelReaction, TSubmitJokeParams } from "../types/JokeTypes";
 import gluedin from "gluedin";
-import { LIMIT_EXCEED } from "@/constants";
+import { LIMIT_EXCEED, OTHER_ERROR } from "@/constants";
 
 export class JokeService extends MainService {
   private static instance: JokeService;
@@ -102,17 +102,17 @@ export class JokeService extends MainService {
       if (responseData?.success) {
         return SuccessResponse(transformedData);
       }
-      
+
       // Handle specific error code 1013
       if (responseData?.code === 1013) {
         return {
           ok: false,
           data: [],
           message: responseData?.message,
-          code: 1013
+          code: 1013,
         };
       }
-      
+
       return ErrorResponse(responseData?.message);
     } catch (error) {
       throw error;
@@ -159,10 +159,13 @@ export class JokeService extends MainService {
           ok: true,
         };
         return data;
-      } else if (!responseData?.success && responseData?.code === 1002) {
+      } else if (
+        !responseData?.success &&
+        (responseData?.code === 1002 || responseData?.code === 1020)
+      ) {
         const data = {
           message: responseData?.message,
-          type: LIMIT_EXCEED,
+          type: responseData?.code === 1020 ? LIMIT_EXCEED : OTHER_ERROR,
         };
         return {
           ok: false,
