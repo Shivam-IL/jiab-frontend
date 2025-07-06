@@ -16,7 +16,8 @@ import { triggerGAEvent } from "@/utils/gTagEvents";
 import { usePathname, useRouter } from "next/navigation";
 import { useGetComicCoins } from "@/api/hooks/JokeHooks";
 import { INFOBIP_WHATSAPP_URL } from "@/config";
-
+import { LANGUAGE_MNEMONICS } from "@/constants";
+import { useLanguage } from "@/hooks/useLanguage";
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
@@ -27,11 +28,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isExploreOpen, setIsExploreOpen] = useState(true);
   const [mounted, setMounted] = useState(false);
-
+  const { selectedLanguage } = useLanguage();
   // Use effect to handle client-side hydration
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const isOdiaMaithiliKannada =
+    selectedLanguage === LANGUAGE_MNEMONICS.ORIYA ||
+    selectedLanguage === LANGUAGE_MNEMONICS.MAITHILI ||
+    selectedLanguage === LANGUAGE_MNEMONICS.KANNADA;
 
   // Get mapped CMS data using our data layer
   const cmsData = useCMSData(mounted);
@@ -299,6 +305,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, spriteLogo }) => {
               {isExploreOpen && (
                 <ul className="pt-2 text-left">
                   {exploreSubItems.map((subItem, subIndex) => {
+                    if (isOdiaMaithiliKannada) {
+                      if (subItem.label === cmsData.navBar.scrollAndLol) {
+                        return null;
+                      }
+                    }
                     if (subItem.label === cmsData.navBar.referAFriend) {
                       return (
                         <li key={subIndex} className="text-xs ml-8 text-left">

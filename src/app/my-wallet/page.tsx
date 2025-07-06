@@ -25,16 +25,6 @@ import // Carousel,
 '@/components/ui/carousel'
 import ComicCoinMyWinSection from '@/components/ComicCoinMyWinSection'
 
-// interface WalletCard {
-//   id: number
-//   imageUrl: string
-//   title: string
-//   description: string
-//   isRedeemed: boolean
-//   expiryDate: string
-//   voucherCode?: string
-//   pin?: string
-// }
 
 const ComicCoinsPage = () => {
   const [mounted, setMounted] = useState(false)
@@ -88,38 +78,11 @@ const ComicCoinsPage = () => {
     router.push('/submit-your-joke')
   }
 
-  // Get comic coins value with fallback
   const comicCoinsValue = comicCoinsData?.data?.comic_coin ?? 0
 
   const { isAuthenticated } = useAppSelector(state => state.auth)
   const dispatch = useAppDispatch()
 
-  // Sample wallet cards data - you can replace this with actual data
-  // const walletCards: WalletCard[] = [
-  //   {
-  //     id: 1,
-  //     imageUrl: '/other-svgs/phone-pe.svg',
-  //     title: 'Cashback worth Rs.10',
-  //     description:
-  //       "Here's a pocket-sized perk just for you. Grab this Rs.10 PhonePe voucher now!",
-  //     isRedeemed: redemptionStates[1] || false,
-  //     expiryDate: '31st Dec 2025',
-  //     voucherCode: 'AJ5739EY93HYS',
-  //     pin: '315724'
-  //   },
-  //   {
-  //     id: 2,
-  //     imageUrl: '/other-svgs/phone-pe.svg',
-  //     title: 'Cashback worth Rs.10',
-  //     description:
-  //       "Here's a pocket-sized perk just for you. Grab this Rs.10 PhonePe voucher now!",
-  //     isRedeemed: redemptionStates[2] || false,
-  //     expiryDate: '31st Dec 2025',
-  //     voucherCode: 'BK7845FG12LMN',
-  //     pin: '892341'
-  //   }
-  //   // Add more wallet cards here as needed
-  // ]
 
   return (
     <>
