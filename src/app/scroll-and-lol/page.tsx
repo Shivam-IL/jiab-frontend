@@ -200,8 +200,7 @@ const ScrollAndLol: React.FC = () => {
   );
   const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation();
 
-  const { mutate: postReelReaction, data: postReelReactionData } =
-    usePostReelReaction();
+  const { mutate: postReelReaction } = usePostReelReaction();
   const [completlyPlayedVideoIndex, setCompletlyPlayedVideoIndex] =
     useState<number>(-1);
   const { user } = useAppSelector((state) => state.profile);
@@ -564,6 +563,9 @@ const ScrollAndLol: React.FC = () => {
       videoId: videos[activeVideoIndex]?.id,
     });
 
+    // Trigger coin animation immediately when user clicks reaction
+    triggerAnimation();
+
     const payload = {
       assetId: videos[activeVideoIndex]?.id ?? "",
       reactionType: reaction.name,
@@ -638,23 +640,6 @@ const ScrollAndLol: React.FC = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (postReelReactionData?.ok) {
-      console.log("🎬 Triggering coin animation for reaction:", {
-        activeVideoIndex,
-        isLoading,
-        videosCount: videos.length,
-        hasCurrentVideoData: !!currentVideoData,
-      });
-
-      // Small delay to ensure DOM is stable before triggering animation
-      setTimeout(() => {
-        triggerAnimation();
-      }, 100);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postReelReactionData]);
 
   const toggleMute = (index: number) => {
     if (index === activeVideoIndex) {
