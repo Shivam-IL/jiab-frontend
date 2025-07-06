@@ -28,8 +28,8 @@ const UgcPreviewCard = ({
   isLoading: boolean
 }) => {
   const [genreImage, setGenreImage] = useState<string>('')
+  const [genreName, setGenreName] = useState<string>('')
   const [languageName, setLanguageName] = useState<string>('')
-  const { user } = useAppSelector(state => state.profile)
   const { homePage, pjChallenge } = useCMSData()
   const { genres, languages } = useAppSelector(state => state.reference)
   const width = useWindowWidth()
@@ -38,6 +38,7 @@ const UgcPreviewCard = ({
     if (jokeData.category) {
       const genre = genres.find(genre => genre.genre === jokeData.category)
       setGenreImage(genre?.image_url ?? genres?.[0]?.image_url ?? '')
+      setGenreName(genre?.genre ?? '')
     }
   }, [jokeData.category, genres])
 
@@ -92,7 +93,7 @@ const UgcPreviewCard = ({
                         className='line-clamp-1'
                       />
                       <AktivGroteskText
-                        text={`${user?.name ?? ''} , ${languageName}`}
+                        text={`${languageName} , ${genreName}`}
                         fontSize='text-[10px]'
                         fontWeight='font-[500]'
                       />
