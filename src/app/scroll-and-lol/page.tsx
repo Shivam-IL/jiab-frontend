@@ -1,6 +1,7 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useInView } from "react-intersection-observer";
 import Header from "@/components/common/Header/Header";
 import ReactionEmojies from "@/components/ReactionEmojies";
 import { ICONS_NAMES } from "@/constants"; // Import ICONS_NAMES
@@ -92,6 +93,187 @@ const SpinnerOverlay: React.FC = () => (
     <div className="w-12 h-12 border-4 border-[#08C270] border-t-transparent rounded-full animate-spin" />
   </div>
 );
+
+// Individual Video Item Component with react-intersection-observer
+interface VideoItemProps {
+  video: VideoData;
+  index: number;
+  isActive: boolean;
+  isMuted: boolean;
+  mobilePageHeight: string;
+  onVideoInView: (index: number) => void;
+  onVideoOutOfView: (index: number) => void;
+  onVideoLoad: (index: number) => void;
+  onVideoCanPlay: (index: number) => void;
+  onVideoError: (index: number) => void;
+  onVideoEnded: (index: number) => void;
+  onVideoPlay: (index: number) => void;
+  onVideoPause: (index: number) => void;
+  onTogglePlay: (index: number) => void;
+  onToggleMute: (index: number) => void;
+  onVideoRef: (index: number, element: HTMLVideoElement | null) => void;
+  isPlaying: boolean;
+  isReady: boolean;
+  isUserPaused: boolean;
+}
+
+const VideoItem: React.FC<VideoItemProps> = ({
+  video,
+  index,
+  isActive,
+  isMuted,
+  mobilePageHeight,
+  onVideoInView,
+  onVideoOutOfView,
+  onVideoLoad,
+  onVideoCanPlay,
+  onVideoError,
+  onVideoEnded,
+  onVideoPlay,
+  onVideoPause,
+  onTogglePlay,
+  onToggleMute,
+  onVideoRef,
+  isPlaying,
+  isReady,
+  isUserPaused,
+}) => {
+  const { ref: intersectionRef, inView } = useInView({
+    threshold: 0.5,
+    rootMargin: "-20% 0px -20% 0px",
+  });
+
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const combinedRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      intersectionRef(node);
+    },
+    [intersectionRef]
+  );
+
+  useEffect(() => {
+    if (inView) {
+      onVideoInView(index);
+    } else {
+      onVideoOutOfView(index);
+    }
+  }, [inView, index, onVideoInView, onVideoOutOfView]);
+
+  // Auto-play logic when video comes into view
+  useEffect(() => {
+    if (inView && isActive && videoRef.current && !isUserPaused) {
+      const video = videoRef.current;
+      if (video.paused && video.readyState >= 3) {
+        video.play().catch(console.error);
+      }
+    }
+  }, [inView, isActive, isUserPaused]);
+
+  return (
+    <div
+      ref={combinedRef}
+      className="video-container relative md:max-h-[calc(100vh-200px)] w-full flex-shrink-0 md:mb-[100px] last:md:mb-0 md:flex md:items-center md:justify-center"
+      data-index={index}
+      style={{
+        scrollSnapAlign: "start",
+        scrollSnapStop: "always",
+        height:
+          typeof window !== "undefined" && window.innerWidth >= 768
+            ? "calc(100vh - 200px)"
+            : mobilePageHeight,
+      }}
+    >
+      <div className="relative md:w-auto md:h-auto w-full h-full">
+        {/* Thumbnail & spinner overlay */}
+        {!isReady && (
+          <>
+            {video.thumbnail && (
+              <Image
+                src={video.thumbnail}
+                alt={video.title}
+                fill
+                className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] h-full w-full md:object-contain object-cover absolute inset-0"
+                sizes="(max-width: 768px) 100vw, 442px"
+                style={{ aspectRatio: "9/16" }}
+                priority={index === 0}
+              />
+            )}
+            <SpinnerOverlay />
+          </>
+        )}
+        <video
+          ref={(el) => {
+            videoRef.current = el;
+            onVideoRef(index, el);
+          }}
+          className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] w-full md:object-cover object-cover relative"
+          src={video.url}
+          playsInline
+          muted={isMuted}
+          autoPlay={false}
+          preload="metadata"
+          loop={false}
+          onEnded={() => onVideoEnded(index)}
+          onLoadedData={() => onVideoLoad(index)}
+          onCanPlay={() => onVideoCanPlay(index)}
+          onLoadStart={() => {
+            if (index === 0) {
+              setTimeout(() => onVideoLoad(index), 2000);
+            }
+          }}
+          onError={() => onVideoError(index)}
+          onPlay={() => onVideoPlay(index)}
+          onPause={() => onVideoPause(index)}
+          style={{
+            aspectRatio: "9/16",
+            height:
+              typeof window !== "undefined" && window.innerWidth >= 768
+                ? "auto"
+                : mobilePageHeight,
+          }}
+        />
+
+        {/* Top controls */}
+        <div className="absolute top-4 w-full flex justify-between px-4 z-20">
+          <button
+            onClick={() => onTogglePlay(index)}
+            className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
+            disabled={!isReady}
+          >
+            <Image
+              src={
+                isPlaying && isActive
+                  ? "/other-svgs/pause-icon.svg"
+                  : "/other-svgs/play-icon.svg"
+              }
+              alt={isPlaying && isActive ? "Pause" : "Play"}
+              width={isPlaying && isActive ? 12 : 20}
+              height={isPlaying && isActive ? 12 : 20}
+            />
+          </button>
+          <button
+            onClick={() => onToggleMute(index)}
+            className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
+            disabled={!isReady}
+          >
+            <Image
+              src={
+                isMuted
+                  ? "/other-svgs/mute-icon.svg"
+                  : "/other-svgs/unmute-icon.svg"
+              }
+              alt={isMuted ? "Unmute" : "Mute"}
+              width={20}
+              height={20}
+              className="text-white"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const ScrollAndLol: React.FC = () => {
   // Get selected joke id from query params
@@ -367,122 +549,51 @@ const ScrollAndLol: React.FC = () => {
     setActiveVideoIndex(newIndex);
   };
 
-  useEffect(() => {
-    const options = {
-      root: containerRef.current,
-      rootMargin: "-20% 0px -20% 0px",
-      threshold: 0.5,
-    };
+  // Video event handlers
+  const handleVideoInView = useCallback((index: number) => {
+    setActiveVideoIndex(index);
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const videoIndex = parseInt(
-          entry.target.getAttribute("data-index") || "0"
-        );
-
-        if (entry.isIntersecting) {
-          // Update active video index
-          setActiveVideoIndex(videoIndex);
-
-          // If this is the end page (index === videos.length), just pause all videos
-          if (videoIndex === videos.length) {
-            videoRefs.current.forEach((video) => {
-              if (video) {
-                video.pause();
-              }
-            });
-            return;
-          }
-
-          // Pause all other videos (except current) and keep their time reset
-          videoRefs.current.forEach((video, idx) => {
-            if (video && idx !== videoIndex) {
-              video.pause();
-            }
-          });
-
-          // Auto-play the current video only if user hasn't paused it
-          const currentVideo = videoRefs.current[videoIndex];
-          if (currentVideo) {
-            // Use a small delay to ensure state is stable
-            setTimeout(() => {
-              setUserPausedVideos((prevUserPaused) => {
-                const userHasPaused = prevUserPaused[videoIndex];
-
-                if (
-                  !userHasPaused &&
-                  currentVideo.paused &&
-                  currentVideo.readyState >= 3
-                ) {
-                  currentVideo.play().catch(console.error);
-                }
-
-                // Update play state based on whether video should be playing
-                setVideoPlayStates((prev) => {
-                  const newStates = [...prev];
-                  newStates[videoIndex] = !userHasPaused;
-                  return newStates;
-                });
-
-                return prevUserPaused; // Don't change user pause state
-              });
-            }, 100);
-          }
-        } else {
-          // Skip processing for end page when it goes out of view
-          if (videoIndex === videos.length) {
-            return;
-          }
-
-          // Pause video when it goes out of view and reset play state
-          const video = videoRefs.current[videoIndex];
-          if (video) {
-            video.pause();
-            video.currentTime = 0; // Reset to beginning so next time it starts from start
-
-            // Update play state to reflect that video is paused
-            setVideoPlayStates((prev) => {
-              const newStates = [...prev];
-              newStates[videoIndex] = false;
-              return newStates;
-            });
-
-            // Reset user pause state when video goes out of view
-            setUserPausedVideos((prev) => {
-              const newStates = [...prev];
-              newStates[videoIndex] = false;
-              return newStates;
-            });
-          }
-        }
-      });
-    }, options);
-
-    // Observe all video containers
-    videoRefs.current.forEach((videoRef) => {
-      if (videoRef) {
-        // Find the video-container element with data-index
-        const videoContainer = videoRef.closest(".video-container");
-        if (videoContainer) {
-          observer.observe(videoContainer);
-        }
+    // Pause all other videos
+    videoRefs.current.forEach((video, idx) => {
+      if (video && idx !== index) {
+        video.pause();
+        video.currentTime = 0;
       }
     });
+  }, []);
 
-    // Also observe the end page container
-    if (containerRef.current) {
-      const endPageContainer = containerRef.current.querySelector(
-        `.video-container[data-index="${videos.length}"]`
-      );
-      if (endPageContainer) {
-        observer.observe(endPageContainer);
-      }
+  const handleVideoOutOfView = useCallback((index: number) => {
+    // Pause video when it goes out of view
+    const video = videoRefs.current[index];
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
     }
 
-    return () => {
-      observer.disconnect();
-    };
-  }, [videoPlayStates, userPausedVideos, videos.length]);
+    // Reset play states
+    setVideoPlayStates((prev) => {
+      const newStates = [...prev];
+      newStates[index] = false;
+      return newStates;
+    });
+
+    // Reset user pause state
+    setUserPausedVideos((prev) => {
+      const newStates = [...prev];
+      newStates[index] = false;
+      return newStates;
+    });
+  }, []);
+
+  // Handle video ref callback
+  const handleVideoRef = useCallback(
+    (index: number, element: HTMLVideoElement | null) => {
+      if (element) {
+        videoRefs.current[index] = element;
+      }
+    },
+    []
+  );
 
   // Handle video load to hide loading spinner
   const handleVideoLoad = (index: number) => {
@@ -665,6 +776,28 @@ const ScrollAndLol: React.FC = () => {
     }
   };
 
+  // Handle video play/pause events
+  const handleVideoPlay = (index: number) => {
+    setVideoPlayStates((prev) => {
+      const newStates = [...prev];
+      newStates[index] = true;
+      return newStates;
+    });
+  };
+
+  const handleVideoPause = (index: number) => {
+    setVideoPlayStates((prev) => {
+      const newStates = [...prev];
+      newStates[index] = false;
+      return newStates;
+    });
+  };
+
+  const handleVideoEnded = (index: number) => {
+    console.log("✅ Video ended:", index);
+    setCompletlyPlayedVideoIndex(index);
+  };
+
   // Serial Chiller End of Feed Page Component
   const SerialChillerEndPage: React.FC = () => {
     return (
@@ -809,134 +942,28 @@ const ScrollAndLol: React.FC = () => {
               }}
             >
               {videos.map((video, index) => (
-                <div
+                <VideoItem
                   key={video.id}
-                  className="video-container relative md:max-h-[calc(100vh-200px)] w-full flex-shrink-0 md:mb-[100px] last:md:mb-0 md:flex md:items-center md:justify-center"
-                  data-index={index}
-                  style={{
-                    scrollSnapAlign: "start",
-                    scrollSnapStop: "always",
-                    height:
-                      typeof window !== "undefined" && window.innerWidth >= 768
-                        ? "calc(100vh - 200px)"
-                        : mobilePageHeight,
-                  }}
-                >
-                  <div className="relative md:w-auto md:h-auto w-full h-full">
-                    {/* Thumbnail & spinner overlay */}
-                    {!videoReady[index] && (
-                      <>
-                        {video.thumbnail && (
-                          <Image
-                            src={video.thumbnail}
-                            alt={video.title}
-                            fill
-                            className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] h-full w-full md:object-contain object-cover absolute inset-0"
-                            sizes="(max-width: 768px) 100vw, 442px"
-                            style={{ aspectRatio: "9/16" }}
-                            priority={index === 0}
-                          />
-                        )}
-                        <SpinnerOverlay />
-                      </>
-                    )}
-                    <video
-                      ref={(el) => {
-                        if (el) videoRefs.current[index] = el;
-                      }}
-                      className="md:w-auto md:max-h-[calc(100vh-200px)] md:max-w-[442px] w-full md:object-cover object-cover relative"
-                      src={video.url}
-                      playsInline
-                      muted={isMuted}
-                      autoPlay={false} // Make sure this gets triggered manually if needed
-                      preload="metadata"
-                      loop={false} // Optional: could be removed entirely
-                      onEnded={() => {
-                        console.log("✅ Video ended:", index);
-                        setCompletlyPlayedVideoIndex(index);
-                      }}
-                      onLoadedData={() => handleVideoLoad(index)}
-                      onCanPlay={() => handleVideoCanPlay(index)}
-                      onLoadStart={() => {
-                        if (index === 0) {
-                          setTimeout(() => setIsLoading(false), 2000);
-                        }
-                      }}
-                      onError={() => handleVideoError(index)}
-                      onPlay={() => {
-                        setVideoPlayStates((prev) => {
-                          const newStates = [...prev];
-                          newStates[index] = true;
-                          return newStates;
-                        });
-                      }}
-                      onPause={() => {
-                        setVideoPlayStates((prev) => {
-                          const newStates = [...prev];
-                          newStates[index] = false;
-                          return newStates;
-                        });
-                      }}
-                      style={{
-                        aspectRatio: "9/16",
-                        height:
-                          typeof window !== "undefined" &&
-                          window.innerWidth >= 768
-                            ? "auto"
-                            : mobilePageHeight,
-                      }}
-                    />
-
-                    {/* Top controls */}
-                    <div className="absolute top-4 w-full flex justify-between px-4 z-20">
-                      <button
-                        onClick={() => togglePlay(index)}
-                        className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
-                        disabled={!videoReady[index]}
-                      >
-                        <Image
-                          src={
-                            videoPlayStates[index] && index === activeVideoIndex
-                              ? "/other-svgs/pause-icon.svg"
-                              : "/other-svgs/play-icon.svg"
-                          }
-                          alt={
-                            videoPlayStates[index] && index === activeVideoIndex
-                              ? "Pause"
-                              : "Play"
-                          }
-                          width={
-                            videoPlayStates[index] && index === activeVideoIndex
-                              ? 12
-                              : 20
-                          }
-                          height={
-                            videoPlayStates[index] && index === activeVideoIndex
-                              ? 12
-                              : 20
-                          }
-                        />
-                      </button>
-                      <button
-                        onClick={() => toggleMute(index)}
-                        className="w-[40px] h-[40px] rounded-full bg-[#12121240] flex items-center justify-center"
-                        disabled={!videoReady[index]}
-                      >
-                        <Image
-                          src={
-                            isMuted
-                              ? "/other-svgs/mute-icon.svg"
-                              : "/other-svgs/unmute-icon.svg"
-                          }
-                          alt={isMuted ? "Unmute" : "Mute"}
-                          width={20}
-                          height={20}
-                          className="text-white"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                  video={video}
+                  index={index}
+                  isActive={activeVideoIndex === index}
+                  isMuted={isMuted}
+                  mobilePageHeight={mobilePageHeight}
+                  onVideoInView={handleVideoInView}
+                  onVideoOutOfView={handleVideoOutOfView}
+                  onVideoLoad={handleVideoLoad}
+                  onVideoCanPlay={handleVideoCanPlay}
+                  onVideoError={handleVideoError}
+                  onVideoEnded={handleVideoEnded}
+                  onVideoPlay={handleVideoPlay}
+                  onVideoPause={handleVideoPause}
+                  onTogglePlay={togglePlay}
+                  onToggleMute={toggleMute}
+                  onVideoRef={handleVideoRef}
+                  isPlaying={videoPlayStates[index]}
+                  isReady={videoReady[index]}
+                  isUserPaused={userPausedVideos[index]}
+                />
               ))}
 
               {/* Serial Chiller End Page as part of scroll sequence */}

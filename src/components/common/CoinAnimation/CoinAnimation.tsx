@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import Lottie from "lottie-react";
 
 interface CoinAnimationProps {
   isVisible: boolean;
@@ -12,25 +12,36 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({
   animationKey = 0,
   onAnimationEnd,
 }) => {
-  const [gifSrc, setGifSrc] = useState("");
-  const [showImage, setShowImage] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
+  const [lottieKey, setLottieKey] = useState(0);
+  const [animationData, setAnimationData] = useState(null);
+
+  // Load animation data
+  useEffect(() => {
+    fetch("/videos/coin-anim.json", {
+      priority: "high",
+      cache: "force-cache",
+    })
+      .then((response) => response.json())
+      .then((data) => setAnimationData(data))
+      .catch((error) => console.error("Failed to load animation:", error));
+  }, []);
 
   useEffect(() => {
     if (isVisible) {
       // Reset state first to ensure clean start
-      setShowImage(false);
-      setGifSrc("");
+      setShowAnimation(false);
 
       // Small delay to ensure DOM updates
       const showTimer = setTimeout(() => {
-        // Force GIF to restart from first frame by adding timestamp and random value
-        const timestamp = Date.now();
-        const random = Math.random();
-        setGifSrc(`/videos/coin-animation.gif?t=${timestamp}&r=${random}`);
-        setShowImage(true);
+        // Force animation to restart by updating the key
+        setLottieKey((prev) => prev + 1);
+        setShowAnimation(true);
       }, 50);
 
-      // Set animation end callback with fixed duration (2800ms for the GIF)
+      // Set animation end callback based on Lottie animation duration
+      // The animation duration can be calculated from the JSON: (op - ip) / fr * 1000
+      // For coin-anim.json: (72 - 0) / 25 * 1000 = 2880ms, using 2800ms to be safe
       if (onAnimationEnd) {
         const endTimer = setTimeout(onAnimationEnd, 2800);
         return () => {
@@ -42,30 +53,26 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({
       return () => clearTimeout(showTimer);
     } else {
       // Clean up when animation is hidden
-      setShowImage(false);
-      setGifSrc("");
+      setShowAnimation(false);
     }
   }, [isVisible, animationKey, onAnimationEnd]);
 
-  if (!isVisible || !gifSrc || !showImage) return null;
+  if (!isVisible || !showAnimation || !animationData) return null;
 
   return (
     <div className="fixed inset-0 z-[9999] pointer-events-none flex justify-center items-center">
-      <Image
-        key={`coin-${animationKey}-${gifSrc}`} // Add key to force new image element
-        src={gifSrc}
-        alt="Coin Animation"
-        width={1000}
-        height={1000}
+      <Lottie
+        key={`coin-lottie-${animationKey}-${lottieKey}`} // Force new instance on restart
+        animationData={animationData}
+        autoplay={true}
+        loop={false}
         className="w-[800px] h-[800px] md:w-[2000px] md:h-[2000px] object-contain translate-y-[25%] md:translate-y-[0]"
-        unoptimized // Required for GIFs to play from first to last frame
-        priority // Load immediately for smooth animation
-        onLoad={() => {
-          // Force image reload to ensure animation starts
-          if (typeof window !== "undefined" && "Image" in window) {
-            const img = new window.Image();
-            img.src = gifSrc;
-          }
+        style={{
+          width: "800px",
+          height: "800px",
+        }}
+        rendererSettings={{
+          preserveAspectRatio: "xMidYMid meet",
         }}
       />
     </div>

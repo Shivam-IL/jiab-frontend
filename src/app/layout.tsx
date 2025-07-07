@@ -194,6 +194,13 @@ export default function RootLayout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        <link
+          rel="preload"
+          href="/videos/coin-anim.json"
+          as="fetch"
+          type="application/json"
+          crossOrigin="anonymous"
+        />
 
         <LoadGAScript />
       </head>
