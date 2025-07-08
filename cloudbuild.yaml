@@ -5,9 +5,9 @@ steps:
       [
         'build',
         '-f',
-        'Dockerfile.dev',
+        'Dockerfile',
         '-t',
-        'asia-south1-docker.pkg.dev/ai0015455-sfa-test/tccc-sfa-test-cloud-build-repo/tccc-sfa-test-cloudrun-main-backend:latest',
+        'asia-south1-docker.pkg.dev/ai0015455-sfa-test/ccc-sfa-test-cloudrun-main-backend/frontend-app:latest',
         '.'
       ]
 
@@ -16,7 +16,7 @@ steps:
     args:
       [
         'push',
-        'asia-south1-docker.pkg.dev/ai0015455-sfa-test/tccc-sfa-test-cloud-build-repo/tccc-sfa-test-cloudrun-main-backend:latest'
+        'asia-south1-docker.pkg.dev/ai0015455-sfa-test/ccc-sfa-test-cloudrun-main-backend/frontend-app:latest'
       ]
 
   # Step 3: Deploy to Cloud Run with secrets
@@ -26,8 +26,8 @@ steps:
       [
         'run',
         'deploy',
-        'tccc-sfa-test-cloudrun-main-backend',
-        '--image=asia-south1-docker.pkg.dev/ai0015455-sfa-test/tccc-sfa-test-cloud-build-repo/tccc-sfa-test-cloudrun-main-backend:latest',
+        'tccc-sfa-test-cloudrun-front-end',
+        '--image=asia-south1-docker.pkg.dev/ai0015455-sfa-test/ccc-sfa-test-cloudrun-main-backend/frontend-app:latest',
         '--region=asia-south1',
         '--platform=managed',
         '--execution-environment=gen2',
@@ -38,11 +38,11 @@ steps:
         '--max-instances=3',
         '--cpu=1',
         '--memory=512Mi',
-        '--set-secrets=APP_ENV=APP_ENV:latest,INFOBIP_BASE_URL=INFOBIP_BASE_URL:latest,INFOBIP_API_KEY=INFOBIP_API_KEY:latest,JWT_SECRET_KEY=JWT_SECRET_KEY:latest,JWT_ACCESS_TOKEN_EXPIRY=JWT_ACCESS_TOKEN_EXPIRY:latest,JWT_REFRESH_TOKEN_EXPIRY=JWT_REFRESH_TOKEN_EXPIRY:latest,JWT_TEMP_TOKEN_EXPIRY=JWT_TEMP_TOKEN_EXPIRY:latest,USE_SSH=USE_SSH:latest,DB_HOST=DB_HOST:latest,DB_PORT=DB_PORT:latest,DB_USER=DB_USER:latest,DB_PASSWORD=DB_PASSWORD:latest,DB_NAME=DB_NAME:latest,DB_SSL_MODE=DB_SSL_MODE:latest,GLUEDIN_BASE_URL=GLUEDIN_BASE_URL:latest,GLUEDIN_API_KEY=GLUEDIN_API_KEY:latest,FIREBASE_SERVICE_KEY_PATH=FIREBASE_SERVICE_KEY_PATH:latest,MIXCODE_BASE_URL=MIXCODE_BASE_URL:latest,MIXCODE_PROGRAM_ID=MIXCODE_PROGRAM_ID:latest,MIXCODE_PROGRAM_SECRET=MIXCODE_PROGRAM_SECRET:latest,GOOGLE_PUBSUB_PROJECT_ID=GOOGLE_PUBSUB_PROJECT_ID:latest,GOOGLE_PUBSUB_SUBSCRIPTION_ID=GOOGLE_PUBSUB_SUBSCRIPTION_ID:latest,GOOGLE_PUBSUB_TOPIC_ID=GOOGLE_PUBSUB_TOPIC_ID:latest,GOOGLE_PUBSUB_CREDENTIALS_PATH=GOOGLE_PUBSUB_CREDENTIALS_PATH:latest'
+        '--set-secrets=NEXT_PUBLIC_API_URL=NEXT_PUBLIC_API_URL:latest,NEXT_PUBLIC_STRAPI_API_URL=NEXT_PUBLIC_STRAPI_API_URL:latest,NEXT_PUBLIC_GLUEDIN_API_KEY=NEXT_PUBLIC_GLUEDIN_API_KEY:latest,NEXT_PUBLIC_GLUEDIN_SECRET_KEY=NEXT_PUBLIC_GLUEDIN_SECRET_KEY:latest,NEXT_PUBLIC_SECRET_KEY=NEXT_PUBLIC_SECRET_KEY:latest,NEXT_PUBLIC_GA_ID=NEXT_PUBLIC_GA_ID:latest,NEXT_PUBLIC_FIREBASE_API_KEY=NEXT_PUBLIC_FIREBASE_API_KEY:latest,NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN:latest,NEXT_PUBLIC_FIREBASE_PROJECT_ID=NEXT_PUBLIC_FIREBASE_PROJECT_ID:latest,NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET:latest,NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID:latest,NEXT_PUBLIC_FIREBASE_APP_ID=NEXT_PUBLIC_FIREBASE_APP_ID:latest,NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID:latest,NEXT_PUBLIC_FIREBASE_VAPID_KEY=NEXT_PUBLIC_FIREBASE_VAPID_KEY:latest,NEXT_PUBLIC_INFOBIP_WHATSAPP_URL=NEXT_PUBLIC_INFOBIP_WHATSAPP_URL:latest,NEXT_PUBLIC_CDP_CLIENT_ID=NEXT_PUBLIC_CDP_CLIENT_ID:latest,NEXT_PUBLIC_CDP_BRAND_NAME=NEXT_PUBLIC_CDP_BRAND_NAME:latest,NEXT_PUBLIC_CDP_API_URL=NEXT_PUBLIC_CDP_API_URL:latest,NEXT_PUBLIC_CDP_API_KEY=NEXT_PUBLIC_CDP_API_KEY:latest,NEXT_PUBLIC_CDP_USER_IDENTIFIED_TYPE=NEXT_PUBLIC_CDP_USER_IDENTIFIED_TYPE:latest,NEXT_PUBLIC_CDP_USER_IDENTIFIER_SUB_TYPE=NEXT_PUBLIC_CDP_USER_IDENTIFIER_SUB_TYPE:latest,NEXT_PUBLIC_IP_URL=NEXT_PUBLIC_IP_URL:latest'
       ]
 
 images:
-  - asia-south1-docker.pkg.dev/ai0015455-sfa-test/tccc-sfa-test-cloud-build-repo/tccc-sfa-test-cloudrun-main-backend:latest
+  - asia-south1-docker.pkg.dev/ai0015455-sfa-test/ccc-sfa-test-cloudrun-main-backend/frontend-app:latest
 
 options:
   logging: CLOUD_LOGGING_ONLY
