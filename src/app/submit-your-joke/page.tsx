@@ -993,6 +993,7 @@ const SubmitYourJoke = () => {
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
             isLoading={isPending}
+            categoryData={categoryData}
           />
         </div>
       )}
