@@ -12,13 +12,14 @@ import useWindowWidth from '@/hooks/useWindowWidth'
 import AudioPlayer from '../common/AudioPlayer'
 import VideoPlayer from '../common/VideoPlayer'
 
-const UgcPreviewCard = ({
+const   UgcPreviewCard = ({
   jokeData,
   onSubmitJoke,
   setUgcPreview,
   errorMessage,
   setErrorMessage,
-  isLoading
+  isLoading,
+  categoryData
 }: {
   jokeData: IJokeData
   onSubmitJoke: () => void
@@ -26,21 +27,28 @@ const UgcPreviewCard = ({
   errorMessage: string
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>
   isLoading: boolean
+  categoryData: {
+    id: number
+    name: string
+    value: string
+    image: string
+  }[]
 }) => {
   const [genreImage, setGenreImage] = useState<string>('')
   const [genreName, setGenreName] = useState<string>('')
   const [languageName, setLanguageName] = useState<string>('')
   const { homePage, pjChallenge } = useCMSData()
-  const { genres, languages } = useAppSelector(state => state.reference)
+  const { languages } = useAppSelector(state => state.reference)
   const width = useWindowWidth()
+  const { jokeBox } = useCMSData()
 
   useEffect(() => {
     if (jokeData.category) {
-      const genre = genres.find(genre => genre.genre === jokeData.category)
-      setGenreImage(genre?.image_url ?? genres?.[0]?.image_url ?? '')
-      setGenreName(genre?.genre ?? '')
+      const genre = categoryData.find(genre => genre.name === jokeData.category)
+      setGenreImage(genre?.image ?? '')
+      setGenreName(genre?.value ?? '')
     }
-  }, [jokeData.category, genres])
+  }, [jokeData.category, categoryData])
 
   useEffect(() => {
     if (jokeData.language) {
@@ -176,7 +184,7 @@ const UgcPreviewCard = ({
                 </div>
                 <div className='w-full rounded-b-[5px] flex items-center justify-center bg-white/20 backdrop-blur-md shadow-lg min-h-[40px]'>
                   <AktivGroteskText
-                    text='Preview your submission'
+                    text={jokeBox.preview_your_submission}
                     fontSize='text-[16px]'
                     fontWeight='font-[400]'
                     className='text-white'
@@ -203,7 +211,7 @@ const UgcPreviewCard = ({
                 name={ICONS_NAMES.RETRY}
               />
               <AktivGroteskText
-                text='Retry'
+                text={jokeBox.retry_button}
                 fontSize='text-[16px]'
                 fontWeight='font-[600] leading-tight'
                 className='text-black'

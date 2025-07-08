@@ -160,6 +160,8 @@ export type TCMSResponse = {
       no_more_data: string;
       vote: string;
       voted: string;
+      retry_button: string;
+      preview_your_submission: string;
     };
     hall_of_lame: {
       id: number;

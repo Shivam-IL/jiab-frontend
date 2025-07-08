@@ -12,6 +12,8 @@ export interface JokeBoxData {
   noMoreData: string;
   vote: string;
   voted: string;
+  retry_button: string;
+  preview_your_submission: string;
 }
 
 export const mapJokeBoxData = (
@@ -33,6 +35,8 @@ export const mapJokeBoxData = (
     noMoreData: jokeBoxCMS?.no_more_data ?? "No more data",
     vote: jokeBoxCMS?.vote ?? "Vote",
     voted: jokeBoxCMS?.voted ?? "Voted",
+    retry_button: jokeBoxCMS?.retry_button ?? "Retry",
+    preview_your_submission: jokeBoxCMS?.preview_your_submission ?? "Preview Your Submission",
   };
 };
 
@@ -49,4 +53,6 @@ export const defaultJokeBoxData: JokeBoxData = {
   noMoreData: "No more data",
   vote: "Vote",
   voted: "Voted",
+  retry_button: "Retry",
+  preview_your_submission: "Preview Your Submission",
 };
