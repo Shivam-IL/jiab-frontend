@@ -7,7 +7,7 @@ steps:
         '-f',
         'Dockerfile',
         '-t',
-        'asia-south1-docker.pkg.dev/ai0015455-sfa-test/tccc-sfa-test-cloud-build-repo/frontend-app:latest',
+        'asia-south1-docker.pkg.dev/ai0015455-sfa-test/tccc-sfa-test-cloud-build-repo/tccc-sfa-test-cloudrun-frontend:latest',
         '.'
       ]
 
@@ -16,7 +16,7 @@ steps:
     args:
       [
         'push',
-        'asia-south1-docker.pkg.dev/ai0015455-sfa-test/tccc-sfa-test-cloud-build-repo/frontend-app:latest'
+        'asia-south1-docker.pkg.dev/ai0015455-sfa-test/tccc-sfa-test-cloud-build-repo/tccc-sfa-test-cloudrun-frontend:latest'
       ]
 
   # Step 3: Deploy to Cloud Run with secrets
@@ -27,7 +27,7 @@ steps:
         'run',
         'deploy',
         'tccc-sfa-test-cloudrun-front-end',
-        '--image=asia-south1-docker.pkg.dev/ai0015455-sfa-test/tccc-sfa-test-cloud-build-repo/frontend-app:latest',
+        '--image=asia-south1-docker.pkg.dev/ai0015455-sfa-test/tccc-sfa-test-cloud-build-repo/tccc-sfa-test-cloudrun-frontend:latest',
         '--region=asia-south1',
         '--platform=managed',
         '--execution-environment=gen2',
@@ -42,7 +42,7 @@ steps:
       ]
 
 images:
-  - asia-south1-docker.pkg.dev/ai0015455-sfa-test/tccc-sfa-test-cloud-build-repo/frontend-app:latest
+  - asia-south1-docker.pkg.dev/ai0015455-sfa-test/tccc-sfa-test-cloud-build-repo/tccc-sfa-test-cloudrun-frontend:latest
 
 options:
   logging: CLOUD_LOGGING_ONLY
