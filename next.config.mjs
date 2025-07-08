@@ -1,3 +1,4 @@
+
 import nextPwa from "@ducanh2912/next-pwa";
 
 const withPWA = nextPwa({
@@ -14,6 +15,7 @@ const withPWA = nextPwa({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  output: "standalone", // <-- Add this line
   images: {
     remotePatterns: [
       {

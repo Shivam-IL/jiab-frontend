@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "lint": "next lint",
     "predev": "npm run generate-sprite",
     "generate-sprite": "svg-sprite -s --symbol-dest ./public/static/sprite --symbol-sprite sprite.svg ./public/static/sprite/icons/*.svg",
