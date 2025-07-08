@@ -78,3 +78,6 @@ images:
   - '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:$SHORT_SHA'
 
 timeout: 1200s
+
+options:
+  logging: CLOUD_LOGGING_ONLY
