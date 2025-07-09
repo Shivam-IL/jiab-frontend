@@ -381,6 +381,7 @@ const ScrollAndLol: React.FC = () => {
     null
   );
   const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation();
+  const [isExhaustVideoInView, setIsExhaustVideoInView] = useState(false);
 
   const { mutate: postReelReaction, data: postReelReactionData } =
     usePostReelReaction();
@@ -987,6 +988,7 @@ const ScrollAndLol: React.FC = () => {
                     onLanguageSelect={handleLanguageSelect}
                     headerText={cmsData?.scrollAndLol?.exhaustHeading}
                     subText={cmsData?.scrollAndLol?.exhaustSubheading}
+                    onInView={setIsExhaustVideoInView}
                   />
                 ) : (
                   <SerialChillerEndPage />
@@ -994,12 +996,13 @@ const ScrollAndLol: React.FC = () => {
               </div>
             </div>
 
-            {/* Reaction Emojis - only visible when fully initialized and not on end page */}
+            {/* Reaction Emojis - only visible when fully initialized and not on end page or exhaust video */}
             {!isLoading &&
               activeVideoIndex !== undefined &&
               activeVideoIndex !== null &&
               activeVideoIndex < videos.length &&
-              currentVideoData && (
+              currentVideoData &&
+              !isExhaustVideoInView && (
                 <div
                   className="absolute right-[10px] md:bottom-[12vh] md:right-[clamp(-8rem,0vw,-3rem)] z-20 md:scale-[clamp(0.7,1.2vh,1.2)] origin-bottom-right md:mb-0"
                   style={{
