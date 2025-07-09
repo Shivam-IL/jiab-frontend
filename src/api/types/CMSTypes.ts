@@ -410,6 +410,7 @@ export type TCMSResponse = {
       wrong_referral_code: string;
       uniquecode_codealreadyredeemed: string;
       uniquecode_invalidmixcode: string;
+      Date_of_birth_in_future_error: string;
       // --- new unique code error codes ---
       uniquecode_Invaliduniquecode: string;
       uniquecode_expired: string;

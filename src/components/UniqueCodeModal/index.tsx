@@ -133,7 +133,7 @@ const UniqueCodeModal: React.FC<UniqueCodeModalProps> = ({
               setError(validationData.failedToRedeemUniqueCode);
               break;
             default:
-              setError(validationData.dailyLimitExceeded);
+              setIsDailyLimitReached(true);
           }
         }
       }
