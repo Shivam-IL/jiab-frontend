@@ -164,7 +164,7 @@ const ComicCoinMyWinSection = () => {
   const getComicCoinImage = (isMobile: boolean = false) => {
     const languageImageName =
       LANGUAGE_TO_COMIC_COIN_IMAGE_MAP[selectedLanguage] || "english";
-    const deviceSuffix = isMobile ? "mobile" : "web";
+    const deviceSuffix = isMobile ? "Mobile" : "web";
     return `/comic-coin/${languageImageName}-${deviceSuffix}.png`;
   };
 
