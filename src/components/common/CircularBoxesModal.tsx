@@ -321,7 +321,7 @@ const CircularBoxesModal = ({ isOpen, onClose }: CircularBoxesModalProps) => {
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
               left: `${coordinates.pickYourMovie.x - 30.5}px`,
-              top: `${coordinates.pickYourMovie.y - 100}px`,
+              top: `${coordinates.pickYourMovie.y - 420}px`,
               width: '187px',
               height: '187px',
               position: 'fixed'
