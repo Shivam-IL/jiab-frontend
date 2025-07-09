@@ -7,7 +7,7 @@ import ReactionEmojies from "@/components/ReactionEmojies";
 import { ICONS_NAMES } from "@/constants"; // Import ICONS_NAMES
 import { useCMSData } from "@/data";
 import { useSearchParams } from "next/navigation";
-import { useGetJokes, usePostReelReaction } from "@/api/hooks/JokeHooks";
+import { useActivateConsumption, useGetJokes, usePostReelReaction } from "@/api/hooks/JokeHooks";
 import { useLanguage } from "@/hooks/useLanguage";
 import { IUserReaction } from "@/api/types/JokeTypes";
 import {
@@ -393,6 +393,7 @@ const ScrollAndLol: React.FC = () => {
     useSendGluedinUserReaction();
   const { mutate: viewGludeinJokes, data: viewGludeinJokesData } =
     useViewGludeinJokes();
+  const { mutate: activateConsumption } = useActivateConsumption();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -877,6 +878,7 @@ const ScrollAndLol: React.FC = () => {
       );
       if (currentVideoData) {
         setCurrentVideoData(currentVideoData);
+        activateConsumption({ joke_id: currentVideoId });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

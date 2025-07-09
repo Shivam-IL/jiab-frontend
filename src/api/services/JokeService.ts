@@ -244,4 +244,27 @@ export class JokeService extends MainService {
       throw error;
     }
   }
+
+  public async ActivateConsumption({ joke_id }: { joke_id: string }) {
+    try {
+      const response = await apiClient.patch(
+        API_ROUTES.JOKES.ACTIVATE_CONSUMPTION,
+        {
+          joke_id,
+        },
+        {
+          headers: {
+            ...this.getAuthHeaders(),
+          },
+        }
+      );
+      const responseData = response.data;
+      if (responseData?.success) {
+        return SuccessResponse(responseData.data);
+      }
+      throw new Error(responseData?.message ?? "Something went wrong");
+    } catch (error) {
+      throw error;
+    }
+  }
 }
