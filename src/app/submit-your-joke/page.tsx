@@ -54,7 +54,9 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
   ({ title, subtitle, file, removeFile, isImageTrue }, ref) => {
     const handleClick = () => {
       if (ref && 'current' in ref && ref.current) {
-        ref.current.click()
+        if (!file) {
+          ref.current.click()
+        }
       }
     }
 

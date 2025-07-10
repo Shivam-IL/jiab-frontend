@@ -32,7 +32,9 @@ const IphonePJAudioUploader = ({
               ? 'border-[1px] border-[#009639]'
               : ''
           }`}
-          onClick={() => setAudioSelectionType('upload')}
+          onClick={() => {
+            setAudioSelectionType('upload')
+          }}
         >
           Upload Your Audio
         </button>
@@ -42,7 +44,10 @@ const IphonePJAudioUploader = ({
               ? 'border-[1px] border-[#009639]'
               : ''
           }`}
-          onClick={() => setAudioSelectionType('record')}
+          onClick={() => {
+            setAudioSelectionType('record')
+          
+          }}
         >
           Record Your Audio
         </button>
@@ -52,7 +57,12 @@ const IphonePJAudioUploader = ({
           {jokeData.file && (
             <div
               className='w-full relative flex justify-end cursor-pointer mt-[12px] md:pt-0 px-[16px] z-10'
-              onClick={() => handleChange('file', null)}
+              onClick={() => {
+                handleChange('file', null)
+                if (fileRef.current) {
+                  fileRef.current.value = ''
+                }
+              }}
             >
               <SvgIcons
                 name={ICONS_NAMES.CROSS2}
@@ -61,7 +71,11 @@ const IphonePJAudioUploader = ({
             </div>
           )}
           <div
-            onClick={() => fileRef.current?.click()}
+            onClick={() => {
+              if (!jokeData.file) {
+                fileRef.current?.click()
+              }
+            }}
             className='flex flex-col w-full justify-center items-center gap-[8px] md:gap-[16px]'
           >
             <SvgIcons
