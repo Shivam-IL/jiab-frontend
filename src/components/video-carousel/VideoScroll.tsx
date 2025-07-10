@@ -7,6 +7,7 @@ interface Video {
   src: string;
   id: string;
   url: string;
+  title: string;
 }
 
 interface VideoScrollProps {
@@ -24,7 +25,7 @@ const VideoScroll = ({ videos }: VideoScrollProps) => {
             className="md:aspect-[9/16] flex-shrink-0 w-auto md:w-auto md:flex-1"
           >
             <Link href={video.url}>
-              <VideoCard src={video.src} />
+              <VideoCard src={video.src} title={video.title} />
             </Link>
           </div>
         ))}
