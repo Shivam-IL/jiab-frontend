@@ -10,7 +10,7 @@ export const API_CONFIG = {
 
 export const CMS_API_CONFIG = {
   baseURL:
-    process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "http://13.200.122.221:8121/api/",
+    process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
