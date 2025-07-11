@@ -181,7 +181,9 @@ const AudioRecorder: React.FC<{
         <>
           <div className='w-full flex flex-col items-center justify-center'>
             <div className='mb-2 text-center text-[16px] text-[#333] font-normal'>
-              Tap on the mic to start recording
+              {isRecording
+                ? 'Tap to stop recording'
+                : 'Tap on the mic to start recording'}
             </div>
             <button
               className={`flex bg-none items-center justify-center rounded-full  w-[100px] h-[100px] transition-all duration-200 ${
@@ -193,58 +195,58 @@ const AudioRecorder: React.FC<{
             >
               {isRecording ? (
                 <svg
-                  width="81"
-                  height="80"
-                  viewBox="0 0 81 80"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                  width='81'
+                  height='80'
+                  viewBox='0 0 81 80'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
                 >
                   {/* Outer green ring */}
                   <circle
-                    cx="40.5"
-                    cy="40"
-                    r="38.5"
-                    stroke="#009233"
-                    strokeWidth="3"
-                    fill="none"
+                    cx='40.5'
+                    cy='40'
+                    r='38.5'
+                    stroke='#009233'
+                    strokeWidth='3'
+                    fill='none'
                   />
                   {/* Pulse ring (animated) */}
                   <circle
-                    cx="40.5"
-                    cy="40"
-                    r="34"
-                    stroke="#009233"
-                    strokeWidth="2"
-                    fill="none"
-                    opacity="0.4"
-                    className="animate-pulse-ring"
+                    cx='40.5'
+                    cy='40'
+                    r='34'
+                    stroke='#009233'
+                    strokeWidth='2'
+                    fill='none'
+                    opacity='0.4'
+                    className='animate-pulse-ring'
                   />
                   {/* Microphone body */}
                   <rect
-                    x="33"
-                    y="25"
-                    width="15"
-                    height="25"
-                    rx="7.5"
-                    fill="#009233"
+                    x='33'
+                    y='25'
+                    width='15'
+                    height='25'
+                    rx='7.5'
+                    fill='#009233'
                   />
                   {/* Microphone base */}
                   <rect
-                    x="37"
-                    y="50"
-                    width="7"
-                    height="8"
-                    rx="3.5"
-                    fill="#009233"
+                    x='37'
+                    y='50'
+                    width='7'
+                    height='8'
+                    rx='3.5'
+                    fill='#009233'
                   />
                   {/* Microphone stand */}
                   <rect
-                    x="34"
-                    y="58"
-                    width="13"
-                    height="3"
-                    rx="1.5"
-                    fill="#009233"
+                    x='34'
+                    y='58'
+                    width='13'
+                    height='3'
+                    rx='1.5'
+                    fill='#009233'
                   />
                 </svg>
               ) : (
@@ -276,7 +278,7 @@ const AudioRecorder: React.FC<{
       )}
       {/* Playback State */}
       {isPlaybackState && (
-        <div className='w-full flex flex-col items-center justify-center px-4 py-8'>
+        <div className='md:w-[50%] w-[90%] flex flex-col items-center justify-center px-4 py-8'>
           <audio
             ref={audioRef}
             src={audioUrl}
@@ -329,32 +331,37 @@ const AudioRecorder: React.FC<{
                 </svg>
               )}
             </button>
-            <input
-              type='range'
-              min={0}
-              max={duration || 0}
-              step={0.01}
-              value={currentTime}
-              onChange={handleSeek}
-              className='flex-1 accent-[#5B6B5B] h-2 rounded-lg bg-[#fff]'
-              style={{
-                background:
-                  'linear-gradient(to right, #5B6B5B 0%, #5B6B5B ' +
-                  (duration ? (currentTime / duration) * 100 : 0) +
-                  '%, #fff ' +
-                  (duration ? (currentTime / duration) * 100 : 0) +
-                  '%, #fff 100%)'
-              }}
-            />
-            <span className='text-[#5B6B5B] text-lg min-w-[48px] text-right font-mono'>
-              {formatTime(currentTime)}
-            </span>
-            <span className='text-[#5B6B5B] text-lg min-w-[48px] text-left font-mono'>
-              {duration ? formatTime(duration) : '0:00'}
-            </span>
+            <div className='w-full flex flex-col items-center self-end'>
+              <input
+                type='range'
+                min={0}
+                max={duration || 0}
+                step={0.01}
+                value={currentTime}
+                onChange={handleSeek}
+                className='flex-1 accent-[#5B6B5B] h-2 rounded-lg bg-[#fff]'
+                style={{ 
+                  width: '100%',
+                  background:
+                    'linear-gradient(to right, #5B6B5B 0%, #5B6B5B ' +
+                    (duration ? (currentTime / duration) * 100 : 0) +
+                    '%, #fff ' +
+                    (duration ? (currentTime / duration) * 100 : 0) +
+                    '%, #fff 100%)'
+                }}
+              />
+              <div className='w-full flex items-center justify-between'>
+                <span className='text-[#5B6B5B] text-[14px] font-mono'>
+                  {formatTime(currentTime)}
+                </span>
+                <span className='text-[#5B6B5B] text-[14px]  font-mono'>
+                  {duration ? formatTime(duration) : '0:00'}
+                </span>
+              </div>
+            </div>
           </div>
           <button
-            className='px-8 py-2 border border-[#11A64B] rounded-full text-[#11A64B] font-semibold hover:bg-[#11A64B] hover:text-white transition-colors duration-200 text-lg'
+            className='px-[22px] md:px-[23px] py-[4px] md:py-[7.5px]  border border-[#11A64B] rounded-full text-black font-[700]  transition-colors duration-200 md:text-[12px] text-[10px]'
             onClick={handleRecordAgain}
             type='button'
           >
