@@ -6,7 +6,7 @@ import { getLocalStorageItem } from "@/utils";
 import { AUTHORIZATION_TYPES } from "../client/constant";
 import { IReelReaction, TSubmitJokeParams } from "../types/JokeTypes";
 import gluedin from "gluedin";
-import { LIMIT_EXCEED } from "@/constants";
+import { LIMIT_EXCEED, OTHER_ERROR } from "@/constants";
 
 export class JokeService extends MainService {
   private static instance: JokeService;
@@ -102,17 +102,17 @@ export class JokeService extends MainService {
       if (responseData?.success) {
         return SuccessResponse(transformedData);
       }
-      
+
       // Handle specific error code 1013
       if (responseData?.code === 1013) {
         return {
           ok: false,
           data: [],
           message: responseData?.message,
-          code: 1013
+          code: 1013,
         };
       }
-      
+
       return ErrorResponse(responseData?.message);
     } catch (error) {
       throw error;
@@ -159,10 +159,13 @@ export class JokeService extends MainService {
           ok: true,
         };
         return data;
-      } else if (!responseData?.success && responseData?.code === 1002) {
+      } else if (
+        !responseData?.success &&
+        (responseData?.code === 1002 || responseData?.code === 1020)
+      ) {
         const data = {
           message: responseData?.message,
-          type: LIMIT_EXCEED,
+          type: responseData?.code === 1020 ? LIMIT_EXCEED : OTHER_ERROR,
         };
         return {
           ok: false,
@@ -237,6 +240,29 @@ export class JokeService extends MainService {
         return SuccessResponse(responseData.data);
       }
       return ErrorResponse(responseData?.message ?? "Something went wrong");
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async ActivateConsumption({ joke_id }: { joke_id: string }) {
+    try {
+      const response = await apiClient.patch(
+        API_ROUTES.JOKES.ACTIVATE_CONSUMPTION,
+        {
+          joke_id,
+        },
+        {
+          headers: {
+            ...this.getAuthHeaders(),
+          },
+        }
+      );
+      const responseData = response.data;
+      if (responseData?.success) {
+        return SuccessResponse(responseData.data);
+      }
+      throw new Error(responseData?.message ?? "Something went wrong");
     } catch (error) {
       throw error;
     }

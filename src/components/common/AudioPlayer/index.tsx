@@ -41,7 +41,17 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, fileName }) => {
 
   const handleLoadedMetadata = () => {
     if (audioRef.current) {
-      setDuration(audioRef.current.duration)
+      if (isNaN(audioRef.current.duration) || audioRef.current.duration === Infinity) {
+        const fixDuration = () => {
+          setDuration(audioRef.current!.duration)
+          audioRef.current!.currentTime = 0
+          audioRef.current!.removeEventListener('seeked', fixDuration)
+        }
+        audioRef.current.addEventListener('seeked', fixDuration)
+        audioRef.current.currentTime = 1e10
+      } else {
+        setDuration(audioRef.current.duration)
+      }
     }
   }
 
@@ -68,7 +78,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, fileName }) => {
         src={objectUrl}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
-        onEnded={() => setIsPlaying(false)}
+        onEnded={() => {
+          setIsPlaying(false)
+          setCurrentTime(duration)
+        }}
       />
       <div className='flex items-start gap-3'>
         <button
@@ -91,8 +104,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, fileName }) => {
             type='range'
             min={0}
             max={duration}
-            value={currentTime}
+            value={Math.min(currentTime, duration)}
             onChange={handleSeek}
+            step={0.001}
             className='flex-1 accent-white/80 h-1 bg-white/60 rounded-lg'
           />
           <div className='flex justify-between gap-2'>

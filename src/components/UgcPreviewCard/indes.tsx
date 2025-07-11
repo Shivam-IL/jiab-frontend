@@ -12,32 +12,43 @@ import useWindowWidth from '@/hooks/useWindowWidth'
 import AudioPlayer from '../common/AudioPlayer'
 import VideoPlayer from '../common/VideoPlayer'
 
-const UgcPreviewCard = ({
+const   UgcPreviewCard = ({
   jokeData,
   onSubmitJoke,
   setUgcPreview,
   errorMessage,
-  setErrorMessage
+  setErrorMessage,
+  isLoading,
+  categoryData
 }: {
   jokeData: IJokeData
   onSubmitJoke: () => void
   setUgcPreview: React.Dispatch<React.SetStateAction<boolean>>
   errorMessage: string
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>
+  isLoading: boolean
+  categoryData: {
+    id: number
+    name: string
+    value: string
+    image: string
+  }[]
 }) => {
   const [genreImage, setGenreImage] = useState<string>('')
+  const [genreName, setGenreName] = useState<string>('')
   const [languageName, setLanguageName] = useState<string>('')
-  const { user } = useAppSelector(state => state.profile)
   const { homePage, pjChallenge } = useCMSData()
-  const { genres, languages } = useAppSelector(state => state.reference)
+  const { languages } = useAppSelector(state => state.reference)
   const width = useWindowWidth()
+  const { jokeBox } = useCMSData()
 
   useEffect(() => {
     if (jokeData.category) {
-      const genre = genres.find(genre => genre.genre === jokeData.category)
-      setGenreImage(genre?.image_url ?? genres?.[0]?.image_url ?? '')
+      const genre = categoryData.find(genre => genre.name === jokeData.category)
+      setGenreImage(genre?.image ?? '')
+      setGenreName(genre?.value ?? '')
     }
-  }, [jokeData.category, genres])
+  }, [jokeData.category, categoryData])
 
   useEffect(() => {
     if (jokeData.language) {
@@ -90,7 +101,7 @@ const UgcPreviewCard = ({
                         className='line-clamp-1'
                       />
                       <AktivGroteskText
-                        text={`${user?.name ?? ''} , ${languageName}`}
+                        text={`${languageName} , ${genreName}`}
                         fontSize='text-[10px]'
                         fontWeight='font-[500]'
                       />
@@ -113,9 +124,7 @@ const UgcPreviewCard = ({
                   )})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                  minHeight: '261px',
-                  maxHeight: '340px'
+                  backgroundRepeat: 'no-repeat'
                 }}
                 className={`relative flex flex-col w-full rounded-[5px] min-h-[261px] max-h-[340px]`}
               >
@@ -128,17 +137,17 @@ const UgcPreviewCard = ({
                   style={{ minHeight: 0 }}
                 >
                   {jokeData?.format === pjChallenge.text && (
-                    <div className='flex relative w-full min-h-[261px] max-h-[340px]'>
+                    <div className='flex relative w-full max-h-[300px] min-h-[261px]'>
                       <SvgIcons
                         name={ICONS_NAMES.SPRITE_WITH_BUBBLE}
-                        className='relative w-[40%]  min-h-[261px] max-h-[340px]'
+                        className='relative w-[40%]  min-h-[340px] max-h-[340px]'
                       />
-                      <div className='relative w-[60%] flex items-center justify-center min-h-[261px] max-h-[340px]'>
+                      <div className='relative w-[60%] flex items-center justify-center min-h-[340px] max-h-[340px]'>
                         <AktivGroteskText
                           text={jokeData?.jokeText ?? ''}
                           fontSize='text-[16px]'
                           fontWeight='font-[400]'
-                          className='text-white'
+                          className='text-white text-start break-all'
                         />
                       </div>
                     </div>
@@ -152,16 +161,16 @@ const UgcPreviewCard = ({
                     </div>
                   )}
                   {jokeData?.format === pjChallenge.image && (
-                    <>
+                    <div className='min-h-[261px] max-h-[300px] relative'>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={URL.createObjectURL(
                           jokeData?.file?.[0] ?? new Blob()
                         )}
                         alt='image'
-                        className='w-full h-full object-fill'
+                        className='w-auto max-h-[300px] min-h-[261px] object-cover rounded-[5px]'
                       />
-                    </>
+                    </div>
                   )}
                   {jokeData?.format === pjChallenge.audio && (
                     <AudioPlayer
@@ -175,7 +184,7 @@ const UgcPreviewCard = ({
                 </div>
                 <div className='w-full rounded-b-[5px] flex items-center justify-center bg-white/20 backdrop-blur-md shadow-lg min-h-[40px]'>
                   <AktivGroteskText
-                    text='Preview your submission'
+                    text={jokeBox.preview_your_submission}
                     fontSize='text-[16px]'
                     fontWeight='font-[400]'
                     className='text-white'
@@ -202,14 +211,15 @@ const UgcPreviewCard = ({
                 name={ICONS_NAMES.RETRY}
               />
               <AktivGroteskText
-                text='Retry'
+                text={jokeBox.retry_button}
                 fontSize='text-[16px]'
                 fontWeight='font-[600] leading-tight'
                 className='text-black'
               />
             </button>
             <GreenCTA
-              text='Submit'
+              disabled={isLoading}
+              text={pjChallenge.submitButtonText}
               fontSize='text-[16px]'
               fontWeight='font-[600]'
               onClick={() => {

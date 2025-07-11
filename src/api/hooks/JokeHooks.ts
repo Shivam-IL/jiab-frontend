@@ -9,7 +9,10 @@ import {
 } from "../types/JokeTypes";
 import { useComicCoinRevalidation } from "@/hooks/useComicCoinRevalidation";
 import { MNEMONICS_TO_ID } from "@/constants";
-import { useGetNotifications, useGetNotificationCount } from "./NotificationHooks";
+import {
+  useGetNotifications,
+  useGetNotificationCount,
+} from "./NotificationHooks";
 import { convertLanguageMnemonicToId } from "@/utils/languageUtils";
 
 const jokeInstance = JokeService.getInstance();
@@ -20,11 +23,7 @@ const useGetSurpriseMeJoke = (genreId?: number, languageId?: number) => {
     MNEMONICS_TO_ID[selectedLanguage as keyof typeof MNEMONICS_TO_ID] ?? 1;
   console.log("languageNewId", languageNewId, languageId);
   return useQuery({
-    queryKey: [
-      ...keys.joke.getSurpriseMeJoke(),
-      genreId,
-      languageNewId,
-    ],
+    queryKey: [...keys.joke.getSurpriseMeJoke(), genreId, languageNewId],
     queryFn: () => jokeInstance.GetSurpriseMe(genreId, languageNewId),
     enabled: !!(isAuthenticated && token),
     staleTime: 0,
@@ -39,7 +38,7 @@ const useGetJokes = (params: TGetJokesParams = {}) => {
     const languageId = convertLanguageMnemonicToId(params.language);
     modifiedParams.language = languageId.toString();
   }
-  
+
   return useQuery({
     queryKey: [...keys.joke.getJokes(), modifiedParams],
     queryFn: () => jokeInstance.GetJokes(modifiedParams),
@@ -78,28 +77,28 @@ const useGetUserSubmittedJokes = () => {
 
 const useGetComicCoins = () => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
-  
+
   // Fetch notifications when comic coins are fetched
   const { refetch: refetchNotifications } = useGetNotifications({
     page_number: 1,
-    page_size: 10
+    page_size: 10,
   });
-  
+
   // Fetch notification count when comic coins are fetched
   const { refetch: refetchNotificationCount } = useGetNotificationCount();
-  
+
   return useQuery({
     queryKey: [...keys.joke.getComicCoins()],
     queryFn: async () => {
       const result = await jokeInstance.GetComicCoins();
-      
+
       // Fetch notifications when comic coins are successfully fetched
       if (result?.ok && isAuthenticated && token) {
-        console.log('Fetching notifications after comic coins fetch');
+        console.log("Fetching notifications after comic coins fetch");
         refetchNotifications();
         refetchNotificationCount();
       }
-      
+
       return result;
     },
     enabled: isAuthenticated && token ? true : false,
@@ -117,6 +116,13 @@ const usePostReelReaction = () => {
   });
 };
 
+const useActivateConsumption = () => {
+  return useMutation({
+    mutationFn: ({ joke_id }: { joke_id: string }) =>
+      jokeInstance.ActivateConsumption({ joke_id }),
+  });
+};
+
 export {
   useGetSurpriseMeJoke,
   useGetJokes,
@@ -124,4 +130,5 @@ export {
   useGetUserSubmittedJokes,
   useGetComicCoins,
   usePostReelReaction,
+  useActivateConsumption,
 };

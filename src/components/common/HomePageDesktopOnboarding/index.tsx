@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import SvgIcons from '../SvgIcons'
 import { ICONS_NAMES, SESSION_STORAGE_KEYS } from '@/constants'
-import { updateEnableCoachMarks } from '@/store/auth/auth.slice'
+import {
+  updateEnableCoachMarks,
+  updatePauseVideo,
+  updateSurpriseMe
+} from '@/store/auth/auth.slice'
 import useAppDispatch from '@/hooks/useDispatch'
 import { BoxIds } from '../CircularBoxesModal'
 import AktivGroteskText from '../AktivGroteskText'
 import { removeSessionStorageItem } from '@/utils'
 import useAppSelector from '@/hooks/useSelector'
 import { useCMSData } from '@/data/'
-import { useRouter } from 'next/navigation'
 
 // Export box IDs for reuse in other components
 export const DesktopBoxIds = {
   EXPLORE: 'explore-element-desktop',
   CONTEST: 'contest-element-desktop',
+  NOTIFICATIONS: 'notifications-element-desktop',
   LANGUAGE: 'language-element-desktop',
   PROFILE_ELEMENT: 'profile-element-desktop',
   PICK_YOUR_MOOD: 'pick-your-mood-element-desktop',
@@ -30,6 +34,7 @@ interface Coordinates {
 interface CoordinatesState {
   explore: Coordinates
   contest: Coordinates
+  notifications: Coordinates
   language: Coordinates
   profile: Coordinates
   pickYourMood: Coordinates
@@ -48,16 +53,17 @@ const HomePageDesktopOnboarding = ({
 }: CircularBoxesModalProps) => {
   const [mounted, setMounted] = useState(false)
   const cmsData = useCMSData(mounted)
+  const { selectedLanguage } = useAppSelector(state => state.language)
   useEffect(() => {
     setMounted(true)
   }, [])
-  const router = useRouter()
   const [currentBox, setCurrentBox] = useState(0)
   const { enableCoachMarks } = useAppSelector(state => state.auth)
   const dispatch = useAppDispatch()
   const [coordinates, setCoordinates] = useState<CoordinatesState>({
     explore: { x: 0, y: 0, width: 0, height: 0 },
     contest: { x: 0, y: 0, width: 0, height: 0 },
+    notifications: { x: 0, y: 0, width: 0, height: 0 },
     language: { x: 0, y: 0, width: 0, height: 0 },
     profile: { x: 0, y: 0, width: 0, height: 0 },
     pickYourMood: { x: 0, y: 0, width: 0, height: 0 },
@@ -66,9 +72,10 @@ const HomePageDesktopOnboarding = ({
   })
 
   const handleClose = () => {
-    dispatch(updateEnableCoachMarks({ enableCoachMarks: false }))
     removeSessionStorageItem(SESSION_STORAGE_KEYS.HAS_SHOWN_SERIAL_CHILL_MODAL)
-    router.push('/contest')
+    dispatch(updateEnableCoachMarks({ enableCoachMarks: false }))
+    dispatch(updatePauseVideo({ pauseVideo: true }))
+    dispatch(updateSurpriseMe({ surpriseMe: true }))
     onClose()
   }
 
@@ -91,6 +98,7 @@ const HomePageDesktopOnboarding = ({
       const elements = {
         explore: document.getElementById(DesktopBoxIds.EXPLORE),
         contest: document.getElementById(DesktopBoxIds.CONTEST),
+        notifications: document.getElementById(DesktopBoxIds.NOTIFICATIONS),
         language: document.getElementById(DesktopBoxIds.LANGUAGE),
         profile: document.getElementById(DesktopBoxIds.PROFILE_ELEMENT),
         pickYourMood: document.getElementById(BoxIds.PICK_YOUR_MOOD),
@@ -100,6 +108,7 @@ const HomePageDesktopOnboarding = ({
       const newCoords: CoordinatesState = {
         explore: { x: 0, y: 0, width: 0, height: 0 },
         contest: { x: 0, y: 0, width: 0, height: 0 },
+        notifications: { x: 0, y: 0, width: 0, height: 0 },
         language: { x: 0, y: 0, width: 0, height: 0 },
         profile: { x: 0, y: 0, width: 0, height: 0 },
         pickYourMood: { x: 0, y: 0, width: 0, height: 0 },
@@ -138,7 +147,7 @@ const HomePageDesktopOnboarding = ({
 
   // Auto-scroll to the relevant section when currentBox is 4 or 5
   useEffect(() => {
-    if (currentBox === 4) {
+    if (currentBox === 5) {
       setTimeout(() => {
         const pickYourMoodEl = document.getElementById(BoxIds.PICK_YOUR_MOOD)
         if (pickYourMoodEl) {
@@ -148,7 +157,7 @@ const HomePageDesktopOnboarding = ({
           })
         }
       }, 100)
-    } else if (currentBox === 5) {
+    } else if (currentBox === 6) {
       setTimeout(() => {
         const jokeBoxEl = document.getElementById(BoxIds.JOKE_BOX)
         if (jokeBoxEl) {
@@ -163,12 +172,12 @@ const HomePageDesktopOnboarding = ({
     if (!enableCoachMarks) return
 
     const timer = setTimeout(() => {
-      if (currentBox < 5) {
+      if (currentBox < 6) {
         setCurrentBox(prev => prev + 1)
       } else {
         handleClose()
       }
-    }, 2000) // 3 seconds per step
+    }, 3000) // 3 seconds per step
 
     return () => clearTimeout(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -198,18 +207,22 @@ const HomePageDesktopOnboarding = ({
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
-              left: `${coordinates.explore.x - 30.5}px`,
-              top: `${coordinates.explore.y - 70}px`,
+              left: `${coordinates.explore.x - 20.5}px`,
+              top: `${coordinates.explore.y - 50}px`,
               width: '177px',
               height: '177px',
               position: 'fixed'
             }}
           >
             <div className='flex w-full text-center h-full flex-col justify-center items-center gap-[9px]'>
-              <div className='flex flex-col items-start absolute bottom-[74px] left-[38px]'>
+              <div
+                className={`flex flex-col items-start absolute bottom-[74px] left-[38px]`}
+              >
                 <AktivGroteskText
                   text={cmsData.coachMarkers.exploreArrowHeading}
-                  fontSize='text-[16px]'
+                  fontSize={`${
+                    selectedLanguage === 'tu' ? 'text-[14px]' : 'text-[16px]'
+                  }`}
                   fontWeight='font-[700]'
                 />
 
@@ -226,7 +239,7 @@ const HomePageDesktopOnboarding = ({
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
-              left: `${coordinates.contest.x - 70}px`,
+              left: `${coordinates.contest.x - 20}px`,
               top: `${coordinates.contest.y - 70}px`,
               width: '177px',
               height: '177px',
@@ -253,15 +266,51 @@ const HomePageDesktopOnboarding = ({
           </div>
         )}
 
+        {/* Notifications Box */}
+        {currentBox === 2 && coordinates.notifications.y !== 0 && (
+          <div
+            className='circle-box bg-[#FFE200] rounded-full'
+            style={{
+              left: `${coordinates.notifications.x - 110}px`,
+              top: `${
+                selectedLanguage === 'ta'
+                  ? coordinates.notifications.y - 80
+                  : coordinates.notifications.y - 100
+              }px`,
+              width: '192px',
+              height: '192px',
+              position: 'fixed'
+            }}
+          >
+            <div className='flex w-full text-center h-full flex-col justify-center items-center gap-[9px]'>
+              <div className='flex items-center absolute bottom-12 left-2'>
+                <div className='w-[60%] text-[12px]'>
+                  {cmsData.coachMarkers.checkOutAllYourNotificationHere}
+                </div>
+                <div className='w-[50px] h-[50px] bg-white rounded-full flex flex-col items-center justify-center'>
+                  <SvgIcons
+                    name={ICONS_NAMES.BELL}
+                    className='w-[22px] h-[20px]'
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Language Box */}
-        {currentBox === 2 && coordinates.language.y !== 0 && (
+        {currentBox === 3 && coordinates.language.y !== 0 && (
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
               left: `${coordinates.language.x - 125}px`,
-              top: `${coordinates.language.y - 90}px`,
-              width: '237px',
-              height: '237px',
+              top: `${
+                selectedLanguage === 'ta'
+                  ? coordinates.language.y - 50
+                  : coordinates.language.y - 90
+              }px`,
+              width: '240px',
+              height: '240px',
               position: 'fixed'
             }}
           >
@@ -271,7 +320,9 @@ const HomePageDesktopOnboarding = ({
                   text={cmsData.coachMarkers.weSpeakManyLanguages}
                   fontSize='text-[16px]'
                   fontWeight='font-[700] leading-tight'
-                  className='text-start w-[80%]'
+                  className={`text-start  ${
+                    selectedLanguage === 'ta' ? 'w-[80%] px-2' : 'w-[80%]'
+                  }`}
                 />
                 <div className='w-[50px] h-[50px] bg-white rounded-full flex flex-col items-center justify-center'>
                   <SvgIcons
@@ -285,7 +336,7 @@ const HomePageDesktopOnboarding = ({
         )}
 
         {/* Profile Box */}
-        {currentBox === 3 && coordinates.profile.y !== 0 && (
+        {currentBox === 4 && coordinates.profile.y !== 0 && (
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
@@ -301,7 +352,7 @@ const HomePageDesktopOnboarding = ({
                 <AktivGroteskText
                   text={cmsData.coachMarkers.yourOwnFunSpacezone}
                   fontSize='text-[16px]'
-                  fontWeight='font-[700] leading-tight'
+                  fontWeight='font-[700] leading-tight break-words'
                   className='text-start'
                 />
                 <div className='min-w-[50px] min-h-[50px] bg-white rounded-full flex flex-col items-center justify-center'>
@@ -316,7 +367,7 @@ const HomePageDesktopOnboarding = ({
         )}
 
         {/* Pick Your Mood Box */}
-        {currentBox === 4 && coordinates.pickYourMood.y !== 0 && (
+        {currentBox === 5 && coordinates.pickYourMood.y !== 0 && (
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{
@@ -354,7 +405,7 @@ const HomePageDesktopOnboarding = ({
         )}
 
         {/* Joke Box */}
-        {currentBox === 5 && coordinates.jokeBox.y !== 0 && (
+        {currentBox === 6 && coordinates.jokeBox.y !== 0 && (
           <div
             className='circle-box bg-[#FFE200] rounded-full'
             style={{

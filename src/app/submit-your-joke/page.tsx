@@ -39,6 +39,8 @@ import BottleAnimation from '@/components/common/BottleAnimation'
 import { CDPEventPayloadBuilder, JOKE_FORMATS } from '@/api/utils/cdpEvents'
 import { useSendCDPEvent } from '@/api/hooks/CDPHooks'
 import UgcPreviewCard from '@/components/UgcPreviewCard/indes'
+import { useDetectOs } from '@/hooks/useDetectOs'
+import IphonePJAudioUploader from '@/components/IphonePJAudioUploader'
 
 interface FileContainerProps {
   title: string
@@ -52,7 +54,9 @@ const FileContainer = forwardRef<HTMLDivElement, FileContainerProps>(
   ({ title, subtitle, file, removeFile, isImageTrue }, ref) => {
     const handleClick = () => {
       if (ref && 'current' in ref && ref.current) {
-        ref.current.click()
+        if (!file) {
+          ref.current.click()
+        }
       }
     }
 
@@ -132,6 +136,7 @@ const SubmitYourJoke = () => {
   const cmsData = useCMSData(mounted)
   const { selectedLanguage } = useLanguage()
   const width = useWindowWidth()
+  const os = useDetectOs()
   const [openApproveJokePopup, setOpenApproveJokePopup] =
     useState<boolean>(false)
   const [openJokeFeaturedPopup, setOpenJokeFeaturedPopup] =
@@ -487,6 +492,34 @@ const SubmitYourJoke = () => {
 
   const fileRef = useRef<HTMLInputElement>(null)
 
+  useEffect(() => {
+    if (selectedLanguage) {
+      setJokeData({
+        language: '',
+        format: cmsData.pjChallenge.image.toLowerCase(),
+        fileType: FileType.IMAGE,
+        acceptedFormats: '.jpg,.jpeg,.png',
+        accptedFormatText: cmsData.pjChallenge.imageClickableSubHeading,
+        jokeText: '',
+        title: '',
+        file: null,
+        category: '',
+        agreeToTerms: false,
+        size: 1
+      })
+      setFormError({
+        format: '',
+        language: '',
+        title: '',
+        joke: '',
+        agreeToTerms: ''
+      })
+      setErrorMessage('')
+      setUgcPreview(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLanguage])
+
   // Helper function to validate file format
   const validateFileFormat = (file: File, acceptedFormats: string): boolean => {
     if (!acceptedFormats) return true
@@ -624,6 +657,8 @@ const SubmitYourJoke = () => {
     }
   }, [jokeData])
 
+  console.log('jokeData', jokeData)
+
   return (
     <div className='flex flex-col gap-3'>
       <MobileTempNavBar
@@ -758,42 +793,45 @@ const SubmitYourJoke = () => {
                 )}
               </div>
               {jokeData.format.toLowerCase() !==
-                cmsData.pjChallenge.text.toLowerCase() && (
-                <div className='relative'>
-                  <FileContainer
-                    removeFile={() => {
-                      handleChange('file', null)
-                      if (fileRef.current) {
-                        fileRef.current.value = ''
+                cmsData.pjChallenge.text.toLowerCase() &&
+                jokeData.format.toLowerCase() !==
+                  cmsData.pjChallenge.audio.toLowerCase() &&
+                os !== 'iPhone' && (
+                  <div className='relative'>
+                    <FileContainer
+                      removeFile={() => {
+                        handleChange('file', null)
+                        if (fileRef.current) {
+                          fileRef.current.value = ''
+                        }
+                      }}
+                      ref={fileRef}
+                      file={jokeData.file}
+                      title={
+                        FORMAT_OPTIONS.find(
+                          item => item.label === jokeData.format
+                        )?.title ?? ''
                       }
-                    }}
-                    ref={fileRef}
-                    file={jokeData.file}
-                    title={
-                      FORMAT_OPTIONS.find(
-                        item => item.label === jokeData.format
-                      )?.title ?? ''
-                    }
-                    isImageTrue={
-                      jokeData.format.toLowerCase() ===
-                      cmsData.pjChallenge.image.toLowerCase()
-                    }
-                    subtitle={jokeData.accptedFormatText}
-                  />
-                  <input
-                    ref={fileRef}
-                    hidden
-                    type='file'
-                    accept={jokeData.acceptedFormats}
-                    onChange={event => {
-                      if (event.target.files?.length === 0) {
-                        return
+                      isImageTrue={
+                        jokeData.format.toLowerCase() ===
+                        cmsData.pjChallenge.image.toLowerCase()
                       }
-                      handleChange('file', event.target.files)
-                    }}
-                  />
-                </div>
-              )}
+                      subtitle={jokeData.accptedFormatText}
+                    />
+                    <input
+                      ref={fileRef}
+                      hidden
+                      type='file'
+                      accept={jokeData.acceptedFormats}
+                      onChange={event => {
+                        if (event.target.files?.length === 0) {
+                          return
+                        }
+                        handleChange('file', event.target.files)
+                      }}
+                    />
+                  </div>
+                )}
               {jokeData.format.toLowerCase() ===
                 cmsData.pjChallenge.text.toLowerCase() && (
                 <div>
@@ -826,6 +864,14 @@ const SubmitYourJoke = () => {
                     fontWeight='font-[400]'
                   />
                 </div>
+              )}
+              {jokeData.format.toLowerCase() ===
+                cmsData.pjChallenge.audio.toLowerCase() && (
+                <IphonePJAudioUploader
+                  jokeData={jokeData}
+                  setJokeData={setJokeData}
+                  handleChange={handleChange}
+                />
               )}
               {formError.joke !== '' && (
                 <span className='text-[#FD0202] font-[400] text-[12px] md:text-center'>
@@ -948,6 +994,8 @@ const SubmitYourJoke = () => {
             onSubmitJoke={handleSubmitJoke}
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
+            isLoading={isPending}
+            categoryData={categoryData}
           />
         </div>
       )}

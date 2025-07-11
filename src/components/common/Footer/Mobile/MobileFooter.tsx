@@ -81,10 +81,12 @@ const MobileFooter = () => {
             <Link
               href="/"
               id={BoxIds.HOME}
-              className="flex flex-col items-center justify-center"
+              className="flex flex-col items-center justify-center relative"
             >
               {currentPath === "/" && (
-                <div className="absolute w-[48px] h-[48px] bg-[#FFE200] rounded-full -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                <>
+                  <div className="absolute bottom-[-5px] left-1/2 transform -translate-x-1/2 w-[26px] h-[4px] bg-[#00953B] rounded-t-full" />
+                </>
               )}
               {currentPath === "/" ? (
                 <svg
@@ -133,8 +135,11 @@ const MobileFooter = () => {
           <Link
             id={BoxIds.CONTEST_ELEMENT}
             href="/contest"
-            className="flex flex-col items-center justify-center flex-1"
+            className="flex flex-col items-center justify-center flex-1 relative"
           >
+            {currentPath === "/contest" && (
+              <div className="absolute bottom-[-5px] left-1/2 transform -translate-x-1/2 w-[26px] h-[4px] bg-[#00953B] rounded-t-full" />
+            )}
             <svg
               width="20"
               height="20"
@@ -169,8 +174,11 @@ const MobileFooter = () => {
           <Link
             id={BoxIds.COMIC_COINS}
             href="/my-wallet"
-            className="flex flex-col items-center justify-center flex-1"
+            className="flex flex-col items-center justify-center flex-1 relative"
           >
+            {currentPath === "/my-wallet" && (
+              <div className="absolute bottom-[-5px] left-1/2 transform -translate-x-1/2 w-[26px] h-[4px] bg-[#00953B] rounded-t-full" />
+            )}
             <div className="relative">
               <Image
                 src={currentPath === "/my-wallet" ? comicCoinActive : comicCoin}
@@ -201,10 +209,13 @@ const MobileFooter = () => {
             id={BoxIds.REFRESH}
             href="/refresh-rings"
             className={cn(
-              "flex flex-col items-center justify-center flex-1",
+              "flex flex-col items-center justify-center flex-1 relative",
               selectedLanguage === "kn" ? "gap-1" : ""
             )}
           >
+            {currentPath === "/refresh-rings" && (
+              <div className="absolute bottom-[-5px] left-1/2 transform -translate-x-1/2 w-[26px] h-[4px] bg-[#00953B] rounded-t-full" />
+            )}
             {currentPath === "/refresh-rings" ? (
               <Image
                 src={refreshActive}
@@ -267,8 +278,11 @@ const MobileFooter = () => {
           <Link
             id={BoxIds.PROFILE}
             href="/profile"
-            className="flex flex-col items-center justify-center flex-1"
+            className="flex flex-col items-center justify-center flex-1 relative"
           >
+            {currentPath === "/profile" && (
+              <div className="absolute bottom-[-5px] left-1/2 transform -translate-x-1/2 w-[26px] h-[4px] bg-[#00953B] rounded-t-full" />
+            )}
             {currentPath === "/profile" ? (
               <svg
                 width="16"

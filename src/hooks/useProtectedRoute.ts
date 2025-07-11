@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { PROTECTED_ROUTES } from '@/constants';
+import { PROTECTED_ROUTES, SESSION_STORAGE_KEYS } from '@/constants';
 import { LOCAL_STORAGE_KEYS } from '@/api/client/config';
-import { getLocalStorageItem } from '@/utils';
+import { getLocalStorageItem, removeSessionStorageItem } from '@/utils';
 import useAppSelector from '@/hooks/useSelector';
 import useAppDispatch from '@/hooks/useDispatch';
-import { updateLoginModal } from '@/store/auth/auth.slice';
+import {  updateRefreshTokenNotVerified } from '@/store/auth/auth.slice';
 
 export const useProtectedRoute = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
@@ -21,7 +21,8 @@ export const useProtectedRoute = () => {
 
     if (!accessToken && isProtectedRoute) {
       // Open login modal when trying to access protected route without authentication
-      dispatch(updateLoginModal({ loginModal: true }));
+      removeSessionStorageItem(SESSION_STORAGE_KEYS.HAS_SHOWN_LOCK_MODAL)
+      dispatch(updateRefreshTokenNotVerified({ refreshTokenNotVerified: true }))
       router.push('/');
     }
   }, [isAuthenticated, pathname, router, dispatch]);

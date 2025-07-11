@@ -29,6 +29,12 @@ export interface ValidationData {
   inviteCodeFirstModalEnterRefCode: string;
   wrongReferralCode: string;
   uniqueCodeAlreadyRedeemed: string;
+  uniqueCodeInvalidUniqueCode: string;
+  uniqueCodeExpired: string;
+  uniqueCodeNotActive: string;
+  failedToRedeemUniqueCode: string;
+  dailyLimitExceeded: string;
+  dateOfBirthInFutureError: string;
 }
 
 export const mapValidationData = (
@@ -110,6 +116,21 @@ export const mapValidationData = (
     uniqueCodeAlreadyRedeemed:
       validationCMS?.uniquecode_codealreadyredeemed ??
       "Unique code already redeemed",
+    uniqueCodeInvalidUniqueCode:
+      validationCMS?.uniquecode_Invaliduniquecode ?? "Invalid unique code",
+    uniqueCodeExpired:
+      validationCMS?.uniquecode_expired ?? "Unique code expired",
+    uniqueCodeNotActive:
+      validationCMS?.uniquecode_notactive ?? "Unique code not active",
+    failedToRedeemUniqueCode:
+      validationCMS?.uniquecode_failedtoredeem ??
+      "Failed to redeem unique code",
+    dailyLimitExceeded:
+      validationCMS?.uniquecode_dailyredemptionlimit ??
+      "Daily limit exceeded for redeeming mix code",
+    dateOfBirthInFutureError:
+      validationCMS?.Date_of_birth_in_future_error ??
+      "Date of birth cannot be in the future",
   };
 };
 
@@ -143,4 +164,10 @@ export const defaultValidationData: ValidationData = {
   inviteCodeFirstModalEnterRefCode: "Please enter refer code.",
   wrongReferralCode: "Wrong referral code",
   uniqueCodeAlreadyRedeemed: "Unique code already redeemed",
+  uniqueCodeInvalidUniqueCode: "Invalid unique code",
+  uniqueCodeExpired: "Unique code expired",
+  uniqueCodeNotActive: "Unique code not active",
+  failedToRedeemUniqueCode: "Failed to redeem unique code",
+  dailyLimitExceeded: "Daily limit exceeded for redeeming mix code",
+  dateOfBirthInFutureError: "Date of birth cannot be in the future",
 };

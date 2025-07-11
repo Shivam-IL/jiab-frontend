@@ -7,7 +7,7 @@ import UserAddressCard from "@/components/common/UserAddressCard";
 import UserComicsCoinsAndRankCard from "@/components/common/UserComicsCoinsAndRankCard";
 import ProfileCard from "@/components/ProfileCard";
 import UserGeneratedJokecComponent from "@/components/UserGeneratedJokecComponent";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import useAppSelector from "@/hooks/useSelector";
 import { useCMSData } from "@/data";
 import {
@@ -17,17 +17,17 @@ import {
 import { triggerGAEvent } from "@/utils/gTagEvents";
 import { GA_EVENTS, SESSION_STORAGE_KEYS } from "@/constants";
 import { getSessionStorageItem, setSessionStorageItem } from "@/utils";
+import { useUpdateComicCoinPopUp } from "@/api";
 
 const ProfilePage = () => {
   const [mounted, setMounted] = useState(false);
-
-  const prevProfilePercentageRef = useRef<number | null>(null);
 
   const cmsData = useCMSData(mounted);
 
   const { user } = useAppSelector((state) => state.profile);
 
   const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation();
+  const updateComicCoinPopUpMutation = useUpdateComicCoinPopUp();
 
   useEffect(() => {
     setMounted(true);
@@ -37,25 +37,14 @@ const ProfilePage = () => {
   useEffect(() => {
     if (!mounted || !user?.id) return;
 
-    const currentProfilePercentage = user.profile_percentage;
-    const previousProfilePercentage = prevProfilePercentageRef.current;
-
-    // Check if animation has already been shown for this user
-    const animationShownKey = `profile_completion_animation_shown_${user.id}`;
-    const hasAnimationBeenShown =
-      localStorage.getItem(animationShownKey) === "true";
+    const isProfileComplete = user.is_profile_complete;
+    const isProfilePopup = user.is_profile_popup;
 
     // Trigger animation if:
-    // 1. Current percentage is 100%
-    // 2. Previous percentage was not 100% (or null on first load)
-    // 3. Animation hasn't been shown before for this user
-    if (
-      currentProfilePercentage === 100 &&
-      (previousProfilePercentage === null || previousProfilePercentage < 100) &&
-      !hasAnimationBeenShown
-    ) {
-      // Small delay to ensure smooth animation
-
+    // 1. Profile is complete
+    // 2. Profile popup has not been shown yet
+    if (isProfileComplete && !isProfilePopup) {
+      // Trigger GA event
       if (
         user?.id &&
         getSessionStorageItem(
@@ -68,16 +57,22 @@ const ProfilePage = () => {
           "true"
         );
       }
+
+      // Small delay to ensure smooth animation
       setTimeout(() => {
         triggerAnimation();
-        // Mark animation as shown for this user
-        localStorage.setItem(animationShownKey, "true");
+        // Call API to update the popup status
+        updateComicCoinPopUpMutation.mutate();
       }, 500);
     }
-
-    // Update the ref with current percentage
-    prevProfilePercentageRef.current = currentProfilePercentage;
-  }, [user?.profile_percentage, user?.id, mounted, triggerAnimation]);
+  }, [
+    user?.is_profile_complete,
+    user?.is_profile_popup,
+    user?.id,
+    mounted,
+    triggerAnimation,
+    updateComicCoinPopUpMutation,
+  ]);
 
   // Handle fragment scrolling when page loads
   useEffect(() => {

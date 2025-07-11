@@ -1,7 +1,7 @@
 import apiClient from "../client";
-import { ErrorResponse, SuccessResponse } from "../utils/responseConvertor";
+import { SuccessResponse } from "../utils/responseConvertor";
 import { API_ROUTES, LOCAL_STORAGE_KEYS } from "../client/config";
-import { TMixCodeRedeem, MIX_CODE_STATUS } from "../types/MixCodeTypes";
+import { TMixCodeRedeem } from "../types/MixCodeTypes";
 import { MainService } from "./MainService";
 import { getLocalStorageItem } from "@/utils";
 import { AUTHORIZATION_TYPES } from "../client/constant";
@@ -37,35 +37,19 @@ export class MixCodeService extends MainService {
       const data = response.data;
       
       if (data?.success) {
-        const responseData = {
-          status: MIX_CODE_STATUS.SUCCESS,
+        return SuccessResponse({
+          success: true,
+          status: 200,
           message: data?.message ?? "Code redeemed successfully",
-        };
-        return SuccessResponse(responseData);
-      } else if (data?.code === 1012) {
-        // Daily limit exceeded
-        const responseData = {
-          status: MIX_CODE_STATUS.DAILY_LIMIT_EXCEEDED,
-          message: data?.message ?? "Daily mix code limit exceeded (max 5 per day)",
-        };
-        return SuccessResponse(responseData);
-      } else if (data?.code === 1013) {
-        // Invalid mix code
-        const responseData = {
-          status: MIX_CODE_STATUS.INVALID_CODE,
-          message: data?.message ?? "Please enter a valid unique code",
-        };
-        return SuccessResponse(responseData);
-      } else if (data?.code === 1014) {
-        // Already used code
-        const responseData = {
-          status: MIX_CODE_STATUS.ALREADY_USED,
-          message: data?.message ?? "Used code entered. Please try again with new code",
-        };
-        return SuccessResponse(responseData);
+        });
+      } else {
+        return SuccessResponse({
+          success: false,
+          status: 400,
+          code: data?.code,
+          message: data?.message,
+        });
       }
-      
-      return ErrorResponse(data?.message ?? "Failed to redeem mix code");
     } catch (error) {
       throw new Error(error as string);
     }

@@ -160,6 +160,8 @@ export type TCMSResponse = {
       no_more_data: string;
       vote: string;
       voted: string;
+      retry_button: string;
+      preview_your_submission: string;
     };
     hall_of_lame: {
       id: number;
@@ -407,6 +409,14 @@ export type TCMSResponse = {
       invitecode_firstmodal_enterrefcode: string;
       wrong_referral_code: string;
       uniquecode_codealreadyredeemed: string;
+      uniquecode_invalidmixcode: string;
+      Date_of_birth_in_future_error: string;
+      // --- new unique code error codes ---
+      uniquecode_Invaliduniquecode: string;
+      uniquecode_expired: string;
+      uniquecode_notactive: string;
+      uniquecode_failedtoredeem: string;
+      uniquecode_dailyredemptionlimit: string;
     };
     coach_marker: {
       id: number;

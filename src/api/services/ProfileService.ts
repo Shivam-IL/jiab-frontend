@@ -278,4 +278,23 @@ export class ProfileService extends MainService {
       throw new Error(error as string);
     }
   }
+
+  public async updateComicCoinPopUp() {
+    try {
+      const response = await apiClient.patch(
+        API_ROUTES.USER.COMIC_COIN_POP_UP,
+        {},
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
+      const data = response.data;
+      if (data?.success) {
+        return SuccessResponse(data);
+      }
+      return ErrorResponse(data?.message || "Failed to update comic coin pop up");
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
 }

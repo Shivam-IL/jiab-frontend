@@ -27,6 +27,7 @@ import {
   ICONS_NAMES,
   SESSION_STORAGE_KEYS,
   CATEGORY_ID_CMS_KEY_MAPPING,
+  LANGUAGE_MNEMONICS,
 } from "@/constants";
 import { updateSurpriseMe } from "@/store/auth/auth.slice";
 import useAppDispatch from "@/hooks/useDispatch";
@@ -87,6 +88,10 @@ export default function HomePageClient() {
 
   // Fetch jokes to populate video carousel dynamically
   const { selectedLanguage } = useLanguage();
+  const isMathilyOdiaKannada =
+    selectedLanguage === LANGUAGE_MNEMONICS.KANNADA ||
+    selectedLanguage === LANGUAGE_MNEMONICS.ORIYA ||
+    selectedLanguage === LANGUAGE_MNEMONICS.MAITHILI;
   const { data: jokesResponse } = useGetJokes({
     limit: 3,
     language: selectedLanguage,
@@ -314,15 +319,19 @@ export default function HomePageClient() {
         <ChillGuyBanner />
 
         {/* Video Scroll */}
-        <Header
-          title={cmsData.homePage.scrollAndLolText}
-          className="md:mt-[58px] md:mb-[24px] mt-[20px] mb-[16px]"
-          viewAllUrl="/scroll-and-lol"
-          viewAllButtonText={cmsData.homePage.viewAllButtonText}
-        />
-        <div className="video-section">
-          <VideoScroll videos={videoData} />
-        </div>
+        {!isMathilyOdiaKannada && (
+          <>
+            <Header
+              title={cmsData.homePage.scrollAndLolText}
+              className="md:mt-[58px] md:mb-[24px] mt-[20px] mb-[16px]"
+              viewAllUrl="/scroll-and-lol"
+              viewAllButtonText={cmsData.homePage.viewAllButtonText}
+            />
+            <div className="video-section">
+              <VideoScroll videos={videoData} />
+            </div>
+          </>
+        )}
         {/* Pick your mood */}
         <Header
           title={cmsData.homePage.pickYourMoodHeading}
@@ -352,13 +361,13 @@ export default function HomePageClient() {
                     className="flex flex-col items-center cursor-pointer"
                     onClick={() => handleCategoryClick(category)}
                   >
-                    <div className="rounded-full bg-white w-[81.7px] h-[81.7px] xxs:w-[60px] xxs:h-[60px] lg:w-[140px] lg:h-[140px] flex items-center justify-center md:hover:border-2 hover:border hover:border-green transition-all duration-900 md:shadow-lg overflow-hidden shadow-sm">
+                    <div className="rounded-full bg-white w-[81.7px] h-[81.7px] xxs:w-[60px] xxs:h-[60px] md:w-[140px] md:h-[140px] flex items-center justify-center md:hover:border-2 hover:border hover:border-green transition-all duration-900 md:shadow-lg overflow-hidden shadow-sm">
                       <Image
                         src={category.image_url}
                         alt={category.name}
                         width={80}
                         height={80}
-                        className="w-[51.7px] h-[51.7px] xxs:w-[30px] xxs:h-[30px] lg:w-[6rem] lg:h-[6rem] object-contain"
+                        className="w-[51.7px] h-[51.7px] xxs:w-[30px] xxs:h-[30px] md:w-[6rem] md:h-[6rem] object-contain"
                       />
                     </div>
                     <p

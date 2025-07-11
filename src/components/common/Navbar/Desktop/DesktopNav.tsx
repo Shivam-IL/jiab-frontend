@@ -164,6 +164,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const { user } = useAppSelector((state) => state.profile);
   const isTamil = selectedLanguage === "ta";
+  const isOdiaMaithiliKannada =
+    selectedLanguage === LANGUAGE_MNEMONICS.ORIYA ||
+    selectedLanguage === LANGUAGE_MNEMONICS.MAITHILI ||
+    selectedLanguage === LANGUAGE_MNEMONICS.KANNADA;
 
   const loginHandler = () => {
     dispatch(updateLoginModal({ loginModal: true }));
@@ -200,6 +204,11 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                 <div className="absolute top-full left-0 mt-4 w-[380px] bg-white border border-[#ebebeb] rounded-[5px] shadow-lg z-30 font-medium">
                   <div className="flex flex-col">
                     {exploreMenuItems.map((item) => {
+                      if (isOdiaMaithiliKannada) {
+                        if (item.label === cmsData.navBar.scrollAndLol) {
+                          return null;
+                        }
+                      }
                       if (item.label === cmsData.navBar.referAFriend) {
                         return (
                           <button
@@ -278,7 +287,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
                               setIsExploreDropdownOpen(false);
                             }}
                             key={item.id}
-                            className="px-[20px] py-[10px] text-start hover:bg-gray-50 text-[18px] font-normal leading-tight"
+                            className={cn(
+                              "px-[20px] py-[10px] text-start hover:bg-gray-50 text-[18px] font-normal leading-tight",
+                              isTamil && "text-[14px]"
+                            )}
                           >
                             {item.label}
                           </button>
@@ -341,7 +353,10 @@ const DesktopNav: React.FC<ILogoAndProfileImageProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center space-x-[24px]">
+        <div
+          id={DesktopBoxIds.NOTIFICATIONS}
+          className="flex items-center space-x-[24px]"
+        >
           {isAuthenticated ? (
             <div className="relative" ref={notificationDropdownRef}>
               <button
