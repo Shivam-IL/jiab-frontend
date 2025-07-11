@@ -105,6 +105,7 @@ export default function HomePageClient() {
     src: joke.thumbnail_url,
     url: `/scroll-and-lol?selected_joke=${encodeURIComponent(joke.id)}`,
     title: joke.title,
+    language: joke.joke_language,
   }));
 
   // Transform genres from API to match the expected structure

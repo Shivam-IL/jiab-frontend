@@ -42,7 +42,7 @@ export interface IModifiedJoke {
   reactionType: string;
   isReacted: boolean;
   artist?: string;
-  language?: string;
+  joke_language?: string;
 }
 
 interface ErrorResponse {
@@ -72,7 +72,7 @@ interface VideoData {
   reactionType: string
   isReacted: boolean
   artist?: string;
-  language?: string;
+  joke_language?: string;
 }
 
 // Loading Spinner Component
@@ -304,7 +304,7 @@ const VideoItem: React.FC<VideoItemProps> = ({
         {/* Replace the old title and artist info with the new component */}
         <VideoTitleInfo
           title={video.title}
-          language={video.language}
+          language={video.joke_language}
           className="absolute md:bottom-[40px] bottom-[33px] md:left-1/2 left-[52%] -translate-x-1/2 md:w-[417px] w-[386px] xxs:w-[356px]"
         />
 
@@ -449,7 +449,7 @@ const ScrollAndLol: React.FC = () => {
         reactionType: joke.reactionType ?? '',
         isReacted: joke.isReacted ?? false
         artist: joke.artist ?? "Unknown Artist",
-        language: joke.language ?? videoLanguage,
+        joke_language: joke.joke_language ?? videoLanguage,
       }))
       setVideos(newData)
       const checkQuotaExhausted = jokesArr?.[0]?.is_exhausted

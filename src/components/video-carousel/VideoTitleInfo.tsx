@@ -11,7 +11,7 @@ interface VideoTitleInfoProps {
 
 const VideoTitleInfo: React.FC<VideoTitleInfoProps> = ({
   title = "Video Title",
-  language = "Hindi",
+  language,
   className = "",
   showGradient = true,
   variant = "scroll",
@@ -43,6 +43,7 @@ const VideoTitleInfo: React.FC<VideoTitleInfoProps> = ({
       {showGradient && <div className={gradientStyles[variant]} />}
       <div className={`text-white ${className}`}>
         <div className="flex items-center gap-[8px]">
+          {/* Need to update when BE is ready */}
           <Image
             src="/assets/categories/Traffic.svg"
             alt="Gludein Logo"
