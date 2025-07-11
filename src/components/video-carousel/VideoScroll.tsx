@@ -9,6 +9,7 @@ interface Video {
   url: string;
   title: string;
   language: string;
+  genreImage: string;
 }
 
 interface VideoScrollProps {
@@ -30,6 +31,7 @@ const VideoScroll = ({ videos }: VideoScrollProps) => {
                 src={video.src}
                 title={video.title}
                 language={video.language}
+                genreImage={video.genreImage}
               />
             </Link>
           </div>

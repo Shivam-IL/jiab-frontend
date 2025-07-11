@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import WalletCard from '../WalletCard'
 import GreenCTA from '../GreenCTA'
 import AktivGroteskText from '../common/AktivGroteskText'
@@ -14,6 +14,23 @@ const MmtVoucher = ({ voucherInfo }: { voucherInfo: IVoucherInfo }) => {
   const [selectedVoucher, setSelectedVoucher] = useState<IVoucherInfo | null>(
     null
   )
+  const tooltipRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+        setOpenTooltip(false)
+      }
+    }
+
+    if (openTooltip) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [openTooltip])
 
   return (
     <>
@@ -25,7 +42,7 @@ const MmtVoucher = ({ voucherInfo }: { voucherInfo: IVoucherInfo }) => {
       >
         <div className='flex flex-col items-center gap-[24px] md:gap-[36px]'>
           <div className='flex flex-col items-center gap-[0px] md:gap-[20px]'>
-            <div className='flex items-center gap-[10px] relative'>
+            <div className='flex items-center gap-[10px] relative' ref={tooltipRef}>
               <AktivGroteskText
                 text={voucherInfo?.voucher_name}
                 fontSize='text-[20px] md:text-[28px]'

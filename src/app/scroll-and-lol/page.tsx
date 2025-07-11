@@ -43,6 +43,8 @@ export interface IModifiedJoke {
   isReacted: boolean;
   artist?: string;
   joke_language?: string;
+  is_exhausted?: boolean;
+  genre_image?: string;
 }
 
 interface ErrorResponse {
@@ -73,6 +75,7 @@ interface VideoData {
   isReacted: boolean
   artist?: string;
   joke_language?: string;
+  genreImage?: string;
 }
 
 // Loading Spinner Component
@@ -305,6 +308,7 @@ const VideoItem: React.FC<VideoItemProps> = ({
         <VideoTitleInfo
           title={video.title}
           language={video.joke_language}
+          genreImage={video.genreImage}
           className="absolute md:bottom-[40px] bottom-[33px] md:left-1/2 left-[52%] -translate-x-1/2 md:w-[417px] w-[386px] xxs:w-[356px]"
         />
 
@@ -400,6 +404,7 @@ const ScrollAndLol: React.FC = () => {
   const [languageChangeKey, setLanguageChangeKey] = useState(0)
   const [showSerialChillerForError, setShowSerialChillerForError] =
     useState(false)
+  const { genres } = useAppSelector(state => state.reference)
 
   // Handle language change - completely reset component state
   useEffect(() => {
@@ -447,13 +452,14 @@ const ScrollAndLol: React.FC = () => {
         user_reaction: joke.user_reaction ?? { laugh: 0, neutral: 0, sad: 0 },
         view_count: joke.view_count ?? 0,
         reactionType: joke.reactionType ?? '',
-        isReacted: joke.isReacted ?? false
+        isReacted: joke.isReacted ?? false,
         artist: joke.artist ?? "Unknown Artist",
         joke_language: joke.joke_language ?? videoLanguage,
+        genreImage: joke.genre_image ?? genres?.[0]?.image_url ?? '',
       }))
       setVideos(newData)
       const checkQuotaExhausted = jokesArr?.[0]?.is_exhausted
-      setQuotaExhausted(checkQuotaExhausted)
+      setQuotaExhausted(checkQuotaExhausted ?? false)
       setShowSerialChillerForError(false) // Reset error state on successful response
 
       // If no videos returned, hide loading

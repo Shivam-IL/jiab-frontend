@@ -7,9 +7,10 @@ interface VideoCardProps {
   title: string;
   artist?: string;
   language?: string;
+  genreImage?: string;
 }
 
-const VideoCard = ({ src, title, language }: VideoCardProps) => {
+const VideoCard = ({ src, title, language, genreImage }: VideoCardProps) => {
   return (
     <div className="relative md:aspect-[9/16] rounded-[10px] overflow-hidden group cursor-pointer">
       <div className="relative w-full h-full">
@@ -41,6 +42,7 @@ const VideoCard = ({ src, title, language }: VideoCardProps) => {
       <VideoTitleInfo
         title={title}
         language={language}
+        genreImage={genreImage}
         className="absolute bottom-[16px] left-1/2 -translate-x-1/2 w-[90%]"
         variant="card"
       />
