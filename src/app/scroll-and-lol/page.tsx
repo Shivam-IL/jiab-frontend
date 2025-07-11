@@ -391,6 +391,8 @@ const ScrollAndLol: React.FC = () => {
   const { isAnimating, triggerAnimation, animationKey } = useCoinAnimation()
   const [isExhaustVideoInView, setIsExhaustVideoInView] = useState(false)
 
+  console.log('isExhaustVideoInView', isExhaustVideoInView)
+
   const { mutate: postReelReaction, data: postReelReactionData } =
     usePostReelReaction()
   const [completlyPlayedVideoIndex, setCompletlyPlayedVideoIndex] =
@@ -593,6 +595,7 @@ const ScrollAndLol: React.FC = () => {
       newStates[index] = false
       return newStates
     })
+    setActiveVideoIndex(-1)
   }, [])
 
   // Handle video ref callback
@@ -1012,7 +1015,7 @@ const ScrollAndLol: React.FC = () => {
               activeVideoIndex !== null &&
               activeVideoIndex < videos.length &&
               currentVideoData &&
-              !isExhaustVideoInView && (
+              activeVideoIndex !== -1 && (
                 <div
                   className='absolute right-[10px] md:bottom-[12vh] md:right-[clamp(-8rem,0vw,-3rem)] z-20 md:scale-[clamp(0.7,1.2vh,1.2)] origin-bottom-right md:mb-0'
                   style={{
