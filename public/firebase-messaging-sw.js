@@ -5,15 +5,9 @@ importScripts(
   "https://www.gstatic.com/firebasejs/10.11.1/firebase-messaging-compat.js"
 );
 
-firebase.initializeApp({
-  apiKey: "AIzaSyAThWy5u0sZEq-00LbAjFK4u4K2VxthIy0",
-  authDomain: "coca-cola-5d9d0.firebaseapp.com",
-  projectId: "coca-cola-5d9d0",
-  storageBucket: "coca-cola-5d9d0.firebasestorage.app",
-  messagingSenderId: "344034935643",
-  appId: "1:344034935643:web:9cb5669c1dba456b31907e",
-  measurementId: "G-99MG923723",
-});
+importScripts('/firebase-env.js');
+
+firebase.initializeApp(self.FIREBASE_CONFIG);
 
 const messaging = firebase.messaging();
 

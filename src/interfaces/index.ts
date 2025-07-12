@@ -166,6 +166,7 @@ export interface IReferNowModal {
   onSubmit: () => void;
   placeholder?: string;
   error?: string;
+  isSendingReferral?: boolean;
 }
 
 export interface IReportPopup {

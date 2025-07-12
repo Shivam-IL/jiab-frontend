@@ -1,7 +1,16 @@
 import React from "react";
 import Image from "next/image";
+import VideoTitleInfo from "./VideoTitleInfo";
 
-const VideoCard = ({ src }: { src: string }) => {
+interface VideoCardProps {
+  src: string;
+  title: string;
+  artist?: string;
+  language?: string;
+  genreImage?: string;
+}
+
+const VideoCard = ({ src, title, language, genreImage }: VideoCardProps) => {
   return (
     <div className="relative md:aspect-[9/16] rounded-[10px] overflow-hidden group cursor-pointer">
       <div className="relative w-full h-full">
@@ -25,11 +34,18 @@ const VideoCard = ({ src }: { src: string }) => {
         <Image
           src="/other-svgs/play-button.svg"
           alt="play"
-          className="w-[64px] md:w-[50px] h-[64px] md:h-[50px]"
+          className="w-[20px] md:w-[50px] h-[20px] md:h-[50px]"
           width={64}
           height={64}
         />
       </div>
+      <VideoTitleInfo
+        title={title}
+        language={language}
+        genreImage={genreImage}
+        className="absolute bottom-[16px] left-1/2 -translate-x-1/2 w-[90%]"
+        variant="card"
+      />
     </div>
   );
 };

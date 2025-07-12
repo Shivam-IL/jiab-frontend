@@ -29,18 +29,22 @@ import {
   CoinAnimation,
   useCoinAnimation
 } from '@/components/common/CoinAnimation'
+import VideoTitleInfo from "@/components/video-carousel/VideoTitleInfo";
 
 export interface IModifiedJoke {
-  id: string
-  url: string
-  title: string
-  thumbnail?: string
-  user_reaction: IUserReaction
-  thumbnail_url: string
-  view_count: number
-  reactionType: string
-  isReacted: boolean
-  is_exhausted: boolean
+  id: string;
+  url: string;
+  title: string;
+  thumbnail?: string;
+  user_reaction: IUserReaction;
+  thumbnail_url: string;
+  view_count: number;
+  reactionType: string;
+  isReacted: boolean;
+  artist?: string;
+  joke_language?: string;
+  is_exhausted?: boolean;
+  genre_image?: string;
 }
 
 interface ErrorResponse {
@@ -69,6 +73,9 @@ interface VideoData {
   view_count: number
   reactionType: string
   isReacted: boolean
+  artist?: string;
+  joke_language?: string;
+  genreImage?: string;
 }
 
 // Loading Spinner Component
@@ -149,6 +156,9 @@ const VideoItem: React.FC<VideoItemProps> = ({
   })
 
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const [progress, setProgress] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
   const combinedRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -174,6 +184,58 @@ const VideoItem: React.FC<VideoItemProps> = ({
       }
     }
   }, [inView, isActive, isUserPaused])
+
+  // Update progress bar as video plays
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const updateProgress = () => {
+      if (!isDragging) {
+        const progress = (video.currentTime / video.duration) * 100;
+        setProgress(progress);
+      }
+    };
+
+    video.addEventListener("timeupdate", updateProgress);
+    return () => video.removeEventListener("timeupdate", updateProgress);
+  }, [isDragging]);
+
+  // Handle progress bar interactions
+  const handleProgressBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const video = videoRef.current;
+    const progressBar = progressBarRef.current;
+    if (!video || !progressBar) return;
+
+    const rect = progressBar.getBoundingClientRect();
+    const clickPosition = (e.clientX - rect.left) / rect.width;
+    const newTime = clickPosition * video.duration;
+    video.currentTime = newTime;
+    setProgress(clickPosition * 100);
+  };
+
+  const handleProgressBarDragStart = () => {
+    setIsDragging(true);
+  };
+
+  const handleProgressBarDragEnd = () => {
+    setIsDragging(false);
+  };
+
+  const handleProgressBarDrag = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+
+    const video = videoRef.current;
+    const progressBar = progressBarRef.current;
+    if (!video || !progressBar) return;
+
+    const rect = progressBar.getBoundingClientRect();
+    const position = (e.clientX - rect.left) / rect.width;
+    const clampedPosition = Math.max(0, Math.min(1, position));
+    const newTime = clampedPosition * video.duration;
+    video.currentTime = newTime;
+    setProgress(clampedPosition * 100);
+  };
 
   return (
     <div
@@ -238,6 +300,43 @@ const VideoItem: React.FC<VideoItemProps> = ({
                 : mobilePageHeight
           }}
         />
+
+        {/* Gradient overlay */}
+        <div className="absolute bottom-0 left-0 w-full md:h-[140px] h-[98px] bg-gradient-to-t from-black to-transparent pointer-events-none" />
+
+        {/* Replace the old title and artist info with the new component */}
+        <VideoTitleInfo
+          title={video.title}
+          language={video.joke_language}
+          genreImage={video.genreImage}
+          className="absolute md:bottom-[40px] bottom-[33px] md:left-1/2 left-[52%] -translate-x-1/2 md:w-[417px] w-[386px] xxs:w-[356px]"
+        />
+
+        {/* Progress bar */}
+        <div
+          ref={progressBarRef}
+          className="absolute bottom-[12px] left-1/2 -translate-x-1/2 md:w-[417px] w-[386px] xxs:w-[356px] h-1 bg-[#D1D1D1] cursor-pointer rounded-full"
+          onClick={handleProgressBarClick}
+          onMouseDown={handleProgressBarDragStart}
+          onMouseUp={handleProgressBarDragEnd}
+          onMouseLeave={handleProgressBarDragEnd}
+          onMouseMove={handleProgressBarDrag}
+        >
+          <div
+            className="h-full bg-white transition-[width] ease-linear duration-75 relative rounded-full"
+            style={{ width: `${progress}%` }}
+          >
+            {/* Draggable dot handle */}
+            <div
+              className="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full shadow-md transform transition-transform duration-200 ease-out z-20"
+              style={{
+                transform: isDragging
+                  ? "translate(-50%, -50%) scale(1.2)"
+                  : "translate(-50%, -50%) scale(1)",
+              }}
+            />
+          </div>
+        </div>
 
         {/* Top controls */}
         <div className='absolute top-4 w-full flex justify-between px-4 z-20'>
@@ -305,6 +404,7 @@ const ScrollAndLol: React.FC = () => {
   const [languageChangeKey, setLanguageChangeKey] = useState(0)
   const [showSerialChillerForError, setShowSerialChillerForError] =
     useState(false)
+  const { genres } = useAppSelector(state => state.reference)
 
   // Handle language change - completely reset component state
   useEffect(() => {
@@ -352,11 +452,14 @@ const ScrollAndLol: React.FC = () => {
         user_reaction: joke.user_reaction ?? { laugh: 0, neutral: 0, sad: 0 },
         view_count: joke.view_count ?? 0,
         reactionType: joke.reactionType ?? '',
-        isReacted: joke.isReacted ?? false
+        isReacted: joke.isReacted ?? false,
+        artist: joke.artist ?? "Unknown Artist",
+        joke_language: joke.joke_language ?? videoLanguage,
+        genreImage: joke.genre_image ?? genres?.[0]?.image_url ?? '',
       }))
       setVideos(newData)
       const checkQuotaExhausted = jokesArr?.[0]?.is_exhausted
-      setQuotaExhausted(checkQuotaExhausted)
+      setQuotaExhausted(checkQuotaExhausted ?? false)
       setShowSerialChillerForError(false) // Reset error state on successful response
 
       // If no videos returned, hide loading
@@ -373,7 +476,7 @@ const ScrollAndLol: React.FC = () => {
       // If API returns error, also hide loading
       setIsLoading(false)
     }
-  }, [jokesResponse])
+  }, [jokesResponse, videoLanguage])
 
   const [activeVideoIndex, setActiveVideoIndex] = useState<number>(0)
   const [videoPlayStates, setVideoPlayStates] = useState<boolean[]>([])

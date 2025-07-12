@@ -17,6 +17,7 @@ export interface IJoke {
   url: string;
   user_reaction: IUserReaction;
   view_count: number;
+  genre_image?: string;
 }
 
 // Query params accepted by GET /joke/jokes endpoint

@@ -19,7 +19,8 @@ const ReferNowModal: React.FC<IReferNowModal> = ({
   onChange,
   onSubmit,
   placeholder="Enter Your Friend's Mobile No.",
-  error
+  error,
+  isSendingReferral=false
 }) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -68,6 +69,7 @@ const ReferNowModal: React.FC<IReferNowModal> = ({
                 text={ctaText}
                 fontSize='text-[16px] md:text-[20px]'
                 paddingClass='py-[10px] md:py-[10px] px-[28px]'
+                disabled={isSendingReferral}
                 onClick={() => {
                   onSubmit()
                 }}

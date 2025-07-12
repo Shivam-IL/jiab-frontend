@@ -46,7 +46,7 @@ const ReferNowComponent = ({
   const [referStatus, setReferStatus] = useState<string>("");
   const [inviteCode, setInviteCode] = useState<string>("");
 
-  const { mutate: sendReferral, data: sendReferralData } = useSendReferral();
+  const { mutate: sendReferral, data: sendReferralData,isPending: isSendingReferral } = useSendReferral();
   const { mutate: sendCDPEvent } = useSendCDPEvent();
   const { user } = useAppSelector((state) => state.profile);
 
@@ -207,6 +207,7 @@ const ReferNowComponent = ({
             setPhoneNumber("");
             setError("");
           }}
+          isSendingReferral={isSendingReferral}
         />
       )}
       {referStatus === REFERRAL_CODE.INVALID_MOBILE_NUMBER && open2 && (
@@ -228,6 +229,7 @@ const ReferNowComponent = ({
             setOpen2(false);
             setError("");
           }}
+          isSendingReferral={isSendingReferral}
         />
       )}
       {referStatus === REFERRAL_CODE.CANNOT_SEND_TO_SELF && open3 && (
@@ -246,6 +248,7 @@ const ReferNowComponent = ({
             setOpen3(false);
             setPhoneNumber("");
           }}
+          isSendingReferral={isSendingReferral}
         />
       )}
       {referStatus === REFERRAL_CODE.SUCCESS && referStatus1 && (
